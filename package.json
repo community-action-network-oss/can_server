@@ -4,7 +4,7 @@
   "description": "Community Action Network node server",
   "author": "",
   "private": true,
-  "license": "UNLICENSED",
+  "license": "MIT",
   "type": "module",
   "scripts": {
     "build": "nest build",

@@ -60,3 +60,7 @@ Never hand-edit `openapi/openapi.json` or committed files in `drizzle/`.
 ## Contributing
 
 See [../CONTRIBUTING.md](../CONTRIBUTING.md).
+
+## License
+
+MIT, see [LICENSE](LICENSE).
