@@ -49,13 +49,16 @@ export interface StateCopy {
 export const STATE_COPY: Record<State, StateCopy> = {
   draft: {
     label: 'Draft',
-    explanation: 'Only you can see this. Nothing is shared until you send it to volunteer review.',
+    explanation:
+      'Only you can see this. Nothing is shared until you send it to volunteer review.',
     nextAction: 'Prepare it, or discard.',
   },
   in_review: {
     label: 'In volunteer review',
-    explanation: 'Your changes are back in review.',
-    nextAction: 'Request publication again when ready.',
+    explanation:
+      'Volunteers who opted in are checking your facts, sources, solved criteria and stages. Nothing is public yet.',
+    nextAction:
+      'Resolve each recommendation (accept or decline, with a reason). Edit or withdraw while you wait.',
   },
   needs_revision: {
     label: 'Changes requested',
@@ -71,15 +74,18 @@ export const STATE_COPY: Record<State, StateCopy> = {
   },
   rejected: {
     label: 'Not accepted',
-    explanation: 'This was not accepted, for the reasons given. Your text is deleted on the date shown.',
-    nextAction: 'Appeal before the date shown, or copy your text and start a new draft.',
+    explanation:
+      'This was not accepted, for the reasons given. Your text is deleted on the date shown.',
+    nextAction:
+      'Appeal before the date shown, or copy your text and start a new draft.',
   },
   // Label is a template, see activeLabel().
   active: {
     label: 'Active',
     explanation:
       "The community's rules were applied and this was published. Anyone can add options, questions and evidence to the stages.",
-    nextAction: 'Contribute to the active stage, or to a later stage ahead of time.',
+    nextAction:
+      'Contribute to the active stage, or to a later stage ahead of time.',
   },
   paused: {
     label: 'Paused',
@@ -88,7 +94,8 @@ export const STATE_COPY: Record<State, StateCopy> = {
   },
   stuck: {
     label: 'Stuck',
-    explanation: 'Documented work hit a blocker. The blocker and the next route are shown.',
+    explanation:
+      'Documented work hit a blocker. The blocker and the next route are shown.',
     nextAction: 'Follow the escalation route or add information.',
   },
   solved: {
@@ -104,7 +111,8 @@ export const STATE_COPY: Record<State, StateCopy> = {
   },
   redirected: {
     label: 'Redirected',
-    explanation: 'This is better handled by [destination]. Their route is shown.',
+    explanation:
+      'This is better handled by [destination]. Their route is shown.',
     nextAction: 'Use the route shown.',
   },
   withdrawn: {
@@ -114,13 +122,16 @@ export const STATE_COPY: Record<State, StateCopy> = {
   },
 };
 
-export type ActiveStages = { kind: 'one'; name: string } | { kind: 'many'; n: number } | null;
+export type ActiveStages =
+  { kind: 'one'; name: string } | { kind: 'many'; n: number } | null;
 
 export function activeLabel(stages: ActiveStages): string {
   if (!stages) return 'Active';
   if (stages.kind === 'one') return `Active: stage ${stages.name}`;
   // ICU plural: one {Active: # stage in progress} other {Active: # stages in progress}
-  return stages.n === 1 ? 'Active: 1 stage in progress' : `Active: ${stages.n} stages in progress`;
+  return stages.n === 1
+    ? 'Active: 1 stage in progress'
+    : `Active: ${stages.n} stages in progress`;
 }
 
 /**
@@ -133,8 +144,12 @@ export function policyVersionLabel(policyVersion: string): string {
   return /^v/i.test(policyVersion) ? policyVersion : `v${policyVersion}`;
 }
 
-export function decidedUnderLabel(state: State, policyVersion: string): string | null {
-  if (state !== 'solved' && state !== 'closed' && state !== 'redirected') return null;
+export function decidedUnderLabel(
+  state: State,
+  policyVersion: string,
+): string | null {
+  if (state !== 'solved' && state !== 'closed' && state !== 'redirected')
+    return null;
   return `Decided under policy ${policyVersionLabel(policyVersion)}`;
 }
 
