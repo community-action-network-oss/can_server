@@ -12,6 +12,41 @@
         ],
         "type": "object"
       },
+      "ConfirmMappingDto": {
+        "properties": {
+          "from_path": {
+            "type": "string"
+          },
+          "to_path": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "from_path",
+          "to_path"
+        ],
+        "type": "object"
+      },
+      "ConfirmMigrationDto": {
+        "properties": {
+          "expectedVersion": {
+            "description": "The version you last saw; a mismatch returns 409.",
+            "type": "number"
+          },
+          "mappings": {
+            "description": "The mappings you accept. Copies always apply; unlisted split, merge and drop mappings are skipped.",
+            "items": {
+              "$ref": "#/components/schemas/ConfirmMappingDto"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "expectedVersion",
+          "mappings"
+        ],
+        "type": "object"
+      },
       "ContentSchemaDto": {
         "properties": {
           "messages": {
@@ -313,6 +348,125 @@
         "required": [
           "handle",
           "role"
+        ],
+        "type": "object"
+      },
+      "MigrationMappingDto": {
+        "properties": {
+          "carried_value": {
+            "description": "The answer that would move; null when empty.",
+            "nullable": true,
+            "type": "object"
+          },
+          "from_path": {
+            "type": "string"
+          },
+          "needs_confirmation": {
+            "type": "boolean"
+          },
+          "to_path": {
+            "description": "Empty when the transform is drop.",
+            "type": "string"
+          },
+          "transform": {
+            "enum": [
+              "copy",
+              "split",
+              "merge",
+              "drop"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "from_path",
+          "to_path",
+          "transform",
+          "carried_value",
+          "needs_confirmation"
+        ],
+        "type": "object"
+      },
+      "MigrationPlanDto": {
+        "properties": {
+          "bump": {
+            "enum": [
+              "none",
+              "patch",
+              "minor",
+              "major",
+              "rollback"
+            ],
+            "type": "string"
+          },
+          "current": {
+            "$ref": "#/components/schemas/MigrationStampDto"
+          },
+          "dropped": {
+            "description": "Answers that have no place in the new form.",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "grace_ends_at": {
+            "description": "Major bumps only: the draft must migrate before submit after this time.",
+            "nullable": true,
+            "type": "string"
+          },
+          "mapping": {
+            "items": {
+              "$ref": "#/components/schemas/MigrationMappingDto"
+            },
+            "type": "array"
+          },
+          "new_required": {
+            "description": "Newly required fields nothing maps into; asked fresh.",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "state": {
+            "description": "pinned: still on the stamped version; migrated: on the current one.",
+            "enum": [
+              "pinned",
+              "migrated"
+            ],
+            "type": "string"
+          },
+          "target": {
+            "$ref": "#/components/schemas/MigrationStampDto"
+          }
+        },
+        "required": [
+          "state",
+          "bump",
+          "current",
+          "target",
+          "grace_ends_at",
+          "mapping",
+          "new_required",
+          "dropped"
+        ],
+        "type": "object"
+      },
+      "MigrationStampDto": {
+        "properties": {
+          "schema_hash": {
+            "type": "string"
+          },
+          "schema_id": {
+            "type": "string"
+          },
+          "schema_version": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "schema_id",
+          "schema_version",
+          "schema_hash"
         ],
         "type": "object"
       },
@@ -1563,6 +1717,196 @@
           }
         },
         "summary": "Edit your problem while it is a draft, needs changes or in review",
+        "tags": [
+          "drafts"
+        ]
+      }
+    },
+    "/v1/drafts/{id}/migration": {
+      "get": {
+        "operationId": "getDraftMigration",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MigrationPlanDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "summary": "What moving this draft to the current form would carry over; minor and patch changes migrate on this call",
+        "tags": [
+          "drafts"
+        ]
+      },
+      "post": {
+        "operationId": "confirmDraftMigration",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConfirmMigrationDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DraftDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "summary": "Move this draft to the current form with the mappings you confirmed",
         "tags": [
           "drafts"
         ]

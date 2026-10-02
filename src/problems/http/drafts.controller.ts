@@ -36,11 +36,14 @@ import {
   type RateLimiter,
 } from '../../platform/security/rate-limiter.js';
 import { STAGE_CHIP, type StageChipPort } from '../app/stage-chip.port.js';
+import { DraftMigrationService } from '../app/draft-migration.service.js';
 import { DraftsService, EDITABLE } from '../app/drafts.service.js';
 import {
+  ConfirmMigrationDto,
   CreateDraftDto,
   DraftDto,
   MyProblemPageDto,
+  MigrationPlanDto,
   MyProblemsQueryDto,
   UpdateDraftDto,
 } from './drafts.dto.js';
@@ -56,12 +59,24 @@ const uid = (id: string) => {
   return id;
 };
 
+const stampDto = (s: {
+  schemaId: string;
+  schemaVersion: string;
+  schemaHash: string;
+}) => ({
+  schema_id: s.schemaId,
+  schema_version: s.schemaVersion,
+  schema_hash: s.schemaHash,
+});
+
 // Separate prefixes on purpose: /v1/problems* is pinned to 3 public GETs (PROFILE-LOCAL-1).
 @ApiTags('drafts')
 @Controller('v1/drafts')
 export class DraftsController {
   constructor(
     @Inject(DraftsService) private readonly drafts: DraftsService,
+    @Inject(DraftMigrationService)
+    private readonly migration: DraftMigrationService,
     @Inject(RATE_LIMITER) private readonly limiter: RateLimiter,
   ) {}
 
@@ -112,6 +127,54 @@ export class DraftsController {
       fields,
       expectedVersion,
       { content, schemaVersion, schemaHash },
+    );
+  }
+
+  @Get(':id/migration')
+  @Authenticated()
+  @ApiOperation({
+    operationId: 'getDraftMigration',
+    summary:
+      'What moving this draft to the current form would carry over; minor and patch changes migrate on this call',
+  })
+  @ApiOkResponse({ type: MigrationPlanDto })
+  @ApiErrors(401, 404, 409, 429, 500)
+  async migrationPlan(
+    @Param('id') id: string,
+    @Req() req: AuthedRequest,
+  ): Promise<MigrationPlanDto> {
+    const v = await this.migration.preview(req.auth!.accountId, uid(id));
+    return {
+      state: v.state,
+      bump: v.bump,
+      current: stampDto(v.current),
+      target: stampDto(v.target),
+      grace_ends_at: v.graceEndsAt?.toISOString() ?? null,
+      mapping: v.mapping,
+      new_required: v.newRequired,
+      dropped: v.dropped,
+    };
+  }
+
+  @Post(':id/migration')
+  @HttpCode(200)
+  @ApiOperation({
+    operationId: 'confirmDraftMigration',
+    summary:
+      'Move this draft to the current form with the mappings you confirmed',
+  })
+  @ApiOkResponse({ type: DraftDto })
+  @ApiErrors(400, 401, 403, 404, 409, 429, 500)
+  confirmMigration(
+    @Param('id') id: string,
+    @Body() body: ConfirmMigrationDto,
+    @Req() req: AuthedRequest,
+  ): Promise<DraftDto> {
+    return this.migration.confirm(
+      req.auth!.accountId,
+      uid(id),
+      body.expectedVersion,
+      body.mappings,
     );
   }
 

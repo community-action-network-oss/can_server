@@ -1,0 +1,37 @@
+{
+  "type": "problem",
+  "from": "1.1.0",
+  "to": "2.0.0",
+  "fields": [
+    {
+      "from_path": "scope",
+      "to_path": "reach",
+      "transform": "copy",
+      "note": "Renamed."
+    },
+    {
+      "from_path": "structural_statement",
+      "to_path": "statement",
+      "transform": "merge",
+      "note": "Statement and assumptions are one answer now."
+    },
+    {
+      "from_path": "assumptions",
+      "to_path": "statement",
+      "transform": "merge",
+      "note": "Appended to the statement."
+    },
+    {
+      "from_path": "impact",
+      "to_path": "",
+      "transform": "drop",
+      "note": "No longer asked."
+    }
+  ],
+  "new_required": [
+    "who_affected"
+  ],
+  "dropped": [
+    "impact"
+  ]
+}

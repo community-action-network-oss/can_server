@@ -85,7 +85,7 @@ afterAll(async () => {
   ]);
   await fx.cleanup();
   await pool.query(
-    "delete from content_schema_version where version like '9.%'",
+    "delete from content_schema_version where version like '9.%' or version like '10.%'",
   );
   await pool.end();
 });
@@ -138,9 +138,9 @@ describe('structured drafts pin a schema version', () => {
   });
 
   it('after a new version is active, an old draft still validates by its stamp', async () => {
-    const next = publish('9.2.0', true);
+    const next = publish('10.0.0', true);
     await app.get(PolicyStore).activate('default', next.default);
-    // `extra` exists only in 9.2.0, so the old draft (stamped 9.1.0) must reject it.
+    // `extra` exists only in 10.0.0, so the old draft (stamped 9.1.0) must reject it.
     const bad = { ...ok, extra: 'far too long for the new field' };
     await patch(oldId, { content: bad, expectedVersion: 1 }).expect(400);
     const good = await patch(oldId, { content: ok, expectedVersion: 1 }).expect(
@@ -153,7 +153,7 @@ describe('structured drafts pin a schema version', () => {
 
     const fresh = await post({ content: { ...ok, extra: 'ok' } }).expect(201);
     fx.problems.push(fresh.body.id);
-    expect(fresh.body.schemaVersion).toBe('9.2.0');
+    expect(fresh.body.schemaVersion).toBe('10.0.0');
   });
 
   it('asking for the retired version is schema_retired; editing with the wrong hash reloads', async () => {

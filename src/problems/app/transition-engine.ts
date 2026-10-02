@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, Optional } from '@nestjs/common';
 import { eq } from 'drizzle-orm';
 import { DB, type Db } from '../../db/db.module.js';
 import { problem, problemEvent } from '../../db/schema.js';
@@ -23,6 +23,7 @@ import {
   type DecisionNotifier,
   type ReviewFacts,
 } from './transition-ports.js';
+import { DraftMigrationService } from './draft-migration.service.js';
 import type { State } from '../../domain/lifecycle/vocabulary.js';
 
 export interface ApplyInput {
@@ -75,6 +76,9 @@ export class TransitionEngine {
     @Inject(REVIEW_FACTS) private readonly review: ReviewFacts,
     @Inject(DECISION_NOTIFIER) private readonly notifier: DecisionNotifier,
     @Inject(TransitionEffects) readonly effects: TransitionEffects,
+    @Optional()
+    @Inject(DraftMigrationService)
+    private readonly migration?: DraftMigrationService,
   ) {}
 
   async apply(i: ApplyInput): Promise<ApplyResult> {
@@ -210,6 +214,9 @@ export class TransitionEngine {
         'duplicateOf needs the duplicate reason.',
         { duplicateOf: 'invalid' },
       );
+
+    // Submit: a draft left on an old major form past its grace window must migrate first (10-u31).
+    if (t.id === 'T01') await this.migration?.beforeSubmit(tx, row);
 
     if (action === 'propose') {
       if (res.mode !== 'propose')

@@ -22,6 +22,8 @@ import {
   ContentSchemaNotFound,
   PolicyUnavailable,
 } from '../../policy/domain/pack.js';
+import { DraftMigrationService } from './draft-migration.service.js';
+import { pin, stampOf } from './schema-stamp.js';
 import { checkLimits, type LimitField } from '../domain/eligibility/limits.js';
 
 export const EDITABLE = ['draft', 'needs_revision', 'in_review'];
@@ -44,23 +46,6 @@ export interface StructuredInput {
   schemaHash?: string;
 }
 const SCHEMA_TYPE = 'problem';
-const stampOf = (r: {
-  schemaId: string | null;
-  schemaVersion: string | null;
-  schemaHash: string | null;
-}): SchemaStamp | null =>
-  r.schemaId && r.schemaVersion && r.schemaHash
-    ? {
-        schemaId: r.schemaId,
-        schemaVersion: r.schemaVersion,
-        schemaHash: r.schemaHash,
-      }
-    : null;
-const pin = (s: SchemaStamp | null) => ({
-  schemaId: s?.schemaId ?? null,
-  schemaVersion: s?.schemaVersion ?? null,
-  schemaHash: s?.schemaHash ?? null,
-});
 const unavailable = () =>
   new ApiException(503, 'policy_unavailable', 'Policy is not available.');
 
@@ -75,6 +60,8 @@ export class DraftsService {
     @Inject(AuditPort) private readonly audit: AuditPort,
     @Inject(StructuredContentService)
     private readonly structured: StructuredContentService,
+    @Inject(DraftMigrationService)
+    private readonly migration: DraftMigrationService,
   ) {}
 
   /** Never put content in events: only the names of changed fields. */
@@ -205,7 +192,7 @@ export class DraftsService {
   ) {
     const now = this.clock.now();
     return withTransaction(this.db, async (tx) => {
-      const r = await this.lock(tx, id, accountId);
+      let r = await this.lock(tx, id, accountId);
       if (!EDITABLE.includes(r.state))
         throw new ApiException(
           409,
@@ -219,6 +206,8 @@ export class DraftsService {
           'The problem changed; reload and retry.',
         );
       await this.validate(tx, input);
+      // Minor and patch bumps move the draft along; a content edit after the major grace window must migrate first.
+      r = await this.migration.beforeWrite(tx, r, { content: !!st.content });
       // The body is checked against the version stamped at creation, never the active one.
       let stamp = stampOf(r);
       if (stamp && st.schemaHash && st.schemaHash !== stamp.schemaHash)

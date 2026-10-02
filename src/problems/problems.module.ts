@@ -14,6 +14,11 @@ import {
   InMemoryRateLimiter,
   RATE_LIMITER,
 } from '../platform/security/rate-limiter.js';
+import { config } from '../config.js';
+import { SchemaVersionRepo } from '../policy/infra/schema-version.repo.js';
+import { FsPackSource } from '../policy/infra/fs-pack-source.js';
+import { MigrationMaps } from '../policy/migration/migration-maps.js';
+import { DraftMigrationService } from './app/draft-migration.service.js';
 import { DraftsService } from './app/drafts.service.js';
 import {
   DraftsController,
@@ -31,6 +36,13 @@ import { ProblemsController } from './http/problems.controller.js';
     TransitionEffects,
     TransitionEngine,
     DraftsService,
+    DraftMigrationService,
+    SchemaVersionRepo,
+    {
+      provide: MigrationMaps,
+      useFactory: () =>
+        new MigrationMaps(new FsPackSource(config.policyPacksDir)),
+    },
     { provide: RATE_LIMITER, useClass: InMemoryRateLimiter },
   ],
   exports: [TransitionEngine, TransitionEffects],
