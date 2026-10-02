@@ -19,8 +19,13 @@ import {
 } from '@nestjs/swagger';
 import { ApiErrors } from '../../platform/errors.js';
 import type { AuthedRequest } from '../../platform/security/auth.guard.js';
+import { StageEngine } from '../app/stage-engine.js';
 import { StagesService } from '../app/stages.service.js';
+import { STAGE_CHIP } from '../domain/types.js';
 import {
+  BlockStageBodyDto,
+  StageStateChangeDto,
+  UnblockStageBodyDto,
   StageChoiceDto,
   StageContentBodyDto,
   StageDto,
@@ -34,7 +39,25 @@ import {
 @ApiTags('stages')
 @Controller('v1')
 export class StagesController {
-  constructor(@Inject(StagesService) private readonly svc: StagesService) {}
+  constructor(
+    @Inject(StagesService) private readonly svc: StagesService,
+    @Inject(StageEngine) private readonly engine: StageEngine,
+  ) {}
+
+  private async move(
+    id: string,
+    req: AuthedRequest,
+    to: 'active' | 'resolving' | 'blocked',
+    fields?: Record<string, unknown>,
+  ) {
+    const r = await this.engine.apply({
+      stageId: id,
+      to,
+      actor: { kind: 'steward', id: req.auth!.accountId },
+      fields,
+    });
+    return { id: r.stageId, state: r.state, chip: STAGE_CHIP[r.state] };
+  }
 
   @Get('stages/by-problem/:problemId')
   @ApiOperation({
@@ -140,5 +163,68 @@ export class StagesController {
     @Req() req: AuthedRequest,
   ) {
     return { items: await this.svc.addEvidence(id, req.auth!, b) };
+  }
+
+  @Post('stages/:id/start')
+  @HttpCode(200)
+  @ApiOperation({
+    operationId: 'startStage',
+    summary: 'Start a ready stage (steward); a planned stage gets not_ready',
+  })
+  @ApiOkResponse({ type: StageStateChangeDto })
+  @ApiErrors(401, 403, 404, 409, 500)
+  start(@Param('id') id: string, @Req() req: AuthedRequest) {
+    return this.move(id, req, 'active');
+  }
+
+  @Post('stages/:id/submit')
+  @HttpCode(200)
+  @ApiOperation({
+    operationId: 'submitStage',
+    summary:
+      'Submit an active stage for resolution: choice, tasks and mapped evidence are checked and the evidence is frozen',
+  })
+  @ApiOkResponse({ type: StageStateChangeDto })
+  @ApiErrors(400, 401, 403, 404, 409, 500)
+  submit(@Param('id') id: string, @Req() req: AuthedRequest) {
+    return this.move(id, req, 'resolving');
+  }
+
+  @Post('stages/:id/block')
+  @HttpCode(200)
+  @ApiOperation({
+    operationId: 'blockStage',
+    summary: 'Record a blocker on a stage (BLOCKER-1); parallel branches go on',
+  })
+  @ApiOkResponse({ type: StageStateChangeDto })
+  @ApiErrors(400, 401, 403, 404, 409, 500)
+  block(
+    @Param('id') id: string,
+    @Body() b: BlockStageBodyDto,
+    @Req() req: AuthedRequest,
+  ) {
+    return this.move(id, req, 'blocked', { ...b });
+  }
+
+  @Post('stages/:id/unblock')
+  @HttpCode(200)
+  @ApiOperation({
+    operationId: 'unblockStage',
+    summary:
+      'Clear a blocker and resume the stage; on a stuck problem the note goes to the checking run first',
+  })
+  @ApiOkResponse({ type: StageStateChangeDto })
+  @ApiErrors(400, 401, 403, 404, 409, 500)
+  async unblock(
+    @Param('id') id: string,
+    @Body() b: UnblockStageBodyDto,
+    @Req() req: AuthedRequest,
+  ) {
+    const r = await this.engine.unblock({
+      stageId: id,
+      actor: { kind: 'steward', id: req.auth!.accountId },
+      fields: { ...b },
+    });
+    return { id: r.stageId, state: r.state, chip: STAGE_CHIP[r.state] };
   }
 }

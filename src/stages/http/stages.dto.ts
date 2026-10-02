@@ -1,5 +1,14 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsObject, IsOptional, IsString, MaxLength } from 'class-validator';
+import {
+  ArrayMaxSize,
+  ArrayMinSize,
+  IsArray,
+  IsNotEmpty,
+  IsObject,
+  IsOptional,
+  IsString,
+  MaxLength,
+} from 'class-validator';
 
 const OBJ = { type: 'object', additionalProperties: true } as const;
 
@@ -23,6 +32,16 @@ export class StageContentBodyDto {
   schemaHash?: string;
 }
 
+export class AllowedStageTransitionDto {
+  @ApiProperty({ description: 'The state the stage moves to.' }) to!: string;
+  @ApiProperty({
+    type: [String],
+    description: 'Field keys the request must carry.',
+  })
+  requires!: string[];
+  @ApiProperty({ enum: ['direct'] }) mode!: 'direct';
+}
+
 export class StageNodeDto {
   @ApiProperty() id!: string;
   @ApiProperty({ description: 'Plan slug.' }) name!: string;
@@ -38,6 +57,11 @@ export class StageNodeDto {
   @ApiProperty() ordinal!: number;
   @ApiProperty() criteriaTotal!: number;
   @ApiProperty() criteriaWithEvidence!: number;
+  @ApiProperty({
+    type: [AllowedStageTransitionDto],
+    description: 'What the viewer may do with this stage now.',
+  })
+  allowedStageTransitions!: AllowedStageTransitionDto[];
 }
 export class StageEdgeDto {
   @ApiProperty() from!: string;
@@ -133,7 +157,67 @@ export class StageDto {
   tasks!: unknown[];
   @ApiProperty({ type: [StageEvidenceDto] }) evidence!: StageEvidenceDto[];
   @ApiProperty({ type: [String] }) allowedContributionTypes!: string[];
+  @ApiProperty({
+    type: [AllowedStageTransitionDto],
+    description: 'What the viewer may do with this stage now.',
+  })
+  allowedStageTransitions!: AllowedStageTransitionDto[];
 }
 export class StageEvidenceListDto {
   @ApiProperty({ type: [StageEvidenceDto] }) items!: StageEvidenceDto[];
+}
+
+const text = (max: number) => [IsString(), IsNotEmpty(), MaxLength(max)];
+const apply = (ds: PropertyDecorator[]) => (t: object, k: string) =>
+  ds.forEach((d) => d(t, k));
+
+/** BLOCKER-1: everything a block must say (ST07). */
+export class BlockStageBodyDto {
+  @ApiProperty() @apply(text(2000)) blocker!: string;
+  @ApiProperty({ description: 'The rule, order or fact that blocks.' })
+  @apply(text(500))
+  source!: string;
+  @ApiProperty() @apply(text(100)) sourceVersion!: string;
+  @ApiProperty({ type: [String] })
+  @IsArray()
+  @ArrayMinSize(1)
+  @ArrayMaxSize(20)
+  @IsString({ each: true })
+  @MaxLength(500, { each: true })
+  blockedActions!: string[];
+  @ApiProperty() @apply(text(1000)) recheckCondition!: string;
+  @ApiProperty({ description: 'The next lawful route.' })
+  @apply(text(2000))
+  nextRoute!: string;
+  @ApiProperty({
+    type: [String],
+    description: 'Documented attempts, 1 or more.',
+  })
+  @IsArray()
+  @ArrayMinSize(1)
+  @ArrayMaxSize(20)
+  @IsString({ each: true })
+  @MaxLength(1000, { each: true })
+  attempts!: string[];
+}
+
+/** ST08: the blocker was cleared, with evidence. */
+export class UnblockStageBodyDto {
+  @ApiProperty() @apply(text(2000)) clearedNote!: string;
+  @ApiProperty({
+    type: [String],
+    description: 'https links or evidence ids that show the blocker is gone.',
+  })
+  @IsArray()
+  @ArrayMinSize(1)
+  @ArrayMaxSize(20)
+  @IsString({ each: true })
+  @MaxLength(500, { each: true })
+  evidence!: string[];
+}
+
+export class StageStateChangeDto {
+  @ApiProperty() id!: string;
+  @ApiProperty() state!: string;
+  @ApiProperty({ description: 'Chip text for the new state.' }) chip!: string;
 }

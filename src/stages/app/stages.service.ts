@@ -43,6 +43,7 @@ import {
   type ChoiceGatePort,
   type ContributionPort,
 } from './ports.js';
+import { allowedStageTransitions } from './stage-engine.js';
 import {
   STAGE_PLAN_REPO,
   type StagePlanRepository,
@@ -123,6 +124,11 @@ export class StagesService {
           ordinal: r.ordinal,
           criteriaTotal: s.criteria.length,
           criteriaWithEvidence: s.criteria.filter((c) => hit.has(c.id)).length,
+          allowedStageTransitions: allowedStageTransitions(
+            states[id],
+            r.resumeState,
+            !!viewerId && l.problem.initiatorId === viewerId,
+          ),
         };
       }),
       edges: plan.stages.flatMap((s) =>
@@ -208,6 +214,11 @@ export class StagesService {
         createdAt: r.e.createdAt.toISOString(),
       })),
       allowedContributionTypes: [...allowedContributionTypes(state)],
+      allowedStageTransitions: allowedStageTransitions(
+        state,
+        s.resumeState,
+        !!viewerId && p.initiatorId === viewerId,
+      ),
     };
   }
 

@@ -50,6 +50,33 @@
         ],
         "type": "object"
       },
+      "AllowedStageTransitionDto": {
+        "properties": {
+          "mode": {
+            "enum": [
+              "direct"
+            ],
+            "type": "string"
+          },
+          "requires": {
+            "description": "Field keys the request must carry.",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "to": {
+            "description": "The state the stage moves to.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "to",
+          "requires",
+          "mode"
+        ],
+        "type": "object"
+      },
       "AttachReportsDto": {
         "properties": {
           "eval": {
@@ -67,6 +94,50 @@
             "type": "object"
           }
         },
+        "type": "object"
+      },
+      "BlockStageBodyDto": {
+        "properties": {
+          "attempts": {
+            "description": "Documented attempts, 1 or more.",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "blockedActions": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "blocker": {
+            "type": "string"
+          },
+          "nextRoute": {
+            "description": "The next lawful route.",
+            "type": "string"
+          },
+          "recheckCondition": {
+            "type": "string"
+          },
+          "source": {
+            "description": "The rule, order or fact that blocks.",
+            "type": "string"
+          },
+          "sourceVersion": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "blocker",
+          "source",
+          "sourceVersion",
+          "blockedActions",
+          "recheckCondition",
+          "nextRoute",
+          "attempts"
+        ],
         "type": "object"
       },
       "CheckFlagDto": {
@@ -1934,6 +2005,13 @@
             },
             "type": "array"
           },
+          "allowedStageTransitions": {
+            "description": "What the viewer may do with this stage now.",
+            "items": {
+              "$ref": "#/components/schemas/AllowedStageTransitionDto"
+            },
+            "type": "array"
+          },
           "chip": {
             "type": "string"
           },
@@ -2020,7 +2098,8 @@
           "choice",
           "tasks",
           "evidence",
-          "allowedContributionTypes"
+          "allowedContributionTypes",
+          "allowedStageTransitions"
         ],
         "type": "object"
       },
@@ -2147,6 +2226,13 @@
       },
       "StageNodeDto": {
         "properties": {
+          "allowedStageTransitions": {
+            "description": "What the viewer may do with this stage now.",
+            "items": {
+              "$ref": "#/components/schemas/AllowedStageTransitionDto"
+            },
+            "type": "array"
+          },
           "chip": {
             "description": "Chip text for the state.",
             "type": "string"
@@ -2209,7 +2295,8 @@
           "current",
           "ordinal",
           "criteriaTotal",
-          "criteriaWithEvidence"
+          "criteriaWithEvidence",
+          "allowedStageTransitions"
         ],
         "type": "object"
       },
@@ -2292,6 +2379,26 @@
           "template",
           "stages",
           "edges"
+        ],
+        "type": "object"
+      },
+      "StageStateChangeDto": {
+        "properties": {
+          "chip": {
+            "description": "Chip text for the new state.",
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "state",
+          "chip"
         ],
         "type": "object"
       },
@@ -2400,6 +2507,25 @@
           "label",
           "version",
           "pending"
+        ],
+        "type": "object"
+      },
+      "UnblockStageBodyDto": {
+        "properties": {
+          "clearedNote": {
+            "type": "string"
+          },
+          "evidence": {
+            "description": "https links or evidence ids that show the blocker is gone.",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "clearedNote",
+          "evidence"
         ],
         "type": "object"
       },
@@ -5636,6 +5762,107 @@
         ]
       }
     },
+    "/v1/stages/{id}/block": {
+      "post": {
+        "operationId": "blockStage",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BlockStageBodyDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StageStateChangeDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "summary": "Record a blocker on a stage (BLOCKER-1); parallel branches go on",
+        "tags": [
+          "stages"
+        ]
+      }
+    },
     "/v1/stages/{id}/choice": {
       "delete": {
         "operationId": "withdrawStageChoice",
@@ -5986,6 +6213,279 @@
           }
         },
         "summary": "Add an option to a stage; planned and ready stages keep it for later",
+        "tags": [
+          "stages"
+        ]
+      }
+    },
+    "/v1/stages/{id}/start": {
+      "post": {
+        "operationId": "startStage",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StageStateChangeDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "summary": "Start a ready stage (steward); a planned stage gets not_ready",
+        "tags": [
+          "stages"
+        ]
+      }
+    },
+    "/v1/stages/{id}/submit": {
+      "post": {
+        "operationId": "submitStage",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StageStateChangeDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "summary": "Submit an active stage for resolution: choice, tasks and mapped evidence are checked and the evidence is frozen",
+        "tags": [
+          "stages"
+        ]
+      }
+    },
+    "/v1/stages/{id}/unblock": {
+      "post": {
+        "operationId": "unblockStage",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UnblockStageBodyDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StageStateChangeDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "summary": "Clear a blocker and resume the stage; on a stuck problem the note goes to the checking run first",
         "tags": [
           "stages"
         ]

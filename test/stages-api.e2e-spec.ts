@@ -291,6 +291,7 @@ describe('stage map and visibility', () => {
       { from: ids.fix_feed, to: ids.check_result },
     ]);
     expect(Object.keys(r.body.stages[0]).sort()).toEqual([
+      'allowedStageTransitions',
       'chip',
       'criteriaTotal',
       'criteriaWithEvidence',
@@ -321,6 +322,7 @@ describe('stage map and visibility', () => {
     const r = await http().get(`/v1/stages/${ids.fix_feed}`).expect(200);
     expect(Object.keys(r.body).sort()).toEqual([
       'allowedContributionTypes',
+      'allowedStageTransitions',
       'chip',
       'choice',
       'criteria',
