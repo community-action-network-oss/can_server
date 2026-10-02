@@ -9,6 +9,7 @@ import {
 } from '../../db/schema.js';
 import type { Tx } from '../../db/tx.js';
 import { PROTOCOL_VERSION } from '../../domain/protocol.js';
+import { planShapeErrors } from '../../problems/domain/preparation.js';
 import { ApiException } from '../../platform/errors.js';
 import type { IdGenerator } from '../../platform/ports.js';
 import { validatePlan } from '../domain/plan.js';
@@ -30,7 +31,7 @@ export class StagePlanService {
 
   /**
    * The plan is rebuilt from the draft content, so the stored rows can never drift from what the reviewers saw.
-   * A problem with no stored final criteria and no stage rows has nothing to publish.
+   * A problem with no final criteria and no stage rows is refused (CRITERIA-1).
    */
   async publish(tx: Tx, problemId: string, now: Date): Promise<void> {
     const [p] = await tx
@@ -43,6 +44,12 @@ export class StagePlanService {
       []) as WireFinalCriterion[];
     const nodes = (content.stage_plan ?? []) as WireStageNode[];
     if (finals.length) {
+      if (Object.keys(planShapeErrors(content)).length)
+        throw new ApiException(
+          409,
+          'invalid_transition',
+          'The stage plan is not complete.',
+        );
       const plan = this.planOf(nodes, finals, p.planVersion);
       // Fail closed: a plan that cannot publish keeps the problem in review.
       if (!validatePlan(plan).ok)
@@ -57,7 +64,13 @@ export class StagePlanService {
       .select()
       .from(stage)
       .where(eq(stage.problemId, problemId));
-    if (!rows.length) return;
+    // CRITERIA-1 on the publish path too: no final criteria and no stored plan means nothing can be published.
+    if (!rows.length)
+      throw new ApiException(
+        409,
+        'invalid_transition',
+        'The problem has no acceptance criteria.',
+      );
     const withPred = new Set(
       (
         await tx

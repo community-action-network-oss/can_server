@@ -327,6 +327,32 @@ describe('preparation routes', () => {
     await prep(id, bob).expect(404);
   });
 
+  it('a half-filled source saves without a source_ref row; an incomplete plan node is refused before anything changes', async () => {
+    const id = await draft(example('valid-minimal'));
+    await http()
+      .patch(`/v1/drafts/${id}`)
+      .set(as(alice))
+      .send({
+        expectedVersion: 1,
+        sources: [{ uri: 'https://example.org/half' }],
+      })
+      .expect(200);
+    expect(
+      await db.select().from(s.sourceRef).where(eq(s.sourceRef.problemId, id)),
+    ).toHaveLength(0);
+    const v = (await row(id)).version;
+    const node = example('valid-with-parallel-stage-plan').stage_plan[0];
+    const { goal: _goal, ...noGoal } = node;
+    const r = await http()
+      .put(`/v1/drafts/${id}/stage-plan`)
+      .set(as(alice))
+      .send({ stages: [noGoal], expectedVersion: v })
+      .expect(400);
+    expect(r.body.error.fieldErrors['/stage_plan/0/goal']).toBeTruthy();
+    expect((await row(id)).version).toBe(v);
+    expect(await stages(id)).toHaveLength(0);
+  });
+
   it('readiness reports each part with the reason', async () => {
     const id = await draft({
       ...without(
@@ -556,6 +582,21 @@ describe('T04 publishes the stage plan', () => {
       status: 409,
     });
     expect(await stages(id)).toHaveLength(0);
+  });
+
+  it('publishing refuses a problem with no acceptance criteria and changes nothing', async () => {
+    const id = await draft(example('valid-minimal'));
+    await submit(id).expect(200);
+    await db
+      .update(s.problem)
+      .set({
+        content: without(example('valid-minimal'), 'final_acceptance_criteria'),
+      })
+      .where(eq(s.problem.id, id));
+    await expect(
+      run(engineFor(app.get(TransitionEffects)), id),
+    ).rejects.toMatchObject({ status: 409 });
+    expect((await row(id)).state).toBe('in_review');
   });
 
   it('discarding a draft removes the sources and the plan copy', async () => {

@@ -81,11 +81,70 @@ export function planErrors(issues: PlanIssue[], nodes: unknown[]): Errors {
   return out;
 }
 
+const text = (v: unknown) => typeof v === 'string' && v.trim() !== '';
+const optText = (v: unknown) => v === undefined || typeof v === 'string';
+const METHODS = [
+  'poster_after_input',
+  'community_vote',
+  'steward',
+  'other_named',
+];
+
+/**
+ * Parts the stored rows cannot do without. Draft saves skip `required`, so this runs before anything is copied
+ * into NOT NULL columns, and it covers drafts that have no schema stamp. Pointers are content pointers.
+ */
+export function planShapeErrors(content: Record<string, unknown>): Errors {
+  const out: Errors = {};
+  const need = (ok: boolean, at: string) => {
+    if (!ok) out[at] = 'This is required.';
+  };
+  const crits = (v: unknown, at: string, measure: string) =>
+    arr(v).forEach((c, j) => {
+      need(text(rec(c).statement), `${at}/${j}/statement`);
+      need(text(rec(c)[measure]), `${at}/${j}/${measure}`);
+      for (const k of ['target', 'evidence_hint', 'deadline'])
+        need(optText(rec(c)[k]), `${at}/${j}/${k}`);
+    });
+  crits(
+    content.final_acceptance_criteria,
+    '/final_acceptance_criteria',
+    'how_observed',
+  );
+  const names = new Set<string>();
+  arr(content.stage_plan).forEach((n, i) => {
+    const at = `/stage_plan/${i}`;
+    const r = rec(n);
+    need(text(r.name), `${at}/name`);
+    need(text(r.goal), `${at}/goal`);
+    need(optText(r.label), `${at}/label`);
+    need(
+      r.decision_method === undefined ||
+        METHODS.includes(String(r.decision_method)),
+      `${at}/decision_method`,
+    );
+    need(
+      r.depends_on === undefined ||
+        (Array.isArray(r.depends_on) &&
+          r.depends_on.every((d) => typeof d === 'string')),
+      `${at}/depends_on`,
+    );
+    need(Array.isArray(r.acceptance_criteria), `${at}/acceptance_criteria`);
+    crits(r.acceptance_criteria, `${at}/acceptance_criteria`, 'measure');
+    if (typeof r.name === 'string' && names.has(r.name))
+      out[`${at}/name`] = MSG.duplicate_name;
+    names.add(String(r.name));
+  });
+  return out;
+}
+
 /** The DP-STAGE-PLAN checks that need no schema: DAG, coherence, criteria on every stage. Empty when there is no plan. */
 export function checkPlan(content: Record<string, unknown>): {
   issues: PlanIssue[];
   errors: Errors;
 } {
+  const shape = planShapeErrors(content);
+  if (Object.keys(shape).length) return { issues: [], errors: shape };
   const nodes = arr(content.stage_plan);
   if (!nodes.length) return { issues: [], errors: {} };
   const plan = planFromWire(

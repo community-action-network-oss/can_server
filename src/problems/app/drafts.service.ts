@@ -114,6 +114,15 @@ const insecure = (content: Record<string, unknown> | undefined) => {
     );
 };
 const PLAN_STATES = ['draft', 'needs_revision'];
+const SOURCE_CATEGORIES = [
+  'official_record',
+  'statistics_body',
+  'court_or_legislature',
+  'reputable_media',
+  'research',
+  'civil_society',
+  'other',
+];
 const SCHEMA_TYPE = 'problem';
 const unavailable = () =>
   new ApiException(503, 'policy_unavailable', 'Policy is not available.');
@@ -454,9 +463,17 @@ export class DraftsService {
       .where(eq(sourceRef.problemId, id));
     await tx.delete(sourceRef).where(eq(sourceRef.problemId, id));
     const seen = new Set<string>();
+    // Only complete items become rows; a half-filled source stays in the content until the form makes it whole (T01 checks).
     const rows = list
       .filter(
-        (s) => typeof s.uri === 'string' && !seen.has(s.uri) && seen.add(s.uri),
+        (s) =>
+          typeof s.uri === 'string' &&
+          s.uri.startsWith('https://') &&
+          SOURCE_CATEGORIES.includes(String(s.category)) &&
+          typeof s.establishes === 'string' &&
+          s.establishes.trim() !== '' &&
+          !seen.has(s.uri) &&
+          seen.add(s.uri),
       )
       .map((s, ordinal) => ({
         id: this.ids.next(),
