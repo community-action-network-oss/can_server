@@ -391,7 +391,8 @@ export const moderationRun = pgTable(
       .$type<Record<string, unknown>>()
       .notNull()
       .default({}),
-    outcome: text('outcome').notNull(),
+    // Null only while running, failed or superseded (09-u04, moderation_run_outcome_set_chk).
+    outcome: text('outcome'),
     ruleIds: text('rule_ids')
       .array()
       .notNull()
@@ -444,7 +445,11 @@ export const moderationRun = pgTable(
     ),
     check(
       'moderation_run_status_chk',
-      sql`${t.status} in ('complete','held','failed','superseded')`,
+      sql`${t.status} in ('running','complete','held','failed','superseded')`,
+    ),
+    check(
+      'moderation_run_outcome_set_chk',
+      sql`${t.outcome} is not null or ${t.status} in ('running','failed','superseded')`,
     ),
     check(
       'moderation_run_held_chk',
@@ -458,6 +463,40 @@ export const moderationRun = pgTable(
       .on(t.targetId, t.targetVersion, t.dpId, t.policyVersion, t.trigger)
       .where(sql`${t.shadow} = false`),
     index('moderation_run_target_idx').on(t.targetKind, t.targetId),
+  ],
+);
+
+/**
+ * One row per stage output of a run, stored as the stage finishes so a crashed run resumes
+ * (09-u04). Insert-only; outputs are structured codes and offsets, never text.
+ */
+export const moderationRunStage = pgTable(
+  'moderation_run_stage',
+  {
+    runId: uuid('run_id')
+      .notNull()
+      .references(() => moderationRun.id),
+    stage: text('stage').notNull(),
+    seq: integer('seq').notNull().default(0),
+    output: jsonb('output').$type<Record<string, unknown>>().notNull(),
+    modelId: text('model_id'),
+    promptHash: text('prompt_hash'),
+    tokensIn: integer('tokens_in').notNull().default(0),
+    tokensOut: integer('tokens_out').notNull().default(0),
+    costMicroUsd: bigint('cost_micro_usd', { mode: 'number' })
+      .notNull()
+      .default(0),
+    createdAt: tz('created_at').notNull().defaultNow(),
+  },
+  (t) => [
+    primaryKey({
+      name: 'moderation_run_stage_pk',
+      columns: [t.runId, t.stage, t.seq],
+    }),
+    check(
+      'moderation_run_stage_output_chk',
+      sql`jsonb_typeof(${t.output}) = 'object'`,
+    ),
   ],
 );
 
