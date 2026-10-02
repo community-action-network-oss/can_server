@@ -71,6 +71,13 @@
       "when": 1790942137924,
       "tag": "0009_classy_maddog",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1790942358984,
+      "tag": "0010_remarkable_human_torch",
+      "breakpoints": true
     }
   ]
 }

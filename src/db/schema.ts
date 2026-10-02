@@ -10,6 +10,8 @@ import {
   primaryKey,
   text,
   timestamp,
+  unique,
+  uniqueIndex,
   uuid,
 } from 'drizzle-orm/pg-core';
 
@@ -327,3 +329,190 @@ export const moderationDecision = pgTable(
     index('moderation_decision_target_idx').on(t.targetType, t.targetId),
   ],
 );
+
+// ---- Stages (12-u02). Wire shapes are snake_case in `content`; columns hold what the server queries on. ----
+
+const pinColumns = () => ({
+  schemaId: text('schema_id'),
+  schemaVersion: text('schema_version'),
+  schemaHash: text('schema_hash'),
+});
+
+/** One node of a problem's stage plan. `name` is the plan slug; `label` is the display name. */
+export const stage = pgTable(
+  'stage',
+  {
+    id: uuid('id').primaryKey(),
+    problemId: uuid('problem_id')
+      .notNull()
+      .references(() => problem.id),
+    name: text('name').notNull(),
+    label: text('label'),
+    goal: text('goal').notNull(),
+    state: text('state').notNull().default('planned'),
+    decisionMethod: text('decision_method').notNull(),
+    required: boolean('required').notNull().default(true),
+    needsChoice: boolean('needs_choice').notNull().default(true),
+    autoStart: boolean('auto_start').notNull().default(true),
+    resumeState: text('resume_state'),
+    planVersion: integer('plan_version').notNull().default(1),
+    ordinal: integer('ordinal').notNull(),
+    originNodeId: text('origin_node_id').notNull(),
+    protocolVersion: text('protocol_version').notNull(),
+  },
+  (t) => [
+    unique('stage_problem_name_uq').on(t.problemId, t.name),
+    check(
+      'stage_state_chk',
+      sql`${t.state} in ('planned','ready','active','resolving','resolved','blocked','skipped')`,
+    ),
+    check(
+      'stage_decision_method_chk',
+      sql`${t.decisionMethod} in ('poster_after_input','community_vote','steward','other_named')`,
+    ),
+  ],
+);
+
+/** `stage_id` starts after `depends_on_id` is settled. */
+export const stageEdge = pgTable(
+  'stage_edge',
+  {
+    stageId: uuid('stage_id')
+      .notNull()
+      .references(() => stage.id),
+    dependsOnId: uuid('depends_on_id')
+      .notNull()
+      .references(() => stage.id),
+    planVersion: integer('plan_version').notNull().default(1),
+  },
+  (t) => [
+    primaryKey({ columns: [t.stageId, t.dependsOnId] }),
+    check('stage_edge_self_chk', sql`${t.stageId} <> ${t.dependsOnId}`),
+  ],
+);
+
+/** Owned by a problem (final criteria) or by a stage. */
+export const acceptanceCriterion = pgTable(
+  'acceptance_criterion',
+  {
+    id: uuid('id').primaryKey(),
+    problemId: uuid('problem_id').references(() => problem.id),
+    stageId: uuid('stage_id').references(() => stage.id),
+    statement: text('statement').notNull(),
+    measure: text('measure').notNull(),
+    target: text('target'),
+    evidenceHint: text('evidence_hint'),
+    deadline: text('deadline'),
+    metBy: jsonb('met_by').$type<string[]>().notNull().default([]),
+    /** 0-based position inside its owner; the wire criterion_ref is ordinal + 1. */
+    ordinal: integer('ordinal').notNull(),
+  },
+  (t) => [
+    check(
+      'acceptance_criterion_owner_chk',
+      sql`(${t.problemId} is null) <> (${t.stageId} is null)`,
+    ),
+  ],
+);
+
+export const stageOption = pgTable(
+  'stage_option',
+  {
+    id: uuid('id').primaryKey(),
+    stageId: uuid('stage_id')
+      .notNull()
+      .references(() => stage.id),
+    contributionId: uuid('contribution_id'),
+    authorId: uuid('author_id')
+      .notNull()
+      .references(() => account.id),
+    mechanism: text('mechanism').notNull(),
+    risks: text('risks').notNull(),
+    content: jsonb('content').$type<Record<string, unknown>>().notNull(),
+    ...pinColumns(),
+    status: text('status').notNull().default('pending'),
+    forLaterStage: boolean('for_later_stage').notNull().default(false),
+    createdAt: tz('created_at').notNull(),
+  },
+  (t) => [
+    check(
+      'stage_option_status_chk',
+      sql`${t.status} in ('pending','public','hidden','withdrawn')`,
+    ),
+    index('stage_option_stage_idx').on(t.stageId),
+  ],
+);
+
+export const stageChoice = pgTable(
+  'stage_choice',
+  {
+    id: uuid('id').primaryKey(),
+    stageId: uuid('stage_id')
+      .notNull()
+      .references(() => stage.id),
+    optionIds: jsonb('option_ids').$type<string[]>().notNull().default([]),
+    steps: jsonb('steps').$type<unknown[]>(),
+    decisionMethod: text('decision_method').notNull(),
+    deciderId: uuid('decider_id')
+      .notNull()
+      .references(() => account.id),
+    authority: text('authority').notNull(),
+    rationale: text('rationale').notNull(),
+    dissentNotes: jsonb('dissent_notes').$type<string[]>(),
+    content: jsonb('content').$type<Record<string, unknown>>().notNull(),
+    ...pinColumns(),
+    gateResult: jsonb('gate_result').$type<Record<string, unknown>>(),
+    createdAt: tz('created_at').notNull(),
+    withdrawnAt: tz('withdrawn_at'),
+  },
+  (t) => [
+    uniqueIndex('stage_choice_live_uq')
+      .on(t.stageId)
+      .where(sql`${t.withdrawnAt} is null`),
+  ],
+);
+
+/** One row per cited URL. STAGE-PREP-1: evidence is never accepted for a stage that is not active or blocked. */
+export const stageEvidence = pgTable(
+  'stage_evidence',
+  {
+    id: uuid('id').primaryKey(),
+    stageId: uuid('stage_id')
+      .notNull()
+      .references(() => stage.id),
+    url: text('url').notNull(),
+    kind: text('kind').notNull().default('url'),
+    claimText: text('claim_text').notNull(),
+    criteriaIds: jsonb('criteria_ids').$type<string[]>().notNull(),
+    submittedBy: uuid('submitted_by')
+      .notNull()
+      .references(() => account.id),
+    content: jsonb('content').$type<Record<string, unknown>>().notNull(),
+    ...pinColumns(),
+    tier: text('tier'),
+    sourceTrust: jsonb('source_trust').$type<Record<string, unknown>>(),
+    createdAt: tz('created_at').notNull(),
+    frozenAt: tz('frozen_at'),
+  },
+  (t) => [index('stage_evidence_stage_idx').on(t.stageId)],
+);
+
+/** Append-only (insert-only grant, see the stages migration). */
+export const stageEvent = pgTable('stage_event', {
+  id: uuid('id').primaryKey(),
+  stageId: uuid('stage_id')
+    .notNull()
+    .references(() => stage.id),
+  problemId: uuid('problem_id')
+    .notNull()
+    .references(() => problem.id),
+  type: text('type').notNull(),
+  actorId: uuid('actor_id'),
+  fromState: text('from_state'),
+  toState: text('to_state'),
+  reason: text('reason'),
+  payload: jsonb('payload').$type<Record<string, unknown>>(),
+  originNodeId: text('origin_node_id').notNull(),
+  protocolVersion: text('protocol_version').notNull(),
+  occurredAt: tz('occurred_at').notNull(),
+});

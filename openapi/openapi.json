@@ -345,6 +345,31 @@
         ],
         "type": "object"
       },
+      "FinalCriterionDto": {
+        "properties": {
+          "deadline": {
+            "nullable": true,
+            "type": "string"
+          },
+          "measure": {
+            "type": "string"
+          },
+          "ref": {
+            "description": "1-based position.",
+            "type": "number"
+          },
+          "statement": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "ref",
+          "statement",
+          "measure",
+          "deadline"
+        ],
+        "type": "object"
+      },
       "HandleDto": {
         "properties": {
           "handle": {
@@ -1106,6 +1131,458 @@
         },
         "required": [
           "accepted"
+        ],
+        "type": "object"
+      },
+      "StageChoiceDto": {
+        "properties": {
+          "authority": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "deciderRole": {
+            "description": "A role, never a person.",
+            "type": "string"
+          },
+          "decisionMethod": {
+            "type": "string"
+          },
+          "dissentNotes": {
+            "items": {
+              "type": "string"
+            },
+            "nullable": true,
+            "type": "array"
+          },
+          "gateResult": {
+            "additionalProperties": true,
+            "nullable": true,
+            "type": "object"
+          },
+          "id": {
+            "type": "string"
+          },
+          "optionIds": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "rationale": {
+            "type": "string"
+          },
+          "steps": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "nullable": true,
+            "type": "array"
+          }
+        },
+        "required": [
+          "id",
+          "optionIds",
+          "steps",
+          "decisionMethod",
+          "deciderRole",
+          "authority",
+          "rationale",
+          "dissentNotes",
+          "gateResult",
+          "createdAt"
+        ],
+        "type": "object"
+      },
+      "StageContentBodyDto": {
+        "properties": {
+          "content": {
+            "additionalProperties": true,
+            "description": "The content-schema body for this type.",
+            "type": "object"
+          },
+          "schemaHash": {
+            "type": "string"
+          },
+          "schemaVersion": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "content"
+        ],
+        "type": "object"
+      },
+      "StageCriterionDto": {
+        "properties": {
+          "deadline": {
+            "nullable": true,
+            "type": "string"
+          },
+          "evidenceHint": {
+            "nullable": true,
+            "type": "string"
+          },
+          "hasEvidence": {
+            "type": "boolean"
+          },
+          "id": {
+            "type": "string"
+          },
+          "measure": {
+            "type": "string"
+          },
+          "ref": {
+            "description": "1-based position, the wire criterion_ref.",
+            "type": "number"
+          },
+          "statement": {
+            "type": "string"
+          },
+          "target": {
+            "nullable": true,
+            "type": "string"
+          }
+        },
+        "required": [
+          "ref",
+          "id",
+          "statement",
+          "measure",
+          "target",
+          "evidenceHint",
+          "deadline",
+          "hasEvidence"
+        ],
+        "type": "object"
+      },
+      "StageDto": {
+        "properties": {
+          "allowedContributionTypes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "chip": {
+            "type": "string"
+          },
+          "choice": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/StageChoiceDto"
+              }
+            ],
+            "nullable": true,
+            "type": "object"
+          },
+          "criteria": {
+            "items": {
+              "$ref": "#/components/schemas/StageCriterionDto"
+            },
+            "type": "array"
+          },
+          "decisionMethod": {
+            "type": "string"
+          },
+          "evidence": {
+            "items": {
+              "$ref": "#/components/schemas/StageEvidenceDto"
+            },
+            "type": "array"
+          },
+          "goal": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "needsChoice": {
+            "type": "boolean"
+          },
+          "options": {
+            "items": {
+              "$ref": "#/components/schemas/StageOptionDto"
+            },
+            "type": "array"
+          },
+          "planVersion": {
+            "type": "number"
+          },
+          "problemId": {
+            "type": "string"
+          },
+          "required": {
+            "type": "boolean"
+          },
+          "state": {
+            "type": "string"
+          },
+          "tasks": {
+            "description": "Placeholder until tasks land.",
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "id",
+          "problemId",
+          "name",
+          "label",
+          "goal",
+          "state",
+          "chip",
+          "decisionMethod",
+          "required",
+          "needsChoice",
+          "planVersion",
+          "criteria",
+          "options",
+          "choice",
+          "tasks",
+          "evidence",
+          "allowedContributionTypes"
+        ],
+        "type": "object"
+      },
+      "StageEdgeDto": {
+        "properties": {
+          "from": {
+            "type": "string"
+          },
+          "to": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "from",
+          "to"
+        ],
+        "type": "object"
+      },
+      "StageEvidenceDto": {
+        "properties": {
+          "authorHandle": {
+            "description": "Public handle only.",
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "criterionRefs": {
+            "items": {
+              "type": "number"
+            },
+            "type": "array"
+          },
+          "description": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "tier": {
+            "nullable": true,
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "url",
+          "description",
+          "criterionRefs",
+          "authorHandle",
+          "tier",
+          "createdAt"
+        ],
+        "type": "object"
+      },
+      "StageEvidenceListDto": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/StageEvidenceDto"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "type": "object"
+      },
+      "StageMapDto": {
+        "properties": {
+          "activeStages": {
+            "type": "number"
+          },
+          "edges": {
+            "items": {
+              "$ref": "#/components/schemas/StageEdgeDto"
+            },
+            "type": "array"
+          },
+          "finalCriteria": {
+            "items": {
+              "$ref": "#/components/schemas/FinalCriterionDto"
+            },
+            "type": "array"
+          },
+          "label": {
+            "nullable": true,
+            "type": "string"
+          },
+          "planVersion": {
+            "type": "number"
+          },
+          "problemId": {
+            "type": "string"
+          },
+          "problemState": {
+            "type": "string"
+          },
+          "stages": {
+            "description": "In topological order.",
+            "items": {
+              "$ref": "#/components/schemas/StageNodeDto"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "problemId",
+          "problemState",
+          "planVersion",
+          "label",
+          "activeStages",
+          "stages",
+          "edges",
+          "finalCriteria"
+        ],
+        "type": "object"
+      },
+      "StageNodeDto": {
+        "properties": {
+          "chip": {
+            "description": "Chip text for the state.",
+            "type": "string"
+          },
+          "criteriaTotal": {
+            "type": "number"
+          },
+          "criteriaWithEvidence": {
+            "type": "number"
+          },
+          "current": {
+            "type": "boolean"
+          },
+          "decisionMethod": {
+            "type": "string"
+          },
+          "dependsOn": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "goal": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "name": {
+            "description": "Plan slug.",
+            "type": "string"
+          },
+          "needsChoice": {
+            "type": "boolean"
+          },
+          "ordinal": {
+            "type": "number"
+          },
+          "required": {
+            "type": "boolean"
+          },
+          "state": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "label",
+          "goal",
+          "state",
+          "chip",
+          "decisionMethod",
+          "required",
+          "needsChoice",
+          "dependsOn",
+          "current",
+          "ordinal",
+          "criteriaTotal",
+          "criteriaWithEvidence"
+        ],
+        "type": "object"
+      },
+      "StageOptionDto": {
+        "properties": {
+          "authorHandle": {
+            "description": "Public handle only.",
+            "type": "string"
+          },
+          "content": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "forLaterStage": {
+            "type": "boolean"
+          },
+          "id": {
+            "type": "string"
+          },
+          "stageId": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "pending",
+              "public",
+              "hidden",
+              "withdrawn"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "stageId",
+          "authorHandle",
+          "status",
+          "forLaterStage",
+          "content",
+          "createdAt"
         ],
         "type": "object"
       },
@@ -3209,6 +3686,603 @@
         "summary": "Rules of the active policy pack",
         "tags": [
           "moderation"
+        ]
+      }
+    },
+    "/v1/stage-options/{id}": {
+      "get": {
+        "operationId": "getStageOption",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StageOptionDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "summary": "One stage option",
+        "tags": [
+          "stages"
+        ]
+      },
+      "patch": {
+        "operationId": "updateStageOption",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StageContentBodyDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StageOptionDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "summary": "Edit your option while it is pending or its stage is active",
+        "tags": [
+          "stages"
+        ]
+      }
+    },
+    "/v1/stages/by-problem/{problemId}": {
+      "get": {
+        "operationId": "listProblemStages",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "problemId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StageMapDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "summary": "The stage map of a published problem: nodes, edges, chips, criteria progress",
+        "tags": [
+          "stages"
+        ]
+      }
+    },
+    "/v1/stages/{id}": {
+      "get": {
+        "operationId": "getStage",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StageDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "summary": "A stage workspace: options, choice, evidence and criteria",
+        "tags": [
+          "stages"
+        ]
+      }
+    },
+    "/v1/stages/{id}/choice": {
+      "delete": {
+        "operationId": "withdrawStageChoice",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "summary": "Withdraw the recorded choice while the stage is active",
+        "tags": [
+          "stages"
+        ]
+      },
+      "post": {
+        "operationId": "chooseStageOption",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StageContentBodyDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StageChoiceDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "summary": "Record the choice of an active stage, by the decider its decision method names",
+        "tags": [
+          "stages"
+        ]
+      }
+    },
+    "/v1/stages/{id}/evidence": {
+      "post": {
+        "operationId": "addStageEvidence",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StageContentBodyDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StageEvidenceListDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "summary": "Cite https links as evidence for one criterion of an active or blocked stage",
+        "tags": [
+          "stages"
+        ]
+      }
+    },
+    "/v1/stages/{id}/options": {
+      "post": {
+        "operationId": "addStageOption",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StageContentBodyDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StageOptionDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "summary": "Add an option to a stage; planned and ready stages keep it for later",
+        "tags": [
+          "stages"
         ]
       }
     }

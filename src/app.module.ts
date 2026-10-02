@@ -6,6 +6,7 @@ import { JurisdictionsModule } from './jurisdictions/jurisdictions.module.js';
 import { PlatformModule } from './platform/platform.module.js';
 import { ProblemsModule } from './problems/problems.module.js';
 import { PolicyModule } from './policy/policy.module.js';
+import { StagesModule } from './stages/stages.module.js';
 import { ModerationModule } from './moderation/moderation.module.js';
 
 @Module({
@@ -16,6 +17,7 @@ import { ModerationModule } from './moderation/moderation.module.js';
     PolicyModule,
     AccountsModule,
     ProblemsModule,
+    StagesModule,
     ModerationModule,
     JurisdictionsModule,
   ],
