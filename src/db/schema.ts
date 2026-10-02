@@ -773,3 +773,45 @@ export const conflictDeclaration = pgTable('conflict_declaration', {
   scope: text('scope').notNull(),
   createdAt: tz('created_at').notNull(),
 });
+
+/**
+ * Postgres payload job queue (09-u05). Claimed with FOR UPDATE SKIP LOCKED. Payloads hold ids only;
+ * last_error_code is a code, never a message.
+ */
+export const job = pgTable(
+  'job',
+  {
+    id: uuid('id').primaryKey(),
+    queue: text('queue').notNull(),
+    class: text('class').notNull(),
+    priority: integer('priority').notNull().default(100),
+    payload: jsonb('payload').$type<Record<string, unknown>>().notNull(),
+    runAt: tz('run_at').notNull(),
+    status: text('status').notNull().default('queued'),
+    attempt: integer('attempt').notNull().default(0),
+    maxAttempts: integer('max_attempts').notNull().default(5),
+    leaseUntil: tz('lease_until'),
+    lastErrorCode: text('last_error_code'),
+    dedupeKey: text('dedupe_key'),
+    createdAt: tz('created_at').notNull(),
+  },
+  (t) => [
+    check(
+      'job_class_chk',
+      sql`${t.class} in ('crisis','prepub','update','async','sample')`,
+    ),
+    check(
+      'job_status_chk',
+      sql`${t.status} in ('queued','running','done','dead')`,
+    ),
+    check('job_attempts_chk', sql`${t.attempt} >= 0 and ${t.maxAttempts} >= 1`),
+    check(
+      'job_lease_chk',
+      sql`${t.status} <> 'running' or ${t.leaseUntil} is not null`,
+    ),
+    index('job_claim_idx').on(t.queue, t.status, t.runAt),
+    uniqueIndex('job_dedupe_uq')
+      .on(t.dedupeKey)
+      .where(sql`${t.status} in ('queued','running')`),
+  ],
+);
