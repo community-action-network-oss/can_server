@@ -1,0 +1,22 @@
+id: fiktiva-statutes
+layer: L4
+jurisdiction: fiktiva
+instrument: Fiktiva statutes (invented)
+official_publisher: "Invented publisher of the synthetic Fiktiva test world"
+source_url: https://example.org/fiktiva/statutes
+retrieval_date: 2026-10-03
+version: 0.1.0
+effective_from: 2026-10-03
+effective_to: null
+language: en
+license: "CC0-1.0 (invented text of a fictional world)"
+content_hash: d537a55ae0cd86cde20057dc2c0ce55661bfc04ace4a99e6d526ce8b70c471a7
+mode: binding
+status: draft
+reviewed: true
+reviewer:
+  name: "Invented Reviewer"
+  qualification: "Fictional lawyer of the invented world"
+  date: 2026-10-03
+  scope: "Whole corpus (invented)"
+fictional: true

@@ -1,0 +1,33 @@
+{
+  "pack": "fiktiva-rights",
+  "version": "0.1.0",
+  "layer": "legal",
+  "parent": null,
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "c0fb3b7304fa7a02c22398ca42b877f5e4f0c306ff118dfe7fc817c324e45386"
+    },
+    {
+      "path": "articles/art-3.md",
+      "sha256": "0c2b4362f45480922a7f1d8d18f887ce66980c2fc0cd3dfec07890134af2e66d"
+    },
+    {
+      "path": "corpus.yaml",
+      "sha256": "0fc5f5883a6839c8cfca36357b6ad863bcc5533087d8d1e6666540376ce88a66"
+    },
+    {
+      "path": "pack.yaml",
+      "sha256": "a1240492e8776bdf935872b49aaf62dac794a34c39ca5acb42ad2441baf9ccf2"
+    },
+    {
+      "path": "sources/rights.txt",
+      "sha256": "29824b347fbc0db962b8ad2defce0b29a6c1f4acd02f8fbe0416887ddeaffe89"
+    },
+    {
+      "path": "topic-index.json",
+      "sha256": "58ef82993309e9e0c5b06575c422675f717b1fb609f38f0bd859176884fd4698"
+    }
+  ],
+  "pack_hash": "7b64773be549664065a0333bbf180a3fb642a05fe1750699fd22f71a69efadea"
+}

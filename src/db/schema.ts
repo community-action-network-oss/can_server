@@ -577,3 +577,34 @@ export const policyProposal = pgTable(
     index('policy_proposal_stage_idx').on(t.stage, t.createdAt),
   ],
 );
+
+/**
+ * Legal corpus versions the node has accepted (10-u55). One row per corpus id, version and hash.
+ * Activating a version retires the previous active one of the same corpus; a refused corpus never gets a row.
+ */
+export const legalCorpusVersion = pgTable(
+  'legal_corpus_version',
+  {
+    layer: text('layer').notNull(),
+    jurisdiction: text('jurisdiction').notNull(),
+    corpusId: text('corpus_id').notNull(),
+    version: text('version').notNull(),
+    hash: text('hash').notNull(),
+    state: text('state').notNull(),
+    activatedAt: tz('activated_at'),
+  },
+  (t) => [
+    primaryKey({ columns: [t.corpusId, t.version, t.hash] }),
+    check(
+      'legal_corpus_version_layer_chk',
+      sql`${t.layer} in ('L1','L2','L3','L4','L5','L6')`,
+    ),
+    check(
+      'legal_corpus_version_state_chk',
+      sql`${t.state} in ('shadow','canary','active','retired')`,
+    ),
+    uniqueIndex('legal_corpus_version_active_uq')
+      .on(t.jurisdiction, t.corpusId)
+      .where(sql`${t.state} = 'active'`),
+  ],
+);

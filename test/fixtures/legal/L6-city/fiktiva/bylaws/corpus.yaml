@@ -1,0 +1,22 @@
+id: fiktiva-bylaws
+layer: L6
+jurisdiction: fiktiva
+instrument: Fiktiva bylaws (invented)
+official_publisher: "Invented publisher of the synthetic Fiktiva test world"
+source_url: https://example.org/fiktiva/bylaws
+retrieval_date: 2026-10-03
+version: 0.1.0
+effective_from: 2026-10-03
+effective_to: null
+language: en
+license: "CC0-1.0 (invented text of a fictional world)"
+content_hash: 3e3eabf4db67eee96e6319742874dd59060b75ef96762df9b16cad4e1f59ee6a
+mode: binding
+status: draft
+reviewed: true
+reviewer:
+  name: "Invented Reviewer"
+  qualification: "Fictional lawyer of the invented world"
+  date: 2026-10-03
+  scope: "Whole corpus (invented)"
+fictional: true

@@ -682,6 +682,72 @@
         ],
         "type": "object"
       },
+      "LegalCorporaDto": {
+        "properties": {
+          "corpora": {
+            "items": {
+              "$ref": "#/components/schemas/LegalCorpusVersionDto"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "corpora"
+        ],
+        "type": "object"
+      },
+      "LegalCorpusVersionDto": {
+        "properties": {
+          "activated_at": {
+            "format": "date-time",
+            "nullable": true,
+            "type": "string"
+          },
+          "corpus_id": {
+            "type": "string"
+          },
+          "hash": {
+            "description": "pack hash (D-83)",
+            "type": "string"
+          },
+          "jurisdiction": {
+            "type": "string"
+          },
+          "layer": {
+            "enum": [
+              "L1",
+              "L2",
+              "L3",
+              "L4",
+              "L5",
+              "L6"
+            ],
+            "type": "string"
+          },
+          "state": {
+            "enum": [
+              "shadow",
+              "canary",
+              "active",
+              "retired"
+            ],
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "layer",
+          "jurisdiction",
+          "corpus_id",
+          "version",
+          "hash",
+          "state",
+          "activated_at"
+        ],
+        "type": "object"
+      },
       "ListCriteriaDto": {
         "properties": {
           "order": {
@@ -4478,6 +4544,28 @@
         "summary": "Enabled jurisdictions, by name",
         "tags": [
           "jurisdictions"
+        ]
+      }
+    },
+    "/v1/legal/corpora": {
+      "get": {
+        "operationId": "listLegalCorpora",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LegalCorporaDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "summary": "Legal corpus versions and hashes (no text)",
+        "tags": [
+          "policy"
         ]
       }
     },

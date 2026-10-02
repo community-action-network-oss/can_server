@@ -1,0 +1,17 @@
+[
+  {
+    "article_id": "L3/fiktiva/constitution/art-7",
+    "topics": [
+      "assembly"
+    ],
+    "actors": [
+      "city-council"
+    ],
+    "actions": [
+      "ban"
+    ],
+    "constraint_kinds": [],
+    "always_for_dps": [],
+    "topic_ban": false
+  }
+]

@@ -1,0 +1,20 @@
+[
+  {
+    "article_id": "L6/fiktiva/bylaws/art-2",
+    "topics": [
+      "moon-market"
+    ],
+    "actors": [
+      "resident"
+    ],
+    "actions": [
+      "publish"
+    ],
+    "constraint_kinds": [],
+    "always_for_dps": [],
+    "topic_ban": true,
+    "ban_scope": [
+      "moon-market"
+    ]
+  }
+]

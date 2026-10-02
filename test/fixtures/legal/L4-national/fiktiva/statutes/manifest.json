@@ -1,0 +1,33 @@
+{
+  "pack": "fiktiva-statutes",
+  "version": "0.1.0",
+  "layer": "legal",
+  "parent": null,
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "c0fb3b7304fa7a02c22398ca42b877f5e4f0c306ff118dfe7fc817c324e45386"
+    },
+    {
+      "path": "articles/art-12.md",
+      "sha256": "f3eae9660debc31b11cc9b9b1a5e6ab8d10b562463850a531a42ebe01853fd90"
+    },
+    {
+      "path": "corpus.yaml",
+      "sha256": "b3bd7f1914ce6df449777e442230d9cb2744d92334421e4416fd7e2bea724f14"
+    },
+    {
+      "path": "pack.yaml",
+      "sha256": "238d0a80c395ee0aedda694c8de38765086f4a8474a3ed29b61f4d6845db110d"
+    },
+    {
+      "path": "sources/statutes.txt",
+      "sha256": "1a96aed82efda864c61a83d71ea2705816db5a601f82b7250d64814bc2270831"
+    },
+    {
+      "path": "topic-index.json",
+      "sha256": "dad7f6806271dbf5f9b1871818caa0e2a64018527bfb2abad65822d8088fa25f"
+    }
+  ],
+  "pack_hash": "91c0491e7274cdfbd31b92f2999ce14099507f3f6bd69588ecda74069ca2f7a0"
+}

@@ -1,0 +1,36 @@
+# FICTIONAL: legal_stack extract of the invented jurisdiction pack (shape of can_policy pack.yaml)
+name: fiktiva-city
+version: 1.0.0
+jurisdiction: fiktiva-city
+legal_stack:
+  - layer: L1
+    corpus: fiktiva-rights
+    version: 0.1.0
+    pack_hash: 7b64773be549664065a0333bbf180a3fb642a05fe1750699fd22f71a69efadea
+    mode: reference
+  - layer: L2
+    corpus: fiktiva-union
+    version: 0.1.0
+    pack_hash: 0005a882b1191cab53e0eb6f07780c27d39347cb39330005b59e64c024b2cf83
+    mode: binding
+  - layer: L3
+    corpus: fiktiva-constitution
+    version: 0.1.0
+    pack_hash: 31cd4dfb2bfa9a8f95ad53f696f6ba9f9ca9490b7bdd7acbdb41c6998af6442c
+    mode: binding
+  - layer: L4
+    corpus: fiktiva-statutes
+    version: 0.1.0
+    pack_hash: 91c0491e7274cdfbd31b92f2999ce14099507f3f6bd69588ecda74069ca2f7a0
+    mode: binding
+  - layer: L5
+    corpus: fiktiva-region
+    version: 0.1.0
+    pack_hash: d88f45b96b2484a653ab3e86734408e018287ffa8c681c7272f9093b8c6a475f
+    mode: binding
+    acknowledged_index_only: true
+  - layer: L6
+    corpus: fiktiva-bylaws
+    version: 0.1.0
+    pack_hash: d6fc0c156f6686f499086ad66be1396a5591313817c1925fb6be37b0fe632f5e
+    mode: binding

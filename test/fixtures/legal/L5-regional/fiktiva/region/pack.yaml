@@ -1,0 +1,7 @@
+name: fiktiva-region
+version: 0.1.0
+layer: legal
+parent: null
+jurisdiction: fiktiva
+effective_from: 2026-10-03
+status: draft

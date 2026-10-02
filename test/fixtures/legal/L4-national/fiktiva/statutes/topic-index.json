@@ -1,0 +1,19 @@
+[
+  {
+    "article_id": "L4/fiktiva/statutes/art-12",
+    "topics": [
+      "harbor-fees"
+    ],
+    "actors": [
+      "harbor-authority"
+    ],
+    "actions": [
+      "charge"
+    ],
+    "constraint_kinds": [
+      "solution-block"
+    ],
+    "always_for_dps": [],
+    "topic_ban": false
+  }
+]

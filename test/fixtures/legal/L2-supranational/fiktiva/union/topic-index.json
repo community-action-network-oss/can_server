@@ -1,0 +1,19 @@
+[
+  {
+    "article_id": "L2/fiktiva/union/art-4",
+    "topics": [
+      "lantern-drones"
+    ],
+    "actors": [
+      "public-body"
+    ],
+    "actions": [
+      "fly"
+    ],
+    "constraint_kinds": [
+      "prohibition"
+    ],
+    "always_for_dps": [],
+    "topic_ban": false
+  }
+]

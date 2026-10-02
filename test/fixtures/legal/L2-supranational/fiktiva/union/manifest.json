@@ -1,0 +1,33 @@
+{
+  "pack": "fiktiva-union",
+  "version": "0.1.0",
+  "layer": "legal",
+  "parent": null,
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "c0fb3b7304fa7a02c22398ca42b877f5e4f0c306ff118dfe7fc817c324e45386"
+    },
+    {
+      "path": "articles/art-4.md",
+      "sha256": "957926da1d9bc09688f036d35ee65b68280201411edb53a8e7d4d84c726d6c9c"
+    },
+    {
+      "path": "corpus.yaml",
+      "sha256": "b51230e5f1915df347ebdfe753ddd8ae96f61da3dc21822346260e909b9435a3"
+    },
+    {
+      "path": "pack.yaml",
+      "sha256": "4058eef2ef85fea362f049efc16ab48e59da6573a1139c6f289a6c39bfb444db"
+    },
+    {
+      "path": "sources/union.txt",
+      "sha256": "8724e78089e8a9ef22d15c636e9cd85d9445b5a62575a606af4888d2a71bc67c"
+    },
+    {
+      "path": "topic-index.json",
+      "sha256": "5006b94891b661b8efae7bcaa14767b857ea1fb946d167a273dea2f4c9da9021"
+    }
+  ],
+  "pack_hash": "0005a882b1191cab53e0eb6f07780c27d39347cb39330005b59e64c024b2cf83"
+}

@@ -1,0 +1,33 @@
+{
+  "pack": "fiktiva-bylaws",
+  "version": "0.1.0",
+  "layer": "legal",
+  "parent": null,
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "c0fb3b7304fa7a02c22398ca42b877f5e4f0c306ff118dfe7fc817c324e45386"
+    },
+    {
+      "path": "articles/art-2.md",
+      "sha256": "e40b68f003d0b84523cf7881f5958adbd2ca35f23efe3bab58e8cc67ed1ed3c0"
+    },
+    {
+      "path": "corpus.yaml",
+      "sha256": "b2bd975fd960cd9f50e77e105b1806eb13695f8867110ffc5bb5be6ecd81b075"
+    },
+    {
+      "path": "pack.yaml",
+      "sha256": "292766a28277dd7896d7650fcf24cfb47e0beceaa843b33b8bdc5f95b893872d"
+    },
+    {
+      "path": "sources/bylaws.txt",
+      "sha256": "029aa03553c45d47dc9bbe4c49e68fafe2274c89d5b0f5d70cbd5c537f2f0d5e"
+    },
+    {
+      "path": "topic-index.json",
+      "sha256": "252754ad77923247fee15a12f9ea928c401d2748dd6d026d245baf2bebadee81"
+    }
+  ],
+  "pack_hash": "d6fc0c156f6686f499086ad66be1396a5591313817c1925fb6be37b0fe632f5e"
+}

@@ -157,6 +157,8 @@ export function loadConfig(source: Env, rootEnv: Env = {}) {
     },
     policyPacksDir: env.POLICY_PACKS_DIR ?? 'test/fixtures/policy-v1',
     /** {"<jurisdiction|default>": {name, version, hash}}; the pinned hash is authoritative. */
+    /** Directory scanned for legal corpus dirs (any dir holding corpus.yaml). Pins come from the active jurisdiction pack legal_stack. */
+    legalCorporaDir: env.LEGAL_CORPORA_DIR ?? 'test/fixtures/legal',
     policyActive: json<Record<string, PackPin>>(env.POLICY_ACTIVE, {}),
     policyShadow: json<PackPin | null>(env.POLICY_SHADOW, null),
     policyCanary: json<(PackPin & { percent?: number }) | null>(
