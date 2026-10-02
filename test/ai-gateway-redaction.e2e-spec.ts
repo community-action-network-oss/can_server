@@ -232,3 +232,76 @@ describe('PrivacyGateway.mask (masked review view)', () => {
     );
   });
 });
+
+describe('fix-privacy: multi-stage runs, AAD, retention', () => {
+  it('a second prepare for the same run continues the counters instead of colliding', async () => {
+    const r = run();
+    const f = (text: string) => [
+      { zone: 'transient_raw' as const, fieldRef: 'a', text },
+    ];
+    const p1 = await gw.prepare({
+      ...r,
+      fields: f(`Mr Daniel Okafor, ${PHONE}`),
+    });
+    const p2 = await gw.prepare({
+      ...r,
+      stage: 'second',
+      fields: f(`Mr Daniel Okafor again, ${PHONE}`),
+    });
+    expect(p1.fields[0]!.text).toBe('[PERSON_1], [PHONE_1]');
+    // consistent inside one prompt, fresh numbers across prompts
+    expect(p2.fields[0]!.text).toContain('[PERSON_2]');
+    expect(p2.fields[0]!.text).toContain('[PHONE_2]');
+    const map = await tokens.resolve(r.runId, now);
+    expect(map.get('[PERSON_1]')).toBe('Mr Daniel Okafor');
+    expect(map.get('[PERSON_2]')).toBe('Mr Daniel Okafor');
+  });
+
+  it('refuses a row moved to another operation or token (GCM AAD)', async () => {
+    const a = run();
+    const b = run();
+    await gw.prepare({
+      ...a,
+      fields: [{ zone: 'transient_raw', fieldRef: 'a', text: `call ${PHONE}` }],
+    });
+    await pool.query(
+      `insert into pseudonym_token (id, operation_id, kind, token, ciphertext, created_at, expires_at)
+       select $3, $2, kind, token, ciphertext, created_at, expires_at from pseudonym_token where operation_id=$1`,
+      [a.runId, b.runId, newId()],
+    );
+    await expect(tokens.resolve(b.runId, now)).rejects.toThrow();
+  });
+
+  it('purge tick is deduped through the queue and a finished run purges its mapping', async () => {
+    const { TokenRetention } =
+      await import('../src/ai-gateway/app/redaction/token-retention.js');
+    const { PgQueue } = await import('../src/platform/queue/pg-queue.js');
+    const { queueConfig } =
+      await import('../src/platform/queue/queue.config.js');
+    const { RunRecorder } =
+      await import('../src/moderation/app/run-recorder.js');
+    const ids = new UuidV7Generator();
+    const db = drizzle(pool, { schema });
+    const q = new PgQueue(
+      db,
+      clock,
+      ids,
+      { next: () => 1 },
+      queueConfig,
+      new AuditPort(clock, ids),
+    );
+    const store = { fail: async () => ({ id: 'x' }) };
+    const rec = new RunRecorder(store as never);
+    const ret = new TokenRetention(tokens, q, {} as never, rec, clock);
+    expect(await ret.enqueue()).toBe(await ret.enqueue());
+
+    const r = run();
+    await gw.prepare({
+      ...r,
+      fields: [{ zone: 'transient_raw', fieldRef: 'a', text: `call ${PHONE}` }],
+    });
+    rec.onFinished((id) => tokens.purgeOperation(id));
+    await rec.fail(r.runId);
+    expect((await tokens.resolve(r.runId, now)).size).toBe(0);
+  });
+});

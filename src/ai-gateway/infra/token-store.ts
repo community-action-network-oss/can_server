@@ -11,6 +11,7 @@ import { DB, type Db } from '../../db/db.module.js';
 import { pseudonymToken } from '../../db/schema.js';
 import { newId } from '../../domain/ids.js';
 import type { Tx } from '../../db/tx.js';
+import type { TokenKind } from '../app/redaction/detectors.js';
 import type { TokenEntry } from '../app/redaction/redact.js';
 
 export type Exec = Db | Tx;
@@ -23,15 +24,18 @@ const deriveKey = (): Buffer =>
     .digest();
 
 /** AES-256-GCM, iv(12) + tag(16) + ciphertext: the same layout as the email helper, but the text is kept byte for byte (no case folding). */
-export function seal(plain: string, key: Buffer): Buffer {
+/** `aad` is `operationId|token`: a row copied under another operation or token no longer opens. */
+export function seal(plain: string, key: Buffer, aad: string): Buffer {
   const iv = randomBytes(12);
   const c = createCipheriv('aes-256-gcm', key, iv);
+  c.setAAD(Buffer.from(aad));
   const ct = Buffer.concat([c.update(plain, 'utf8'), c.final()]);
   return Buffer.concat([iv, c.getAuthTag(), ct]);
 }
-export function open(b: Buffer, key: Buffer): string {
+export function open(b: Buffer, key: Buffer, aad: string): string {
   const d = createDecipheriv('aes-256-gcm', key, b.subarray(0, 12));
   d.setAuthTag(b.subarray(12, 28));
+  d.setAAD(Buffer.from(aad));
   return Buffer.concat([d.update(b.subarray(28)), d.final()]).toString('utf8');
 }
 
@@ -58,11 +62,32 @@ export class TokenStore {
         operationId,
         kind: e.kind,
         token: e.token,
-        ciphertext: seal(e.original, this.key),
+        ciphertext: seal(e.original, this.key, `${operationId}|${e.token}`),
         createdAt: now,
         expiresAt: new Date(now.getTime() + ttlMs),
       })),
     );
+  }
+
+  /** Highest number already issued per kind for an operation, so a later model call continues the counters. */
+  async counters(
+    exec: Exec,
+    operationId: string,
+  ): Promise<Map<TokenKind, number>> {
+    const rows = await exec
+      .select({ token: pseudonymToken.token })
+      .from(pseudonymToken)
+      .where(eq(pseudonymToken.operationId, operationId));
+    const m = new Map<TokenKind, number>();
+    for (const { token } of rows) {
+      const t = /^\[([A-Z]+)_(\d+)\]$/.exec(token);
+      if (t)
+        m.set(
+          t[1] as TokenKind,
+          Math.max(m.get(t[1] as TokenKind) ?? 0, Number(t[2])),
+        );
+    }
+    return m;
   }
 
   /** token to original for one operation; expired rows are invisible even before the purge runs. */
@@ -79,7 +104,12 @@ export class TokenStore {
           gt(pseudonymToken.expiresAt, now),
         ),
       );
-    return new Map(rows.map((r) => [r.token, open(r.ciphertext, this.key)]));
+    return new Map(
+      rows.map((r) => [
+        r.token,
+        open(r.ciphertext, this.key, `${operationId}|${r.token}`),
+      ]),
+    );
   }
 
   /** The retention job. Returns the number of rows removed. */

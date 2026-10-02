@@ -47,7 +47,20 @@ export function assertStructured(v: unknown, path = 'output', depth = 0): void {
 /** The one writer of moderation runs: start, store stage outputs, then complete, hold, fail or supersede. */
 @Injectable()
 export class RunRecorder {
+  private readonly finishedHooks: ((runId: string) => Promise<unknown>)[] = [];
+
   constructor(private readonly store: RunStore) {}
+
+  /** Called after a run completes, holds or fails (for example to purge its pseudonym tokens). A hook error never fails the run. */
+  onFinished(hook: (runId: string) => Promise<unknown>): void {
+    this.finishedHooks.push(hook);
+  }
+
+  private async finished<T>(runId: string, row: T | null): Promise<T | null> {
+    if (row)
+      for (const h of this.finishedHooks) await h(runId).catch(() => undefined);
+    return row;
+  }
 
   /** Returns the existing run for the key (with stored stages, for resume) or starts a new running one. */
   begin(i: BeginInput): Promise<BeginResult> {
@@ -69,17 +82,17 @@ export class RunRecorder {
     if (!OUTCOMES.includes(c.outcome as Outcome) || c.outcome === 'hold')
       throw new RunRecordError('complete needs a non-hold outcome; use hold()');
     assertEscalationAllowed(c.dpId, c.outcome as Outcome);
-    return this.store.complete(runId, c);
+    return this.store.complete(runId, c).then((r) => this.finished(runId, r));
   }
 
   hold(runId: string, reason: HoldReason): Promise<RunRow | null> {
     if (!HOLD_REASONS.includes(reason))
       throw new RunRecordError(`unknown hold reason ${String(reason)}`);
-    return this.store.hold(runId, reason);
+    return this.store.hold(runId, reason).then((r) => this.finished(runId, r));
   }
 
   fail(runId: string) {
-    return this.store.fail(runId);
+    return this.store.fail(runId).then((r) => this.finished(runId, r));
   }
 
   supersede(runId: string) {

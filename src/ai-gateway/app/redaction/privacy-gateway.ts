@@ -1,4 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { sql } from 'drizzle-orm';
 import { DB, type Db } from '../../../db/db.module.js';
 import { AuditPort } from '../../../platform/audit/audit.service.js';
 import { CLOCK, type Clock } from '../../../platform/ports.js';
@@ -51,8 +52,14 @@ export class PrivacyGateway {
         fieldRef: f.fieldRef,
         text: classify(f),
       }));
-      const r = redact(texts);
-      await this.db.transaction(async (tx) => {
+      // One transaction per model call. The per-run advisory lock serialises calls of one run, and the counters
+      // continue from the rows already stored, so a later stage never collides on UNIQUE(operation_id, token).
+      // Pseudonyms stay consistent within one prompt (one redact call); across calls the same value may get a new token.
+      const r = await this.db.transaction(async (tx) => {
+        await tx.execute(
+          sql`select pg_advisory_xact_lock(hashtext(${i.runId}))`,
+        );
+        const r = redact(texts, await this.tokens.counters(tx, i.runId));
         await this.tokens.put(tx, i.runId, r.entries, this.clock.now());
         await this.audit.record(tx, {
           action: 'ai.gateway.call',
@@ -67,6 +74,7 @@ export class PrivacyGateway {
             providerId: i.providerId,
           },
         });
+        return r;
       });
       return {
         fields: r.fields.map((f) => ({ fieldRef: f.fieldRef, text: f.text })),
