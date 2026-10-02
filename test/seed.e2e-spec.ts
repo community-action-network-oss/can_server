@@ -29,11 +29,19 @@ beforeAll(async () => {
   await app.init();
 });
 
-afterAll(async () => {
-  // Children first; only rows this test (and the seed) own by fixed id.
-  await pool.query('delete from invite where issued_by = $1', [
-    SEED_IDS.stewardOne,
+// Children first; only rows this test (and the seed) own by fixed id, plus FK children of its accounts.
+const cleanup = async () => {
+  // Sign-ins as seeded members (login_code, session) and invites hang off the fixed-id accounts.
+  await pool.query('delete from login_code where account_id = any($1)', [
+    accountIds,
   ]);
+  await pool.query('delete from session where account_id = any($1)', [
+    accountIds,
+  ]);
+  await pool.query(
+    'delete from invite where issued_by = any($1) or redeemed_by = any($1)',
+    [accountIds],
+  );
   await pool.query('delete from problem_event where problem_id = any($1)', [
     FIXTURE_PROBLEM_IDS,
   ]);
@@ -44,6 +52,12 @@ afterAll(async () => {
   await pool.query('delete from jurisdiction where id = any($1)', [
     [SEED_IDS.amsterdam, SEED_IDS.fiktiva],
   ]);
+};
+
+beforeAll(cleanup);
+
+afterAll(async () => {
+  await cleanup();
   await pool.end();
   await app.close();
 });
