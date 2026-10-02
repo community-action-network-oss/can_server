@@ -20,7 +20,7 @@ import {
 } from '@nestjs/swagger';
 import { eq } from 'drizzle-orm';
 import { DB, type Db } from '../../db/db.module.js';
-import { problem } from '../../db/schema.js';
+import { account, jurisdiction, problem } from '../../db/schema.js';
 import { allowedTransitions } from '../../domain/lifecycle/guard.js';
 import { TransitionEngine } from '../app/transition-engine.js';
 import {
@@ -42,10 +42,14 @@ import {
   type RateLimiter,
 } from '../../platform/security/rate-limiter.js';
 import { STAGE_CHIP, type StageChipPort } from '../app/stage-chip.port.js';
+import { SubmitChecks, checkInputOf } from '../app/submit-checks.service.js';
 import { DraftMigrationService } from '../app/draft-migration.service.js';
 import { DraftsService, EDITABLE } from '../app/drafts.service.js';
 import {
   AllowedActionsDto,
+  CheckResultDto,
+  KeepFlagsDto,
+  PreviewDto,
   TransitionDto,
   TransitionResultDto,
   ConfirmMigrationDto,
@@ -62,8 +66,6 @@ const CREATE_PER_DAY = 20;
 const UUID = /^[0-9a-f-]{36}$/i;
 // Initiator withdrawal before publication (T06, T07). Withdrawing an active problem (T18) needs a contribution check, so not offered here.
 const WITHDRAWABLE = ['in_review', 'held', 'needs_revision'];
-// Flipped (by deleting this) by the unit that wires the submit checks; until then T01 and T03 stay refused.
-const SUBMIT_CHECKS_WIRED: boolean = false;
 // T00 and T19 are the draft create and delete routes above, not moves through the engine.
 const NOT_VIA_ENGINE = ['T00', 'T19'];
 const uid = (id: string) => {
@@ -94,6 +96,7 @@ export class DraftsController {
     @Inject(DB) private readonly db: Db,
     @Inject(TransitionEngine) private readonly engine: TransitionEngine,
     @Inject(STAGE_CHIP) private readonly chips: StageChipPort,
+    @Inject(SubmitChecks) private readonly checks: SubmitChecks,
   ) {}
 
   /** Own problem, or a public one. Anything else is a 404 so private existence never leaks. */
@@ -133,8 +136,6 @@ export class DraftsController {
     const { r, own } = await this.visible(id, a.accountId);
     if (!own)
       throw new ApiException(403, 'not_permitted', 'You cannot do that.');
-    if (!SUBMIT_CHECKS_WIRED && body.to === 'in_review')
-      throw new ApiException(403, 'not_permitted', 'checks not wired');
     const res = await this.engine.apply({
       problemId: r.id,
       to: body.to,
@@ -156,6 +157,141 @@ export class DraftsController {
     };
   }
 
+  /** Your own problem while it is still being prepared; anything else is a 404. */
+  private async mineEditable(id: string, accountId: string) {
+    const { r, own } = await this.visible(id, accountId);
+    if (!own || !EDITABLE.includes(r.state))
+      throw new ApiException(404, 'not_found', 'Problem not found');
+    return r;
+  }
+
+  private async flagsOf(r: typeof problem.$inferSelect) {
+    const res = await this.checks.check(r, new Date());
+    const kept = new Set((r.keptFlags ?? []).map((k) => k.id));
+    return {
+      ...res,
+      flags: res.flags.map((f) => ({ ...f, kept: kept.has(f.id) })),
+    };
+  }
+
+  @Post(':id/checks')
+  @Authenticated()
+  @HttpCode(200)
+  @ApiOperation({
+    operationId: 'runDraftChecks',
+    summary:
+      'Run the privacy and eligibility checks on your problem; flags carry offsets you can highlight',
+  })
+  @ApiOkResponse({ type: CheckResultDto })
+  @ApiErrors(401, 404, 429, 500)
+  async runChecks(
+    @Param('id') id: string,
+    @Req() req: AuthedRequest,
+  ): Promise<CheckResultDto> {
+    const r = await this.mineEditable(id, req.auth!.accountId);
+    const res = await this.flagsOf(r);
+    const checkId = crypto.randomUUID();
+    await this.db
+      .update(problem)
+      .set({ privacyCheckId: checkId, privacyCheckAt: new Date() })
+      .where(eq(problem.id, r.id));
+    return {
+      checkId,
+      ok: !res.flags.some((f) => f.severity === 'hard' || !f.kept),
+      flags: res.flags,
+      emergency: res.emergency,
+      languageLabel: res.languageLabel,
+      repostMatch: res.repostMatch,
+    };
+  }
+
+  @Post(':id/checks/keep')
+  @Authenticated()
+  @HttpCode(200)
+  @ApiOperation({
+    operationId: 'keepDraftFlags',
+    summary:
+      'Keep review flags as they are; the review later sees that you kept them, the public never does',
+  })
+  @ApiOkResponse({ type: CheckResultDto })
+  @ApiErrors(400, 401, 404, 429, 500)
+  async keep(
+    @Param('id') id: string,
+    @Body() body: KeepFlagsDto,
+    @Req() req: AuthedRequest,
+  ): Promise<CheckResultDto> {
+    const r = await this.mineEditable(id, req.auth!.accountId);
+    const before = await this.flagsOf(r);
+    const keptFlags = this.checks.keep(before.flags, body.flagIds);
+    await this.db
+      .update(problem)
+      .set({ keptFlags })
+      .where(eq(problem.id, r.id));
+    const res = await this.flagsOf({ ...r, keptFlags });
+    return {
+      checkId: r.privacyCheckId ?? '',
+      ok: !res.flags.some((f) => f.severity === 'hard' || !f.kept),
+      flags: res.flags,
+      emergency: res.emergency,
+      languageLabel: res.languageLabel,
+      repostMatch: res.repostMatch,
+    };
+  }
+
+  @Get(':id/preview')
+  @Authenticated()
+  @ApiOperation({
+    operationId: 'previewDraft',
+    summary: 'Exactly what would be public, and under which handle',
+  })
+  @ApiOkResponse({ type: PreviewDto })
+  @ApiErrors(401, 404, 429, 500)
+  async preview(
+    @Param('id') id: string,
+    @Req() req: AuthedRequest,
+  ): Promise<PreviewDto> {
+    const r = await this.mineEditable(id, req.auth!.accountId);
+    const [[j], [a]] = await Promise.all([
+      this.db
+        .select({ name: jurisdiction.name })
+        .from(jurisdiction)
+        .where(
+          eq(
+            jurisdiction.id,
+            r.jurisdictionId ?? '00000000-0000-0000-0000-000000000000',
+          ),
+        ),
+      this.db
+        .select({ handle: account.handle })
+        .from(account)
+        .where(eq(account.id, r.initiatorId!)),
+    ]);
+    const f = checkInputOf(r).fields;
+    return {
+      public: {
+        title: f.title,
+        condition: f.condition,
+        affected: f.affected,
+        coarseArea: f.coarseArea,
+        observed: f.observed,
+        uncertain: f.uncertain,
+        desiredOutcome: f.desiredOutcome,
+        jurisdiction: j?.name ?? null,
+        investigationNeeded: r.investigationNeeded,
+        authorHandle: a?.handle ?? null,
+      },
+      // Ids only; the wording lives in the app copy.
+      explanationIds: [
+        'publish.review_first',
+        'publish.fields_public',
+        'publish.handle_shown',
+        'publish.flags_kept_not_public',
+      ],
+      handle: a?.handle ?? '',
+      timings: { deleteAfterWithdrawDays: 30, appealWindowDays: null },
+    };
+  }
+
   @Get(':id/actions')
   @ApiOperation({
     operationId: 'getProblemActions',
@@ -170,11 +306,7 @@ export class DraftsController {
     const { r, own } = await this.visible(id, req.auth?.accountId);
     const actions = own
       ? allowedTransitions(r.state as State, 'initiator')
-          .filter(
-            (t) =>
-              !NOT_VIA_ENGINE.includes(t.id) &&
-              (SUBMIT_CHECKS_WIRED || t.to !== 'in_review'),
-          )
+          .filter((t) => !NOT_VIA_ENGINE.includes(t.id))
           .map((t) => ({
             to: t.to === 'same' ? r.state : t.to,
             requires: [...t.required],

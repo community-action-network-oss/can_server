@@ -50,6 +50,96 @@
         ],
         "type": "object"
       },
+      "CheckFlagDto": {
+        "properties": {
+          "end": {
+            "description": "End offset, exclusive.",
+            "type": "number"
+          },
+          "field": {
+            "description": "A column name, or a JSON pointer into content or evidence (matches fieldErrors keys).",
+            "type": "string"
+          },
+          "id": {
+            "description": "Stable for the same text; pass it to keep.",
+            "type": "string"
+          },
+          "kept": {
+            "type": "boolean"
+          },
+          "kind": {
+            "type": "string"
+          },
+          "ruleId": {
+            "type": "string"
+          },
+          "severity": {
+            "description": "hard must be fixed; review may be kept as is.",
+            "enum": [
+              "hard",
+              "review"
+            ],
+            "type": "string"
+          },
+          "start": {
+            "description": "Start offset into your text (UTF-16 units).",
+            "type": "number"
+          },
+          "suggestion": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "field",
+          "kind",
+          "ruleId",
+          "start",
+          "end",
+          "severity",
+          "kept"
+        ],
+        "type": "object"
+      },
+      "CheckResultDto": {
+        "properties": {
+          "checkId": {
+            "description": "Id of this check run.",
+            "type": "string"
+          },
+          "emergency": {
+            "description": "Emergency wording found: flagged, never rejected.",
+            "type": "boolean"
+          },
+          "flags": {
+            "items": {
+              "$ref": "#/components/schemas/CheckFlagDto"
+            },
+            "type": "array"
+          },
+          "languageLabel": {
+            "nullable": true,
+            "type": "string"
+          },
+          "ok": {
+            "description": "True when nothing blocks submitting.",
+            "type": "boolean"
+          },
+          "repostMatch": {
+            "description": "Advisory only.",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "checkId",
+          "ok",
+          "flags",
+          "emergency",
+          "languageLabel",
+          "repostMatch"
+        ],
+        "type": "object"
+      },
       "CodeRequestedDto": {
         "properties": {
           "message": {
@@ -364,6 +454,20 @@
         ],
         "type": "object"
       },
+      "KeepFlagsDto": {
+        "properties": {
+          "flagIds": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "flagIds"
+        ],
+        "type": "object"
+      },
       "ListCriteriaDto": {
         "properties": {
           "order": {
@@ -606,6 +710,36 @@
         "required": [
           "to",
           "proposedBy"
+        ],
+        "type": "object"
+      },
+      "PreviewDto": {
+        "properties": {
+          "explanationIds": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "handle": {
+            "type": "string"
+          },
+          "public": {
+            "additionalProperties": true,
+            "description": "Exactly the public fields, with the same keys and values as the public detail once published.",
+            "type": "object"
+          },
+          "timings": {
+            "additionalProperties": true,
+            "description": "Deletion and appeal timings that apply, in days.",
+            "type": "object"
+          }
+        },
+        "required": [
+          "public",
+          "explanationIds",
+          "handle",
+          "timings"
         ],
         "type": "object"
       },
@@ -1914,6 +2048,168 @@
         ]
       }
     },
+    "/v1/drafts/{id}/checks": {
+      "post": {
+        "operationId": "runDraftChecks",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CheckResultDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "summary": "Run the privacy and eligibility checks on your problem; flags carry offsets you can highlight",
+        "tags": [
+          "drafts"
+        ]
+      }
+    },
+    "/v1/drafts/{id}/checks/keep": {
+      "post": {
+        "operationId": "keepDraftFlags",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/KeepFlagsDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CheckResultDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "summary": "Keep review flags as they are; the review later sees that you kept them, the public never does",
+        "tags": [
+          "drafts"
+        ]
+      }
+    },
     "/v1/drafts/{id}/migration": {
       "get": {
         "operationId": "getDraftMigration",
@@ -2099,6 +2395,77 @@
           }
         },
         "summary": "Move this draft to the current form with the mappings you confirmed",
+        "tags": [
+          "drafts"
+        ]
+      }
+    },
+    "/v1/drafts/{id}/preview": {
+      "get": {
+        "operationId": "previewDraft",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PreviewDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "summary": "Exactly what would be public, and under which handle",
         "tags": [
           "drafts"
         ]

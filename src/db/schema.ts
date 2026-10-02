@@ -135,6 +135,15 @@ export const auditEvent = pgTable('audit_event', {
  * Public problems (read model for the plain list, D-80). help_needed describes the problem only;
  * nothing here is derived from any person. Writes arrive with the publication run.
  */
+export interface KeptFlag {
+  id: string;
+  field: string;
+  kind: string;
+  ruleId: string;
+  start: number;
+  end: number;
+}
+
 export const problem = pgTable(
   'problem',
   {
@@ -148,6 +157,16 @@ export const problem = pgTable(
     content: jsonb('content').$type<Record<string, unknown>>(),
     planVersion: integer('plan_version').notNull().default(1),
     reviewRequestedAt: tz('review_requested_at'),
+    // Submit checks (03-u08). Offsets and rule ids only, never text; keptFlags is the PRIV-GATE-1 evidence.
+    privacyCheckId: uuid('privacy_check_id'),
+    privacyCheckAt: tz('privacy_check_at'),
+    keptFlags: jsonb('kept_flags').$type<KeptFlag[]>(),
+    repostMatch: boolean('repost_match'),
+    // Copy of the text fields at the last submit, with its version number (T01, T03); scrubbed with the other content.
+    submitSnapshot: jsonb('submit_snapshot').$type<{
+      version: number;
+      fields: Record<string, unknown>;
+    }>(),
     noSourceNote: text('no_source_note'),
     jurisdictionId: uuid('jurisdiction_id').references(() => jurisdiction.id),
     state: text('state').notNull(),

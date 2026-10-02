@@ -327,6 +327,17 @@ describe('draft schema migration', () => {
       }).expect(200);
 
       await postMig(e, { expectedVersion: 2, mappings: [] }).expect(200);
+      // The submit gate also checks completeness: the new required answer must be given first (03-u08).
+      await expect(submit()).rejects.toBeDefined();
+      const migrated = (await row(e)).content;
+      await patch(e, {
+        content: {
+          ...migrated,
+          statement: 'Lights go unrepaired.',
+          who_affected: 'Residents',
+        },
+        expectedVersion: 3,
+      }).expect(200);
       expect((await submit()).state).toBe('in_review');
       expect((await row(e)).schema_version).toBe('72.0.0');
     });

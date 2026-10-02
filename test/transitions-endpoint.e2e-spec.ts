@@ -109,13 +109,6 @@ describe('POST /v1/drafts/:id/transitions', () => {
     expect((await row(r)).state).toBe('in_review');
   });
 
-  it('submit stays refused until the checks are wired', async () => {
-    const d = await mine('draft');
-    const r = await move(d, alice, { to: 'in_review' }).expect(403);
-    expect(r.body.error.message).toBe('checks not wired');
-    expect((await row(d)).state).toBe('draft');
-  });
-
   it('direct move: author withdraws from review (T06) and the version moves', async () => {
     const r = await mine('in_review');
     const res = await move(r, alice, { to: 'withdrawn' }).expect(200);
@@ -157,7 +150,7 @@ describe('POST /v1/drafts/:id/transitions', () => {
 describe('GET /v1/drafts/:id/actions', () => {
   const expected = (from: string) =>
     allowedTransitions(from as never, 'initiator')
-      .filter((t) => !['T00', 'T19'].includes(t.id) && t.to !== 'in_review')
+      .filter((t) => !['T00', 'T19'].includes(t.id))
       .map(
         (t) =>
           `${t.to === 'same' ? from : t.to}:${t.proposedBy.includes('initiator') ? 'propose' : 'direct'}`,

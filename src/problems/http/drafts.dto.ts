@@ -279,3 +279,65 @@ export class ConfirmMigrationDto {
   @Type(() => ConfirmMappingDto)
   mappings!: ConfirmMappingDto[];
 }
+
+export class CheckFlagDto {
+  @ApiProperty({ description: 'Stable for the same text; pass it to keep.' })
+  id!: string;
+  @ApiProperty({
+    description:
+      'A column name, or a JSON pointer into content or evidence (matches fieldErrors keys).',
+  })
+  field!: string;
+  @ApiProperty() kind!: string;
+  @ApiProperty() ruleId!: string;
+  @ApiProperty({ description: 'Start offset into your text (UTF-16 units).' })
+  start!: number;
+  @ApiProperty({ description: 'End offset, exclusive.' })
+  end!: number;
+  @ApiPropertyOptional() suggestion?: string;
+  @ApiProperty({
+    enum: ['hard', 'review'],
+    description: 'hard must be fixed; review may be kept as is.',
+  })
+  severity!: 'hard' | 'review';
+  @ApiProperty() kept!: boolean;
+}
+
+export class CheckResultDto {
+  @ApiProperty({ description: 'Id of this check run.' }) checkId!: string;
+  @ApiProperty({ description: 'True when nothing blocks submitting.' })
+  ok!: boolean;
+  @ApiProperty({ type: [CheckFlagDto] }) flags!: CheckFlagDto[];
+  @ApiProperty({
+    description: 'Emergency wording found: flagged, never rejected.',
+  })
+  emergency!: boolean;
+  @ApiProperty({ type: String, nullable: true }) languageLabel!: string | null;
+  @ApiProperty({ description: 'Advisory only.' }) repostMatch!: boolean;
+}
+
+export class KeepFlagsDto {
+  @ApiProperty({ type: [String] })
+  @IsArray()
+  @IsString({ each: true })
+  @MaxLength(300, { each: true })
+  flagIds!: string[];
+}
+
+export class PreviewDto {
+  @ApiProperty({
+    type: 'object',
+    additionalProperties: true,
+    description:
+      'Exactly the public fields, with the same keys and values as the public detail once published.',
+  })
+  public!: Record<string, unknown>;
+  @ApiProperty({ type: [String] }) explanationIds!: string[];
+  @ApiProperty() handle!: string;
+  @ApiProperty({
+    type: 'object',
+    additionalProperties: true,
+    description: 'Deletion and appeal timings that apply, in days.',
+  })
+  timings!: Record<string, number | null>;
+}

@@ -19,6 +19,9 @@ import { SchemaVersionRepo } from '../policy/infra/schema-version.repo.js';
 import { FsPackSource } from '../policy/infra/fs-pack-source.js';
 import { MigrationMaps } from '../policy/migration/migration-maps.js';
 import { DraftMigrationService } from './app/draft-migration.service.js';
+import { SubmitChecks, FINGERPRINTS } from './app/submit-checks.service.js';
+import { FingerprintRepo } from './infra/fingerprint.repo.js';
+import { DB, type Db } from '../db/db.module.js';
 import { DraftsService } from './app/drafts.service.js';
 import {
   DraftsController,
@@ -37,6 +40,12 @@ import { ProblemsController } from './http/problems.controller.js';
     TransitionEngine,
     DraftsService,
     DraftMigrationService,
+    SubmitChecks,
+    {
+      provide: FINGERPRINTS,
+      useFactory: (db: Db) => new FingerprintRepo(db),
+      inject: [DB],
+    },
     SchemaVersionRepo,
     {
       provide: MigrationMaps,

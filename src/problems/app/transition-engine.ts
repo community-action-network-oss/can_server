@@ -24,6 +24,7 @@ import {
   type ReviewFacts,
 } from './transition-ports.js';
 import { DraftMigrationService } from './draft-migration.service.js';
+import { SubmitChecks } from './submit-checks.service.js';
 import type { State } from '../../domain/lifecycle/vocabulary.js';
 
 export interface ApplyInput {
@@ -79,6 +80,9 @@ export class TransitionEngine {
     @Optional()
     @Inject(DraftMigrationService)
     private readonly migration?: DraftMigrationService,
+    @Optional()
+    @Inject(SubmitChecks)
+    private readonly gate?: SubmitChecks,
   ) {}
 
   async apply(i: ApplyInput): Promise<ApplyResult> {
@@ -252,7 +256,13 @@ export class TransitionEngine {
       );
 
     const toState = t.to === 'same' ? from : i.to;
+    // T01 and T03: the deterministic checks decide before anything changes (PRIV-GATE-1); a throw rolls everything back.
+    const gated =
+      (t.id === 'T01' || t.id === 'T03') && i.actor.kind === 'initiator'
+        ? await this.gate?.gate(tx, row, t.id, fields, now)
+        : undefined;
     const set: Partial<typeof problem.$inferInsert> = {
+      ...gated,
       ...pendingCleared,
       state: toState,
     };
