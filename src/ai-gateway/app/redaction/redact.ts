@@ -1,8 +1,14 @@
 import {
   INSTITUTION_WORDS,
   LEADING_STOPWORDS,
+  STREET_SUFFIXES,
 } from '../../../problems/domain/privacy/allowlist.js';
-import { detectSpans, type RawSpan, type TokenKind } from './detectors.js';
+import {
+  detectSensitive,
+  detectSpans,
+  type RawSpan,
+  type TokenKind,
+} from './detectors.js';
 import { PrivacyGatewayError } from './errors.js';
 
 /** One replaced span. Offsets index the ORIGINAL field text; no text is kept (decisions cite offsets only). */
@@ -39,12 +45,35 @@ const TITLE =
   /^(?:Mr|Ms|Mrs|Miss|Mx|Dr|Prof|Cllr|Councillor|Mayor|Minister|Senator|Governor|Director|Commissioner|Sheriff|Chief)\.?\s+/u;
 const norm = (s: string) =>
   s.normalize('NFKC').toLowerCase().replace(/\s+/g, ' ').trim();
+const lower = (xs: Iterable<string>) => [...xs].map((x) => x.toLowerCase());
+/** Words that legitimately recur next to a redacted span (street types, institutions, titles). */
+const NOT_NAME = new Set([
+  ...lower(INSTITUTION_WORDS),
+  ...lower(LEADING_STOPWORDS),
+  ...lower(STREET_SUFFIXES),
+  'councillor',
+  'mayor',
+  'minister',
+  'senator',
+  'governor',
+  'director',
+  'commissioner',
+  'sheriff',
+  'chief',
+  'prof',
+]);
+const COMMON = new Set([...NOT_NAME, 'address', 'phone', 'number', 'email']);
 const escapeRe = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
 interface Piece extends RawSpan {
   /** Pieces of one span that crosses a field boundary share a group and a token. */
   group?: number;
 }
+
+/** On overlap the more specific kind wins, so coordinates are not left classed as a phone number. */
+const RANK = new Proxy({ COORD: 2, SECRET: 2 } as Record<string, number>, {
+  get: (t, k: string) => t[k] ?? 1,
+});
 
 function merge(pieces: Piece[]): Piece[] {
   const out: Piece[] = [];
@@ -54,6 +83,7 @@ function merge(pieces: Piece[]): Piece[] {
     const last = out[out.length - 1];
     if (last && p.start < last.end) {
       last.end = Math.max(last.end, p.end);
+      if (RANK[p.kind] > RANK[last.kind]) last.kind = p.kind;
       last.group ??= p.group;
     } else out.push({ ...p });
   }
@@ -67,16 +97,24 @@ function merge(pieces: Piece[]): Piece[] {
  */
 export function redact(
   input: readonly { fieldRef: string; text: string }[],
+  /** Highest token number already issued per kind for this operation, so a later call never reuses one. */
+  seed: ReadonlyMap<TokenKind, number> = new Map(),
 ): Redaction {
   try {
-    return run(input);
+    return run(input, seed);
   } catch (e) {
     if (e instanceof PrivacyGatewayError) throw e;
     throw new PrivacyGatewayError('gateway_failure', 'redaction failed');
   }
 }
 
-function run(input: readonly { fieldRef: string; text: string }[]): Redaction {
+/** A literal token in user text would be expanded back into someone else's data: it is redacted like any other value. */
+const TOKEN_SHAPED = /\[[A-Z]+_\d+\]/g;
+
+function run(
+  input: readonly { fieldRef: string; text: string }[],
+  seed: ReadonlyMap<TokenKind, number>,
+): Redaction {
   for (const f of input) {
     if (f.text.length > MAX_FIELD_CHARS)
       throw new PrivacyGatewayError(
@@ -90,6 +128,17 @@ function run(input: readonly { fieldRef: string; text: string }[]): Redaction {
       );
   }
   const per: Piece[][] = input.map((f) => detectSpans(f.text));
+  // A person anywhere in the operation makes special-category terms in every field personal data.
+  if (per.some((ps) => ps.some((p) => p.kind === 'PERSON')))
+    input.forEach((f, i) => per[i]!.push(...detectSensitive(f.text)));
+  input.forEach((f, i) => {
+    for (const m of f.text.matchAll(TOKEN_SHAPED))
+      per[i]!.push({
+        kind: 'OBFUSCATED',
+        start: m.index,
+        end: m.index + m[0].length,
+      });
+  });
 
   // Spans that straddle a field boundary ("John" | "Smith"): detect on the joined text.
   const base: number[] = [];
@@ -142,13 +191,13 @@ function run(input: readonly { fieldRef: string; text: string }[]): Redaction {
         'giu',
       );
       for (const m of f.text.matchAll(rx))
-        per[i]!.push({ kind, start: m.index, end: m.index + a.length });
+        per[i]!.push({ kind, start: m.index, end: m.index + m[0].length });
     }
   });
 
   // Tokens: same kind and same normalised original share one token within the operation.
   const tokenOf = new Map<string, string>();
-  const counters = new Map<TokenKind, number>();
+  const counters = new Map<TokenKind, number>(seed);
   const entries: TokenEntry[] = [];
   const groupText = new Map<number, string>();
   input.forEach((f, i) => {
@@ -205,11 +254,38 @@ function run(input: readonly { fieldRef: string; text: string }[]): Redaction {
         `${f.fieldRef}: residual personal data`,
       );
   for (const e of entries)
-    if (e.original.length >= 3 && out.includes(e.original.toLowerCase()))
+    if (
+      e.original.length >= 3 &&
+      !/^\[[A-Z]+_\d+\]$/.test(e.original) &&
+      out.includes(e.original.toLowerCase())
+    )
       throw new PrivacyGatewayError(
         'gateway_failure',
         'residual personal data',
       );
+  // Independent of the detectors: no 4+ letter word of any original span may survive anywhere in the output.
+  const outWords = new Set(
+    out.replace(/\[[a-z]+_\d+\]/g, ' ').match(/[\p{L}\p{M}]{4,}/gu) ?? [],
+  );
+  input.forEach((f, i) => {
+    for (const s of fields[i]!.spans) {
+      if (s.kind === 'TIME' || s.kind === 'PLACE' || s.kind === 'SENSITIVE')
+        continue;
+      let orig = f.text.slice(s.start, s.end);
+      // A shared domain ("example.org") recurs legitimately; the local part is the personal bit.
+      if (s.kind === 'EMAIL') orig = orig.split('@')[0]!;
+      if (/^\[[A-Z]+_\d+\]$/.test(orig)) continue;
+      for (const w of orig.toLowerCase().match(/[\p{L}\p{M}]{4,}/gu) ?? []) {
+        if (s.kind !== 'PERSON' && COMMON.has(w)) continue;
+        if (s.kind === 'PERSON' && NOT_NAME.has(w)) continue;
+        if (outWords.has(w))
+          throw new PrivacyGatewayError(
+            'gateway_failure',
+            'residual personal data',
+          );
+      }
+    }
+  });
 
   return {
     fields,
