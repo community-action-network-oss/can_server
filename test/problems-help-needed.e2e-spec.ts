@@ -97,7 +97,15 @@ describe('public problems with help_needed', () => {
 
   it('PROFILE-LOCAL-1: no problem route takes a body or profile input', () => {
     const doc = buildDocument(app);
-    const allowed = new Set(['cursor', 'limit', 'region', 'id']);
+    const allowed = new Set([
+      'cursor',
+      'limit',
+      'region',
+      'id',
+      'state',
+      'jurisdictionId',
+      'q',
+    ]);
     let seen = 0;
     for (const [path, ops] of Object.entries(doc.paths)) {
       if (!path.startsWith('/v1/problems')) continue;

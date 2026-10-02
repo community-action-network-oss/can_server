@@ -158,6 +158,69 @@
         ],
         "type": "object"
       },
+      "JurisdictionDto": {
+        "properties": {
+          "emergencyNotice": {
+            "nullable": true,
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "isFictional": {
+            "type": "boolean"
+          },
+          "kind": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "kind",
+          "isFictional",
+          "emergencyNotice"
+        ],
+        "type": "object"
+      },
+      "JurisdictionListDto": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/JurisdictionDto"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "type": "object"
+      },
+      "ListCriteriaDto": {
+        "properties": {
+          "order": {
+            "enum": [
+              "published_at_desc"
+            ],
+            "type": "string"
+          },
+          "usesEngagementSignals": {
+            "enum": [
+              false
+            ],
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "order",
+          "usesEngagementSignals"
+        ],
+        "type": "object"
+      },
       "MeDto": {
         "properties": {
           "handle": {
@@ -175,33 +238,75 @@
       },
       "PublicProblemDto": {
         "properties": {
+          "coarseArea": {
+            "nullable": true,
+            "type": "string"
+          },
           "help_needed": {
             "$ref": "#/components/schemas/HelpNeededDto"
           },
           "id": {
             "type": "string"
           },
+          "investigationNeeded": {
+            "type": "boolean"
+          },
+          "isSeed": {
+            "type": "boolean"
+          },
+          "jurisdiction": {
+            "nullable": true,
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "policyVersion": {
+            "nullable": true,
+            "type": "string"
+          },
           "publishedAt": {
             "type": "string"
+          },
+          "reopened": {
+            "type": "boolean"
           },
           "state": {
             "type": "string"
           },
+          "syntheticEvidence": {
+            "type": "boolean"
+          },
           "title": {
             "type": "string"
+          },
+          "transitional": {
+            "type": "boolean"
           }
         },
         "required": [
           "id",
           "title",
           "state",
+          "label",
+          "jurisdiction",
+          "coarseArea",
+          "investigationNeeded",
           "publishedAt",
+          "policyVersion",
+          "transitional",
+          "reopened",
+          "isSeed",
+          "syntheticEvidence",
           "help_needed"
         ],
         "type": "object"
       },
       "PublicProblemPageDto": {
         "properties": {
+          "criteria": {
+            "$ref": "#/components/schemas/ListCriteriaDto"
+          },
           "items": {
             "items": {
               "$ref": "#/components/schemas/PublicProblemDto"
@@ -215,7 +320,8 @@
         },
         "required": [
           "items",
-          "nextCursor"
+          "nextCursor",
+          "criteria"
         ],
         "type": "object"
       },
@@ -766,6 +872,48 @@
         ]
       }
     },
+    "/v1/jurisdictions": {
+      "get": {
+        "operationId": "listJurisdictions",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JurisdictionListDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "summary": "Enabled jurisdictions, by name",
+        "tags": [
+          "jurisdictions"
+        ]
+      }
+    },
     "/v1/me": {
       "get": {
         "operationId": "getMe",
@@ -954,6 +1102,33 @@
             "description": "Public coarse region shard id.",
             "in": "query",
             "name": "region",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Filter by a public state.",
+            "in": "query",
+            "name": "state",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Filter by jurisdiction id.",
+            "in": "query",
+            "name": "jurisdictionId",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Plain text match on title and condition.",
+            "in": "query",
+            "name": "q",
             "required": false,
             "schema": {
               "type": "string"

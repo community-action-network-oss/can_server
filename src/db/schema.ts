@@ -138,9 +138,43 @@ export const problem = pgTable(
   'problem',
   {
     id: uuid('id').primaryKey(),
-    title: text('title').notNull(),
+    // ponytail: nullable until the write path (plan 03) always sets it; OWN-1 forbids any owner column.
+    initiatorId: uuid('initiator_id').references(() => account.id),
+    schemaId: text('schema_id'),
+    schemaVersion: text('schema_version'),
+    schemaHash: text('schema_hash'),
+    planVersion: integer('plan_version').notNull().default(1),
+    reviewRequestedAt: tz('review_requested_at'),
+    noSourceNote: text('no_source_note'),
+    jurisdictionId: uuid('jurisdiction_id').references(() => jurisdiction.id),
     state: text('state').notNull(),
-    publishedAt: tz('published_at').notNull(),
+    // Content columns are nullable: drafts are partial and retention purges scrub them.
+    title: text('title'),
+    condition: text('condition'),
+    affected: text('affected'),
+    coarseArea: text('coarse_area'),
+    desiredOutcome: text('desired_outcome'),
+    observed: text('observed'),
+    uncertain: text('uncertain'),
+    evidenceTier: text('evidence_tier'),
+    investigationNeeded: boolean('investigation_needed')
+      .notNull()
+      .default(false),
+    pendingTransition:
+      jsonb('pending_transition').$type<Record<string, unknown>>(),
+    resumeState: text('resume_state'),
+    pauseReason: text('pause_reason'),
+    resumeCondition: text('resume_condition'),
+    duplicateOf: uuid('duplicate_of'),
+    version: integer('version').notNull().default(1),
+    publishedAt: tz('published_at'),
+    tombstonedAt: tz('tombstoned_at'),
+    withdrawnPublished: boolean('withdrawn_published').notNull().default(false),
+    purgeAfter: tz('purge_after'),
+    createdAt: tz('created_at').notNull().defaultNow(),
+    updatedAt: tz('updated_at').notNull().defaultNow(),
+    isSeed: boolean('is_seed').notNull().default(false),
+    syntheticEvidence: boolean('synthetic_evidence').notNull().default(false),
     helpNeeded: jsonb('help_needed')
       .$type<{
         skill_groups: string[];
@@ -152,5 +186,30 @@ export const problem = pgTable(
     originNodeId: text('origin_node_id').notNull(),
     protocolVersion: text('protocol_version').notNull(),
   },
-  (t) => [index('problem_published_idx').on(t.publishedAt, t.id)],
+  (t) => [
+    index('problem_published_idx').on(t.publishedAt, t.id),
+    index('problem_state_published_idx').on(t.state, t.publishedAt, t.id),
+    index('problem_fts_idx').using(
+      'gin',
+      sql`to_tsvector('simple', coalesce(${t.title}, '') || ' ' || coalesce(${t.condition}, ''))`,
+    ),
+  ],
 );
+
+/** Append-only (insert-only grant, see the problem_event migration). */
+export const problemEvent = pgTable('problem_event', {
+  id: uuid('id').primaryKey(),
+  problemId: uuid('problem_id')
+    .notNull()
+    .references(() => problem.id),
+  type: text('type').notNull(),
+  actorId: uuid('actor_id'),
+  fromState: text('from_state'),
+  toState: text('to_state'),
+  reason: text('reason'),
+  payload: jsonb('payload').$type<Record<string, unknown>>(),
+  prevHash: text('prev_hash'),
+  originNodeId: text('origin_node_id').notNull(),
+  protocolVersion: text('protocol_version').notNull(),
+  occurredAt: tz('occurred_at').notNull(),
+});

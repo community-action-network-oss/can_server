@@ -29,6 +29,13 @@
       "when": 1790939543860,
       "tag": "0003_moaning_gorilla_man",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1790939808165,
+      "tag": "0004_rapid_klaw",
+      "breakpoints": true
     }
   ]
 }
