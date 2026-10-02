@@ -51,6 +51,7 @@ const required = () =>
 
 export interface MigrationPlanView {
   state: 'pinned' | 'migrated';
+  version: number;
   bump: Bump;
   current: SchemaStamp;
   target: SchemaStamp;
@@ -224,7 +225,12 @@ export class DraftMigrationService {
     return p;
   }
 
-  private view(p: Plan, content: unknown, state: 'pinned' | 'migrated') {
+  private view(
+    p: Plan,
+    content: unknown,
+    state: 'pinned' | 'migrated',
+    version: number,
+  ) {
     const m = p.map
       ? applyMap(
           (content ?? {}) as Record<string, unknown>,
@@ -235,6 +241,7 @@ export class DraftMigrationService {
       : null;
     return {
       state,
+      version,
       bump: p.bump,
       current: p.from,
       target: p.target,
@@ -252,7 +259,7 @@ export class DraftMigrationService {
       const p = await this.planOrFail(tx, row, now);
       if (p.bump === 'minor' || p.bump === 'patch') {
         await this.restamp(tx, row, p, now, true);
-        return this.view(p, null, 'migrated');
+        return this.view(p, null, 'migrated', row.version + 1);
       }
       if (p.bump === 'major' && !p.map)
         throw new ApiException(
@@ -264,6 +271,7 @@ export class DraftMigrationService {
         p,
         row.content,
         p.bump === 'none' ? 'migrated' : 'pinned',
+        row.version,
       );
     });
   }

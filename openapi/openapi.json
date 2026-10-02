@@ -266,6 +266,12 @@
       },
       "DraftDto": {
         "properties": {
+          "content": {
+            "additionalProperties": true,
+            "description": "The structured answers. Only returned when reading one draft.",
+            "nullable": true,
+            "type": "object"
+          },
           "id": {
             "type": "string"
           },
@@ -615,9 +621,14 @@
           },
           "target": {
             "$ref": "#/components/schemas/MigrationStampDto"
+          },
+          "version": {
+            "description": "The draft version after this call. Send it as expectedVersion to confirm.",
+            "type": "number"
           }
         },
         "required": [
+          "version",
           "state",
           "bump",
           "current",
@@ -686,11 +697,16 @@
           },
           "updatedAt": {
             "type": "string"
+          },
+          "version": {
+            "description": "Send this as expectedVersion when editing.",
+            "type": "number"
           }
         },
         "required": [
           "id",
           "state",
+          "version",
           "label",
           "title",
           "updatedAt",
@@ -2391,6 +2407,75 @@
           }
         },
         "summary": "Discard your draft (T19)",
+        "tags": [
+          "drafts"
+        ]
+      },
+      "get": {
+        "operationId": "getDraft",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DraftDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "summary": "Read your own draft with its version and answers",
         "tags": [
           "drafts"
         ]

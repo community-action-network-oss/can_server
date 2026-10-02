@@ -121,6 +121,24 @@ describe('drafts', () => {
     await http().get(`/v1/problems/${d.id}`).set(as(alice)).expect(200);
   });
 
+  it('GET /v1/drafts/:id returns version and content to the author only; lists carry version', async () => {
+    const d = await mk(alice);
+    const g = await http().get(`/v1/drafts/${d.id}`).set(as(alice)).expect(200);
+    expect(g.body).toMatchObject({
+      id: d.id,
+      version: d.version,
+      content: null,
+    });
+    await http().get(`/v1/drafts/${d.id}`).set(as(bob)).expect(404);
+    await http().get(`/v1/drafts/${d.id}`).expect(401);
+    const l = await http().get('/v1/me/problems').set(as(alice)).expect(200);
+    expect(
+      l.body.items.find((i: { id: string }) => i.id === d.id).version,
+    ).toBe(d.version);
+    await http().delete(`/v1/drafts/${d.id}`).set(as(alice)).expect(204);
+    await http().get(`/v1/drafts/${d.id}`).set(as(alice)).expect(404);
+  });
+
   it('limits give fieldErrors; unknown fields rejected; version mismatch conflicts', async () => {
     const d = await mk(alice);
     const r = await http()

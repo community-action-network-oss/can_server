@@ -170,11 +170,23 @@ export class DraftDto {
   @ApiProperty({ type: String, nullable: true }) schemaId!: string | null;
   @ApiProperty({ type: String, nullable: true }) schemaVersion!: string | null;
   @ApiProperty({ type: String, nullable: true }) schemaHash!: string | null;
+  @ApiPropertyOptional({
+    type: 'object',
+    additionalProperties: true,
+    nullable: true,
+    description:
+      'The structured answers. Only returned when reading one draft.',
+  })
+  content?: Record<string, unknown> | null;
 }
 
 export class MyProblemDto {
   @ApiProperty() id!: string;
   @ApiProperty() state!: string;
+  @ApiProperty({
+    description: 'Send this as expectedVersion when editing.',
+  })
+  version!: number;
   @ApiProperty() label!: string;
   @ApiProperty({ type: String, nullable: true }) title!: string | null;
   @ApiProperty() updatedAt!: string;
@@ -227,6 +239,11 @@ export class MigrationMappingDto {
 }
 
 export class MigrationPlanDto {
+  @ApiProperty({
+    description:
+      'The draft version after this call. Send it as expectedVersion to confirm.',
+  })
+  version!: number;
   @ApiProperty({
     enum: ['pinned', 'migrated'],
     description:

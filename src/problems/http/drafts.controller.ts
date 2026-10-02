@@ -342,6 +342,18 @@ export class DraftsController {
     });
   }
 
+  @Get(':id')
+  @Authenticated()
+  @ApiOperation({
+    operationId: 'getDraft',
+    summary: 'Read your own draft with its version and answers',
+  })
+  @ApiOkResponse({ type: DraftDto })
+  @ApiErrors(401, 404, 429, 500)
+  get(@Param('id') id: string, @Req() req: AuthedRequest): Promise<DraftDto> {
+    return this.drafts.get(req.auth!.accountId, uid(id));
+  }
+
   @Patch(':id')
   @ApiOperation({
     operationId: 'updateDraft',
@@ -382,6 +394,7 @@ export class DraftsController {
     const v = await this.migration.preview(req.auth!.accountId, uid(id));
     return {
       state: v.state,
+      version: v.version,
       bump: v.bump,
       current: stampDto(v.current),
       target: stampDto(v.target),
@@ -475,6 +488,7 @@ export class MyProblemsController {
       items: items.map((r) => ({
         id: r.id,
         state: r.state,
+        version: r.version,
         label:
           r.state === 'active'
             ? activeLabel(chips.get(r.id) ?? null)

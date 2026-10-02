@@ -183,6 +183,20 @@ export class DraftsService {
     return r;
   }
 
+  /** Author only; anyone else, and deleted drafts, get the same 404. */
+  async get(accountId: string, id: string) {
+    const [r] = await this.db.select().from(problem).where(eq(problem.id, id));
+    if (!r || r.initiatorId !== accountId || r.deletedAt) throw notFound();
+    return {
+      id: r.id,
+      state: r.state,
+      version: r.version,
+      updatedAt: r.updatedAt.toISOString(),
+      ...pin(stampOf(r)),
+      content: (r.content as Record<string, unknown> | null) ?? null,
+    };
+  }
+
   async update(
     accountId: string,
     id: string,
