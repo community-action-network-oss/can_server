@@ -1,0 +1,320 @@
+{
+ "version": 1,
+ "rows": [
+  {
+   "id": "el-001",
+   "text": "My landlord never fixes the heating.",
+   "expected": "individual_case",
+   "ruleId": "SCOPE-1",
+   "category": "individual_case"
+  },
+  {
+   "id": "el-002",
+   "text": "I was fired after reporting unsafe wiring.",
+   "expected": "individual_case",
+   "ruleId": "SCOPE-1",
+   "category": "individual_case"
+  },
+  {
+   "id": "el-003",
+   "text": "My employer withholds overtime pay.",
+   "expected": "individual_case",
+   "ruleId": "SCOPE-1",
+   "category": "individual_case"
+  },
+  {
+   "id": "el-004",
+   "text": "My neighbour keeps parking across my drive.",
+   "expected": "individual_case",
+   "ruleId": "SCOPE-1",
+   "category": "individual_case"
+  },
+  {
+   "id": "el-005",
+   "text": "Tenants in several buildings on the east side report broken heating each winter.",
+   "expected": "accepted",
+   "ruleId": "SCOPE-1",
+   "category": "individual_case"
+  },
+  {
+   "id": "el-006",
+   "text": "Warehouse staff across the district report unpaid overtime.",
+   "expected": "accepted",
+   "ruleId": "SCOPE-1",
+   "category": "individual_case"
+  },
+  {
+   "id": "el-007",
+   "text": "Residents on the street report blocked driveways near the market.",
+   "expected": "accepted",
+   "ruleId": "SCOPE-1",
+   "category": "individual_case"
+  },
+  {
+   "id": "el-008",
+   "text": "I was evicted last month with no notice.",
+   "expected": "individual_case",
+   "ruleId": "SCOPE-1",
+   "category": "individual_case"
+  },
+  {
+   "id": "el-009",
+   "text": "My diagnosis was delayed for months.",
+   "expected": "medical",
+   "ruleId": "SCOPE-1",
+   "category": "medical"
+  },
+  {
+   "id": "el-010",
+   "text": "My doctor says the clinic has no appointments.",
+   "expected": "medical",
+   "ruleId": "SCOPE-1",
+   "category": "medical"
+  },
+  {
+   "id": "el-011",
+   "text": "I have diabetes and cannot get insulin.",
+   "expected": "medical",
+   "ruleId": "SCOPE-1",
+   "category": "medical"
+  },
+  {
+   "id": "el-012",
+   "text": "Clinic waiting times in the district average four months for routine appointments.",
+   "expected": "accepted",
+   "ruleId": "SCOPE-1",
+   "category": "medical"
+  },
+  {
+   "id": "el-013",
+   "text": "Many patients report that pharmacy stock runs out each month.",
+   "expected": "accepted",
+   "ruleId": "SCOPE-1",
+   "category": "medical"
+  },
+  {
+   "id": "el-014",
+   "text": "Should I sue the council over the pothole?",
+   "expected": "legal_advice",
+   "ruleId": "SCOPE-1",
+   "category": "legal_advice"
+  },
+  {
+   "id": "el-015",
+   "text": "I need legal advice about my divorce.",
+   "expected": "legal_advice",
+   "ruleId": "SCOPE-1",
+   "category": "legal_advice"
+  },
+  {
+   "id": "el-016",
+   "text": "My lawyer wants more money to continue.",
+   "expected": "legal_advice",
+   "ruleId": "SCOPE-1",
+   "category": "legal_advice"
+  },
+  {
+   "id": "el-017",
+   "text": "Legal aid offices in the region close before most workers finish their shifts.",
+   "expected": "accepted",
+   "ruleId": "SCOPE-1",
+   "category": "legal_advice"
+  },
+  {
+   "id": "el-018",
+   "text": "Court notices are posted only in one language in the district.",
+   "expected": "accepted",
+   "ruleId": "SCOPE-1",
+   "category": "legal_advice"
+  },
+  {
+   "id": "el-019",
+   "text": "My therapist moved away and I feel hopeless.",
+   "expected": "therapy",
+   "ruleId": "SCOPE-1",
+   "category": "therapy"
+  },
+  {
+   "id": "el-020",
+   "text": "I feel anxious every morning on the bus.",
+   "expected": "therapy",
+   "ruleId": "SCOPE-1",
+   "category": "therapy"
+  },
+  {
+   "id": "el-021",
+   "text": "I need therapy and cannot afford it.",
+   "expected": "therapy",
+   "ruleId": "SCOPE-1",
+   "category": "therapy"
+  },
+  {
+   "id": "el-022",
+   "text": "Counselling services in the district have a six month waiting list.",
+   "expected": "accepted",
+   "ruleId": "SCOPE-1",
+   "category": "therapy"
+  },
+  {
+   "id": "el-023",
+   "text": "Public mental health appointments are scarce in rural areas.",
+   "expected": "accepted",
+   "ruleId": "SCOPE-1",
+   "category": "therapy"
+  },
+  {
+   "id": "el-024",
+   "text": "Big discount on bikes this weekend, buy now.",
+   "expected": "commercial",
+   "ruleId": "SCOPE-1",
+   "category": "commercial"
+  },
+  {
+   "id": "el-025",
+   "text": "Use promo code FAKE10 for free delivery.",
+   "expected": "commercial",
+   "ruleId": "SCOPE-1",
+   "category": "commercial"
+  },
+  {
+   "id": "el-026",
+   "text": "Flat for sale near the park, message me.",
+   "expected": "commercial",
+   "ruleId": "SCOPE-1",
+   "category": "commercial"
+  },
+  {
+   "id": "el-027",
+   "text": "Join through my referral link for a bonus.",
+   "expected": "commercial",
+   "ruleId": "SCOPE-1",
+   "category": "commercial"
+  },
+  {
+   "id": "el-028",
+   "text": "Local shops report fewer customers since the bus route was cut.",
+   "expected": "accepted",
+   "ruleId": "SCOPE-1",
+   "category": "commercial"
+  },
+  {
+   "id": "el-029",
+   "text": "Market traders report that the sale of fresh produce has fallen since the car park closed.",
+   "expected": "accepted",
+   "ruleId": "SCOPE-1",
+   "category": "commercial"
+  },
+  {
+   "id": "el-030",
+   "text": "Help me, there is a fire now in the building.",
+   "expected": "emergency",
+   "ruleId": "CRISIS-STATIC-1",
+   "category": "emergency"
+  },
+  {
+   "id": "el-031",
+   "text": "Someone is bleeding outside the station.",
+   "expected": "emergency",
+   "ruleId": "CRISIS-STATIC-1",
+   "category": "emergency"
+  },
+  {
+   "id": "el-032",
+   "text": "I am thinking about suicide.",
+   "expected": "emergency",
+   "ruleId": "CRISIS-STATIC-1",
+   "category": "emergency"
+  },
+  {
+   "id": "el-033",
+   "text": "He took an overdose and is not waking.",
+   "expected": "emergency",
+   "ruleId": "CRISIS-STATIC-1",
+   "category": "emergency"
+  },
+  {
+   "id": "el-034",
+   "text": "We are being attacked at the corner shop.",
+   "expected": "emergency",
+   "ruleId": "CRISIS-STATIC-1",
+   "category": "emergency"
+  },
+  {
+   "id": "el-035",
+   "text": "I am in danger tonight.",
+   "expected": "emergency",
+   "ruleId": "CRISIS-STATIC-1",
+   "category": "emergency"
+  },
+  {
+   "id": "el-036",
+   "text": "Emergency response times in the district exceed the published target.",
+   "expected": "accepted",
+   "ruleId": "SCOPE-1",
+   "category": "emergency"
+  },
+  {
+   "id": "el-037",
+   "text": "Fire hydrants on several streets are painted over and hard to find.",
+   "expected": "accepted",
+   "ruleId": "SCOPE-1",
+   "category": "emergency"
+  },
+  {
+   "id": "el-038",
+   "text": "Please help improve the lighting on the footbridge.",
+   "expected": "accepted",
+   "ruleId": "SCOPE-1",
+   "category": "borderline"
+  },
+  {
+   "id": "el-039",
+   "text": "Wholesale markets are hard to reach without a car.",
+   "expected": "accepted",
+   "ruleId": "SCOPE-1",
+   "category": "borderline"
+  },
+  {
+   "id": "el-040",
+   "text": "MY LANDLORD IGNORES ME",
+   "expected": "individual_case",
+   "ruleId": "SCOPE-1",
+   "category": "borderline"
+  },
+  {
+   "id": "el-041",
+   "text": "My  landlord\tnever answers.",
+   "expected": "individual_case",
+   "ruleId": "SCOPE-1",
+   "category": "borderline"
+  },
+  {
+   "id": "el-042",
+   "text": "Ｍｙ ｌａｎｄｌｏｒｄ never answers.",
+   "expected": "individual_case",
+   "ruleId": "SCOPE-1",
+   "category": "borderline"
+  },
+  {
+   "id": "el-043",
+   "text": "Many people say their landlord is slow to repair lifts.",
+   "expected": "accepted",
+   "ruleId": "SCOPE-1",
+   "category": "borderline"
+  },
+  {
+   "id": "el-044",
+   "text": "Bus route 12 skips the hospital stop after 8pm.",
+   "expected": "accepted",
+   "ruleId": "SCOPE-1",
+   "category": "borderline"
+  },
+  {
+   "id": "el-045",
+   "text": "",
+   "expected": "accepted",
+   "ruleId": "SCOPE-1",
+   "category": "borderline"
+  }
+ ]
+}

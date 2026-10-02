@@ -1,0 +1,370 @@
+{
+ "version": 1,
+ "rows": [
+  {
+   "id": "ev-001",
+   "url": "https://example.org/report",
+   "expected": {
+    "ok": true,
+    "normalized": "https://example.org/report",
+    "category": "other"
+   },
+   "ruleId": "EVID-URL-1",
+   "category": "good"
+  },
+  {
+   "id": "ev-002",
+   "url": "https://example.org/report?utm_source=mail&utm_medium=x&id=7",
+   "expected": {
+    "ok": true,
+    "normalized": "https://example.org/report?id=7",
+    "category": "other"
+   },
+   "ruleId": "EVID-URL-1",
+   "category": "good"
+  },
+  {
+   "id": "ev-003",
+   "url": "https://example.org/a?fbclid=FAKE123",
+   "expected": {
+    "ok": true,
+    "normalized": "https://example.org/a",
+    "category": "other"
+   },
+   "ruleId": "EVID-URL-1",
+   "category": "good"
+  },
+  {
+   "id": "ev-004",
+   "url": "https://example.org/a?UTM_Campaign=x",
+   "expected": {
+    "ok": true,
+    "normalized": "https://example.org/a",
+    "category": "other"
+   },
+   "ruleId": "EVID-URL-1",
+   "category": "good"
+  },
+  {
+   "id": "ev-005",
+   "url": "https://EXAMPLE.org/Path",
+   "expected": {
+    "ok": true,
+    "normalized": "https://example.org/Path",
+    "category": "other"
+   },
+   "ruleId": "EVID-URL-1",
+   "category": "good"
+  },
+  {
+   "id": "ev-006",
+   "url": "  https://example.org/trim  ",
+   "expected": {
+    "ok": true,
+    "normalized": "https://example.org/trim",
+    "category": "other"
+   },
+   "ruleId": "EVID-URL-1",
+   "category": "good"
+  },
+  {
+   "id": "ev-007",
+   "url": "https://example.org./dot",
+   "expected": {
+    "ok": true,
+    "normalized": "https://example.org/dot",
+    "category": "other"
+   },
+   "ruleId": "EVID-URL-1",
+   "category": "good"
+  },
+  {
+   "id": "ev-008",
+   "url": "https://records.city.gov/minutes.html",
+   "expected": {
+    "ok": true,
+    "normalized": "https://records.city.gov/minutes.html",
+    "category": "official_page"
+   },
+   "ruleId": "EVID-URL-1",
+   "category": "good"
+  },
+  {
+   "id": "ev-009",
+   "url": "https://planning.example.gov.uk/doc",
+   "expected": {
+    "ok": true,
+    "normalized": "https://planning.example.gov.uk/doc",
+    "category": "official_page"
+   },
+   "ruleId": "EVID-URL-1",
+   "category": "good"
+  },
+  {
+   "id": "ev-010",
+   "url": "https://dept.example.edu/study",
+   "expected": {
+    "ok": true,
+    "normalized": "https://dept.example.edu/study",
+    "category": "official_page"
+   },
+   "ruleId": "EVID-URL-1",
+   "category": "good"
+  },
+  {
+   "id": "ev-011",
+   "url": "https://www.example-news.org/story/1",
+   "expected": {
+    "ok": true,
+    "normalized": "https://www.example-news.org/story/1",
+    "category": "news"
+   },
+   "ruleId": "EVID-URL-1",
+   "category": "good"
+  },
+  {
+   "id": "ev-012",
+   "url": "https://www.bbc.co.uk/news/x",
+   "expected": {
+    "ok": true,
+    "normalized": "https://www.bbc.co.uk/news/x",
+    "category": "news"
+   },
+   "ruleId": "EVID-URL-1",
+   "category": "good"
+  },
+  {
+   "id": "ev-013",
+   "url": "https://example.org:8443/x",
+   "expected": {
+    "ok": true,
+    "normalized": "https://example.org:8443/x",
+    "category": "other"
+   },
+   "ruleId": "EVID-URL-1",
+   "category": "good"
+  },
+  {
+   "id": "ev-014",
+   "url": "https://example.org/x#section",
+   "expected": {
+    "ok": true,
+    "normalized": "https://example.org/x#section",
+    "category": "other"
+   },
+   "ruleId": "EVID-URL-1",
+   "category": "good"
+  },
+  {
+   "id": "ev-015",
+   "url": "https://notbbc.com/x",
+   "expected": {
+    "ok": true,
+    "normalized": "https://notbbc.com/x",
+    "category": "other"
+   },
+   "ruleId": "EVID-URL-1",
+   "category": "good"
+  },
+  {
+   "id": "ev-016",
+   "url": "http://example.org/plain",
+   "expected": {
+    "ok": false,
+    "reason": "scheme"
+   },
+   "ruleId": "EVID-URL-1",
+   "category": "bad"
+  },
+  {
+   "id": "ev-017",
+   "url": "javascript:alert(1)",
+   "expected": {
+    "ok": false,
+    "reason": "scheme"
+   },
+   "ruleId": "EVID-URL-1",
+   "category": "bad"
+  },
+  {
+   "id": "ev-018",
+   "url": "data:text/html,hello",
+   "expected": {
+    "ok": false,
+    "reason": "scheme"
+   },
+   "ruleId": "EVID-URL-1",
+   "category": "bad"
+  },
+  {
+   "id": "ev-019",
+   "url": "file:///etc/passwd",
+   "expected": {
+    "ok": false,
+    "reason": "scheme"
+   },
+   "ruleId": "EVID-URL-1",
+   "category": "bad"
+  },
+  {
+   "id": "ev-020",
+   "url": "ftp://example.org/f",
+   "expected": {
+    "ok": false,
+    "reason": "scheme"
+   },
+   "ruleId": "EVID-URL-1",
+   "category": "bad"
+  },
+  {
+   "id": "ev-021",
+   "url": "https://user:pass@example.org/",
+   "expected": {
+    "ok": false,
+    "reason": "credentials"
+   },
+   "ruleId": "EVID-URL-1",
+   "category": "bad"
+  },
+  {
+   "id": "ev-022",
+   "url": "https://user@example.org/",
+   "expected": {
+    "ok": false,
+    "reason": "credentials"
+   },
+   "ruleId": "EVID-URL-1",
+   "category": "bad"
+  },
+  {
+   "id": "ev-023",
+   "url": "https://localhost/x",
+   "expected": {
+    "ok": false,
+    "reason": "host"
+   },
+   "ruleId": "EVID-URL-1",
+   "category": "bad"
+  },
+  {
+   "id": "ev-024",
+   "url": "https://intranet/x",
+   "expected": {
+    "ok": false,
+    "reason": "host"
+   },
+   "ruleId": "EVID-URL-1",
+   "category": "bad"
+  },
+  {
+   "id": "ev-025",
+   "url": "https://127.0.0.1/x",
+   "expected": {
+    "ok": false,
+    "reason": "ip_literal"
+   },
+   "ruleId": "EVID-URL-1",
+   "category": "bad"
+  },
+  {
+   "id": "ev-026",
+   "url": "https://10.0.0.5/x",
+   "expected": {
+    "ok": false,
+    "reason": "ip_literal"
+   },
+   "ruleId": "EVID-URL-1",
+   "category": "bad"
+  },
+  {
+   "id": "ev-027",
+   "url": "https://192.168.1.1/x",
+   "expected": {
+    "ok": false,
+    "reason": "ip_literal"
+   },
+   "ruleId": "EVID-URL-1",
+   "category": "bad"
+  },
+  {
+   "id": "ev-028",
+   "url": "https://[::1]/x",
+   "expected": {
+    "ok": false,
+    "reason": "ip_literal"
+   },
+   "ruleId": "EVID-URL-1",
+   "category": "bad"
+  },
+  {
+   "id": "ev-029",
+   "url": "https://2130706433/x",
+   "expected": {
+    "ok": false,
+    "reason": "ip_literal"
+   },
+   "ruleId": "EVID-URL-1",
+   "category": "bad"
+  },
+  {
+   "id": "ev-030",
+   "url": "https://printer.local/x",
+   "expected": {
+    "ok": false,
+    "reason": "local_host"
+   },
+   "ruleId": "EVID-URL-1",
+   "category": "bad"
+  },
+  {
+   "id": "ev-031",
+   "url": "https://xn--exmple-cua.org/x",
+   "expected": {
+    "ok": false,
+    "reason": "punycode"
+   },
+   "ruleId": "EVID-URL-1",
+   "category": "bad"
+  },
+  {
+   "id": "ev-032",
+   "url": "https://example.org/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+   "expected": {
+    "ok": false,
+    "reason": "length"
+   },
+   "ruleId": "EVID-URL-1",
+   "category": "bad"
+  },
+  {
+   "id": "ev-033",
+   "url": "",
+   "expected": {
+    "ok": false,
+    "reason": "length"
+   },
+   "ruleId": "EVID-URL-1",
+   "category": "bad"
+  },
+  {
+   "id": "ev-034",
+   "url": "not a url",
+   "expected": {
+    "ok": false,
+    "reason": "unparseable"
+   },
+   "ruleId": "EVID-URL-1",
+   "category": "bad"
+  },
+  {
+   "id": "ev-035",
+   "url": "https://",
+   "expected": {
+    "ok": false,
+    "reason": "unparseable"
+   },
+   "ruleId": "EVID-URL-1",
+   "category": "bad"
+  }
+ ]
+}
