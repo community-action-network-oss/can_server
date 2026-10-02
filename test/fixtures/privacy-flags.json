@@ -1,0 +1,966 @@
+{
+ "version": 1,
+ "rows": [
+  {
+   "id": "pv-001",
+   "text": "Please ask Dana Okoro about the bus stop.",
+   "expected": [
+    {
+     "kind": "person_name",
+     "start": 11,
+     "end": 21
+    }
+   ],
+   "ruleId": "NAME-1",
+   "category": "positive",
+   "note": "plain two-word name, opener stripped"
+  },
+  {
+   "id": "pv-002",
+   "text": "Mr Okoro blocked the drain.",
+   "expected": [
+    {
+     "kind": "person_name",
+     "start": 0,
+     "end": 8
+    }
+   ],
+   "ruleId": "NAME-1",
+   "category": "positive",
+   "note": "title plus surname"
+  },
+  {
+   "id": "pv-003",
+   "text": "Dr. Lena Varga signed the notice.",
+   "expected": [
+    {
+     "kind": "person_name",
+     "start": 0,
+     "end": 14
+    }
+   ],
+   "ruleId": "NAME-1",
+   "category": "positive",
+   "note": "title with dot"
+  },
+  {
+   "id": "pv-004",
+   "text": "Cllr Ravi Stone promised repairs.",
+   "expected": [
+    {
+     "kind": "person_name",
+     "start": 0,
+     "end": 15
+    }
+   ],
+   "ruleId": "NAME-1",
+   "category": "positive",
+   "note": "councillor abbreviation"
+  },
+  {
+   "id": "pv-005",
+   "text": "Mayor Dana Okoro cut the ribbon.",
+   "expected": [
+    {
+     "kind": "person_name",
+     "start": 0,
+     "end": 16
+    }
+   ],
+   "ruleId": "NAME-1",
+   "category": "positive",
+   "note": "role plus name gets a NAME-1 office suggestion"
+  },
+  {
+   "id": "pv-006",
+   "text": "Councillor Priya Nair did not reply.",
+   "expected": [
+    {
+     "kind": "person_name",
+     "start": 0,
+     "end": 21
+    }
+   ],
+   "ruleId": "NAME-1",
+   "category": "positive",
+   "note": "role word plus name"
+  },
+  {
+   "id": "pv-007",
+   "text": "Ms Okoro and Mrs Varga attended.",
+   "expected": [
+    {
+     "kind": "person_name",
+     "start": 0,
+     "end": 8
+    },
+    {
+     "kind": "person_name",
+     "start": 13,
+     "end": 22
+    }
+   ],
+   "ruleId": "NAME-1",
+   "category": "positive",
+   "note": "two titled names"
+  },
+  {
+   "id": "pv-008",
+   "text": "Sam Whitlock lives upstairs and the lift is broken.",
+   "expected": [
+    {
+     "kind": "person_name",
+     "start": 0,
+     "end": 12
+    }
+   ],
+   "ruleId": "NAME-1",
+   "category": "positive",
+   "note": "name at sentence start"
+  },
+  {
+   "id": "pv-009",
+   "text": "Yesterday Sam Whitlock fixed it.",
+   "expected": [
+    {
+     "kind": "person_name",
+     "start": 10,
+     "end": 22
+    }
+   ],
+   "ruleId": "NAME-1",
+   "category": "positive",
+   "note": "leading calendar word is not part of the name"
+  },
+  {
+   "id": "pv-010",
+   "text": "Sam Whitlock and Dana Okoro share the allotment.",
+   "expected": [
+    {
+     "kind": "person_name",
+     "start": 0,
+     "end": 12
+    },
+    {
+     "kind": "person_name",
+     "start": 17,
+     "end": 27
+    }
+   ],
+   "ruleId": "NAME-1",
+   "category": "positive",
+   "note": "two names in one sentence"
+  },
+  {
+   "id": "pv-011",
+   "text": "Mr and Mrs Okoro asked.",
+   "expected": [
+    {
+     "kind": "person_name",
+     "start": 7,
+     "end": 16
+    }
+   ],
+   "ruleId": "NAME-1",
+   "category": "positive",
+   "note": "honest partial: Mr is not attached to a name"
+  },
+  {
+   "id": "pv-012",
+   "text": "The pothole is outside the shop.",
+   "expected": [],
+   "ruleId": "NAME-1",
+   "category": "negative",
+   "note": "no capitalised run"
+  },
+  {
+   "id": "pv-013",
+   "text": "Streetlights on Elm Street are out.",
+   "expected": [],
+   "ruleId": "NAME-1",
+   "category": "negative",
+   "note": "street name without a number is not a person"
+  },
+  {
+   "id": "pv-014",
+   "text": "The Mayor of Eastvale has not answered.",
+   "expected": [],
+   "ruleId": "NAME-1",
+   "category": "negative",
+   "note": "role alias must not flag"
+  },
+  {
+   "id": "pv-015",
+   "text": "Contact the Mayor's office in Eastvale.",
+   "expected": [],
+   "ruleId": "NAME-1",
+   "category": "negative",
+   "note": "role alias with possessive must not flag"
+  },
+  {
+   "id": "pv-016",
+   "text": "Eastvale Council closed the Water Department office.",
+   "expected": [],
+   "ruleId": "NAME-1",
+   "category": "negative",
+   "note": "institutions must not flag"
+  },
+  {
+   "id": "pv-017",
+   "text": "Northside Hospital and Hillcrest School share a Bus Station.",
+   "expected": [],
+   "ruleId": "NAME-1",
+   "category": "negative",
+   "note": "institution allowlist"
+  },
+  {
+   "id": "pv-018",
+   "text": "The Ministry of Transport and the Planning Authority were told.",
+   "expected": [],
+   "ruleId": "NAME-1",
+   "category": "negative",
+   "note": "institutions with of-phrases"
+  },
+  {
+   "id": "pv-019",
+   "text": "Eastvale Housing Office is closed on Fridays.",
+   "expected": [],
+   "ruleId": "NAME-1",
+   "category": "negative",
+   "note": "institution at sentence start"
+  },
+  {
+   "id": "pv-020",
+   "text": "The Director of Roads replied.",
+   "expected": [],
+   "ruleId": "NAME-1",
+   "category": "negative",
+   "note": "role alias without a name"
+  },
+  {
+   "id": "pv-021",
+   "text": "Fixing the road is urgent.",
+   "expected": [],
+   "ruleId": "NAME-1",
+   "category": "negative",
+   "note": "single capitalised sentence opener"
+  },
+  {
+   "id": "pv-022",
+   "text": "Councillors voted for the repair.",
+   "expected": [],
+   "ruleId": "NAME-1",
+   "category": "negative",
+   "note": "role plural without a name"
+  },
+  {
+   "id": "pv-023",
+   "text": "I think Dana Okoro dumped the waste.",
+   "expected": [
+    {
+     "kind": "first_person_about_named",
+     "start": 0,
+     "end": 18
+    },
+    {
+     "kind": "person_name",
+     "start": 8,
+     "end": 18
+    }
+   ],
+   "ruleId": "NAME-1",
+   "category": "positive",
+   "note": "first person near a named person"
+  },
+  {
+   "id": "pv-024",
+   "text": "My neighbour Sam Whitlock plays loud music.",
+   "expected": [
+    {
+     "kind": "first_person_about_named",
+     "start": 0,
+     "end": 25
+    },
+    {
+     "kind": "person_name",
+     "start": 13,
+     "end": 25
+    }
+   ],
+   "ruleId": "NAME-1",
+   "category": "positive",
+   "note": "possessive first person near a named person"
+  },
+  {
+   "id": "pv-025",
+   "text": "I think the bins are overflowing.",
+   "expected": [],
+   "ruleId": "NAME-1",
+   "category": "negative",
+   "note": "first person without a name"
+  },
+  {
+   "id": "pv-026",
+   "text": "I walked to the corner and saw nothing. Dana Okoro was away.",
+   "expected": [
+    {
+     "kind": "person_name",
+     "start": 40,
+     "end": 50
+    }
+   ],
+   "ruleId": "NAME-1",
+   "category": "positive",
+   "note": "sentence boundary stops the first-person link"
+  },
+  {
+   "id": "pv-027",
+   "text": "Call 555-0100 after noon.",
+   "expected": [
+    {
+     "kind": "phone",
+     "start": 5,
+     "end": 13
+    }
+   ],
+   "ruleId": "PRIV-GATE-1",
+   "category": "positive",
+   "note": "seven digit local number"
+  },
+  {
+   "id": "pv-028",
+   "text": "Call (555) 010-0123 now.",
+   "expected": [
+    {
+     "kind": "phone",
+     "start": 5,
+     "end": 19
+    }
+   ],
+   "ruleId": "PRIV-GATE-1",
+   "category": "positive",
+   "note": "parenthesised area code"
+  },
+  {
+   "id": "pv-029",
+   "text": "Ring +44 20 7946 0123 today.",
+   "expected": [
+    {
+     "kind": "phone",
+     "start": 5,
+     "end": 21
+    }
+   ],
+   "ruleId": "PRIV-GATE-1",
+   "category": "positive",
+   "note": "country prefix, reserved drama range"
+  },
+  {
+   "id": "pv-030",
+   "text": "Text 555.010.0142 please.",
+   "expected": [
+    {
+     "kind": "phone",
+     "start": 5,
+     "end": 17
+    }
+   ],
+   "ruleId": "PRIV-GATE-1",
+   "category": "positive",
+   "note": "dotted groups"
+  },
+  {
+   "id": "pv-031",
+   "text": "Spaced: 5 5 5 . 0 1 0 0 works.",
+   "expected": [
+    {
+     "kind": "phone",
+     "start": 8,
+     "end": 23
+    }
+   ],
+   "ruleId": "PRIV-GATE-1",
+   "category": "adversarial",
+   "note": "spaced and dotted digit run"
+  },
+  {
+   "id": "pv-032",
+   "text": "Dial five five five zero one zero zero.",
+   "expected": [
+    {
+     "kind": "phone",
+     "start": 5,
+     "end": 38
+    }
+   ],
+   "ruleId": "PRIV-GATE-1",
+   "category": "adversarial",
+   "note": "spelled digits"
+  },
+  {
+   "id": "pv-033",
+   "text": "Dial 555 zero one two three.",
+   "expected": [
+    {
+     "kind": "phone",
+     "start": 5,
+     "end": 27
+    }
+   ],
+   "ruleId": "PRIV-GATE-1",
+   "category": "adversarial",
+   "note": "digits mixed with spelled digits"
+  },
+  {
+   "id": "pv-034",
+   "text": "Call \uff15\uff15\uff15-\uff10\uff11\uff10\uff10 now.",
+   "expected": [
+    {
+     "kind": "phone",
+     "start": 5,
+     "end": 13
+    }
+   ],
+   "ruleId": "PRIV-GATE-1",
+   "category": "adversarial",
+   "note": "fullwidth digits, span in original text"
+  },
+  {
+   "id": "pv-035",
+   "text": "Call 555\u200b-0100 now.",
+   "expected": [
+    {
+     "kind": "phone",
+     "start": 5,
+     "end": 14
+    }
+   ],
+   "ruleId": "PRIV-GATE-1",
+   "category": "adversarial",
+   "note": "zero-width character inside number"
+  },
+  {
+   "id": "pv-036",
+   "text": "Call 555-O1O0 now.",
+   "expected": [
+    {
+     "kind": "phone",
+     "start": 5,
+     "end": 13
+    }
+   ],
+   "ruleId": "PRIV-GATE-1",
+   "category": "adversarial",
+   "note": "letter O as zero"
+  },
+  {
+   "id": "pv-037",
+   "text": "\u0627\u062a\u0635\u0644 \u0665\u0665\u0665\u0660\u0661\u0660\u0660",
+   "expected": [
+    {
+     "kind": "phone",
+     "start": 5,
+     "end": 12
+    }
+   ],
+   "ruleId": "PRIV-GATE-1",
+   "category": "multilingual",
+   "note": "Arabic-Indic digits after an Arabic word"
+  },
+  {
+   "id": "pv-038",
+   "text": "Reach 5.5.5.0.1.0.0 any time.",
+   "expected": [
+    {
+     "kind": "phone",
+     "start": 6,
+     "end": 19
+    }
+   ],
+   "ruleId": "PRIV-GATE-1",
+   "category": "adversarial",
+   "note": "dot-separated digits"
+  },
+  {
+   "id": "pv-039",
+   "text": "The meeting is on 2026-10-02 at noon.",
+   "expected": [],
+   "ruleId": "PRIV-GATE-1",
+   "category": "negative",
+   "note": "ISO date is not a phone"
+  },
+  {
+   "id": "pv-040",
+   "text": "We need 3 or 4 benches and 12 bins.",
+   "expected": [],
+   "ruleId": "PRIV-GATE-1",
+   "category": "negative",
+   "note": "small numbers"
+  },
+  {
+   "id": "pv-041",
+   "text": "Population is 1,200 and rising 15 percent.",
+   "expected": [],
+   "ruleId": "PRIV-GATE-1",
+   "category": "negative",
+   "note": "thousands separator"
+  },
+  {
+   "id": "pv-042",
+   "text": "Write to sam.whitlock@example.org for details.",
+   "expected": [
+    {
+     "kind": "email",
+     "start": 9,
+     "end": 33
+    }
+   ],
+   "ruleId": "PRIV-GATE-1",
+   "category": "positive",
+   "note": "plain email"
+  },
+  {
+   "id": "pv-043",
+   "text": "Write to name at example dot test please.",
+   "expected": [
+    {
+     "kind": "email",
+     "start": 9,
+     "end": 33
+    }
+   ],
+   "ruleId": "PRIV-GATE-1",
+   "category": "adversarial",
+   "note": "spelled-out email"
+  },
+  {
+   "id": "pv-044",
+   "text": "Mail sam[at]example[dot]test now.",
+   "expected": [
+    {
+     "kind": "email",
+     "start": 5,
+     "end": 28
+    }
+   ],
+   "ruleId": "PRIV-GATE-1",
+   "category": "adversarial",
+   "note": "bracket-obfuscated email"
+  },
+  {
+   "id": "pv-045",
+   "text": "Meet me at the park dot to dot.",
+   "expected": [],
+   "ruleId": "PRIV-GATE-1",
+   "category": "negative",
+   "note": "at and dot words without a domain shape"
+  },
+  {
+   "id": "pv-046",
+   "text": "Escribe a ana@example.org por favor.",
+   "expected": [
+    {
+     "kind": "email",
+     "start": 10,
+     "end": 25
+    }
+   ],
+   "ruleId": "PRIV-GATE-1",
+   "category": "multilingual",
+   "note": "Spanish text around an email"
+  },
+  {
+   "id": "pv-047",
+   "text": "Write sam@exa\u200bmple.org today.",
+   "expected": [
+    {
+     "kind": "email",
+     "start": 6,
+     "end": 22
+    }
+   ],
+   "ruleId": "PRIV-GATE-1",
+   "category": "adversarial",
+   "note": "zero-width inside domain"
+  },
+  {
+   "id": "pv-048",
+   "text": "Write \uff53\uff41\uff4d\uff20example.org today.",
+   "expected": [
+    {
+     "kind": "email",
+     "start": 6,
+     "end": 21
+    }
+   ],
+   "ruleId": "PRIV-GATE-1",
+   "category": "adversarial",
+   "note": "fullwidth local part and at sign"
+  },
+  {
+   "id": "pv-049",
+   "text": "My number is 555-0101 and my email is sam@example.org.",
+   "expected": [
+    {
+     "kind": "phone",
+     "start": 13,
+     "end": 21
+    },
+    {
+     "kind": "email",
+     "start": 38,
+     "end": 53
+    }
+   ],
+   "ruleId": "PRIV-GATE-1",
+   "category": "positive",
+   "note": "phone and email together, no name so no first-person flag"
+  },
+  {
+   "id": "pv-050",
+   "text": "Her ref is ABC-123456 on file.",
+   "expected": [
+    {
+     "kind": "government_id",
+     "start": 11,
+     "end": 21
+    }
+   ],
+   "ruleId": "PRIV-GATE-1",
+   "category": "positive",
+   "note": "generic fictional id shape"
+  },
+  {
+   "id": "pv-051",
+   "text": "Passport number 123456789 was lost.",
+   "expected": [
+    {
+     "kind": "government_id",
+     "start": 16,
+     "end": 25
+    }
+   ],
+   "ruleId": "PRIV-GATE-1",
+   "category": "positive",
+   "note": "labelled nine digit run"
+  },
+  {
+   "id": "pv-052",
+   "text": "SSN: 987654321 appears here.",
+   "expected": [
+    {
+     "kind": "government_id",
+     "start": 5,
+     "end": 14
+    }
+   ],
+   "ruleId": "PRIV-GATE-1",
+   "category": "positive",
+   "note": "labelled ssn"
+  },
+  {
+   "id": "pv-053",
+   "text": "Case 12345 is open.",
+   "expected": [],
+   "ruleId": "PRIV-GATE-1",
+   "category": "negative",
+   "note": "short number"
+  },
+  {
+   "id": "pv-054",
+   "text": "He lives at 12 Elm Street near the park.",
+   "expected": [
+    {
+     "kind": "street_address",
+     "start": 12,
+     "end": 25
+    }
+   ],
+   "ruleId": "PRIV-GATE-1",
+   "category": "positive",
+   "note": "number plus street"
+  },
+  {
+   "id": "pv-055",
+   "text": "Flat 5 Old Mill Lane is flooded.",
+   "expected": [
+    {
+     "kind": "street_address",
+     "start": 5,
+     "end": 20
+    }
+   ],
+   "ruleId": "PRIV-GATE-1",
+   "category": "positive",
+   "note": "two-word street name"
+  },
+  {
+   "id": "pv-056",
+   "text": "Meet at 221 Baker Rd tonight.",
+   "expected": [
+    {
+     "kind": "street_address",
+     "start": 8,
+     "end": 20
+    }
+   ],
+   "ruleId": "PRIV-GATE-1",
+   "category": "positive",
+   "note": "abbreviated suffix"
+  },
+  {
+   "id": "pv-057",
+   "text": "Visit 7 Orchard Close.",
+   "expected": [
+    {
+     "kind": "street_address",
+     "start": 6,
+     "end": 21
+    }
+   ],
+   "ruleId": "PRIV-GATE-1",
+   "category": "positive",
+   "note": "close suffix"
+  },
+  {
+   "id": "pv-058",
+   "text": "3 cats on the road were hurt.",
+   "expected": [],
+   "ruleId": "PRIV-GATE-1",
+   "category": "negative",
+   "note": "number and road without a street name"
+  },
+  {
+   "id": "pv-059",
+   "text": "Elm Street has no lights.",
+   "expected": [],
+   "ruleId": "PRIV-GATE-1",
+   "category": "negative",
+   "note": "street without a number is not an address"
+  },
+  {
+   "id": "pv-060",
+   "text": "Van AB 1234 blocked the drive.",
+   "expected": [
+    {
+     "kind": "vehicle_plate",
+     "start": 4,
+     "end": 11
+    }
+   ],
+   "ruleId": "PRIV-GATE-1",
+   "category": "positive",
+   "note": "two letters four digits"
+  },
+  {
+   "id": "pv-061",
+   "text": "Plate XYZ-987 was parked here.",
+   "expected": [
+    {
+     "kind": "vehicle_plate",
+     "start": 6,
+     "end": 13
+    }
+   ],
+   "ruleId": "PRIV-GATE-1",
+   "category": "positive",
+   "note": "three letters three digits"
+  },
+  {
+   "id": "pv-062",
+   "text": "Standard ISO 9001 applies.",
+   "expected": [],
+   "ruleId": "PRIV-GATE-1",
+   "category": "negative",
+   "note": "standard code is not a plate"
+  },
+  {
+   "id": "pv-063",
+   "text": "Bus 42 is late.",
+   "expected": [],
+   "ruleId": "PRIV-GATE-1",
+   "category": "negative",
+   "note": "route number"
+  },
+  {
+   "id": "pv-064",
+   "text": "\u0642\u0627\u0644 Sam Whitlock \u0625\u0646 \u0627\u0644\u062c\u0633\u0631 \u0645\u063a\u0644\u0642",
+   "expected": [
+    {
+     "kind": "person_name",
+     "start": 4,
+     "end": 16
+    }
+   ],
+   "ruleId": "NAME-1",
+   "category": "multilingual",
+   "note": "Arabic around a Latin name"
+  },
+  {
+   "id": "pv-065",
+   "text": "\u05d4\u05db\u05ea\u05d5\u05d1\u05ea \u05e9\u05dc Dana Okoro \u05dc\u05d0 \u05e0\u05db\u05d5\u05e0\u05d4",
+   "expected": [
+    {
+     "kind": "person_name",
+     "start": 10,
+     "end": 20
+    }
+   ],
+   "ruleId": "NAME-1",
+   "category": "multilingual",
+   "note": "Hebrew around a Latin name"
+  },
+  {
+   "id": "pv-066",
+   "text": "\u0627\u0644\u062c\u0633\u0631 \u0645\u063a\u0644\u0642 \u0645\u0646\u0630 \u0623\u0633\u0628\u0648\u0639",
+   "expected": [],
+   "ruleId": "NAME-1",
+   "category": "multilingual",
+   "note": "Arabic only, must not crash or flag"
+  },
+  {
+   "id": "pv-067",
+   "text": "El alcalde de Eastvale no respondi\u00f3.",
+   "expected": [],
+   "ruleId": "NAME-1",
+   "category": "multilingual",
+   "note": "Spanish role alias"
+  },
+  {
+   "id": "pv-068",
+   "text": "Appel de Jos\u00e9 \u00c1lvarez hier.",
+   "expected": [
+    {
+     "kind": "person_name",
+     "start": 9,
+     "end": 21
+    }
+   ],
+   "ruleId": "NAME-1",
+   "category": "multilingual",
+   "note": "accented name"
+  },
+  {
+   "id": "pv-069",
+   "text": "\u684b\u5df2\u7ecf\u5173\u95ed\u4e09\u4e2a\u6708\u4e86",
+   "expected": [],
+   "ruleId": "NAME-1",
+   "category": "multilingual",
+   "note": "Chinese text must not crash"
+  },
+  {
+   "id": "pv-070",
+   "text": "\u041c\u043e\u0441\u0442 \u0437\u0430\u043a\u0440\u044b\u0442 \u0443\u0436\u0435 \u0442\u0440\u0438 \u043c\u0435\u0441\u044f\u0446\u0430",
+   "expected": [],
+   "ruleId": "NAME-1",
+   "category": "multilingual",
+   "note": "Cyrillic only"
+  },
+  {
+   "id": "pv-071",
+   "text": "\u0418\u0432\u0430\u043d \u041f\u0435\u0442\u0440\u043e\u0432 \u0436\u0438\u043b \u0437\u0434\u0435\u0441\u044c",
+   "expected": [
+    {
+     "kind": "person_name",
+     "start": 0,
+     "end": 11
+    }
+   ],
+   "ruleId": "NAME-1",
+   "category": "multilingual",
+   "note": "Cyrillic name"
+  },
+  {
+   "id": "pv-072",
+   "text": "\ud83d\udea7\ud83d\udea7 Road closed \u2602",
+   "expected": [],
+   "ruleId": "NAME-1",
+   "category": "multilingual",
+   "note": "emoji and symbols"
+  },
+  {
+   "id": "pv-073",
+   "text": "",
+   "expected": [],
+   "ruleId": "NAME-1",
+   "category": "multilingual",
+   "note": "empty string"
+  },
+  {
+   "id": "pv-074",
+   "text": "Sam\u200b Whitlock lives upstairs.",
+   "expected": [
+    {
+     "kind": "person_name",
+     "start": 0,
+     "end": 13
+    }
+   ],
+   "ruleId": "NAME-1",
+   "category": "adversarial",
+   "note": "zero-width inside the gap, span in original text"
+  },
+  {
+   "id": "pv-075",
+   "text": "Appel de Jose\u0301 Alvarez hier.",
+   "expected": [
+    {
+     "kind": "person_name",
+     "start": 9,
+     "end": 22
+    }
+   ],
+   "ruleId": "NAME-1",
+   "category": "adversarial",
+   "note": "decomposed accent, span in original text"
+  },
+  {
+   "id": "pv-076",
+   "text": "DANA OKORO dumped the waste.",
+   "expected": [],
+   "ruleId": "NAME-1",
+   "category": "known_gap",
+   "note": "all-caps name is not detected"
+  },
+  {
+   "id": "pv-077",
+   "text": "dana okoro dumped the waste.",
+   "expected": [],
+   "ruleId": "NAME-1",
+   "category": "known_gap",
+   "note": "lowercase name is not detected"
+  },
+  {
+   "id": "pv-078",
+   "text": "Dana from number four was rude.",
+   "expected": [],
+   "ruleId": "NAME-1",
+   "category": "known_gap",
+   "note": "single first name is not detected"
+  },
+  {
+   "id": "pv-079",
+   "text": "The only red house at the end of the road is where he lives.",
+   "expected": [],
+   "ruleId": "NAME-1",
+   "category": "known_gap",
+   "note": "indirect identifier"
+  },
+  {
+   "id": "pv-080",
+   "text": "The woman who runs the bakery on the corner shouted at us.",
+   "expected": [],
+   "ruleId": "NAME-1",
+   "category": "known_gap",
+   "note": "indirect identifier by role and place"
+  },
+  {
+   "id": "pv-081",
+   "text": "He lives at 12 elm street.",
+   "expected": [],
+   "ruleId": "PRIV-GATE-1",
+   "category": "known_gap",
+   "note": "lowercase street address is not detected"
+  }
+ ]
+}
