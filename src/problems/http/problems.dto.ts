@@ -73,3 +73,69 @@ export class ListProblemsQueryDto {
   @MaxLength(200)
   q?: string;
 }
+
+export class TombstoneDto {
+  @ApiProperty({ enum: [true] }) tombstone!: true;
+  @ApiProperty() tombstonedAt!: string;
+  @ApiProperty({ type: String, nullable: true }) reason!: string | null;
+}
+
+const NS = { type: String, nullable: true } as const;
+
+/** Detail view. Initiator-authored text is null when tombstoned (OWN-1). Never email, review content or payloads. */
+export class ProblemDetailDto {
+  @ApiProperty() id!: string;
+  @ApiProperty() state!: string;
+  @ApiProperty() label!: string;
+  @ApiProperty() explanation!: string;
+  @ApiProperty() nextAction!: string;
+  @ApiProperty(NS) policyVersion!: string | null;
+  @ApiProperty() transitional!: boolean;
+  @ApiProperty() reopened!: boolean;
+  @ApiProperty(NS) title!: string | null;
+  @ApiProperty(NS) condition!: string | null;
+  @ApiProperty(NS) affected!: string | null;
+  @ApiProperty(NS) coarseArea!: string | null;
+  @ApiProperty(NS) observed!: string | null;
+  @ApiProperty(NS) uncertain!: string | null;
+  @ApiProperty(NS) desiredOutcome!: string | null;
+  @ApiProperty(NS) jurisdiction!: string | null;
+  @ApiProperty() investigationNeeded!: boolean;
+  @ApiProperty(NS) publishedAt!: string | null;
+  @ApiProperty(NS) authorHandle!: string | null;
+  @ApiProperty(NS) pauseReason!: string | null;
+  @ApiProperty(NS) resumeCondition!: string | null;
+  @ApiProperty(NS) duplicateOf!: string | null;
+  @ApiProperty({ description: 'A count only; review content is never public.' })
+  reviewCount!: number;
+  @ApiProperty() isSeed!: boolean;
+  @ApiProperty() syntheticEvidence!: boolean;
+  @ApiProperty({ type: HelpNeededDto }) help_needed!: HelpNeededDto;
+  @ApiProperty({ type: TombstoneDto, nullable: true })
+  tombstone!: TombstoneDto | null;
+}
+
+export class ProblemEventDto {
+  @ApiProperty() id!: string;
+  @ApiProperty() type!: string;
+  @ApiProperty(NS) fromState!: string | null;
+  @ApiProperty(NS) toState!: string | null;
+  @ApiProperty(NS) reason!: string | null;
+  @ApiProperty() occurredAt!: string;
+  @ApiProperty({ ...NS, description: 'Handle, only for public event types.' })
+  actor!: string | null;
+}
+
+export class ProblemEventPageDto {
+  @ApiProperty({ type: [ProblemEventDto] }) items!: ProblemEventDto[];
+  @ApiProperty(NS) nextCursor!: string | null;
+}
+
+export class EventsQueryDto {
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsString()
+  @MaxLength(512)
+  cursor?: string;
+  @ApiPropertyOptional() @IsOptional() @IsString() limit?: string;
+}

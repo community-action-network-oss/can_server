@@ -236,6 +236,201 @@
         ],
         "type": "object"
       },
+      "ProblemDetailDto": {
+        "properties": {
+          "affected": {
+            "nullable": true,
+            "type": "string"
+          },
+          "authorHandle": {
+            "nullable": true,
+            "type": "string"
+          },
+          "coarseArea": {
+            "nullable": true,
+            "type": "string"
+          },
+          "condition": {
+            "nullable": true,
+            "type": "string"
+          },
+          "desiredOutcome": {
+            "nullable": true,
+            "type": "string"
+          },
+          "duplicateOf": {
+            "nullable": true,
+            "type": "string"
+          },
+          "explanation": {
+            "type": "string"
+          },
+          "help_needed": {
+            "$ref": "#/components/schemas/HelpNeededDto"
+          },
+          "id": {
+            "type": "string"
+          },
+          "investigationNeeded": {
+            "type": "boolean"
+          },
+          "isSeed": {
+            "type": "boolean"
+          },
+          "jurisdiction": {
+            "nullable": true,
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "nextAction": {
+            "type": "string"
+          },
+          "observed": {
+            "nullable": true,
+            "type": "string"
+          },
+          "pauseReason": {
+            "nullable": true,
+            "type": "string"
+          },
+          "policyVersion": {
+            "nullable": true,
+            "type": "string"
+          },
+          "publishedAt": {
+            "nullable": true,
+            "type": "string"
+          },
+          "reopened": {
+            "type": "boolean"
+          },
+          "resumeCondition": {
+            "nullable": true,
+            "type": "string"
+          },
+          "reviewCount": {
+            "description": "A count only; review content is never public.",
+            "type": "number"
+          },
+          "state": {
+            "type": "string"
+          },
+          "syntheticEvidence": {
+            "type": "boolean"
+          },
+          "title": {
+            "nullable": true,
+            "type": "string"
+          },
+          "tombstone": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TombstoneDto"
+              }
+            ],
+            "nullable": true,
+            "type": "object"
+          },
+          "transitional": {
+            "type": "boolean"
+          },
+          "uncertain": {
+            "nullable": true,
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "state",
+          "label",
+          "explanation",
+          "nextAction",
+          "policyVersion",
+          "transitional",
+          "reopened",
+          "title",
+          "condition",
+          "affected",
+          "coarseArea",
+          "observed",
+          "uncertain",
+          "desiredOutcome",
+          "jurisdiction",
+          "investigationNeeded",
+          "publishedAt",
+          "authorHandle",
+          "pauseReason",
+          "resumeCondition",
+          "duplicateOf",
+          "reviewCount",
+          "isSeed",
+          "syntheticEvidence",
+          "help_needed",
+          "tombstone"
+        ],
+        "type": "object"
+      },
+      "ProblemEventDto": {
+        "properties": {
+          "actor": {
+            "description": "Handle, only for public event types.",
+            "nullable": true,
+            "type": "string"
+          },
+          "fromState": {
+            "nullable": true,
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "occurredAt": {
+            "type": "string"
+          },
+          "reason": {
+            "nullable": true,
+            "type": "string"
+          },
+          "toState": {
+            "nullable": true,
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "type",
+          "fromState",
+          "toState",
+          "reason",
+          "occurredAt",
+          "actor"
+        ],
+        "type": "object"
+      },
+      "ProblemEventPageDto": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/ProblemEventDto"
+            },
+            "type": "array"
+          },
+          "nextCursor": {
+            "nullable": true,
+            "type": "string"
+          }
+        },
+        "required": [
+          "items",
+          "nextCursor"
+        ],
+        "type": "object"
+      },
       "PublicProblemDto": {
         "properties": {
           "coarseArea": {
@@ -363,6 +558,29 @@
         },
         "required": [
           "accepted"
+        ],
+        "type": "object"
+      },
+      "TombstoneDto": {
+        "properties": {
+          "reason": {
+            "nullable": true,
+            "type": "string"
+          },
+          "tombstone": {
+            "enum": [
+              true
+            ],
+            "type": "boolean"
+          },
+          "tombstonedAt": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "tombstone",
+          "tombstonedAt",
+          "reason"
         ],
         "type": "object"
       },
@@ -1201,7 +1419,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PublicProblemDto"
+                  "$ref": "#/components/schemas/ProblemDetailDto"
                 }
               }
             },
@@ -1238,7 +1456,94 @@
             "description": ""
           }
         },
-        "summary": "One public problem with help_needed",
+        "summary": "One problem: public after publish, tombstone for withdrawn items, private drafts only to the initiator",
+        "tags": [
+          "problems"
+        ]
+      }
+    },
+    "/v1/problems/{id}/events": {
+      "get": {
+        "operationId": "listProblemEvents",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "cursor",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemEventPageDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "summary": "Timeline of a visible problem, oldest first; payloads are never returned",
         "tags": [
           "problems"
         ]

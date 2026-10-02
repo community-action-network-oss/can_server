@@ -1,9 +1,22 @@
-import { Controller, Get, Header, Inject, Param, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Header,
+  Inject,
+  Param,
+  Query,
+  Req,
+} from '@nestjs/common';
 import { inArray } from 'drizzle-orm';
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { and, desc, eq, isNotNull, lt, or, sql } from 'drizzle-orm';
+import { and, asc, desc, eq, gt, isNotNull, lt, or, sql } from 'drizzle-orm';
 import { DB, type Db } from '../../db/db.module.js';
-import { jurisdiction, problem } from '../../db/schema.js';
+import {
+  account,
+  jurisdiction,
+  problem,
+  problemEvent,
+} from '../../db/schema.js';
 import {
   isPublicState,
   activeLabel,
@@ -18,9 +31,14 @@ import {
   decodeCursor,
   encodeCursor,
 } from '../../platform/pagination.js';
+import type { AuthedRequest } from '../../platform/security/auth.guard.js';
+import type { AuthContext } from '../../platform/security/decorators.js';
 import { STAGE_CHIP, type StageChipPort } from '../app/stage-chip.port.js';
 import {
+  EventsQueryDto,
   ListProblemsQueryDto,
+  ProblemDetailDto,
+  ProblemEventPageDto,
   PublicProblemDto,
   PublicProblemPageDto,
 } from './problems.dto.js';
@@ -41,7 +59,7 @@ const toDto = (
   jurisdiction: jurisdictionName,
   coarseArea: r.coarseArea,
   investigationNeeded: r.investigationNeeded,
-  publishedAt: r.publishedAt!.toISOString(),
+  publishedAt: r.publishedAt?.toISOString() ?? '',
   // ponytail: no moderation run or reopen event exists yet; plan 09 / T20-T21 populate these.
   policyVersion: null,
   transitional: false,
@@ -52,6 +70,14 @@ const toDto = (
 });
 
 const PUBLIC_STATES = STATES.filter((s) => isPublicState(s));
+// Event types whose actor handle is public. Everything else shows no actor (default; widen with plan 03).
+const PUBLIC_ACTOR_EVENTS = new Set([
+  'published',
+  'solved',
+  'closed',
+  'redirected',
+  'reopened',
+]);
 const UUID = /^[0-9a-f-]{36}$/i;
 
 // Same answer for every caller: no session, no profile, no per-person variation (spec 26 section 4).
@@ -143,27 +169,157 @@ export class ProblemsController {
     };
   }
 
-  @Get(':id')
-  @ApiOperation({
-    operationId: 'getPublicProblem',
-    summary: 'One public problem with help_needed',
-  })
-  @ApiOkResponse({ type: PublicProblemDto })
-  @ApiErrors(404, 429, 500)
-  async get(@Param('id') id: string): Promise<PublicProblemDto> {
+  /** Public rule, or the initiator's own problem. Otherwise 404, so private existence never leaks. */
+  private async visible(id: string, auth?: AuthContext) {
     const [r] = UUID.test(id)
       ? await this.db
-          .select({ p: problem, j: jurisdiction.name })
+          .select({ p: problem, j: jurisdiction.name, h: account.handle })
           .from(problem)
           .leftJoin(jurisdiction, eq(jurisdiction.id, problem.jurisdictionId))
+          .leftJoin(account, eq(account.id, problem.initiatorId))
           .where(eq(problem.id, id))
       : [];
-    if (
-      !r ||
-      !r.p.publishedAt ||
-      !isPublicState(r.p.state as State, r.p.withdrawnPublished)
-    )
+    const isPublic =
+      !!r?.p.publishedAt &&
+      isPublicState(r.p.state as State, r.p.withdrawnPublished);
+    const own =
+      !!auth && !!r?.p.initiatorId && r.p.initiatorId === auth.accountId;
+    if (!r || !(isPublic || own))
       throw new ApiException(404, 'not_found', 'Problem not found');
-    return (await this.shape([r]))[0]!;
+    return r;
+  }
+
+  @Get(':id')
+  @Header('Cache-Control', 'private, no-cache')
+  @ApiOperation({
+    operationId: 'getPublicProblem',
+    summary:
+      'One problem: public after publish, tombstone for withdrawn items, private drafts only to the initiator',
+  })
+  @ApiOkResponse({ type: ProblemDetailDto })
+  @ApiErrors(404, 429, 500)
+  async get(
+    @Param('id') id: string,
+    @Req() req: AuthedRequest,
+  ): Promise<ProblemDetailDto> {
+    const { p, j, h } = await this.visible(id, req.auth);
+    const state = p.state as State;
+    const copy = STATE_COPY[state];
+    const stages = (await this.shape([{ p, j }]))[0]!;
+    const tomb = p.tombstonedAt;
+    const [t] = tomb
+      ? await this.db
+          .select({ reason: problemEvent.reason })
+          .from(problemEvent)
+          .where(
+            and(
+              eq(problemEvent.problemId, p.id),
+              eq(problemEvent.type, 'tombstoned'),
+            ),
+          )
+          .orderBy(desc(problemEvent.occurredAt))
+          .limit(1)
+      : [];
+    const text = (v: string | null) => (tomb ? null : v);
+    return {
+      id: p.id,
+      state: p.state,
+      label: stages.label,
+      explanation: copy.explanation
+        .replace('[reason]', p.pauseReason ?? '[reason]')
+        .replace('[condition]', p.resumeCondition ?? '[condition]'),
+      nextAction: copy.nextAction,
+      policyVersion: stages.policyVersion,
+      transitional: stages.transitional,
+      reopened: stages.reopened,
+      title: text(p.title),
+      condition: text(p.condition),
+      affected: text(p.affected),
+      coarseArea: p.coarseArea,
+      observed: text(p.observed),
+      uncertain: text(p.uncertain),
+      desiredOutcome: text(p.desiredOutcome),
+      jurisdiction: j,
+      investigationNeeded: p.investigationNeeded,
+      publishedAt: p.publishedAt?.toISOString() ?? null,
+      authorHandle: h,
+      pauseReason: text(p.pauseReason),
+      resumeCondition: text(p.resumeCondition),
+      duplicateOf: p.duplicateOf,
+      // ponytail: no review table yet (12-u03); the count is always 0 until it lands.
+      reviewCount: 0,
+      isSeed: p.isSeed,
+      syntheticEvidence: p.syntheticEvidence,
+      help_needed: p.helpNeeded,
+      tombstone: tomb
+        ? {
+            tombstone: true,
+            tombstonedAt: tomb.toISOString(),
+            reason: t?.reason ?? null,
+          }
+        : null,
+    };
+  }
+
+  @Get(':id/events')
+  @Header('Cache-Control', 'private, no-cache')
+  @ApiOperation({
+    operationId: 'listProblemEvents',
+    summary:
+      'Timeline of a visible problem, oldest first; payloads are never returned',
+  })
+  @ApiOkResponse({ type: ProblemEventPageDto })
+  @ApiErrors(400, 404, 429, 500)
+  async events(
+    @Param('id') id: string,
+    @Query() q: EventsQueryDto,
+    @Req() req: AuthedRequest,
+  ): Promise<ProblemEventPageDto> {
+    const { p } = await this.visible(id, req.auth);
+    const limit = clampLimit(q.limit);
+    const conds = [eq(problemEvent.problemId, p.id)];
+    if (q.cursor) {
+      const c = decodeCursor(q.cursor);
+      const at = typeof c.at === 'string' ? new Date(c.at) : null;
+      if (
+        !at ||
+        isNaN(at.getTime()) ||
+        typeof c.id !== 'string' ||
+        !UUID.test(c.id)
+      )
+        throw new ApiException(400, 'validation_failed', 'Invalid cursor', {
+          cursor: 'Invalid cursor',
+        });
+      conds.push(
+        or(
+          gt(problemEvent.occurredAt, at),
+          and(eq(problemEvent.occurredAt, at), gt(problemEvent.id, c.id)),
+        )!,
+      );
+    }
+    const rows = await this.db
+      .select({ e: problemEvent, h: account.handle })
+      .from(problemEvent)
+      .leftJoin(account, eq(account.id, problemEvent.actorId))
+      .where(and(...conds))
+      .orderBy(asc(problemEvent.occurredAt), asc(problemEvent.id))
+      .limit(limit + 1);
+    const items = rows.slice(0, limit);
+    const last = items[items.length - 1]?.e;
+    return {
+      items: items.map(({ e, h }) => ({
+        id: e.id,
+        type: e.type,
+        fromState: e.fromState,
+        toState: e.toState,
+        reason: p.tombstonedAt ? null : e.reason,
+        occurredAt: e.occurredAt.toISOString(),
+        actor: PUBLIC_ACTOR_EVENTS.has(e.type) ? h : null,
+      })),
+      nextCursor:
+        rows.length > limit && last
+          ? encodeCursor({ at: last.occurredAt.toISOString(), id: last.id })
+          : null,
+    };
   }
 }

@@ -121,6 +121,6 @@ describe('public problems with help_needed', () => {
         for (const p of op.parameters ?? []) expect(allowed).toContain(p.name);
       }
     }
-    expect(seen).toBe(2);
+    expect(seen).toBe(3);
   });
 });
