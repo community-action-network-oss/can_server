@@ -74,7 +74,15 @@ export class PolicyStore {
       throw new PackRefused('pack parent chain too deep');
     const files = await this.source.read(name, semver);
     const meta = this.yamlFile(files, 'pack.yaml') as Record<string, Yaml>;
-    if (meta.name !== name || meta.semver !== semver)
+    // `version:` is the can_policy key; `semver:` stays accepted (fixture). Both present must agree.
+    const declared = meta.version ?? meta.semver;
+    if (
+      meta.name !== name ||
+      declared !== semver ||
+      (meta.version !== undefined &&
+        meta.semver !== undefined &&
+        meta.version !== meta.semver)
+    )
       throw new PackRefused(`pack.yaml does not describe ${name}@${semver}`);
     const layer = meta.layer as Layer;
     if (!LAYERS.includes(layer))

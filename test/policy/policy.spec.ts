@@ -293,3 +293,26 @@ describe('domain purity', () => {
     }
   });
 });
+
+describe('pack.yaml version key', () => {
+  const swap = (m: MemorySource, extra = '') => {
+    for (const n of ['base', 'constitution', 'fiktiva-city'])
+      m.put(
+        n,
+        'pack.yaml',
+        m.text(n, 'pack.yaml').replace('semver:', 'version:') + extra,
+      );
+  };
+  const load = (m: MemorySource, h: Record<string, string>) =>
+    new PolicyStore(m).load('fiktiva-city', '0.0.1', h['fiktiva-city']);
+
+  it('loads a pack that declares version: (the can_policy key)', async () => {
+    const { m, h } = await sealed((m) => swap(m));
+    expect((await load(m, h)).semver).toBe('0.0.1');
+  });
+
+  it('refuses a pack whose version: and semver: disagree', async () => {
+    const { m, h } = await sealed((m) => swap(m, 'semver: 9.9.9\n'));
+    await expect(load(m, h)).rejects.toThrow(PackRefused);
+  });
+});
