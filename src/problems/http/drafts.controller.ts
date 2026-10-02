@@ -18,7 +18,13 @@ import {
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
+import { eq } from 'drizzle-orm';
+import { DB, type Db } from '../../db/db.module.js';
+import { problem } from '../../db/schema.js';
+import { allowedTransitions } from '../../domain/lifecycle/guard.js';
+import { TransitionEngine } from '../app/transition-engine.js';
 import {
+  isPublicState,
   activeLabel,
   STATE_COPY,
   type State,
@@ -39,6 +45,9 @@ import { STAGE_CHIP, type StageChipPort } from '../app/stage-chip.port.js';
 import { DraftMigrationService } from '../app/draft-migration.service.js';
 import { DraftsService, EDITABLE } from '../app/drafts.service.js';
 import {
+  AllowedActionsDto,
+  TransitionDto,
+  TransitionResultDto,
   ConfirmMigrationDto,
   CreateDraftDto,
   DraftDto,
@@ -53,6 +62,10 @@ const CREATE_PER_DAY = 20;
 const UUID = /^[0-9a-f-]{36}$/i;
 // Initiator withdrawal before publication (T06, T07). Withdrawing an active problem (T18) needs a contribution check, so not offered here.
 const WITHDRAWABLE = ['in_review', 'held', 'needs_revision'];
+// Flipped (by deleting this) by the unit that wires the submit checks; until then T01 and T03 stay refused.
+const SUBMIT_CHECKS_WIRED: boolean = false;
+// T00 and T19 are the draft create and delete routes above, not moves through the engine.
+const NOT_VIA_ENGINE = ['T00', 'T19'];
 const uid = (id: string) => {
   if (!UUID.test(id))
     throw new ApiException(404, 'not_found', 'Problem not found');
@@ -78,7 +91,98 @@ export class DraftsController {
     @Inject(DraftMigrationService)
     private readonly migration: DraftMigrationService,
     @Inject(RATE_LIMITER) private readonly limiter: RateLimiter,
+    @Inject(DB) private readonly db: Db,
+    @Inject(TransitionEngine) private readonly engine: TransitionEngine,
+    @Inject(STAGE_CHIP) private readonly chips: StageChipPort,
   ) {}
+
+  /** Own problem, or a public one. Anything else is a 404 so private existence never leaks. */
+  private async visible(id: string, accountId?: string) {
+    const [r] = await this.db
+      .select()
+      .from(problem)
+      .where(eq(problem.id, uid(id)));
+    const own = !!accountId && r?.initiatorId === accountId;
+    const open =
+      !!r?.publishedAt && isPublicState(r.state as State, r.withdrawnPublished);
+    if (!r || r.deletedAt || !(own || open))
+      throw new ApiException(404, 'not_found', 'Problem not found');
+    return { r, own };
+  }
+
+  private async label(id: string, state: string) {
+    if (state !== 'active') return STATE_COPY[state as State].label;
+    return activeLabel((await this.chips.chips([id])).get(id) ?? null);
+  }
+
+  @Post(':id/transitions')
+  @HttpCode(200)
+  @ApiOperation({
+    operationId: 'transitionProblem',
+    summary:
+      'Move your problem to another state, or propose a move that a recorded check decides',
+  })
+  @ApiOkResponse({ type: TransitionResultDto })
+  @ApiErrors(400, 401, 403, 404, 409, 429, 500)
+  async transition(
+    @Param('id') id: string,
+    @Body() body: TransitionDto,
+    @Req() req: AuthedRequest,
+  ): Promise<TransitionResultDto> {
+    const a = req.auth!;
+    const { r, own } = await this.visible(id, a.accountId);
+    if (!own)
+      throw new ApiException(403, 'not_permitted', 'You cannot do that.');
+    if (!SUBMIT_CHECKS_WIRED && body.to === 'in_review')
+      throw new ApiException(403, 'not_permitted', 'checks not wired');
+    const res = await this.engine.apply({
+      problemId: r.id,
+      to: body.to,
+      actor: { kind: 'initiator', id: a.accountId },
+      fields: body.fields,
+      reason: body.reason,
+      action: body.action,
+      expectedVersion: body.expectedVersion,
+    });
+    return {
+      id: r.id,
+      state: res.state,
+      label: await this.label(r.id, res.state),
+      version: res.version,
+      pending:
+        body.action === 'propose'
+          ? { to: body.to, proposedBy: a.handle }
+          : null,
+    };
+  }
+
+  @Get(':id/actions')
+  @ApiOperation({
+    operationId: 'getProblemActions',
+    summary: 'Which moves you may try on this problem right now',
+  })
+  @ApiOkResponse({ type: AllowedActionsDto })
+  @ApiErrors(404, 429, 500)
+  async actions(
+    @Param('id') id: string,
+    @Req() req: AuthedRequest,
+  ): Promise<AllowedActionsDto> {
+    const { r, own } = await this.visible(id, req.auth?.accountId);
+    const actions = own
+      ? allowedTransitions(r.state as State, 'initiator')
+          .filter(
+            (t) =>
+              !NOT_VIA_ENGINE.includes(t.id) &&
+              (SUBMIT_CHECKS_WIRED || t.to !== 'in_review'),
+          )
+          .map((t) => ({
+            to: t.to === 'same' ? r.state : t.to,
+            requires: [...t.required],
+            mode: t.proposedBy.includes('initiator') ? 'propose' : 'direct',
+          }))
+      : [];
+    return { state: r.state, version: r.version, actions };
+  }
 
   @Post()
   @ApiOperation({

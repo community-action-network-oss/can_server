@@ -2,6 +2,7 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import {
   IsArray,
+  IsIn,
   IsInt,
   IsObject,
   IsOptional,
@@ -11,6 +12,7 @@ import {
   Min,
   ValidateNested,
 } from 'class-validator';
+import { STATES, type State } from '../../domain/lifecycle/vocabulary.js';
 
 // Length limits (code points) are enforced in DraftsService with fieldErrors; MaxLength here is only a cheap body cap.
 const CAP = 2000;
@@ -80,6 +82,73 @@ export class StructuredFieldsDto extends DraftFieldsDto {
   @IsString()
   @MaxLength(64)
   schemaHash?: string;
+}
+
+export class TransitionDto {
+  @ApiProperty({ description: 'The state you want the problem to move to.' })
+  @IsIn(STATES)
+  to!: State;
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsString()
+  @MaxLength(2000)
+  reason?: string;
+  @ApiPropertyOptional({
+    type: 'object',
+    additionalProperties: true,
+    description:
+      'The facts this move needs; missing ones come back as field errors.',
+  })
+  @IsOptional()
+  @IsObject()
+  fields?: Record<string, unknown>;
+  @ApiPropertyOptional({
+    enum: ['direct', 'propose'],
+    description:
+      'direct (default) applies the move. propose asks for a recorded check to decide it.',
+  })
+  @IsOptional()
+  @IsIn(['direct', 'propose'])
+  action?: 'direct' | 'propose';
+  @ApiPropertyOptional({
+    description: 'The version you last saw; a mismatch returns 409.',
+  })
+  @IsOptional()
+  @IsInt()
+  @Min(1)
+  expectedVersion?: number;
+}
+
+export class PendingProposalDto {
+  @ApiProperty() to!: string;
+  @ApiProperty({ description: 'Handle of the account that proposed it.' })
+  proposedBy!: string;
+}
+
+export class TransitionResultDto {
+  @ApiProperty() id!: string;
+  @ApiProperty() state!: string;
+  @ApiProperty() label!: string;
+  @ApiProperty() version!: number;
+  @ApiProperty({
+    type: PendingProposalDto,
+    nullable: true,
+    description: 'A proposal waiting for its recorded check, or null.',
+  })
+  pending!: PendingProposalDto | null;
+}
+
+export class AllowedActionDto {
+  @ApiProperty() to!: string;
+  @ApiProperty({ type: [String], description: 'Fields this move needs.' })
+  requires!: string[];
+  @ApiProperty({ enum: ['direct', 'propose'] }) mode!: string;
+}
+
+export class AllowedActionsDto {
+  @ApiProperty() state!: string;
+  @ApiProperty() version!: number;
+  @ApiProperty({ type: [AllowedActionDto] }) actions!: AllowedActionDto[];
 }
 
 export class CreateDraftDto extends StructuredFieldsDto {}

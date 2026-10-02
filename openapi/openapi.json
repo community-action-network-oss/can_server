@@ -1,6 +1,55 @@
 {
   "components": {
     "schemas": {
+      "AllowedActionDto": {
+        "properties": {
+          "mode": {
+            "enum": [
+              "direct",
+              "propose"
+            ],
+            "type": "string"
+          },
+          "requires": {
+            "description": "Fields this move needs.",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "to": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "to",
+          "requires",
+          "mode"
+        ],
+        "type": "object"
+      },
+      "AllowedActionsDto": {
+        "properties": {
+          "actions": {
+            "items": {
+              "$ref": "#/components/schemas/AllowedActionDto"
+            },
+            "type": "array"
+          },
+          "state": {
+            "type": "string"
+          },
+          "version": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "state",
+          "version",
+          "actions"
+        ],
+        "type": "object"
+      },
       "CodeRequestedDto": {
         "properties": {
           "message": {
@@ -544,6 +593,22 @@
         ],
         "type": "object"
       },
+      "PendingProposalDto": {
+        "properties": {
+          "proposedBy": {
+            "description": "Handle of the account that proposed it.",
+            "type": "string"
+          },
+          "to": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "to",
+          "proposedBy"
+        ],
+        "type": "object"
+      },
       "ProblemDetailDto": {
         "properties": {
           "affected": {
@@ -889,6 +954,72 @@
           "tombstone",
           "tombstonedAt",
           "reason"
+        ],
+        "type": "object"
+      },
+      "TransitionDto": {
+        "properties": {
+          "action": {
+            "description": "direct (default) applies the move. propose asks for a recorded check to decide it.",
+            "enum": [
+              "direct",
+              "propose"
+            ],
+            "type": "string"
+          },
+          "expectedVersion": {
+            "description": "The version you last saw; a mismatch returns 409.",
+            "type": "number"
+          },
+          "fields": {
+            "additionalProperties": true,
+            "description": "The facts this move needs; missing ones come back as field errors.",
+            "type": "object"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "to": {
+            "description": "The state you want the problem to move to.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "to"
+        ],
+        "type": "object"
+      },
+      "TransitionResultDto": {
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "pending": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PendingProposalDto"
+              }
+            ],
+            "description": "A proposal waiting for its recorded check, or null.",
+            "nullable": true,
+            "type": "object"
+          },
+          "state": {
+            "type": "string"
+          },
+          "version": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "id",
+          "state",
+          "label",
+          "version",
+          "pending"
         ],
         "type": "object"
       },
@@ -1722,6 +1853,67 @@
         ]
       }
     },
+    "/v1/drafts/{id}/actions": {
+      "get": {
+        "operationId": "getProblemActions",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AllowedActionsDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "summary": "Which moves you may try on this problem right now",
+        "tags": [
+          "drafts"
+        ]
+      }
+    },
     "/v1/drafts/{id}/migration": {
       "get": {
         "operationId": "getDraftMigration",
@@ -1907,6 +2099,117 @@
           }
         },
         "summary": "Move this draft to the current form with the mappings you confirmed",
+        "tags": [
+          "drafts"
+        ]
+      }
+    },
+    "/v1/drafts/{id}/transitions": {
+      "post": {
+        "operationId": "transitionProblem",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransitionDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransitionResultDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "summary": "Move your problem to another state, or propose a move that a recorded check decides",
         "tags": [
           "drafts"
         ]
