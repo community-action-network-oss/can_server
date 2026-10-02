@@ -125,6 +125,39 @@
         ],
         "type": "object"
       },
+      "HelpNeededDto": {
+        "properties": {
+          "coarse_place": {
+            "nullable": true,
+            "type": "string"
+          },
+          "languages": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "skill_groups": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "topics": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "skill_groups",
+          "languages",
+          "coarse_place",
+          "topics"
+        ],
+        "type": "object"
+      },
       "MeDto": {
         "properties": {
           "handle": {
@@ -137,6 +170,52 @@
         "required": [
           "handle",
           "role"
+        ],
+        "type": "object"
+      },
+      "PublicProblemDto": {
+        "properties": {
+          "help_needed": {
+            "$ref": "#/components/schemas/HelpNeededDto"
+          },
+          "id": {
+            "type": "string"
+          },
+          "publishedAt": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "state",
+          "publishedAt",
+          "help_needed"
+        ],
+        "type": "object"
+      },
+      "PublicProblemPageDto": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/PublicProblemDto"
+            },
+            "type": "array"
+          },
+          "nextCursor": {
+            "nullable": true,
+            "type": "string"
+          }
+        },
+        "required": [
+          "items",
+          "nextCursor"
         ],
         "type": "object"
       },
@@ -848,6 +927,145 @@
         "summary": "Get a new generated handle (once)",
         "tags": [
           "auth"
+        ]
+      }
+    },
+    "/v1/problems": {
+      "get": {
+        "operationId": "listPublicProblems",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "cursor",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Public coarse region shard id.",
+            "in": "query",
+            "name": "region",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicProblemPageDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "summary": "Public problems, newest first, with help_needed; whole or by coarse region shard",
+        "tags": [
+          "problems"
+        ]
+      }
+    },
+    "/v1/problems/{id}": {
+      "get": {
+        "operationId": "getPublicProblem",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicProblemDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "summary": "One public problem with help_needed",
+        "tags": [
+          "problems"
         ]
       }
     }

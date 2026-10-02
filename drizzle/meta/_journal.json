@@ -22,6 +22,13 @@
       "when": 1790938854177,
       "tag": "0002_roles_and_grants",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1790939543860,
+      "tag": "0003_moaning_gorilla_man",
+      "breakpoints": true
     }
   ]
 }

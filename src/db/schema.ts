@@ -129,3 +129,28 @@ export const auditEvent = pgTable('audit_event', {
   protocolVersion: text('protocol_version').notNull(),
   prevHash: text('prev_hash'),
 });
+
+/**
+ * Public problems (read model for the plain list, D-80). help_needed describes the problem only;
+ * nothing here is derived from any person. Writes arrive with the publication run.
+ */
+export const problem = pgTable(
+  'problem',
+  {
+    id: uuid('id').primaryKey(),
+    title: text('title').notNull(),
+    state: text('state').notNull(),
+    publishedAt: tz('published_at').notNull(),
+    helpNeeded: jsonb('help_needed')
+      .$type<{
+        skill_groups: string[];
+        languages: string[];
+        coarse_place: string | null;
+        topics: string[];
+      }>()
+      .notNull(),
+    originNodeId: text('origin_node_id').notNull(),
+    protocolVersion: text('protocol_version').notNull(),
+  },
+  (t) => [index('problem_published_idx').on(t.publishedAt, t.id)],
+);
