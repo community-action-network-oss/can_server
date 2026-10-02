@@ -1,6 +1,29 @@
 {
   "components": {
     "schemas": {
+      "AggregateDto": {
+        "properties": {
+          "accepted": {
+            "type": "number"
+          },
+          "declined": {
+            "type": "number"
+          },
+          "finishedReviews": {
+            "type": "number"
+          },
+          "open": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "finishedReviews",
+          "open",
+          "accepted",
+          "declined"
+        ],
+        "type": "object"
+      },
       "AllowedActionDto": {
         "properties": {
           "mode": {
@@ -374,6 +397,56 @@
         },
         "type": "object"
       },
+      "CreateRecommendationDto": {
+        "properties": {
+          "path": {
+            "description": "A field or metadata path, e.g. stage_plan.map_faults.criteria.",
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "recommendation": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "path",
+          "recommendation",
+          "reason"
+        ],
+        "type": "object"
+      },
+      "CreatedRecommendationDto": {
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "open"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "status"
+        ],
+        "type": "object"
+      },
+      "DeclareDto": {
+        "properties": {
+          "noConflict": {
+            "description": "Must be true: you have no conflict of interest.",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "noConflict"
+        ],
+        "type": "object"
+      },
       "DraftDto": {
         "properties": {
           "content": {
@@ -503,6 +576,40 @@
           "statement",
           "measure",
           "deadline"
+        ],
+        "type": "object"
+      },
+      "FinishDto": {
+        "properties": {
+          "outcome": {
+            "enum": [
+              "recommendations",
+              "no_changes"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "outcome"
+        ],
+        "type": "object"
+      },
+      "FinishedDto": {
+        "properties": {
+          "finishedAt": {
+            "type": "string"
+          },
+          "outcome": {
+            "enum": [
+              "recommendations",
+              "no_changes"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "outcome",
+          "finishedAt"
         ],
         "type": "object"
       },
@@ -769,6 +876,40 @@
         ],
         "type": "object"
       },
+      "MaskedProblemDto": {
+        "properties": {
+          "content": {
+            "additionalProperties": true,
+            "description": "Masked structured body: sources, final acceptance criteria and stage plan (snake_case).",
+            "type": "object"
+          },
+          "fields": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "description": "Masked text fields; personal data never appears.",
+            "type": "object"
+          },
+          "problemId": {
+            "type": "string"
+          },
+          "redactionCount": {
+            "type": "number"
+          },
+          "version": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "problemId",
+          "version",
+          "fields",
+          "content",
+          "redactionCount"
+        ],
+        "type": "object"
+      },
       "MeDto": {
         "properties": {
           "handle": {
@@ -1013,6 +1154,84 @@
         ],
         "type": "object"
       },
+      "MyRecommendationDto": {
+        "properties": {
+          "changedSince": {
+            "type": "boolean"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "recommendation": {
+            "type": "string"
+          },
+          "resolutionReason": {
+            "nullable": true,
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "open",
+              "accepted",
+              "declined"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "path",
+          "recommendation",
+          "reason",
+          "status",
+          "resolutionReason",
+          "changedSince",
+          "createdAt"
+        ],
+        "type": "object"
+      },
+      "MyReviewDto": {
+        "properties": {
+          "aggregate": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AggregateDto"
+              }
+            ],
+            "description": "Only after you finish.",
+            "nullable": true,
+            "type": "object"
+          },
+          "finished": {
+            "type": "boolean"
+          },
+          "recommendations": {
+            "items": {
+              "$ref": "#/components/schemas/MyRecommendationDto"
+            },
+            "type": "array"
+          },
+          "version": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "version",
+          "finished",
+          "recommendations",
+          "aggregate"
+        ],
+        "type": "object"
+      },
       "MyRolesDto": {
         "properties": {
           "roles": {
@@ -1030,6 +1249,22 @@
         },
         "required": [
           "roles"
+        ],
+        "type": "object"
+      },
+      "OptInDto": {
+        "properties": {
+          "optedIn": {
+            "type": "boolean"
+          },
+          "since": {
+            "nullable": true,
+            "type": "string"
+          }
+        },
+        "required": [
+          "optedIn",
+          "since"
         ],
         "type": "object"
       },
@@ -1247,6 +1482,70 @@
           "changeSummary",
           "createdAt",
           "updatedAt"
+        ],
+        "type": "object"
+      },
+      "PosterRecommendationDto": {
+        "properties": {
+          "changedSince": {
+            "type": "boolean"
+          },
+          "id": {
+            "type": "string"
+          },
+          "openedAt": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "recommendation": {
+            "type": "string"
+          },
+          "resolutionReason": {
+            "nullable": true,
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "open",
+              "accepted",
+              "declined"
+            ],
+            "type": "string"
+          },
+          "volunteer": {
+            "example": "Volunteer 1",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "volunteer",
+          "path",
+          "recommendation",
+          "reason",
+          "status",
+          "resolutionReason",
+          "changedSince",
+          "openedAt"
+        ],
+        "type": "object"
+      },
+      "PosterRecommendationsDto": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/PosterRecommendationDto"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "items"
         ],
         "type": "object"
       },
@@ -1763,6 +2062,74 @@
         ],
         "type": "object"
       },
+      "PublicationRequestedDto": {
+        "properties": {
+          "requested": {
+            "enum": [
+              true
+            ],
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "requested"
+        ],
+        "type": "object"
+      },
+      "QueueDto": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/QueueItemDto"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "type": "object"
+      },
+      "QueueItemDto": {
+        "properties": {
+          "coarseArea": {
+            "description": "Masked.",
+            "nullable": true,
+            "type": "string"
+          },
+          "mine": {
+            "enum": [
+              "new",
+              "in_progress",
+              "finished"
+            ],
+            "type": "string"
+          },
+          "problemId": {
+            "type": "string"
+          },
+          "sourceCount": {
+            "type": "number"
+          },
+          "stageCount": {
+            "type": "number"
+          },
+          "title": {
+            "description": "Masked.",
+            "nullable": true,
+            "type": "string"
+          }
+        },
+        "required": [
+          "problemId",
+          "title",
+          "coarseArea",
+          "stageCount",
+          "sourceCount",
+          "mine"
+        ],
+        "type": "object"
+      },
       "RatificationStateDto": {
         "properties": {
           "panelStatus": {
@@ -1828,6 +2195,88 @@
         },
         "required": [
           "email"
+        ],
+        "type": "object"
+      },
+      "ResolveDto": {
+        "properties": {
+          "decision": {
+            "enum": [
+              "accept",
+              "decline"
+            ],
+            "type": "string"
+          },
+          "expectedVersion": {
+            "description": "Required when value is sent.",
+            "type": "number"
+          },
+          "reason": {
+            "description": "Required, with either answer.",
+            "type": "string"
+          },
+          "value": {
+            "description": "With accept: the new value of a top-level path, applied to the draft.",
+            "type": "object"
+          }
+        },
+        "required": [
+          "decision",
+          "reason"
+        ],
+        "type": "object"
+      },
+      "ResolvedDto": {
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "resolutionReason": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "accepted",
+              "declined"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "status",
+          "resolutionReason"
+        ],
+        "type": "object"
+      },
+      "ReviewStatusDto": {
+        "properties": {
+          "canRequestPublication": {
+            "type": "boolean"
+          },
+          "dayCount": {
+            "type": "number"
+          },
+          "needsReviewers": {
+            "type": "boolean"
+          },
+          "openRecommendations": {
+            "type": "number"
+          },
+          "quorumMet": {
+            "type": "boolean"
+          },
+          "reviewCount": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "reviewCount",
+          "dayCount",
+          "openRecommendations",
+          "quorumMet",
+          "canRequestPublication",
+          "needsReviewers"
         ],
         "type": "object"
       },
@@ -1926,6 +2375,25 @@
         },
         "required": [
           "expectedVersion"
+        ],
+        "type": "object"
+      },
+      "SessionDto": {
+        "properties": {
+          "conflictDeclaredAt": {
+            "type": "string"
+          },
+          "finished": {
+            "type": "boolean"
+          },
+          "problemId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "problemId",
+          "conflictDeclaredAt",
+          "finished"
         ],
         "type": "object"
       },
@@ -4903,6 +5371,391 @@
         ]
       }
     },
+    "/v1/me/problems/{id}/recommendations": {
+      "get": {
+        "operationId": "listMyProblemRecommendations",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PosterRecommendationsDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "summary": "Recommendations on your problem; volunteers are numbered, never named",
+        "tags": [
+          "review"
+        ]
+      }
+    },
+    "/v1/me/problems/{id}/request-publication": {
+      "post": {
+        "operationId": "requestPublication",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicationRequestedDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "summary": "Ask for the publication decision once the review rule allows it",
+        "tags": [
+          "review"
+        ]
+      }
+    },
+    "/v1/me/problems/{id}/review-status": {
+      "get": {
+        "operationId": "getMyProblemReviewStatus",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReviewStatusDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "summary": "Review progress: counts, quorum and whether you can ask for publication",
+        "tags": [
+          "review"
+        ]
+      }
+    },
+    "/v1/me/review-opt-in": {
+      "delete": {
+        "operationId": "optOutOfReview",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OptInDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "summary": "Stop volunteering. Finished reviews stay counted.",
+        "tags": [
+          "review"
+        ]
+      },
+      "get": {
+        "operationId": "getReviewOptIn",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OptInDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "summary": "Whether you volunteer to review",
+        "tags": [
+          "review"
+        ]
+      },
+      "post": {
+        "operationId": "optInToReview",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OptInDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "summary": "Volunteer to review problems",
+        "tags": [
+          "review"
+        ]
+      }
+    },
     "/v1/me/roles": {
       "get": {
         "operationId": "getMyRoles",
@@ -5656,6 +6509,692 @@
         "summary": "Timeline of a visible problem, oldest first; payloads are never returned",
         "tags": [
           "problems"
+        ]
+      }
+    },
+    "/v1/recommendations/{id}/resolve": {
+      "post": {
+        "operationId": "resolveRecommendation",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResolveDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResolvedDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "summary": "Accept or decline a recommendation, with a reason",
+        "tags": [
+          "review"
+        ]
+      }
+    },
+    "/v1/review/queue": {
+      "get": {
+        "operationId": "getReviewQueue",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QueueDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "summary": "Problems waiting for volunteer review, random order, masked",
+        "tags": [
+          "review"
+        ]
+      }
+    },
+    "/v1/review/{problemId}": {
+      "get": {
+        "operationId": "getReviewProblem",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "problemId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MaskedProblemDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "summary": "The problem to review, with personal data masked",
+        "tags": [
+          "review"
+        ]
+      }
+    },
+    "/v1/review/{problemId}/finish": {
+      "post": {
+        "operationId": "finishReview",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "problemId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FinishDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FinishedDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "summary": "End your review with recommendations or with no changes",
+        "tags": [
+          "review"
+        ]
+      }
+    },
+    "/v1/review/{problemId}/recommendations": {
+      "get": {
+        "operationId": "getMyReview",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "problemId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MyReviewDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "summary": "Your own recommendations and the answers to them",
+        "tags": [
+          "review"
+        ]
+      },
+      "post": {
+        "operationId": "createRecommendation",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "problemId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateRecommendationDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreatedRecommendationDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "summary": "Recommend one change to one part of the problem",
+        "tags": [
+          "review"
+        ]
+      }
+    },
+    "/v1/review/{problemId}/session": {
+      "post": {
+        "operationId": "startReviewSession",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "problemId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeclareDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "summary": "Declare no conflict of interest and open a review",
+        "tags": [
+          "review"
         ]
       }
     },

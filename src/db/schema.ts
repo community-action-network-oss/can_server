@@ -904,3 +904,98 @@ export const pseudonymToken = pgTable(
     index('pseudonym_token_expires_idx').on(t.expiresAt),
   ],
 );
+
+/** One volunteer's review of one problem (12-u03). Private (REVIEW-1): no public route reads this. */
+export const reviewSession = pgTable(
+  'review_session',
+  {
+    id: uuid('id').primaryKey(),
+    problemId: uuid('problem_id')
+      .notNull()
+      .references(() => problem.id),
+    reviewerId: uuid('reviewer_id')
+      .notNull()
+      .references(() => account.id),
+    conflictDeclaredAt: tz('conflict_declared_at').notNull(),
+    finishedAt: tz('finished_at'),
+    outcome: text('outcome'),
+    /** T05, T06, T07: the volunteer can no longer open the problem. */
+    accessEndedAt: tz('access_ended_at'),
+    createdAt: tz('created_at').notNull(),
+  },
+  (t) => [
+    unique('review_session_problem_reviewer_uq').on(t.problemId, t.reviewerId),
+    check(
+      'review_session_outcome_chk',
+      sql`${t.outcome} is null or ${t.outcome} in ('recommendations','no_changes')`,
+    ),
+    check(
+      'review_session_finished_chk',
+      sql`(${t.finishedAt} is null) = (${t.outcome} is null)`,
+    ),
+  ],
+);
+
+/**
+ * A volunteer recommendation on one field or metadata path (12-u03, RECO-1). Private volunteer content.
+ * Rows are never deleted (REVOKE DELETE in the migration); history stays through `status`.
+ */
+export const reviewRecommendation = pgTable(
+  'review_recommendation',
+  {
+    id: uuid('id').primaryKey(),
+    problemId: uuid('problem_id')
+      .notNull()
+      .references(() => problem.id),
+    reviewerId: uuid('reviewer_id')
+      .notNull()
+      .references(() => account.id),
+    path: text('path').notNull(),
+    /** Masked text (the privacy gateway ran before it was stored). */
+    recommendation: text('recommendation').notNull(),
+    reason: text('reason').notNull(),
+    status: text('status').notNull().default('open'),
+    resolutionReason: text('resolution_reason'),
+    impact: text('impact').notNull().default('low'),
+    /** The problem version in which this path last changed after the recommendation was made. */
+    changedAtVersion: integer('changed_at_version'),
+    /** Starts the open-age clock; reset when T03 reopens it. */
+    openedAt: tz('opened_at').notNull(),
+    resolvedAt: tz('resolved_at'),
+    createdAt: tz('created_at').notNull(),
+    updatedAt: tz('updated_at').notNull(),
+  },
+  (t) => [
+    check(
+      'review_recommendation_status_chk',
+      sql`${t.status} in ('open','accepted','declined')`,
+    ),
+    check(
+      'review_recommendation_impact_chk',
+      sql`${t.impact} in ('low','high')`,
+    ),
+    check(
+      'review_recommendation_resolved_chk',
+      sql`${t.status} = 'open' or (${t.resolutionReason} is not null and ${t.resolvedAt} is not null)`,
+    ),
+    index('review_recommendation_problem_idx').on(t.problemId, t.status),
+    index('review_recommendation_reviewer_idx').on(t.reviewerId, t.createdAt),
+  ],
+);
+
+/**
+ * Copy of the problem text at a version seen in review, so "changed since" can be shown (12-u03).
+ * User content: deleted with the problem and when volunteer access ends (T05, T06, T07).
+ */
+export const problemVersion = pgTable(
+  'problem_version',
+  {
+    problemId: uuid('problem_id')
+      .notNull()
+      .references(() => problem.id, { onDelete: 'cascade' }),
+    version: integer('version').notNull(),
+    snapshot: jsonb('snapshot').$type<Record<string, unknown>>().notNull(),
+    createdAt: tz('created_at').notNull(),
+  },
+  (t) => [primaryKey({ columns: [t.problemId, t.version] })],
+);

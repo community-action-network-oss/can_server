@@ -13,6 +13,7 @@ import { EventRelay } from './moderation/app/event-relay.js';
 import { RelayCursor } from './moderation/infra/relay-cursor.js';
 import { PrivacyGatewayModule } from './ai-gateway/app/redaction/privacy-gateway.module.js';
 import { ModerationModule } from './moderation/moderation.module.js';
+import { ReviewCoreModule, ReviewModule } from './review/review.module.js';
 
 @Module({
   imports: [
@@ -28,6 +29,8 @@ import { ModerationModule } from './moderation/moderation.module.js';
     ModerationModule,
     PrivacyGatewayModule,
     JurisdictionsModule,
+    ReviewCoreModule,
+    ReviewModule,
   ],
   providers: [RelayCursor, EventRelay],
 })

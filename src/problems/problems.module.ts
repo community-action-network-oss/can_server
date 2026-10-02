@@ -4,11 +4,7 @@ import { ModerationModule } from '../moderation/moderation.module.js';
 import { AccountsModule } from '../accounts/accounts.module.js';
 import { NullStageChips, STAGE_CHIP } from './app/stage-chip.port.js';
 import { TransitionEngine } from './app/transition-engine.js';
-import {
-  NoReviewFacts,
-  REVIEW_FACTS,
-  TransitionEffects,
-} from './app/transition-ports.js';
+import { TransitionEffects } from './app/transition-ports.js';
 import {
   InMemoryRateLimiter,
   RATE_LIMITER,
@@ -33,7 +29,6 @@ import { ProblemsController } from './http/problems.controller.js';
   controllers: [ProblemsController, DraftsController, MyProblemsController],
   providers: [
     { provide: STAGE_CHIP, useClass: NullStageChips },
-    { provide: REVIEW_FACTS, useClass: NoReviewFacts },
     TransitionEffects,
     TransitionEngine,
     DraftsService,
@@ -52,6 +47,6 @@ import { ProblemsController } from './http/problems.controller.js';
     },
     { provide: RATE_LIMITER, useClass: InMemoryRateLimiter },
   ],
-  exports: [TransitionEngine, TransitionEffects],
+  exports: [TransitionEngine, TransitionEffects, DraftsService],
 })
 export class ProblemsModule {}
