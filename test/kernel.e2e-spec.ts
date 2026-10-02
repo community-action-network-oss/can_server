@@ -12,6 +12,7 @@ import request from 'supertest';
 import { AppModule } from '../src/app.module.js';
 import { configureApp } from '../src/app.setup.js';
 import { ApiException } from '../src/platform/errors.js';
+import { Public } from '../src/platform/security/decorators.js';
 import { clampLimit, decodeCursor } from '../src/platform/pagination.js';
 
 class Dto {
@@ -32,7 +33,9 @@ class KernelTestController {
   @Get('boom') boom(): never {
     throw new Error('secret internals');
   }
-  @Post('dto') dto(@Body() b: Dto) {
+  @Public() // test-only route; non-GET routes are otherwise session-guarded
+  @Post('dto')
+  dto(@Body() b: Dto) {
     return b;
   }
 }

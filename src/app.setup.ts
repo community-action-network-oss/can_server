@@ -29,7 +29,16 @@ export function configureApp(app: INestApplication): void {
     }),
   );
   if (config.trustProxy) (app as NestExpressApplication).set('trust proxy', 1);
-  app.enableCors({ origin: config.corsOrigins });
+  app.enableCors({
+    origin: config.corsOrigins,
+    credentials: true,
+    allowedHeaders: [
+      'Content-Type',
+      'Authorization',
+      'X-CAN-CSRF',
+      'X-CAN-Client',
+    ],
+  });
   app.enableShutdownHooks();
 }
 
