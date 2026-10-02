@@ -14,7 +14,14 @@ export class SmtpNotification implements NotificationPort {
     smtpUrl: string,
     private readonly from = 'CAN <no-reply@can.local>',
   ) {
-    this.transport = createTransport(smtpUrl);
+    // nodemailer resolves hosts with dns.resolve4/6 (real DNS servers, never /etc/hosts), which hangs
+    // for the 2 minute connect timeout when offline. Name loopback by address so it never asks DNS.
+    this.transport = createTransport(
+      smtpUrl.replace(
+        /^(smtps?:\/\/(?:[^@/]*@)?)localhost(?=[:/]|$)/,
+        '$1127.0.0.1',
+      ),
+    );
   }
 
   async send(msg: OutboundMessage): Promise<void> {
