@@ -12,6 +12,8 @@ import {
 import { RolesGuard } from '../platform/security/roles.guard.js';
 import { AuthController } from './http/auth.controller.js';
 import { AuthService } from './app/auth.service.js';
+import { InviteService } from './app/invite.service.js';
+import { InvitesController } from './http/invites.controller.js';
 import {
   AUTH_SETTINGS,
   HAS_PUBLISHED_CONTENT,
@@ -22,7 +24,7 @@ import { NoPublishedContent } from './infra/no-published-content.js';
 import { DrizzleUnitOfWork } from './infra/unit-of-work.js';
 
 @Module({
-  controllers: [AuthController],
+  controllers: [AuthController, InvitesController],
   providers: [
     // order matters: session first, then CSRF, then roles
     { provide: APP_GUARD, useClass: AuthGuard },
@@ -30,6 +32,7 @@ import { DrizzleUnitOfWork } from './infra/unit-of-work.js';
     { provide: APP_GUARD, useClass: RolesGuard },
     { provide: RATE_LIMITER, useClass: InMemoryRateLimiter },
     AuthService,
+    InviteService,
     AuditPort,
     { provide: UNIT_OF_WORK, useClass: DrizzleUnitOfWork },
     { provide: HAS_PUBLISHED_CONTENT, useClass: NoPublishedContent },
