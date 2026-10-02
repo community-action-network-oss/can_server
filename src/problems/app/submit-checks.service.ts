@@ -1,8 +1,18 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, Optional } from '@nestjs/common';
 import { problem, type KeptFlag } from '../../db/schema.js';
 import type { Tx } from '../../db/tx.js';
 import { ApiException } from '../../platform/errors.js';
-import { StructuredContentService } from '../../policy/app/structured-content.service.js';
+import {
+  StructuredContentService,
+  schemaError,
+} from '../../policy/app/structured-content.service.js';
+import { changedPaths } from '../domain/preparation.js';
+import { assess } from './preparation.js';
+import {
+  NoopReviewHooks,
+  REVIEW_HOOKS,
+  type ReviewHooks,
+} from './transition-ports.js';
 import { FingerprintRepo } from '../infra/fingerprint.repo.js';
 import { stampOf } from './schema-stamp.js';
 import { runChecks, TEXT_FIELDS, type CheckFlag } from './run-checks.js';
@@ -39,6 +49,9 @@ export class SubmitChecks {
     @Inject(StructuredContentService)
     private readonly structured: StructuredContentService,
     @Inject(FINGERPRINTS) private readonly fingerprints: FingerprintRepo,
+    @Optional()
+    @Inject(REVIEW_HOOKS)
+    public hooks: ReviewHooks = new NoopReviewHooks(),
   ) {}
 
   async check(r: Row, now: Date) {
@@ -61,15 +74,15 @@ export class SubmitChecks {
     now: Date,
   ): Promise<Partial<typeof problem.$inferInsert>> {
     const stamp = stampOf(r);
-    // Completeness against the pinned schema (10-u29).
-    if (stamp)
-      await this.structured.validate(
-        tx,
-        'problem',
-        stamp,
-        r.content ?? {},
-        'submit',
-      );
+    // Completeness against the pinned schema (10-u29), plus SOURCE-1, CRITERIA-1 and the stage plan graph (12-u04).
+    // ponytail: a draft with no schema stamp (no active pack when it was made) skips these; it cannot get past review anyway.
+    if (stamp) {
+      const a = await assess(this.structured, tx, r);
+      if (Object.keys(a.errors).length)
+        throw schemaError('schema_invalid', 'Some answers need attention.', {
+          fieldErrors: a.errors,
+        });
+    }
 
     const res = await this.check(r, now);
     const kept = new Set((r.keptFlags ?? []).map((k) => k.id));
@@ -93,6 +106,16 @@ export class SubmitChecks {
         'validation_failed',
         'Some fields need attention before review.',
         errs,
+      );
+    // T03: recommendations on the changed paths reopen (RECO-1); the review module owns what that means.
+    if (transitionId === 'T03' && prev)
+      await this.hooks.reopen(
+        tx,
+        r.id,
+        changedPaths(
+          (prev.fields.content ?? {}) as Record<string, unknown>,
+          (r.content ?? {}) as Record<string, unknown>,
+        ),
       );
     return {
       privacyCheckId: crypto.randomUUID(),

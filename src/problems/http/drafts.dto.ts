@@ -67,6 +67,34 @@ export class StructuredFieldsDto extends DraftFieldsDto {
   @IsObject()
   content?: Record<string, unknown>;
   @ApiPropertyOptional({
+    type: 'array',
+    items: { type: 'object', additionalProperties: true },
+    description:
+      'Trusted sources (uri, category, establishes, authenticity_note). Items are checked against the pinned schema; https only.',
+  })
+  @IsOptional()
+  @IsArray()
+  @IsObject({ each: true })
+  sources?: Record<string, unknown>[];
+  @ApiPropertyOptional({
+    type: 'array',
+    items: { type: 'object', additionalProperties: true },
+    description:
+      'Final acceptance criteria (statement, how_observed, deadline). A problem cannot leave draft without one (CRITERIA-1).',
+  })
+  @IsOptional()
+  @IsArray()
+  @IsObject({ each: true })
+  finalAcceptanceCriteria?: Record<string, unknown>[];
+  @ApiPropertyOptional({
+    description:
+      'Say that you have no source yet; the problem is then marked as needing evidence. Empty text clears it.',
+  })
+  @IsOptional()
+  @IsString()
+  @MaxLength(300)
+  noSourceNote?: string;
+  @ApiPropertyOptional({
     description:
       'Schema version the form was built from; defaults to the active one on create.',
   })
@@ -357,4 +385,121 @@ export class PreviewDto {
     description: 'Deletion and appeal timings that apply, in days.',
   })
   timings!: Record<string, number | null>;
+}
+
+export class StageEdgeDto {
+  @ApiProperty({ description: 'Stage name that must be settled first.' })
+  @IsString()
+  @MaxLength(40)
+  from!: string;
+  @ApiProperty({ description: 'Stage name that starts after it.' })
+  @IsString()
+  @MaxLength(40)
+  to!: string;
+}
+
+export class ValidateStagePlanDto {
+  @ApiPropertyOptional({
+    enum: ['classic-5', 'one-stage'],
+    nullable: true,
+    description: 'Start from a template instead of sending stages.',
+  })
+  @IsOptional()
+  @IsIn(['classic-5', 'one-stage', null])
+  template?: 'classic-5' | 'one-stage' | null;
+  @ApiPropertyOptional({
+    type: 'array',
+    items: { type: 'object', additionalProperties: true },
+    description:
+      'Stage nodes as in the problem schema stage_plan (name, goal, acceptance_criteria, depends_on, auto_start, ...). No stages and no template means no custom plan.',
+  })
+  @IsOptional()
+  @IsArray()
+  @IsObject({ each: true })
+  stages?: Record<string, unknown>[];
+  @ApiPropertyOptional({
+    type: [StageEdgeDto],
+    description: 'Extra edges, folded into depends_on of the later stage.',
+  })
+  @IsOptional()
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => StageEdgeDto)
+  edges?: StageEdgeDto[];
+}
+
+export class SaveStagePlanDto extends ValidateStagePlanDto {
+  @ApiProperty({
+    description: 'The version you last saw; a mismatch returns 409.',
+  })
+  @IsInt()
+  @Min(1)
+  expectedVersion!: number;
+}
+
+export class StagePlanDto {
+  @ApiProperty() id!: string;
+  @ApiProperty() version!: number;
+  @ApiProperty({ enum: ['classic-5', 'one-stage'], nullable: true })
+  template!: string | null;
+  @ApiProperty({
+    type: 'array',
+    items: { type: 'object', additionalProperties: true },
+  })
+  stages!: Record<string, unknown>[];
+  @ApiProperty({ type: [StageEdgeDto] }) edges!: StageEdgeDto[];
+}
+
+export class PlanCheckDto {
+  @ApiProperty() ok!: boolean;
+  @ApiProperty({
+    type: 'array',
+    items: { type: 'object', additionalProperties: true },
+    description: 'The plan issues (code plus the stage involved).',
+  })
+  issues!: Record<string, unknown>[];
+  @ApiProperty({
+    type: 'object',
+    additionalProperties: { type: 'string' },
+    description: 'Content pointers (snake_case) to messages.',
+  })
+  fieldErrors!: Record<string, string>;
+  @ApiProperty({
+    type: 'array',
+    items: { type: 'object', additionalProperties: true },
+    description: 'The stage nodes that were checked.',
+  })
+  stages!: Record<string, unknown>[];
+}
+
+export class PrepFlagDto extends CheckFlagDto {}
+
+export class PrepPartDto {
+  @ApiProperty({ enum: ['ready', 'not_finished'] }) status!: string;
+  @ApiProperty({
+    type: String,
+    nullable: true,
+    description:
+      'A code: incomplete, missing, invalid, needs_evidence or default_plan.',
+  })
+  reason!: string | null;
+  @ApiProperty({
+    type: 'object',
+    additionalProperties: { type: 'string' },
+    description: 'Content pointers (snake_case) to what needs attention.',
+  })
+  fieldErrors!: Record<string, string>;
+  @ApiProperty({ type: [PrepFlagDto] }) flags!: PrepFlagDto[];
+}
+
+export class PreparationDto {
+  @ApiProperty() id!: string;
+  @ApiProperty() state!: string;
+  @ApiProperty() version!: number;
+  @ApiProperty({ description: 'True when all four parts are ready.' })
+  ready!: boolean;
+  @ApiProperty({ type: PrepPartDto }) facts!: PrepPartDto;
+  @ApiProperty({ type: PrepPartDto }) sources!: PrepPartDto;
+  @ApiProperty({ type: PrepPartDto }) criteria!: PrepPartDto;
+  @ApiProperty({ type: PrepPartDto }) stages!: PrepPartDto;
 }

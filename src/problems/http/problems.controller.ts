@@ -12,10 +12,12 @@ import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { and, asc, desc, eq, gt, isNotNull, lt, or, sql } from 'drizzle-orm';
 import { DB, type Db } from '../../db/db.module.js';
 import {
+  acceptanceCriterion,
   account,
   jurisdiction,
   problem,
   problemEvent,
+  sourceRef,
 } from '../../db/schema.js';
 import {
   isPublicState,
@@ -44,6 +46,15 @@ import {
 } from './problems.dto.js';
 
 type Row = typeof problem.$inferSelect;
+const CATEGORY_LABEL: Record<string, string> = {
+  official_record: 'Official record',
+  statistics_body: 'Statistics body',
+  court_or_legislature: 'Court or legislature',
+  reputable_media: 'Reputable media',
+  research: 'Research',
+  civil_society: 'Civil society',
+  other: 'Other',
+};
 const toDto = (
   r: Row,
   jurisdictionName: string | null,
@@ -221,6 +232,23 @@ export class ProblemsController {
           .limit(1)
       : [];
     const text = (v: string | null) => (tomb ? null : v);
+    // Sources and final criteria are public only once published; a draft owner reads them through the preparation routes.
+    const open =
+      !tomb && !!p.publishedAt && isPublicState(state, p.withdrawnPublished);
+    const sources = open
+      ? await this.db
+          .select()
+          .from(sourceRef)
+          .where(eq(sourceRef.problemId, p.id))
+          .orderBy(asc(sourceRef.ordinal))
+      : [];
+    const criteria = open
+      ? await this.db
+          .select()
+          .from(acceptanceCriterion)
+          .where(eq(acceptanceCriterion.problemId, p.id))
+          .orderBy(asc(acceptanceCriterion.ordinal))
+      : [];
     return {
       id: p.id,
       state: p.state,
@@ -248,6 +276,19 @@ export class ProblemsController {
       duplicateOf: p.duplicateOf,
       // ponytail: no review table yet (12-u03); the count is always 0 until it lands.
       reviewCount: 0,
+      sources: sources.map((x) => ({
+        uri: x.uri,
+        category: x.category,
+        categoryLabel: CATEGORY_LABEL[x.category] ?? x.category,
+        establishes: x.establishes,
+      })),
+      finalCriteria: criteria.map((c, i) => ({
+        ref: i + 1,
+        statement: c.statement,
+        measure: c.measure,
+        deadline: c.deadline,
+      })),
+      planVersion: open ? p.planVersion : null,
       isSeed: p.isSeed,
       syntheticEvidence: p.syntheticEvidence,
       help_needed: p.helpNeeded,

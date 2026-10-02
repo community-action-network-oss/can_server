@@ -415,6 +415,38 @@ export const acceptanceCriterion = pgTable(
   ],
 );
 
+/** A trusted source cited by a problem (12-u04). `trust_result` is filled by DP-SOURCE-TRUST. Rows follow the draft content; the owning problem is never exposed (OWN-1). */
+export const sourceRef = pgTable(
+  'source_ref',
+  {
+    id: uuid('id').primaryKey(),
+    problemId: uuid('problem_id').references(() => problem.id),
+    stageEvidenceId: uuid('stage_evidence_id').references(
+      () => stageEvidence.id,
+    ),
+    uri: text('uri').notNull(),
+    category: text('category').notNull(),
+    establishes: text('establishes').notNull(),
+    authenticityNote: text('authenticity_note'),
+    trustResult: jsonb('trust_result').$type<Record<string, unknown>>(),
+    ordinal: integer('ordinal').notNull().default(0),
+  },
+  (t) => [
+    uniqueIndex('source_ref_problem_uri_uq')
+      .on(t.problemId, t.uri)
+      .where(sql`${t.problemId} is not null`),
+    check('source_ref_uri_chk', sql`${t.uri} like 'https://%'`),
+    check(
+      'source_ref_category_chk',
+      sql`${t.category} in ('official_record','statistics_body','court_or_legislature','reputable_media','research','civil_society','other')`,
+    ),
+    check(
+      'source_ref_owner_chk',
+      sql`(${t.problemId} is null) <> (${t.stageEvidenceId} is null)`,
+    ),
+  ],
+);
+
 export const stageOption = pgTable(
   'stage_option',
   {

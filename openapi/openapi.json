@@ -260,7 +260,19 @@
           "desiredOutcome": {
             "type": "string"
           },
+          "finalAcceptanceCriteria": {
+            "description": "Final acceptance criteria (statement, how_observed, deadline). A problem cannot leave draft without one (CRITERIA-1).",
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array"
+          },
           "jurisdictionId": {
+            "type": "string"
+          },
+          "noSourceNote": {
+            "description": "Say that you have no source yet; the problem is then marked as needing evidence. Empty text clears it.",
             "type": "string"
           },
           "observed": {
@@ -273,6 +285,14 @@
           "schemaVersion": {
             "description": "Schema version the form was built from; defaults to the active one on create.",
             "type": "string"
+          },
+          "sources": {
+            "description": "Trusted sources (uri, category, establishes, authenticity_note). Items are checked against the pinned schema; https only.",
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array"
           },
           "title": {
             "type": "string"
@@ -819,6 +839,43 @@
         ],
         "type": "object"
       },
+      "PlanCheckDto": {
+        "properties": {
+          "fieldErrors": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Content pointers (snake_case) to messages.",
+            "type": "object"
+          },
+          "issues": {
+            "description": "The plan issues (code plus the stage involved).",
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "ok": {
+            "type": "boolean"
+          },
+          "stages": {
+            "description": "The stage nodes that were checked.",
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "ok",
+          "issues",
+          "fieldErrors",
+          "stages"
+        ],
+        "type": "object"
+      },
       "PolicyProposalDto": {
         "properties": {
           "blockedReason": {
@@ -983,6 +1040,133 @@
         ],
         "type": "object"
       },
+      "PrepFlagDto": {
+        "properties": {
+          "end": {
+            "description": "End offset, exclusive.",
+            "type": "number"
+          },
+          "field": {
+            "description": "A column name, or a JSON pointer into content or evidence (matches fieldErrors keys).",
+            "type": "string"
+          },
+          "id": {
+            "description": "Stable for the same text; pass it to keep.",
+            "type": "string"
+          },
+          "kept": {
+            "type": "boolean"
+          },
+          "kind": {
+            "type": "string"
+          },
+          "ruleId": {
+            "type": "string"
+          },
+          "severity": {
+            "description": "hard must be fixed; review may be kept as is.",
+            "enum": [
+              "hard",
+              "review"
+            ],
+            "type": "string"
+          },
+          "start": {
+            "description": "Start offset into your text (UTF-16 units).",
+            "type": "number"
+          },
+          "suggestion": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "field",
+          "kind",
+          "ruleId",
+          "start",
+          "end",
+          "severity",
+          "kept"
+        ],
+        "type": "object"
+      },
+      "PrepPartDto": {
+        "properties": {
+          "fieldErrors": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Content pointers (snake_case) to what needs attention.",
+            "type": "object"
+          },
+          "flags": {
+            "items": {
+              "$ref": "#/components/schemas/PrepFlagDto"
+            },
+            "type": "array"
+          },
+          "reason": {
+            "description": "A code: incomplete, missing, invalid, needs_evidence or default_plan.",
+            "nullable": true,
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "ready",
+              "not_finished"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "status",
+          "reason",
+          "fieldErrors",
+          "flags"
+        ],
+        "type": "object"
+      },
+      "PreparationDto": {
+        "properties": {
+          "criteria": {
+            "$ref": "#/components/schemas/PrepPartDto"
+          },
+          "facts": {
+            "$ref": "#/components/schemas/PrepPartDto"
+          },
+          "id": {
+            "type": "string"
+          },
+          "ready": {
+            "description": "True when all four parts are ready.",
+            "type": "boolean"
+          },
+          "sources": {
+            "$ref": "#/components/schemas/PrepPartDto"
+          },
+          "stages": {
+            "$ref": "#/components/schemas/PrepPartDto"
+          },
+          "state": {
+            "type": "string"
+          },
+          "version": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "id",
+          "state",
+          "version",
+          "ready",
+          "facts",
+          "sources",
+          "criteria",
+          "stages"
+        ],
+        "type": "object"
+      },
       "PreviewDto": {
         "properties": {
           "explanationIds": {
@@ -1042,6 +1226,13 @@
           "explanation": {
             "type": "string"
           },
+          "finalCriteria": {
+            "description": "What solved means; empty until the problem is published.",
+            "items": {
+              "$ref": "#/components/schemas/PublicCriterionDto"
+            },
+            "type": "array"
+          },
           "help_needed": {
             "$ref": "#/components/schemas/HelpNeededDto"
           },
@@ -1072,6 +1263,11 @@
             "nullable": true,
             "type": "string"
           },
+          "planVersion": {
+            "description": "The stage plan version, once published.",
+            "nullable": true,
+            "type": "number"
+          },
           "policyVersion": {
             "nullable": true,
             "type": "string"
@@ -1090,6 +1286,13 @@
           "reviewCount": {
             "description": "A count only; review content is never public.",
             "type": "number"
+          },
+          "sources": {
+            "description": "Cited sources; empty until the problem is published.",
+            "items": {
+              "$ref": "#/components/schemas/PublicSourceDto"
+            },
+            "type": "array"
           },
           "state": {
             "type": "string"
@@ -1142,6 +1345,9 @@
           "resumeCondition",
           "duplicateOf",
           "reviewCount",
+          "sources",
+          "finalCriteria",
+          "planVersion",
           "isSeed",
           "syntheticEvidence",
           "help_needed",
@@ -1205,6 +1411,31 @@
         "required": [
           "items",
           "nextCursor"
+        ],
+        "type": "object"
+      },
+      "PublicCriterionDto": {
+        "properties": {
+          "deadline": {
+            "nullable": true,
+            "type": "string"
+          },
+          "measure": {
+            "type": "string"
+          },
+          "ref": {
+            "description": "1-based position.",
+            "type": "number"
+          },
+          "statement": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "ref",
+          "statement",
+          "measure",
+          "deadline"
         ],
         "type": "object"
       },
@@ -1294,6 +1525,31 @@
           "items",
           "nextCursor",
           "criteria"
+        ],
+        "type": "object"
+      },
+      "PublicSourceDto": {
+        "properties": {
+          "category": {
+            "description": "Category id, for example official_record.",
+            "type": "string"
+          },
+          "categoryLabel": {
+            "description": "Plain label for the category.",
+            "type": "string"
+          },
+          "establishes": {
+            "type": "string"
+          },
+          "uri": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "uri",
+          "category",
+          "categoryLabel",
+          "establishes"
         ],
         "type": "object"
       },
@@ -1424,6 +1680,42 @@
         "required": [
           "policyVersion",
           "items"
+        ],
+        "type": "object"
+      },
+      "SaveStagePlanDto": {
+        "properties": {
+          "edges": {
+            "description": "Extra edges, folded into depends_on of the later stage.",
+            "items": {
+              "$ref": "#/components/schemas/StageEdgeDto"
+            },
+            "type": "array"
+          },
+          "expectedVersion": {
+            "description": "The version you last saw; a mismatch returns 409.",
+            "type": "number"
+          },
+          "stages": {
+            "description": "Stage nodes as in the problem schema stage_plan (name, goal, acceptance_criteria, depends_on, auto_start, ...). No stages and no template means no custom plan.",
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "template": {
+            "description": "Start from a template instead of sending stages.",
+            "enum": [
+              "classic-5",
+              "one-stage"
+            ],
+            "nullable": true,
+            "type": "string"
+          }
+        },
+        "required": [
+          "expectedVersion"
         ],
         "type": "object"
       },
@@ -1682,9 +1974,11 @@
       "StageEdgeDto": {
         "properties": {
           "from": {
+            "description": "Stage name that must be settled first.",
             "type": "string"
           },
           "to": {
+            "description": "Stage name that starts after it.",
             "type": "string"
           }
         },
@@ -1909,6 +2203,45 @@
         ],
         "type": "object"
       },
+      "StagePlanDto": {
+        "properties": {
+          "edges": {
+            "items": {
+              "$ref": "#/components/schemas/StageEdgeDto"
+            },
+            "type": "array"
+          },
+          "id": {
+            "type": "string"
+          },
+          "stages": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "template": {
+            "enum": [
+              "classic-5",
+              "one-stage"
+            ],
+            "nullable": true,
+            "type": "string"
+          },
+          "version": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "id",
+          "version",
+          "template",
+          "stages",
+          "edges"
+        ],
+        "type": "object"
+      },
       "SubmitPolicyProposalDto": {
         "properties": {
           "content": {
@@ -2040,7 +2373,19 @@
             "description": "The version you last saw; a mismatch returns 409.",
             "type": "number"
           },
+          "finalAcceptanceCriteria": {
+            "description": "Final acceptance criteria (statement, how_observed, deadline). A problem cannot leave draft without one (CRITERIA-1).",
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array"
+          },
           "jurisdictionId": {
+            "type": "string"
+          },
+          "noSourceNote": {
+            "description": "Say that you have no source yet; the problem is then marked as needing evidence. Empty text clears it.",
             "type": "string"
           },
           "observed": {
@@ -2054,6 +2399,14 @@
             "description": "Schema version the form was built from; defaults to the active one on create.",
             "type": "string"
           },
+          "sources": {
+            "description": "Trusted sources (uri, category, establishes, authenticity_note). Items are checked against the pinned schema; https only.",
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array"
+          },
           "title": {
             "type": "string"
           },
@@ -2064,6 +2417,35 @@
         "required": [
           "expectedVersion"
         ],
+        "type": "object"
+      },
+      "ValidateStagePlanDto": {
+        "properties": {
+          "edges": {
+            "description": "Extra edges, folded into depends_on of the later stage.",
+            "items": {
+              "$ref": "#/components/schemas/StageEdgeDto"
+            },
+            "type": "array"
+          },
+          "stages": {
+            "description": "Stage nodes as in the problem schema stage_plan (name, goal, acceptance_criteria, depends_on, auto_start, ...). No stages and no template means no custom plan.",
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "template": {
+            "description": "Start from a template instead of sending stages.",
+            "enum": [
+              "classic-5",
+              "one-stage"
+            ],
+            "nullable": true,
+            "type": "string"
+          }
+        },
         "type": "object"
       },
       "VerifyDto": {
@@ -3400,6 +3782,198 @@
         ]
       }
     },
+    "/v1/drafts/{id}/stage-plan": {
+      "put": {
+        "operationId": "saveDraftStagePlan",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SaveStagePlanDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StagePlanDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "summary": "Save the optional stage plan of your draft (a template or your own stages); a cycle or a stage without criteria is refused",
+        "tags": [
+          "drafts"
+        ]
+      }
+    },
+    "/v1/drafts/{id}/stage-plan/validate": {
+      "post": {
+        "operationId": "validateDraftStagePlan",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValidateStagePlanDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlanCheckDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "summary": "Check a stage plan without saving it; the editor shows the issues",
+        "tags": [
+          "drafts"
+        ]
+      }
+    },
     "/v1/drafts/{id}/transitions": {
       "post": {
         "operationId": "transitionProblem",
@@ -3791,6 +4365,77 @@
           }
         },
         "summary": "Your own problems, newest first, with the exact deletion date",
+        "tags": [
+          "drafts"
+        ]
+      }
+    },
+    "/v1/me/problems/{id}/preparation": {
+      "get": {
+        "operationId": "getMyProblemPreparation",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PreparationDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "summary": "Which parts of your problem are ready (facts, sources, criteria, stages), with the reason and the check flags per part",
         "tags": [
           "drafts"
         ]

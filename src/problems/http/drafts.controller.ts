@@ -8,6 +8,7 @@ import {
   Param,
   Patch,
   Post,
+  Put,
   Query,
   Req,
 } from '@nestjs/common';
@@ -58,7 +59,12 @@ import {
   MyProblemPageDto,
   MigrationPlanDto,
   MyProblemsQueryDto,
+  PlanCheckDto,
+  PreparationDto,
+  SaveStagePlanDto,
+  StagePlanDto,
   UpdateDraftDto,
+  ValidateStagePlanDto,
 } from './drafts.dto.js';
 
 const DAY = 86_400_000;
@@ -334,11 +340,22 @@ export class DraftsController {
         'rate_limited',
         'Too many drafts today. Try again tomorrow.',
       );
-    const { content, schemaVersion, schemaHash, ...fields } = body;
+    const {
+      content,
+      schemaVersion,
+      schemaHash,
+      sources,
+      finalAcceptanceCriteria,
+      noSourceNote,
+      ...fields
+    } = body;
     return this.drafts.create(a, fields, {
       content,
       schemaVersion,
       schemaHash,
+      sources,
+      finalAcceptanceCriteria,
+      noSourceNote,
     });
   }
 
@@ -367,15 +384,69 @@ export class DraftsController {
     @Body() body: UpdateDraftDto,
     @Req() req: AuthedRequest,
   ): Promise<DraftDto> {
-    const { expectedVersion, content, schemaVersion, schemaHash, ...fields } =
-      body;
+    const {
+      expectedVersion,
+      content,
+      schemaVersion,
+      schemaHash,
+      sources,
+      finalAcceptanceCriteria,
+      noSourceNote,
+      ...fields
+    } = body;
     return this.drafts.update(
       req.auth!.accountId,
       uid(id),
       fields,
       expectedVersion,
-      { content, schemaVersion, schemaHash },
+      {
+        content,
+        schemaVersion,
+        schemaHash,
+        sources,
+        finalAcceptanceCriteria,
+        noSourceNote,
+      },
     );
+  }
+
+  @Put(':id/stage-plan')
+  @ApiOperation({
+    operationId: 'saveDraftStagePlan',
+    summary:
+      'Save the optional stage plan of your draft (a template or your own stages); a cycle or a stage without criteria is refused',
+  })
+  @ApiOkResponse({ type: StagePlanDto })
+  @ApiErrors(400, 401, 404, 409, 429, 500)
+  savePlan(
+    @Param('id') id: string,
+    @Body() body: SaveStagePlanDto,
+    @Req() req: AuthedRequest,
+  ): Promise<StagePlanDto> {
+    const { expectedVersion, ...plan } = body;
+    return this.drafts.savePlan(
+      req.auth!.accountId,
+      uid(id),
+      plan,
+      expectedVersion,
+    );
+  }
+
+  @Post(':id/stage-plan/validate')
+  @HttpCode(200)
+  @ApiOperation({
+    operationId: 'validateDraftStagePlan',
+    summary:
+      'Check a stage plan without saving it; the editor shows the issues',
+  })
+  @ApiOkResponse({ type: PlanCheckDto })
+  @ApiErrors(400, 401, 404, 429, 500)
+  validatePlan(
+    @Param('id') id: string,
+    @Body() body: ValidateStagePlanDto,
+    @Req() req: AuthedRequest,
+  ): Promise<PlanCheckDto> {
+    return this.drafts.validatePlan(req.auth!.accountId, uid(id), body);
   }
 
   @Get(':id/migration')
@@ -450,6 +521,24 @@ export class MyProblemsController {
     @Inject(DraftsService) private readonly drafts: DraftsService,
     @Inject(STAGE_CHIP) private readonly chips: StageChipPort,
   ) {}
+
+  @Get(':id/preparation')
+  @Authenticated()
+  @ApiOperation({
+    operationId: 'getMyProblemPreparation',
+    summary:
+      'Which parts of your problem are ready (facts, sources, criteria, stages), with the reason and the check flags per part',
+  })
+  @ApiOkResponse({ type: PreparationDto })
+  @ApiErrors(401, 404, 429, 500)
+  preparation(
+    @Param('id') id: string,
+    @Req() req: AuthedRequest,
+  ): Promise<PreparationDto> {
+    if (!UUID.test(id))
+      throw new ApiException(404, 'not_found', 'Problem not found');
+    return this.drafts.preparation(req.auth!.accountId, id);
+  }
 
   @Get()
   @Authenticated()

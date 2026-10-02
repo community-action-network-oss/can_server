@@ -16,6 +16,24 @@ export class HelpNeededDto {
   @ApiProperty({ type: [String] }) topics!: string[];
 }
 
+const NS = { type: String, nullable: true } as const;
+
+export class PublicSourceDto {
+  @ApiProperty() uri!: string;
+  @ApiProperty({ description: 'Category id, for example official_record.' })
+  category!: string;
+  @ApiProperty({ description: 'Plain label for the category.' })
+  categoryLabel!: string;
+  @ApiProperty() establishes!: string;
+}
+
+export class PublicCriterionDto {
+  @ApiProperty({ description: '1-based position.' }) ref!: number;
+  @ApiProperty() statement!: string;
+  @ApiProperty() measure!: string;
+  @ApiProperty(NS) deadline!: string | null;
+}
+
 export class PublicProblemDto {
   @ApiProperty() id!: string;
   @ApiProperty() title!: string;
@@ -80,8 +98,6 @@ export class TombstoneDto {
   @ApiProperty({ type: String, nullable: true }) reason!: string | null;
 }
 
-const NS = { type: String, nullable: true } as const;
-
 /** Detail view. Initiator-authored text is null when tombstoned (OWN-1). Never email, review content or payloads. */
 export class ProblemDetailDto {
   @ApiProperty() id!: string;
@@ -108,6 +124,22 @@ export class ProblemDetailDto {
   @ApiProperty(NS) duplicateOf!: string | null;
   @ApiProperty({ description: 'A count only; review content is never public.' })
   reviewCount!: number;
+  @ApiProperty({
+    type: [PublicSourceDto],
+    description: 'Cited sources; empty until the problem is published.',
+  })
+  sources!: PublicSourceDto[];
+  @ApiProperty({
+    type: [PublicCriterionDto],
+    description: 'What solved means; empty until the problem is published.',
+  })
+  finalCriteria!: PublicCriterionDto[];
+  @ApiProperty({
+    type: Number,
+    nullable: true,
+    description: 'The stage plan version, once published.',
+  })
+  planVersion!: number | null;
   @ApiProperty() isSeed!: boolean;
   @ApiProperty() syntheticEvidence!: boolean;
   @ApiProperty({ type: HelpNeededDto }) help_needed!: HelpNeededDto;
