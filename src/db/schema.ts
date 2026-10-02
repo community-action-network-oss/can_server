@@ -516,3 +516,32 @@ export const stageEvent = pgTable('stage_event', {
   protocolVersion: text('protocol_version').notNull(),
   occurredAt: tz('occurred_at').notNull(),
 });
+
+/** A member's policy amendment proposal (10-u32). Stage moves also write `events` and `audit_event`; reports are the latest CI JSON. */
+export const policyProposal = pgTable(
+  'policy_proposal',
+  {
+    id: uuid('id').primaryKey(),
+    accountId: uuid('account_id')
+      .notNull()
+      .references(() => account.id),
+    schemaVersion: text('schema_version').notNull(),
+    schemaHash: text('schema_hash').notNull(),
+    body: jsonb('body').$type<Record<string, unknown>>().notNull(),
+    stage: text('stage').notNull().default('submitted'),
+    prUrl: text('pr_url'),
+    evalReport: jsonb('eval_report').$type<Record<string, unknown>>(),
+    replayReport: jsonb('replay_report').$type<Record<string, unknown>>(),
+    protectedCoreFlag: boolean('protected_core_flag').notNull().default(false),
+    createdAt: tz('created_at').notNull(),
+    updatedAt: tz('updated_at').notNull(),
+  },
+  (t) => [
+    check(
+      'policy_proposal_stage_chk',
+      sql`${t.stage} in ('submitted','eval','replay','ratification','shadow','canary','full','rejected','withdrawn')`,
+    ),
+    index('policy_proposal_account_idx').on(t.accountId, t.createdAt),
+    index('policy_proposal_stage_idx').on(t.stage, t.createdAt),
+  ],
+);

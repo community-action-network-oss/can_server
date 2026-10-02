@@ -1,0 +1,359 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "id": "policy_proposal",
+  "version": "1.0.0",
+  "x-version": "1.0.0",
+  "pack": "base@1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "rule_ids_and_dps_touched",
+    "change_summary",
+    "reason",
+    "motivating_examples",
+    "expected_flips",
+    "protected_core_check",
+    "rollback_plan",
+    "who_is_affected",
+    "lawful_basis",
+    "risks"
+  ],
+  "properties": {
+    "rule_ids_and_dps_touched": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 20,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Z][A-Z0-9]*(-[A-Z0-9]+)+$",
+        "maxLength": 40
+      },
+      "x-ui": {
+        "widget": "rule_id_list",
+        "label_msg": "schema.policy_proposal.rule_ids_and_dps_touched.label",
+        "help_msg": "schema.policy_proposal.rule_ids_and_dps_touched.help",
+        "order": 1,
+        "group": "change"
+      },
+      "x-guidance": {
+        "why": "Names exactly what the change reaches.",
+        "good": "DP-FRAMING",
+        "bad": "the privacy stuff"
+      },
+      "x-checks": {
+        "ref_to": "pack.rules_and_dps"
+      }
+    },
+    "change_summary": {
+      "type": "string",
+      "minLength": 20,
+      "maxLength": 300,
+      "x-ui": {
+        "widget": "textarea",
+        "label_msg": "schema.policy_proposal.change_summary.label",
+        "help_msg": "schema.policy_proposal.change_summary.help",
+        "order": 2,
+        "group": "change"
+      },
+      "x-guidance": {
+        "why": "One sentence a neighbour could repeat.",
+        "good": "Ask for the place name at city level, not street level.",
+        "bad": "Update things."
+      },
+      "x-checks": {
+        "dps": [
+          "DP-PRIVACY",
+          "DP-NAMING",
+          "DP-TONE"
+        ]
+      }
+    },
+    "reason": {
+      "type": "string",
+      "minLength": 40,
+      "maxLength": 800,
+      "x-ui": {
+        "widget": "textarea",
+        "label_msg": "schema.policy_proposal.reason.label",
+        "help_msg": "schema.policy_proposal.reason.help",
+        "order": 3,
+        "group": "why"
+      },
+      "x-guidance": {
+        "why": "Facts first, assumed causes marked as assumptions.",
+        "good": "Three audit findings show street names let people be identified.",
+        "bad": "Because it is better."
+      },
+      "x-checks": {
+        "dps": [
+          "DP-ASSUMPTIONS",
+          "DP-PRIVACY",
+          "DP-NAMING",
+          "DP-TONE"
+        ]
+      }
+    },
+    "motivating_examples": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 10,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^(audit|appeal|finding):[A-Za-z0-9_-]{4,64}$",
+        "maxLength": 80
+      },
+      "x-ui": {
+        "widget": "list",
+        "label_msg": "schema.policy_proposal.motivating_examples.label",
+        "help_msg": "schema.policy_proposal.motivating_examples.help",
+        "order": 4,
+        "group": "why"
+      },
+      "x-guidance": {
+        "why": "Masked references only, so no personal data travels with the proposal.",
+        "good": "audit:a_2041",
+        "bad": "A copy of the post."
+      },
+      "x-checks": {
+        "dps": [
+          "DP-PRIVACY"
+        ],
+        "masked_refs_only": true
+      }
+    },
+    "expected_flips": {
+      "type": "string",
+      "minLength": 20,
+      "maxLength": 500,
+      "x-ui": {
+        "widget": "textarea",
+        "label_msg": "schema.policy_proposal.expected_flips.label",
+        "help_msg": "schema.policy_proposal.expected_flips.help",
+        "order": 5,
+        "group": "why"
+      },
+      "x-guidance": {
+        "why": "Lets replay check the claim.",
+        "good": "Posts naming a street would be held, not published.",
+        "bad": "Many."
+      },
+      "x-checks": {
+        "dps": [
+          "DP-PRIVACY",
+          "DP-NAMING"
+        ]
+      }
+    },
+    "protected_core_check": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "acknowledged",
+        "touches_protected_core"
+      ],
+      "properties": {
+        "acknowledged": {
+          "const": true,
+          "x-ui": {
+            "widget": "checkbox",
+            "label_msg": "schema.policy_proposal.protected_core_check.acknowledged.label",
+            "help_msg": "schema.policy_proposal.protected_core_check.acknowledged.help"
+          },
+          "x-checks": {
+            "must_be_true": true
+          }
+        },
+        "touches_protected_core": {
+          "type": "boolean",
+          "x-ui": {
+            "widget": "checkbox",
+            "label_msg": "schema.policy_proposal.protected_core_check.touches_protected_core.label",
+            "help_msg": "schema.policy_proposal.protected_core_check.touches_protected_core.help"
+          },
+          "x-checks": {
+            "refuse_if_true": true
+          }
+        }
+      },
+      "x-ui": {
+        "widget": "acknowledgement",
+        "label_msg": "schema.policy_proposal.protected_core_check.label",
+        "help_msg": "schema.policy_proposal.protected_core_check.help",
+        "order": 6,
+        "group": "change"
+      },
+      "x-guidance": {
+        "why": "Protected-core changes are refused with the reason shown.",
+        "good": "acknowledged, touches none",
+        "bad": "left blank"
+      }
+    },
+    "rollback_plan": {
+      "type": "string",
+      "minLength": 20,
+      "maxLength": 500,
+      "x-ui": {
+        "widget": "textarea",
+        "label_msg": "schema.policy_proposal.rollback_plan.label",
+        "help_msg": "schema.policy_proposal.rollback_plan.help",
+        "order": 7,
+        "group": "basis"
+      },
+      "x-guidance": {
+        "why": "Every change can go back to the previous version.",
+        "good": "Revert to the previous pack version.",
+        "bad": "None."
+      },
+      "x-checks": {
+        "dps": [
+          "DP-PRIVACY",
+          "DP-NAMING"
+        ]
+      }
+    },
+    "who_is_affected": {
+      "type": "string",
+      "minLength": 20,
+      "maxLength": 400,
+      "x-ui": {
+        "widget": "textarea",
+        "label_msg": "schema.policy_proposal.who_is_affected.label",
+        "help_msg": "schema.policy_proposal.who_is_affected.help",
+        "order": 8,
+        "group": "who"
+      },
+      "x-guidance": {
+        "why": "Groups and roles, never named people.",
+        "good": "Everyone posting a first problem in one region.",
+        "bad": "Bob."
+      },
+      "x-checks": {
+        "dps": [
+          "DP-PRIVACY",
+          "DP-NAMING"
+        ]
+      }
+    },
+    "affected_jurisdictions": {
+      "type": "array",
+      "maxItems": 20,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9_-]{1,39}$",
+        "maxLength": 40
+      },
+      "x-ui": {
+        "widget": "slug_list",
+        "label_msg": "schema.policy_proposal.affected_jurisdictions.label",
+        "help_msg": "schema.policy_proposal.affected_jurisdictions.help",
+        "order": 9,
+        "group": "who"
+      },
+      "x-guidance": {
+        "why": "Optional narrowing.",
+        "good": "lowmere",
+        "bad": "everywhere"
+      }
+    },
+    "affected_content_types": {
+      "type": "array",
+      "maxItems": 20,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9_-]{1,39}$",
+        "maxLength": 40
+      },
+      "x-ui": {
+        "widget": "slug_list",
+        "label_msg": "schema.policy_proposal.affected_content_types.label",
+        "help_msg": "schema.policy_proposal.affected_content_types.help",
+        "order": 10,
+        "group": "who"
+      },
+      "x-guidance": {
+        "why": "Optional narrowing.",
+        "good": "problem",
+        "bad": "all posts"
+      }
+    },
+    "lawful_basis": {
+      "type": "string",
+      "minLength": 20,
+      "maxLength": 500,
+      "x-ui": {
+        "widget": "textarea",
+        "label_msg": "schema.policy_proposal.lawful_basis.label",
+        "help_msg": "schema.policy_proposal.lawful_basis.help",
+        "order": 11,
+        "group": "basis"
+      },
+      "x-guidance": {
+        "why": "Cites the basis or says it is unverified; this is not legal advice.",
+        "good": "The pack's own privacy rule PRIV-GATE-1.",
+        "bad": "It is legal."
+      },
+      "x-checks": {
+        "dps": [
+          "DP-LAWFULNESS",
+          "DP-PRIVACY"
+        ]
+      }
+    },
+    "risks": {
+      "type": "string",
+      "minLength": 20,
+      "maxLength": 600,
+      "x-ui": {
+        "widget": "textarea",
+        "label_msg": "schema.policy_proposal.risks.label",
+        "help_msg": "schema.policy_proposal.risks.help",
+        "order": 12,
+        "group": "basis"
+      },
+      "x-guidance": {
+        "why": "Honest risks, including to people.",
+        "good": "Some real problems may be held back at first.",
+        "bad": "No risk."
+      },
+      "x-checks": {
+        "dps": [
+          "DP-ASSUMPTIONS",
+          "DP-PRIVACY",
+          "DP-NAMING",
+          "DP-TONE"
+        ]
+      }
+    },
+    "uncertainties": {
+      "type": "string",
+      "minLength": 0,
+      "maxLength": 600,
+      "x-ui": {
+        "widget": "textarea",
+        "label_msg": "schema.policy_proposal.uncertainties.label",
+        "help_msg": "schema.policy_proposal.uncertainties.help",
+        "order": 13,
+        "group": "basis"
+      },
+      "x-guidance": {
+        "why": "Optional, honest gaps.",
+        "good": "We do not know the effect on small towns.",
+        "bad": "Nothing."
+      }
+    }
+  },
+  "x-checks": {
+    "dps": [
+      "DP-PRIVACY",
+      "DP-NAMING",
+      "DP-TONE",
+      "DP-LAWFULNESS",
+      "DP-ASSUMPTIONS"
+    ],
+    "protected_core_refused": true
+  }
+}

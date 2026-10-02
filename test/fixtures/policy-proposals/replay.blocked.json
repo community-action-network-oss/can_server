@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "verdict": "blocked",
+  "bump": "minor",
+  "limits": {
+    "minor_flip_pct": 5,
+    "cost_per_run": 10
+  },
+  "totals": {
+    "decisions": 400,
+    "flips": 14,
+    "expected": 11,
+    "unintended": 3,
+    "protected_flips": 0
+  },
+  "by_direction": {
+    "stricter": 9,
+    "more_permissive": 5,
+    "lateral": 0
+  },
+  "by_dp": {},
+  "by_rule": {},
+  "by_jurisdiction": {},
+  "dp_stats": {},
+  "flips": [],
+  "blockers": [
+    "unintended flip in a protected tier"
+  ],
+  "warnings": [],
+  "remoderation": {
+    "volume": 14,
+    "estimated_cost": 0.2
+  }
+}

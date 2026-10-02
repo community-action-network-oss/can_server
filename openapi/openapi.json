@@ -50,6 +50,25 @@
         ],
         "type": "object"
       },
+      "AttachReportsDto": {
+        "properties": {
+          "eval": {
+            "additionalProperties": true,
+            "description": "can_policy tools/eval.mjs --json output.",
+            "type": "object"
+          },
+          "prUrl": {
+            "description": "The can_policy pull request.",
+            "type": "string"
+          },
+          "replay": {
+            "additionalProperties": true,
+            "description": "can_policy replay report (replay-report.schema.json).",
+            "type": "object"
+          }
+        },
+        "type": "object"
+      },
       "CheckFlagDto": {
         "properties": {
           "end": {
@@ -348,6 +367,26 @@
         },
         "required": [
           "error"
+        ],
+        "type": "object"
+      },
+      "EvalRowDto": {
+        "properties": {
+          "name": {
+            "description": "Key: <decision point>.<metric>.",
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "passed",
+              "did_not_pass"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "status"
         ],
         "type": "object"
       },
@@ -659,6 +698,32 @@
         ],
         "type": "object"
       },
+      "MoveStageDto": {
+        "properties": {
+          "reason": {
+            "description": "Short public reason.",
+            "type": "string"
+          },
+          "to": {
+            "enum": [
+              "submitted",
+              "eval",
+              "replay",
+              "ratification",
+              "shadow",
+              "canary",
+              "full",
+              "rejected",
+              "withdrawn"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "to"
+        ],
+        "type": "object"
+      },
       "MyProblemDto": {
         "properties": {
           "appealableUntil": {
@@ -751,6 +816,170 @@
         "required": [
           "to",
           "proposedBy"
+        ],
+        "type": "object"
+      },
+      "PolicyProposalDto": {
+        "properties": {
+          "blockedReason": {
+            "description": "Why the latest report blocks the proposal, as a key list.",
+            "nullable": true,
+            "type": "string"
+          },
+          "body": {
+            "additionalProperties": true,
+            "description": "The submitted snake_case body.",
+            "type": "object"
+          },
+          "changeSummary": {
+            "description": "body.change_summary.",
+            "type": "string"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "eval": {
+            "items": {
+              "$ref": "#/components/schemas/EvalRowDto"
+            },
+            "nullable": true,
+            "type": "array"
+          },
+          "id": {
+            "type": "string"
+          },
+          "prUrl": {
+            "nullable": true,
+            "type": "string"
+          },
+          "protectedCoreFlag": {
+            "type": "boolean"
+          },
+          "ratification": {
+            "$ref": "#/components/schemas/RatificationStateDto"
+          },
+          "replay": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ReplaySummaryDto"
+              }
+            ],
+            "nullable": true,
+            "type": "object"
+          },
+          "rollout": {
+            "items": {
+              "$ref": "#/components/schemas/RolloutStageDto"
+            },
+            "type": "array"
+          },
+          "schemaVersion": {
+            "type": "string"
+          },
+          "stage": {
+            "enum": [
+              "submitted",
+              "eval",
+              "replay",
+              "ratification",
+              "shadow",
+              "canary",
+              "full",
+              "rejected",
+              "withdrawn"
+            ],
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "stage",
+          "schemaVersion",
+          "prUrl",
+          "changeSummary",
+          "createdAt",
+          "updatedAt",
+          "body",
+          "protectedCoreFlag",
+          "eval",
+          "replay",
+          "blockedReason",
+          "ratification",
+          "rollout"
+        ],
+        "type": "object"
+      },
+      "PolicyProposalPageDto": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/PolicyProposalSummaryDto"
+            },
+            "type": "array"
+          },
+          "nextCursor": {
+            "nullable": true,
+            "type": "string"
+          }
+        },
+        "required": [
+          "items",
+          "nextCursor"
+        ],
+        "type": "object"
+      },
+      "PolicyProposalSummaryDto": {
+        "properties": {
+          "changeSummary": {
+            "description": "body.change_summary.",
+            "type": "string"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "prUrl": {
+            "nullable": true,
+            "type": "string"
+          },
+          "schemaVersion": {
+            "type": "string"
+          },
+          "stage": {
+            "enum": [
+              "submitted",
+              "eval",
+              "replay",
+              "ratification",
+              "shadow",
+              "canary",
+              "full",
+              "rejected",
+              "withdrawn"
+            ],
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "stage",
+          "schemaVersion",
+          "prUrl",
+          "changeSummary",
+          "createdAt",
+          "updatedAt"
         ],
         "type": "object"
       },
@@ -1068,6 +1297,63 @@
         ],
         "type": "object"
       },
+      "RatificationStateDto": {
+        "properties": {
+          "panelStatus": {
+            "enum": [
+              "not_started",
+              "waiting_for_panel",
+              "ratified",
+              "closed"
+            ],
+            "type": "string"
+          },
+          "transitional": {
+            "description": "True while founder stewardship applies.",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "panelStatus",
+          "transitional"
+        ],
+        "type": "object"
+      },
+      "ReplaySummaryDto": {
+        "properties": {
+          "changed": {
+            "type": "number"
+          },
+          "expected": {
+            "type": "number"
+          },
+          "morePermissive": {
+            "type": "number"
+          },
+          "of": {
+            "type": "number"
+          },
+          "stricter": {
+            "type": "number"
+          },
+          "unexpected": {
+            "type": "number"
+          },
+          "verdict": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "verdict",
+          "changed",
+          "of",
+          "expected",
+          "unexpected",
+          "stricter",
+          "morePermissive"
+        ],
+        "type": "object"
+      },
       "RequestCodeDto": {
         "properties": {
           "email": {
@@ -1076,6 +1362,27 @@
         },
         "required": [
           "email"
+        ],
+        "type": "object"
+      },
+      "RolloutStageDto": {
+        "properties": {
+          "at": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "stage": {
+            "enum": [
+              "shadow",
+              "canary",
+              "full"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "stage",
+          "at"
         ],
         "type": "object"
       },
@@ -1599,6 +1906,25 @@
           "forLaterStage",
           "content",
           "createdAt"
+        ],
+        "type": "object"
+      },
+      "SubmitPolicyProposalDto": {
+        "properties": {
+          "content": {
+            "additionalProperties": true,
+            "description": "The policy_proposal content body.",
+            "type": "object"
+          },
+          "schemaHash": {
+            "type": "string"
+          },
+          "schemaVersion": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "content"
         ],
         "type": "object"
       },
@@ -3467,6 +3793,427 @@
         "summary": "Your own problems, newest first, with the exact deletion date",
         "tags": [
           "drafts"
+        ]
+      }
+    },
+    "/v1/policy-proposals": {
+      "get": {
+        "operationId": "listPolicyProposals",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "stage",
+            "required": false,
+            "schema": {
+              "enum": [
+                "submitted",
+                "eval",
+                "replay",
+                "ratification",
+                "shadow",
+                "canary",
+                "full",
+                "rejected",
+                "withdrawn"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "cursor",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PolicyProposalPageDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "summary": "Policy proposals, newest first, optionally by stage",
+        "tags": [
+          "policy"
+        ]
+      },
+      "post": {
+        "operationId": "submitPolicyProposal",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubmitPolicyProposalDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PolicyProposalDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "summary": "Submit a policy proposal; protected-core changes are refused with 422 protected_core",
+        "tags": [
+          "policy"
+        ]
+      }
+    },
+    "/v1/policy-proposals/{id}": {
+      "get": {
+        "operationId": "getPolicyProposal",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PolicyProposalDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "summary": "One policy proposal with eval, replay, ratification and rollout",
+        "tags": [
+          "policy"
+        ]
+      }
+    },
+    "/v1/policy-proposals/{id}/reports": {
+      "post": {
+        "operationId": "attachPolicyProposalReports",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AttachReportsDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PolicyProposalDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "summary": "Maintainers attach CI eval and replay reports; a blocked verdict moves the stage back",
+        "tags": [
+          "policy"
+        ]
+      }
+    },
+    "/v1/policy-proposals/{id}/stage": {
+      "post": {
+        "operationId": "movePolicyProposalStage",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MoveStageDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PolicyProposalDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "summary": "Maintainers move a proposal along legal stage transitions",
+        "tags": [
+          "policy"
         ]
       }
     },

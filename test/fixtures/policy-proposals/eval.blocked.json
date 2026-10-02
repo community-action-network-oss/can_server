@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "strict": true,
+  "pass": false,
+  "loosened": [],
+  "decision_points": [
+    {
+      "dp": "DP-PRIVACY",
+      "pass": false,
+      "checks": [
+        { "metric": "recall_harmful", "pass": true },
+        { "metric": "injection_pass", "pass": false }
+      ]
+    }
+  ]
+}

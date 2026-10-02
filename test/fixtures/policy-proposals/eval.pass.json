@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "strict": true,
+  "pass": true,
+  "loosened": [],
+  "decision_points": [
+    {
+      "dp": "DP-PRIVACY",
+      "pass": true,
+      "checks": [
+        { "metric": "recall_harmful", "pass": true, "value": 0.99, "op": ">=", "threshold": 0.98 },
+        { "metric": "false_reject", "pass": true, "value": 0.01, "op": "<=", "threshold": 0.05 }
+      ]
+    }
+  ]
+}
