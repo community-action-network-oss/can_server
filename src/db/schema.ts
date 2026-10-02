@@ -854,3 +854,29 @@ export const job = pgTable(
       .where(sql`${t.status} in ('queued','running')`),
   ],
 );
+
+/** Where the moderation event relay stopped, one row per source (09-u07). Mutable by design. */
+export const relayCursor = pgTable('relay_cursor', {
+  name: text('name').primaryKey(),
+  lastId: uuid('last_id'),
+  updatedAt: tz('updated_at').notNull().defaultNow(),
+});
+
+/** Append-only (insert-only grant, see the 09-u07 migration). Platform-level moderation events with no problem row. */
+export const moderationEvent = pgTable(
+  'moderation_event',
+  {
+    id: uuid('id').primaryKey(),
+    type: text('type').notNull(),
+    payload: jsonb('payload').$type<Record<string, unknown>>().notNull(),
+    originNodeId: text('origin_node_id').notNull(),
+    protocolVersion: text('protocol_version').notNull(),
+    occurredAt: tz('occurred_at').notNull(),
+  },
+  (t) => [
+    check(
+      'moderation_event_type_chk',
+      sql`${t.type} in ('policy_changed','sample_tick')`,
+    ),
+  ],
+);

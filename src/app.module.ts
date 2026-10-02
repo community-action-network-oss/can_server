@@ -9,6 +9,8 @@ import { ProblemsModule } from './problems/problems.module.js';
 import { PolicyModule } from './policy/policy.module.js';
 import { PolicyProposalsModule } from './policy-proposals/policy-proposals.module.js';
 import { StagesModule } from './stages/stages.module.js';
+import { EventRelay } from './moderation/app/event-relay.js';
+import { RelayCursor } from './moderation/infra/relay-cursor.js';
 import { ModerationModule } from './moderation/moderation.module.js';
 
 @Module({
@@ -25,5 +27,6 @@ import { ModerationModule } from './moderation/moderation.module.js';
     ModerationModule,
     JurisdictionsModule,
   ],
+  providers: [RelayCursor, EventRelay],
 })
 export class AppModule {}
