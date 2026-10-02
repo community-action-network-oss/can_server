@@ -608,3 +608,37 @@ export const legalCorpusVersion = pgTable(
       .where(sql`${t.state} = 'active'`),
   ],
 );
+
+/** Additive human roles (09-u02). account.role stays as the single base role; none of these grant publish or override rights. */
+export const accountRole = pgTable(
+  'account_role',
+  {
+    id: uuid('id').primaryKey(),
+    accountId: uuid('account_id')
+      .notNull()
+      .references(() => account.id),
+    role: text('role').notNull(),
+    grantedBy: uuid('granted_by').references(() => account.id),
+    grantedAt: tz('granted_at').notNull(),
+    revokedAt: tz('revoked_at'),
+  },
+  (t) => [
+    check(
+      'account_role_role_chk',
+      sql`${t.role} in ('auditor','labeler','lane_member','steward')`,
+    ),
+    uniqueIndex('account_role_active_uq')
+      .on(t.accountId, t.role)
+      .where(sql`${t.revokedAt} is null`),
+  ],
+);
+
+/** Data model only: lets label and audit units refuse conflicted reviewers later. */
+export const conflictDeclaration = pgTable('conflict_declaration', {
+  id: uuid('id').primaryKey(),
+  accountId: uuid('account_id')
+    .notNull()
+    .references(() => account.id),
+  scope: text('scope').notNull(),
+  createdAt: tz('created_at').notNull(),
+});

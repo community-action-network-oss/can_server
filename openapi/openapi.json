@@ -1013,6 +1013,26 @@
         ],
         "type": "object"
       },
+      "MyRolesDto": {
+        "properties": {
+          "roles": {
+            "items": {
+              "enum": [
+                "auditor",
+                "labeler",
+                "lane_member",
+                "steward"
+              ],
+              "type": "string"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "roles"
+        ],
+        "type": "object"
+      },
       "PendingProposalDto": {
         "properties": {
           "proposedBy": {
@@ -4880,6 +4900,88 @@
         "summary": "Which parts of your problem are ready (facts, sources, criteria, stages), with the reason and the check flags per part",
         "tags": [
           "drafts"
+        ]
+      }
+    },
+    "/v1/me/roles": {
+      "get": {
+        "operationId": "getMyRoles",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MyRolesDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "summary": "Your active human roles (auditor, labeler, lane_member, steward)",
+        "tags": [
+          "accounts"
         ]
       }
     },

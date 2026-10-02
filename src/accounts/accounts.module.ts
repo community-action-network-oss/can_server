@@ -10,6 +10,8 @@ import {
   RATE_LIMITER,
 } from '../platform/security/rate-limiter.js';
 import { RolesGuard } from '../platform/security/roles.guard.js';
+import { RequireRoleGuard, RoleService } from './app/roles.js';
+import { RolesController } from './http/roles.controller.js';
 import { AuthController } from './http/auth.controller.js';
 import { AuthService } from './app/auth.service.js';
 import { InviteService } from './app/invite.service.js';
@@ -24,12 +26,14 @@ import { NoPublishedContent } from './infra/no-published-content.js';
 import { DrizzleUnitOfWork } from './infra/unit-of-work.js';
 
 @Module({
-  controllers: [AuthController, InvitesController],
+  controllers: [AuthController, InvitesController, RolesController],
   providers: [
     // order matters: session first, then CSRF, then roles
     { provide: APP_GUARD, useClass: AuthGuard },
     { provide: APP_GUARD, useClass: CsrfGuard },
     { provide: APP_GUARD, useClass: RolesGuard },
+    { provide: APP_GUARD, useClass: RequireRoleGuard },
+    RoleService,
     { provide: RATE_LIMITER, useClass: InMemoryRateLimiter },
     AuthService,
     InviteService,
@@ -50,6 +54,6 @@ import { DrizzleUnitOfWork } from './infra/unit-of-work.js';
       }),
     },
   ],
-  exports: [AuthService, AuditPort],
+  exports: [AuthService, AuditPort, RoleService],
 })
 export class AccountsModule {}
