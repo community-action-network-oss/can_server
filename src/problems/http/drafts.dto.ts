@@ -1,6 +1,7 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
   IsInt,
+  IsObject,
   IsOptional,
   IsString,
   IsUUID,
@@ -50,9 +51,37 @@ export class DraftFieldsDto {
   @ApiPropertyOptional() @IsOptional() @IsUUID() jurisdictionId?: string;
 }
 
-export class CreateDraftDto extends DraftFieldsDto {}
+export class StructuredFieldsDto extends DraftFieldsDto {
+  @ApiPropertyOptional({
+    type: 'object',
+    additionalProperties: true,
+    description:
+      'Answers to the pinned content schema. Checked against the version stamped on the draft.',
+  })
+  @IsOptional()
+  @IsObject()
+  content?: Record<string, unknown>;
+  @ApiPropertyOptional({
+    description:
+      'Schema version the form was built from; defaults to the active one on create.',
+  })
+  @IsOptional()
+  @IsString()
+  @MaxLength(64)
+  schemaVersion?: string;
+  @ApiPropertyOptional({
+    description:
+      'Hash of that schema version; a mismatch returns schema_hash_mismatch with reload: true.',
+  })
+  @IsOptional()
+  @IsString()
+  @MaxLength(64)
+  schemaHash?: string;
+}
 
-export class UpdateDraftDto extends DraftFieldsDto {
+export class CreateDraftDto extends StructuredFieldsDto {}
+
+export class UpdateDraftDto extends StructuredFieldsDto {
   @ApiProperty({
     description: 'The version you last saw; a mismatch returns 409.',
   })
@@ -66,6 +95,9 @@ export class DraftDto {
   @ApiProperty() state!: string;
   @ApiProperty() version!: number;
   @ApiProperty() updatedAt!: string;
+  @ApiProperty({ type: String, nullable: true }) schemaId!: string | null;
+  @ApiProperty({ type: String, nullable: true }) schemaVersion!: string | null;
+  @ApiProperty({ type: String, nullable: true }) schemaHash!: string | null;
 }
 
 export class MyProblemDto {

@@ -7,6 +7,7 @@ import {
   integer,
   jsonb,
   pgTable,
+  primaryKey,
   text,
   timestamp,
   uuid,
@@ -143,6 +144,8 @@ export const problem = pgTable(
     schemaId: text('schema_id'),
     schemaVersion: text('schema_version'),
     schemaHash: text('schema_hash'),
+    // Structured body validated against the pinned schema (10-u29); scrubbed with the other content on T19.
+    content: jsonb('content').$type<Record<string, unknown>>(),
     planVersion: integer('plan_version').notNull().default(1),
     reviewRequestedAt: tz('review_requested_at'),
     noSourceNote: text('no_source_note'),
@@ -240,4 +243,18 @@ export const draftFingerprint = pgTable(
     check('draft_fingerprint_reason_chk', sql`${t.reason} in ('rejected','withdrawn')`),
     index('draft_fingerprint_expires_idx').on(t.expiresAt),
   ],
+);
+
+/** Every content schema version the server has served or stamped (10-u29); `retired_at` set when another hash became active. */
+export const contentSchemaVersion = pgTable(
+  'content_schema_version',
+  {
+    type: text('type').notNull(),
+    version: text('version').notNull(),
+    packVersion: text('pack_version').notNull(),
+    schemaHash: text('schema_hash').notNull(),
+    activatedAt: tz('activated_at').notNull(),
+    retiredAt: tz('retired_at'),
+  },
+  (t) => [primaryKey({ columns: [t.type, t.schemaHash] })],
 );

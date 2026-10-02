@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { PolicyModule } from '../policy/policy.module.js';
 import { AccountsModule } from '../accounts/accounts.module.js';
 import { NullStageChips, STAGE_CHIP } from './app/stage-chip.port.js';
 import { TransitionEngine } from './app/transition-engine.js';
@@ -21,7 +22,7 @@ import {
 import { ProblemsController } from './http/problems.controller.js';
 
 @Module({
-  imports: [AccountsModule],
+  imports: [AccountsModule, PolicyModule],
   controllers: [ProblemsController, DraftsController, MyProblemsController],
   providers: [
     { provide: STAGE_CHIP, useClass: NullStageChips },

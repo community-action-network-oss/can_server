@@ -13,6 +13,15 @@ import {
   type Clock,
   type IdGenerator,
 } from '../../platform/ports.js';
+import {
+  StructuredContentService,
+  schemaError,
+  type SchemaStamp,
+} from '../../policy/app/structured-content.service.js';
+import {
+  ContentSchemaNotFound,
+  PolicyUnavailable,
+} from '../../policy/domain/pack.js';
 import { checkLimits, type LimitField } from '../domain/eligibility/limits.js';
 
 export const EDITABLE = ['draft', 'needs_revision', 'in_review'];
@@ -28,6 +37,33 @@ const FIELDS = [
 ] as const;
 export type DraftInput = Partial<Record<(typeof FIELDS)[number], string>>;
 
+/** The structured part of a draft body: validated against the schema version stamped on the draft. */
+export interface StructuredInput {
+  content?: Record<string, unknown>;
+  schemaVersion?: string;
+  schemaHash?: string;
+}
+const SCHEMA_TYPE = 'problem';
+const stampOf = (r: {
+  schemaId: string | null;
+  schemaVersion: string | null;
+  schemaHash: string | null;
+}): SchemaStamp | null =>
+  r.schemaId && r.schemaVersion && r.schemaHash
+    ? {
+        schemaId: r.schemaId,
+        schemaVersion: r.schemaVersion,
+        schemaHash: r.schemaHash,
+      }
+    : null;
+const pin = (s: SchemaStamp | null) => ({
+  schemaId: s?.schemaId ?? null,
+  schemaVersion: s?.schemaVersion ?? null,
+  schemaHash: s?.schemaHash ?? null,
+});
+const unavailable = () =>
+  new ApiException(503, 'policy_unavailable', 'Policy is not available.');
+
 const notFound = () => new ApiException(404, 'not_found', 'Problem not found');
 
 @Injectable()
@@ -37,6 +73,8 @@ export class DraftsService {
     @Inject(CLOCK) private readonly clock: Clock,
     @Inject(ID_GENERATOR) private readonly ids: IdGenerator,
     @Inject(AuditPort) private readonly audit: AuditPort,
+    @Inject(StructuredContentService)
+    private readonly structured: StructuredContentService,
   ) {}
 
   /** Never put content in events: only the names of changed fields. */
@@ -86,16 +124,43 @@ export class DraftsService {
   }
 
   /** T00: no row exists to run through the engine, so the row and its event are written here in one transaction. */
-  async create(accountId: string, input: DraftInput) {
+  async create(accountId: string, input: DraftInput, st: StructuredInput = {}) {
     const id = this.ids.next();
     const now = this.clock.now();
+    let stamp: SchemaStamp | null = null;
     await withTransaction(this.db, async (tx) => {
       await this.validate(tx, input);
+      const wants = !!(st.content || st.schemaVersion || st.schemaHash);
+      try {
+        stamp = await this.structured.stamp(tx, SCHEMA_TYPE, now, {
+          version: st.schemaVersion,
+          hash: st.schemaHash,
+        });
+      } catch (e) {
+        // Without an active pack a plain draft still saves (legacy, unstamped); a structured one cannot.
+        if (
+          !(
+            e instanceof PolicyUnavailable || e instanceof ContentSchemaNotFound
+          ) ||
+          wants
+        )
+          throw e instanceof PolicyUnavailable ? unavailable() : e;
+      }
+      if (st.content && stamp)
+        await this.structured.validate(
+          tx,
+          SCHEMA_TYPE,
+          stamp,
+          st.content,
+          'draft',
+        );
       await tx.insert(problem).values({
         id,
         initiatorId: accountId,
         state: 'draft',
         ...input,
+        ...stamp,
+        content: st.content ?? null,
         jurisdictionId: input.jurisdictionId ?? null,
         helpNeeded: {
           skill_groups: [],
@@ -112,7 +177,13 @@ export class DraftsService {
         transitionId: 'T00',
       });
     });
-    return { id, state: 'draft', version: 1, updatedAt: now.toISOString() };
+    return {
+      id,
+      state: 'draft',
+      version: 1,
+      updatedAt: now.toISOString(),
+      ...pin(stamp),
+    };
   }
 
   private async lock(tx: Tx, id: string, accountId: string) {
@@ -130,6 +201,7 @@ export class DraftsService {
     id: string,
     input: DraftInput,
     expectedVersion: number,
+    st: StructuredInput = {},
   ) {
     const now = this.clock.now();
     return withTransaction(this.db, async (tx) => {
@@ -147,15 +219,51 @@ export class DraftsService {
           'The problem changed; reload and retry.',
         );
       await this.validate(tx, input);
+      // The body is checked against the version stamped at creation, never the active one.
+      let stamp = stampOf(r);
+      if (stamp && st.schemaHash && st.schemaHash !== stamp.schemaHash)
+        throw schemaError(
+          'schema_hash_mismatch',
+          'The form changed. Reload it and try again.',
+          { reload: true },
+        );
+      if (st.content) {
+        try {
+          stamp ??= await this.structured.stamp(tx, SCHEMA_TYPE, now, {
+            version: st.schemaVersion,
+            hash: st.schemaHash,
+          });
+        } catch (e) {
+          throw e instanceof PolicyUnavailable ? unavailable() : e;
+        }
+        await this.structured.validate(
+          tx,
+          SCHEMA_TYPE,
+          stamp,
+          st.content,
+          'draft',
+        );
+      }
       const version = r.version + 1;
       await tx
         .update(problem)
-        .set({ ...input, version, updatedAt: now })
+        .set({
+          ...input,
+          ...(st.content && { content: st.content, ...stamp }),
+          version,
+          updatedAt: now,
+        })
         .where(eq(problem.id, id));
       await this.event(tx, id, 'draft_edited', accountId, r.state, r.state, {
-        fields: Object.keys(input),
+        fields: [...Object.keys(input), ...(st.content ? ['content'] : [])],
       });
-      return { id, state: r.state, version, updatedAt: now.toISOString() };
+      return {
+        id,
+        state: r.state,
+        version,
+        updatedAt: now.toISOString(),
+        ...pin(stamp),
+      };
     });
   }
 
@@ -183,6 +291,7 @@ export class DraftsService {
           desiredOutcome: null,
           observed: null,
           uncertain: null,
+          content: null,
           intakeEvidence: null,
           noEvidenceNote: null,
           noSourceNote: null,

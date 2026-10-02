@@ -59,6 +59,11 @@
           "condition": {
             "type": "string"
           },
+          "content": {
+            "additionalProperties": true,
+            "description": "Answers to the pinned content schema. Checked against the version stamped on the draft.",
+            "type": "object"
+          },
           "desiredOutcome": {
             "type": "string"
           },
@@ -66,6 +71,14 @@
             "type": "string"
           },
           "observed": {
+            "type": "string"
+          },
+          "schemaHash": {
+            "description": "Hash of that schema version; a mismatch returns schema_hash_mismatch with reload: true.",
+            "type": "string"
+          },
+          "schemaVersion": {
+            "description": "Schema version the form was built from; defaults to the active one on create.",
             "type": "string"
           },
           "title": {
@@ -82,6 +95,18 @@
           "id": {
             "type": "string"
           },
+          "schemaHash": {
+            "nullable": true,
+            "type": "string"
+          },
+          "schemaId": {
+            "nullable": true,
+            "type": "string"
+          },
+          "schemaVersion": {
+            "nullable": true,
+            "type": "string"
+          },
           "state": {
             "type": "string"
           },
@@ -96,7 +121,10 @@
           "id",
           "state",
           "version",
-          "updatedAt"
+          "updatedAt",
+          "schemaId",
+          "schemaVersion",
+          "schemaHash"
         ],
         "type": "object"
       },
@@ -721,6 +749,11 @@
           "condition": {
             "type": "string"
           },
+          "content": {
+            "additionalProperties": true,
+            "description": "Answers to the pinned content schema. Checked against the version stamped on the draft.",
+            "type": "object"
+          },
           "desiredOutcome": {
             "type": "string"
           },
@@ -732,6 +765,14 @@
             "type": "string"
           },
           "observed": {
+            "type": "string"
+          },
+          "schemaHash": {
+            "description": "Hash of that schema version; a mismatch returns schema_hash_mismatch with reload: true.",
+            "type": "string"
+          },
+          "schemaVersion": {
+            "description": "Schema version the form was built from; defaults to the active one on create.",
             "type": "string"
           },
           "title": {

@@ -3,6 +3,9 @@ import { config } from '../config.js';
 import { ContentSchemaRegistry } from './app/content-schema-registry.js';
 import { PACK_SOURCE, type PackSource } from './app/pack-source.js';
 import { PolicyStore } from './app/policy-store.js';
+import { StructuredContentService } from './app/structured-content.service.js';
+import { StructuredContentValidator } from './app/structured-content-validator.js';
+import { SchemaVersionRepo } from './infra/schema-version.repo.js';
 import { DecisionCache } from './domain/cache.js';
 import { ContentSchemaController } from './http/content-schema.controller.js';
 import { FsPackSource } from './infra/fs-pack-source.js';
@@ -24,6 +27,23 @@ import { FsPackSource } from './infra/fs-pack-source.js';
       useFactory: (s: PolicyStore) => new ContentSchemaRegistry(s),
       inject: [PolicyStore],
     },
+    SchemaVersionRepo,
+    StructuredContentValidator,
+    {
+      provide: StructuredContentService,
+      useFactory: (
+        a: PolicyStore,
+        b: ContentSchemaRegistry,
+        c: SchemaVersionRepo,
+        d: StructuredContentValidator,
+      ) => new StructuredContentService(a, b, c, d),
+      inject: [
+        PolicyStore,
+        ContentSchemaRegistry,
+        SchemaVersionRepo,
+        StructuredContentValidator,
+      ],
+    },
     {
       provide: DecisionCache,
       useFactory: () =>
@@ -33,7 +53,12 @@ import { FsPackSource } from './infra/fs-pack-source.js';
         }),
     },
   ],
-  exports: [PolicyStore, ContentSchemaRegistry, DecisionCache],
+  exports: [
+    PolicyStore,
+    ContentSchemaRegistry,
+    DecisionCache,
+    StructuredContentService,
+  ],
 })
 export class PolicyModule implements OnModuleInit {
   constructor(private readonly store: PolicyStore) {}

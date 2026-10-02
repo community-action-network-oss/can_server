@@ -83,7 +83,12 @@ export class DraftsController {
         'rate_limited',
         'Too many drafts today. Try again tomorrow.',
       );
-    return this.drafts.create(a, body);
+    const { content, schemaVersion, schemaHash, ...fields } = body;
+    return this.drafts.create(a, fields, {
+      content,
+      schemaVersion,
+      schemaHash,
+    });
   }
 
   @Patch(':id')
@@ -99,12 +104,14 @@ export class DraftsController {
     @Body() body: UpdateDraftDto,
     @Req() req: AuthedRequest,
   ): Promise<DraftDto> {
-    const { expectedVersion, ...fields } = body;
+    const { expectedVersion, content, schemaVersion, schemaHash, ...fields } =
+      body;
     return this.drafts.update(
       req.auth!.accountId,
       uid(id),
       fields,
       expectedVersion,
+      { content, schemaVersion, schemaHash },
     );
   }
 
