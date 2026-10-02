@@ -41,6 +41,13 @@ export class DrizzleAccountRepo implements AccountRepo {
       .where(eq(account.id, id));
     return r ?? null;
   }
+  async emailCiphertext(id: string) {
+    const [r] = await this.tx
+      .select({ c: account.emailCiphertext })
+      .from(account)
+      .where(and(eq(account.id, id), isNull(account.deletedAt)));
+    return r?.c ?? null;
+  }
   // A savepoint keeps the outer transaction alive after a unique violation.
   async insert(a: Parameters<AccountRepo['insert']>[0]) {
     try {

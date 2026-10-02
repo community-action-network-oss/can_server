@@ -46,6 +46,8 @@ export interface NewSession {
 export interface AccountRepo {
   findByEmailHmac(hmac: Buffer): Promise<AccountRow | null>;
   findById(id: string): Promise<AccountRow | null>;
+  /** Encrypted email of a live (not deleted) account, for send-time decryption only. */
+  emailCiphertext(id: string): Promise<Buffer | null>;
   /** false when the handle is already taken (unique collision). */
   insert(a: NewAccount): Promise<boolean>;
   /** false when the handle is already taken. */

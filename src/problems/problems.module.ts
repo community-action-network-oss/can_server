@@ -1,12 +1,11 @@
 import { Module } from '@nestjs/common';
 import { PolicyModule } from '../policy/policy.module.js';
+import { ModerationModule } from '../moderation/moderation.module.js';
 import { AccountsModule } from '../accounts/accounts.module.js';
 import { NullStageChips, STAGE_CHIP } from './app/stage-chip.port.js';
 import { TransitionEngine } from './app/transition-engine.js';
 import {
-  DECISION_NOTIFIER,
   NoReviewFacts,
-  NoopDecisionNotifier,
   REVIEW_FACTS,
   TransitionEffects,
 } from './app/transition-ports.js';
@@ -30,12 +29,11 @@ import {
 import { ProblemsController } from './http/problems.controller.js';
 
 @Module({
-  imports: [AccountsModule, PolicyModule],
+  imports: [AccountsModule, PolicyModule, ModerationModule],
   controllers: [ProblemsController, DraftsController, MyProblemsController],
   providers: [
     { provide: STAGE_CHIP, useClass: NullStageChips },
     { provide: REVIEW_FACTS, useClass: NoReviewFacts },
-    { provide: DECISION_NOTIFIER, useClass: NoopDecisionNotifier },
     TransitionEffects,
     TransitionEngine,
     DraftsService,

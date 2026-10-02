@@ -143,6 +143,11 @@ export function loadConfig(source: Env, rootEnv: Env = {}) {
       'smtp',
     ),
     smtpUrl: env.SMTP_URL ?? 'smtp://localhost:1025',
+    /** Base of the owner-page link in decision emails. */
+    appBaseUrl: (env.APP_BASE_URL || 'http://localhost:8081').replace(
+      /\/+$/,
+      '',
+    ),
     ai: {
       provider,
       openRouterKey: env.OPEN_ROUTER_KEY || undefined,

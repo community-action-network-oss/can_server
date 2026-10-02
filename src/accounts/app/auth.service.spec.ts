@@ -33,6 +33,8 @@ function world() {
       findByEmailHmac: async (h) =>
         db.accounts.find((a) => a.emailHmac.equals(h)) ?? null,
       findById: async (id) => db.accounts.find((a) => a.id === id) ?? null,
+      emailCiphertext: async (id) =>
+        db.accounts.find((a) => a.id === id)?.emailCiphertext ?? null,
       insert: async (a) =>
         db.accounts.some((x) => x.handle === a.handle)
           ? false

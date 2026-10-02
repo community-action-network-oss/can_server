@@ -13,6 +13,7 @@ import {
 import { signInCode } from '../../platform/mail/templates.js';
 import {
   constantTimeEqual,
+  decryptEmail,
   emailBlindIndex,
   encryptEmail,
   hashSecret,
@@ -241,6 +242,20 @@ export class AuthService {
   }
 
   /** After commit, not awaited, so response time does not depend on SMTP. Failures are logged by the adapter. */
+  /**
+   * The only way other modules reach an address: decrypted here at send time, never returned.
+   * False when the account is gone. Rejects with MailSendError when the transport fails.
+   */
+  async sendToAccount(
+    accountId: string,
+    msg: { subject: string; text: string; kind: string },
+  ): Promise<boolean> {
+    const c = await this.uow.run((r) => r.accounts.emailCiphertext(accountId));
+    if (!c) return false;
+    await this.mail.send({ to: decryptEmail(c, this.s.encKey), ...msg });
+    return true;
+  }
+
   private send(to: string, code: string): void {
     const { subject, text } = signInCode(code);
     this.mail.send({ to, subject, text, kind: 'sign_in_code' }).catch(() => {});
