@@ -9,17 +9,28 @@ import {
   REVIEW_FACTS,
   TransitionEffects,
 } from './app/transition-ports.js';
+import {
+  InMemoryRateLimiter,
+  RATE_LIMITER,
+} from '../platform/security/rate-limiter.js';
+import { DraftsService } from './app/drafts.service.js';
+import {
+  DraftsController,
+  MyProblemsController,
+} from './http/drafts.controller.js';
 import { ProblemsController } from './http/problems.controller.js';
 
 @Module({
   imports: [AccountsModule],
-  controllers: [ProblemsController],
+  controllers: [ProblemsController, DraftsController, MyProblemsController],
   providers: [
     { provide: STAGE_CHIP, useClass: NullStageChips },
     { provide: REVIEW_FACTS, useClass: NoReviewFacts },
     { provide: DECISION_NOTIFIER, useClass: NoopDecisionNotifier },
     TransitionEffects,
     TransitionEngine,
+    DraftsService,
+    { provide: RATE_LIMITER, useClass: InMemoryRateLimiter },
   ],
   exports: [TransitionEngine, TransitionEffects],
 })

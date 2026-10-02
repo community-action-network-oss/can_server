@@ -171,6 +171,15 @@ export const problem = pgTable(
     tombstonedAt: tz('tombstoned_at'),
     withdrawnPublished: boolean('withdrawn_published').notNull().default(false),
     purgeAfter: tz('purge_after'),
+    // Intake (03-u06): evidence as [{url, note}], plus lifecycle stamps.
+    intakeEvidence:
+      jsonb('intake_evidence').$type<{ url: string; note: string }[]>(),
+    noEvidenceNote: text('no_evidence_note'),
+    identifiersConfirmedAt: tz('identifiers_confirmed_at'),
+    purgedAt: tz('purged_at'),
+    reviewReminderSentAt: tz('review_reminder_sent_at'),
+    // T19: problem_event is insert-only, so a discarded draft is scrubbed and stamped, not removed.
+    deletedAt: tz('deleted_at'),
     createdAt: tz('created_at').notNull().defaultNow(),
     updatedAt: tz('updated_at').notNull().defaultNow(),
     isSeed: boolean('is_seed').notNull().default(false),

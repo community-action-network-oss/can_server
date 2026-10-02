@@ -43,6 +43,13 @@
       "when": 1790940320302,
       "tag": "0005_last_terrax",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1790940667260,
+      "tag": "0006_black_king_cobra",
+      "breakpoints": true
     }
   ]
 }

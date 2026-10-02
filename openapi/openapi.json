@@ -48,6 +48,58 @@
         ],
         "type": "object"
       },
+      "CreateDraftDto": {
+        "properties": {
+          "affected": {
+            "type": "string"
+          },
+          "coarseArea": {
+            "type": "string"
+          },
+          "condition": {
+            "type": "string"
+          },
+          "desiredOutcome": {
+            "type": "string"
+          },
+          "jurisdictionId": {
+            "type": "string"
+          },
+          "observed": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "uncertain": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "DraftDto": {
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          },
+          "updatedAt": {
+            "type": "string"
+          },
+          "version": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "id",
+          "state",
+          "version",
+          "updatedAt"
+        ],
+        "type": "object"
+      },
       "ErrorBodyDto": {
         "properties": {
           "code": {
@@ -233,6 +285,80 @@
         "required": [
           "handle",
           "role"
+        ],
+        "type": "object"
+      },
+      "MyProblemDto": {
+        "properties": {
+          "appealableUntil": {
+            "nullable": true,
+            "type": "string"
+          },
+          "canEdit": {
+            "type": "boolean"
+          },
+          "canWithdraw": {
+            "type": "boolean"
+          },
+          "deleteAfter": {
+            "description": "The exact date this item is deleted, or null.",
+            "nullable": true,
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "needsReviewers": {
+            "type": "boolean"
+          },
+          "reviewCount": {
+            "type": "number"
+          },
+          "state": {
+            "type": "string"
+          },
+          "title": {
+            "nullable": true,
+            "type": "string"
+          },
+          "updatedAt": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "state",
+          "label",
+          "title",
+          "updatedAt",
+          "deleteAfter",
+          "appealableUntil",
+          "canWithdraw",
+          "canEdit",
+          "reviewCount",
+          "needsReviewers"
+        ],
+        "type": "object"
+      },
+      "MyProblemPageDto": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/MyProblemDto"
+            },
+            "type": "array"
+          },
+          "nextCursor": {
+            "nullable": true,
+            "type": "string"
+          }
+        },
+        "required": [
+          "items",
+          "nextCursor"
         ],
         "type": "object"
       },
@@ -581,6 +707,42 @@
           "tombstone",
           "tombstonedAt",
           "reason"
+        ],
+        "type": "object"
+      },
+      "UpdateDraftDto": {
+        "properties": {
+          "affected": {
+            "type": "string"
+          },
+          "coarseArea": {
+            "type": "string"
+          },
+          "condition": {
+            "type": "string"
+          },
+          "desiredOutcome": {
+            "type": "string"
+          },
+          "expectedVersion": {
+            "description": "The version you last saw; a mismatch returns 409.",
+            "type": "number"
+          },
+          "jurisdictionId": {
+            "type": "string"
+          },
+          "observed": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "uncertain": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "expectedVersion"
         ],
         "type": "object"
       },
@@ -1090,6 +1252,281 @@
         ]
       }
     },
+    "/v1/drafts": {
+      "post": {
+        "operationId": "createDraft",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateDraftDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DraftDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "summary": "Start a private draft (T00)",
+        "tags": [
+          "drafts"
+        ]
+      }
+    },
+    "/v1/drafts/{id}": {
+      "delete": {
+        "operationId": "deleteDraft",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "summary": "Discard your draft (T19)",
+        "tags": [
+          "drafts"
+        ]
+      },
+      "patch": {
+        "operationId": "updateDraft",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateDraftDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DraftDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "summary": "Edit your problem while it is a draft, needs changes or in review",
+        "tags": [
+          "drafts"
+        ]
+      }
+    },
     "/v1/jurisdictions": {
       "get": {
         "operationId": "listJurisdictions",
@@ -1293,6 +1730,85 @@
         "summary": "Get a new generated handle (once)",
         "tags": [
           "auth"
+        ]
+      }
+    },
+    "/v1/me/problems": {
+      "get": {
+        "operationId": "listMyProblems",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "cursor",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MyProblemPageDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "summary": "Your own problems, newest first, with the exact deletion date",
+        "tags": [
+          "drafts"
         ]
       }
     },

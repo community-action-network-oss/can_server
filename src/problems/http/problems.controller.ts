@@ -184,7 +184,7 @@ export class ProblemsController {
       isPublicState(r.p.state as State, r.p.withdrawnPublished);
     const own =
       !!auth && !!r?.p.initiatorId && r.p.initiatorId === auth.accountId;
-    if (!r || !(isPublic || own))
+    if (!r || r.p.deletedAt || !(isPublic || own))
       throw new ApiException(404, 'not_found', 'Problem not found');
     return r;
   }
