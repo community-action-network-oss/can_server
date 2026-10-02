@@ -1,0 +1,6 @@
+name: fiktiva-city
+semver: 0.0.1
+layer: jurisdiction
+jurisdiction: fiktiva-city
+parent: constitution@0.0.1
+effective_from: 2026-01-01

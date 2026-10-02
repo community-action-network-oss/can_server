@@ -1,0 +1,5 @@
+name: constitution
+semver: 0.0.1
+layer: constitution
+parent: base@0.0.1
+effective_from: 2026-01-01

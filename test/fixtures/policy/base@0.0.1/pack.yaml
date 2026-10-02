@@ -1,0 +1,4 @@
+name: base
+semver: 0.0.1
+layer: base
+effective_from: 2026-01-01

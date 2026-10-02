@@ -1,6 +1,74 @@
 {
   "components": {
     "schemas": {
+      "ContentSchemaDto": {
+        "properties": {
+          "messages": {
+            "additionalProperties": true,
+            "description": "Parsed messages.en.json for this type",
+            "type": "object"
+          },
+          "policy_version": {
+            "type": "string"
+          },
+          "schema": {
+            "additionalProperties": true,
+            "description": "JSON Schema with x-ui, x-guidance, x-checks",
+            "type": "object"
+          },
+          "schema_hash": {
+            "description": "sha256 of the schema file",
+            "type": "string"
+          },
+          "schema_id": {
+            "type": "string"
+          },
+          "schema_version": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "schema",
+          "schema_id",
+          "schema_version",
+          "schema_hash",
+          "policy_version",
+          "messages"
+        ],
+        "type": "object"
+      },
+      "ErrorBodyDto": {
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "fieldErrors": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message"
+        ],
+        "type": "object"
+      },
+      "ErrorEnvelopeDto": {
+        "properties": {
+          "error": {
+            "$ref": "#/components/schemas/ErrorBodyDto"
+          }
+        },
+        "required": [
+          "error"
+        ],
+        "type": "object"
+      },
       "HealthDto": {
         "properties": {
           "db": {
@@ -63,6 +131,75 @@
         "summary": "Liveness and database check",
         "tags": [
           "health"
+        ]
+      }
+    },
+    "/v1/content-schemas/{type}": {
+      "get": {
+        "operationId": "getContentSchema",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "type",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Policy version string, e.g. base@0.0.1+0123456789ab. Defaults to the active one.",
+            "in": "query",
+            "name": "version",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Jurisdiction id. Defaults to the default pack.",
+            "in": "query",
+            "name": "jurisdiction",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContentSchemaDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelopeDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelopeDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "summary": "Active content schema for a type",
+        "tags": [
+          "policy"
         ]
       }
     }

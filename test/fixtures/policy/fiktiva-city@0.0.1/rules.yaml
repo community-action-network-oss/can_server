@@ -1,0 +1,9 @@
+rules:
+  - id: FIX-PROC-1
+    tier: procedure
+    enforcement: reject
+    text: Fiktiva City narrows the procedure rule.
+  - id: FIX-CITY-1
+    tier: legal_gate
+    enforcement: needs_revision
+    text: A fictional city rule.

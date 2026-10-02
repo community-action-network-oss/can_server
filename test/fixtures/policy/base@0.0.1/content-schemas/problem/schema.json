@@ -1,0 +1,37 @@
+{
+  "$id": "fixture.problem",
+  "x-version": "1.0.0",
+  "type": "object",
+  "required": ["title", "structural_statement", "scope", "assumptions"],
+  "additionalProperties": false,
+  "properties": {
+    "title": {
+      "type": "string",
+      "maxLength": 120,
+      "x-ui": {"widget": "text", "label_msg": "schema.problem.title.label", "help_msg": "schema.problem.title.help", "order": 1},
+      "x-guidance": {"why": "A short public name for the condition.", "good": "Unlit crossing near the Fiktiva City market", "bad": "Mr. X ignores us", "maxLength": 120},
+      "x-checks": {"dps": ["DP-NAMING"]}
+    },
+    "structural_statement": {
+      "type": "string",
+      "maxLength": 600,
+      "x-ui": {"widget": "textarea", "label_msg": "schema.problem.statement.label", "help_msg": "schema.problem.statement.help", "order": 2},
+      "x-guidance": {"why": "Describes the condition, not a person.", "good": "Reports of broken lights go unanswered for months.", "bad": "The mayor is lazy.", "maxLength": 600},
+      "x-checks": {"dps": ["DP-FRAMING"]}
+    },
+    "scope": {
+      "type": "string",
+      "enum": ["street", "district", "city"],
+      "x-ui": {"widget": "select", "label_msg": "schema.problem.scope.label", "order": 3},
+      "x-guidance": {"why": "How far the condition reaches.", "maxLength": 20},
+      "x-checks": {"dps": []}
+    },
+    "assumptions": {
+      "type": "string",
+      "maxLength": 400,
+      "x-ui": {"widget": "textarea", "label_msg": "schema.problem.assumptions.label", "order": 4},
+      "x-guidance": {"why": "Separates what is known from what is guessed.", "good": "We assume the lights are city owned.", "maxLength": 400},
+      "x-checks": {"dps": ["DP-ASSUMPTIONS"], "none_stated": true}
+    }
+  }
+}

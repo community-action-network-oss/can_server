@@ -1,0 +1,28 @@
+{
+  "pack_name": "base",
+  "version": "0.0.1",
+  "pack_hash": "ae4794a8837d195b84bae57f45e551f9e121915f644791e96422f407167eda89",
+  "parent_pack_hash": null,
+  "files": [
+    {
+      "path": "content-schemas/problem/messages.en.json",
+      "sha256": "e48235149aabf402d34bf1224d0c432f557e44fc927de956020041f1d67bdc9d"
+    },
+    {
+      "path": "content-schemas/problem/schema.json",
+      "sha256": "f200fc722e2594d38efe1cb8f63312269d3757311e065f9ed1d03c0ed7e1f5c0"
+    },
+    {
+      "path": "limits.yaml",
+      "sha256": "f920eff88ea1a7d3f61ef55ea07db98d73d244348f3124c544b816884eca804c"
+    },
+    {
+      "path": "pack.yaml",
+      "sha256": "fedbca31b3bb290de79bad334ece808924a6e4972a71dde79f44d71c0267db4a"
+    },
+    {
+      "path": "rules.yaml",
+      "sha256": "3c9498f3c59c311419c3e4c34a70425c0a539fd043715fe3ecb353b43dcc73b7"
+    }
+  ]
+}

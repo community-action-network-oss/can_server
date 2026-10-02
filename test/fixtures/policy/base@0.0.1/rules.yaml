@@ -1,0 +1,15 @@
+# Invented fixture rules, not real CAN rules.
+protected_core: [FIX-RIGHTS-1]
+rules:
+  - id: FIX-RIGHTS-1
+    tier: rights
+    enforcement: reject
+    text: A fixture rule that stands for a rights rule.
+  - id: FIX-PRIV-1
+    tier: privacy
+    enforcement: hold
+    text: A fixture rule that stands for a privacy rule.
+  - id: FIX-PROC-1
+    tier: procedure
+    enforcement: needs_revision
+    text: A fixture rule that stands for a procedure rule.

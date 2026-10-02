@@ -1,0 +1,8 @@
+{
+  "schema.problem.title.label": "Title",
+  "schema.problem.title.help": "Name the condition in a few words.",
+  "schema.problem.statement.label": "What is the structural problem?",
+  "schema.problem.statement.help": "Describe the pattern or failure, not a person.",
+  "schema.problem.scope.label": "How far does it reach?",
+  "schema.problem.assumptions.label": "What are you assuming?"
+}

@@ -1,0 +1,20 @@
+{
+  "pack_name": "fiktiva-city",
+  "version": "0.0.1",
+  "pack_hash": "f023c240efac8b93a7676a1ec5ecb69c224583e85638d8ac760889c0ae999252",
+  "parent_pack_hash": "179256d3deaeb85b9a0eab56052993504a1affc53f29e1e0ff9a0f69a4677cca",
+  "files": [
+    {
+      "path": "limits.yaml",
+      "sha256": "ff0d1b1e7937c9e5e381d79fa44b262fe4065f9d14b26552fa079aa1a94218e0"
+    },
+    {
+      "path": "pack.yaml",
+      "sha256": "c6e176ac8d78182148b523086b384837bed53339b2b5d82e575d383d97068d9b"
+    },
+    {
+      "path": "rules.yaml",
+      "sha256": "ad046ae4cef345f95e80abbb1dab6caaa3715b5f892f14b08104ecbd92552bb3"
+    }
+  ]
+}

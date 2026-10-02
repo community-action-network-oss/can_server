@@ -1,0 +1,5 @@
+rules:
+  - id: FIX-CONST-1
+    tier: crisis_safety
+    enforcement: hold
+    text: A fixture constitution rule.
