@@ -1,0 +1,443 @@
+{
+  "_note": "Hand-written oracle for selectDps over a pack that carries every catalog DP. expect is a set (sorted); run order is asserted separately. Not generated from the code.",
+  "cases": [
+    {
+      "name": "DP-ELIGIBILITY and the review set",
+      "input": {
+        "event": "review_requested",
+        "contentType": "problem"
+      },
+      "expect": [
+        "DP-ASSUMPTIONS",
+        "DP-COMPLETENESS",
+        "DP-CRISIS",
+        "DP-CRITERIA",
+        "DP-DUPLICATE",
+        "DP-ELIGIBILITY",
+        "DP-FRAMING",
+        "DP-LEGAL",
+        "DP-NAMING",
+        "DP-PRIVACY",
+        "DP-SOURCE-TRUST",
+        "DP-STAGE-PLAN",
+        "DP-TONE"
+      ]
+    },
+    {
+      "name": "DP-PRIVACY on a contribution",
+      "input": {
+        "event": "contribution_submitted",
+        "contentType": "contribution"
+      },
+      "expect": [
+        "DP-ASSUMPTIONS",
+        "DP-COMPLETENESS",
+        "DP-CONTRIB-RELEVANCE",
+        "DP-CRISIS",
+        "DP-EVIDENCE-TIER",
+        "DP-LEGAL",
+        "DP-LEGALITY",
+        "DP-NAMING",
+        "DP-PRIVACY",
+        "DP-TONE"
+      ]
+    },
+    {
+      "name": "DP-FRAMING on an edited condition",
+      "input": {
+        "event": "edited",
+        "contentType": "problem",
+        "changedFields": [
+          "condition"
+        ],
+        "state": "active"
+      },
+      "expect": [
+        "DP-ASSUMPTIONS",
+        "DP-COMPLETENESS",
+        "DP-CRISIS",
+        "DP-DUPLICATE",
+        "DP-FRAMING",
+        "DP-LEGAL",
+        "DP-NAMING",
+        "DP-PRIVACY",
+        "DP-TONE"
+      ]
+    },
+    {
+      "name": "DP-DUPLICATE on a context change",
+      "input": {
+        "event": "context_changed",
+        "contentType": "problem"
+      },
+      "expect": [
+        "DP-DUPLICATE",
+        "DP-EVIDENCE-TIER"
+      ]
+    },
+    {
+      "name": "DP-DUPLICATE and DP-CLOSURE on a close proposal",
+      "input": {
+        "event": "close_proposed",
+        "contentType": "problem"
+      },
+      "expect": [
+        "DP-ASSUMPTIONS",
+        "DP-CLOSURE",
+        "DP-COMPLETENESS",
+        "DP-CRISIS",
+        "DP-DUPLICATE",
+        "DP-LEGAL",
+        "DP-NAMING",
+        "DP-PRIVACY",
+        "DP-TONE"
+      ]
+    },
+    {
+      "name": "DP-CONTRIB-RELEVANCE on a stage option",
+      "input": {
+        "event": "stage_option_ready",
+        "contentType": "stage_option"
+      },
+      "expect": [
+        "DP-ASSUMPTIONS",
+        "DP-COMPLETENESS",
+        "DP-CONTRIB-RELEVANCE",
+        "DP-CRISIS",
+        "DP-LEGAL",
+        "DP-LEGALITY",
+        "DP-NAMING",
+        "DP-PRIVACY",
+        "DP-TONE"
+      ]
+    },
+    {
+      "name": "DP-LEGALITY on a stage choice",
+      "input": {
+        "event": "stage_choice_recorded",
+        "contentType": "stage_choice"
+      },
+      "expect": [
+        "DP-ASSUMPTIONS",
+        "DP-COMPLETENESS",
+        "DP-CRISIS",
+        "DP-DECISION-RECORD",
+        "DP-LEGAL",
+        "DP-LEGALITY",
+        "DP-NAMING",
+        "DP-PRIVACY",
+        "DP-TONE"
+      ]
+    },
+    {
+      "name": "DP-DECISION-RECORD on a decision record",
+      "input": {
+        "event": "stage_choice_recorded",
+        "contentType": "decision_record"
+      },
+      "expect": [
+        "DP-ASSUMPTIONS",
+        "DP-COMPLETENESS",
+        "DP-CRISIS",
+        "DP-DECISION-RECORD",
+        "DP-LEGAL",
+        "DP-LEGALITY",
+        "DP-NAMING",
+        "DP-PRIVACY",
+        "DP-TONE"
+      ]
+    },
+    {
+      "name": "DP-VERIFICATION on a solved proposal",
+      "input": {
+        "event": "solved_proposed",
+        "contentType": "task_verification"
+      },
+      "expect": [
+        "DP-ASSUMPTIONS",
+        "DP-COMPLETENESS",
+        "DP-CRISIS",
+        "DP-EVIDENCE-TIER",
+        "DP-LEGAL",
+        "DP-NAMING",
+        "DP-PRIVACY",
+        "DP-TONE",
+        "DP-VERIFICATION"
+      ]
+    },
+    {
+      "name": "DP-EVIDENCE-TIER and DP-STAGE-RESOLUTION on stage evidence",
+      "input": {
+        "event": "stage_evidence_submitted",
+        "contentType": "stage_evidence"
+      },
+      "expect": [
+        "DP-ASSUMPTIONS",
+        "DP-COMPLETENESS",
+        "DP-CRISIS",
+        "DP-EVIDENCE-TIER",
+        "DP-LEGAL",
+        "DP-NAMING",
+        "DP-PRIVACY",
+        "DP-STAGE-RESOLUTION",
+        "DP-TONE"
+      ]
+    },
+    {
+      "name": "DP-SOURCE-TRUST on edited sources",
+      "input": {
+        "event": "edited",
+        "contentType": "problem",
+        "changedFields": [
+          "sources"
+        ],
+        "state": "active"
+      },
+      "expect": [
+        "DP-ASSUMPTIONS",
+        "DP-COMPLETENESS",
+        "DP-CRISIS",
+        "DP-EVIDENCE-TIER",
+        "DP-LEGAL",
+        "DP-PRIVACY",
+        "DP-SOURCE-TRUST"
+      ]
+    },
+    {
+      "name": "DP-CRITERIA on a plan change",
+      "input": {
+        "event": "plan_change_proposed",
+        "contentType": "stage"
+      },
+      "expect": [
+        "DP-ASSUMPTIONS",
+        "DP-COMPLETENESS",
+        "DP-CRISIS",
+        "DP-CRITERIA",
+        "DP-LEGAL",
+        "DP-NAMING",
+        "DP-PRIVACY",
+        "DP-STAGE-PLAN",
+        "DP-TONE"
+      ]
+    },
+    {
+      "name": "DP-PUBLISH on publication request",
+      "input": {
+        "event": "publication_requested",
+        "contentType": "problem"
+      },
+      "expect": [
+        "DP-ASSUMPTIONS",
+        "DP-COMPLETENESS",
+        "DP-CRISIS",
+        "DP-CRITERIA",
+        "DP-DUPLICATE",
+        "DP-FRAMING",
+        "DP-LEGAL",
+        "DP-NAMING",
+        "DP-PRIVACY",
+        "DP-PUBLISH",
+        "DP-SOURCE-TRUST",
+        "DP-STAGE-PLAN",
+        "DP-TONE"
+      ]
+    },
+    {
+      "name": "DP-STAGE-RESOLUTION and re-resolution on a policy change of a stage",
+      "input": {
+        "event": "policy_changed",
+        "contentType": "stage"
+      },
+      "expect": [
+        "DP-ASSUMPTIONS",
+        "DP-COMPLETENESS",
+        "DP-CRISIS",
+        "DP-CRITERIA",
+        "DP-LEGAL",
+        "DP-NAMING",
+        "DP-PRIVACY",
+        "DP-RERESOLUTION",
+        "DP-STAGE-PLAN",
+        "DP-STAGE-RESOLUTION",
+        "DP-TONE"
+      ]
+    },
+    {
+      "name": "DP-BLOCKER on a stuck proposal",
+      "input": {
+        "event": "stuck_proposed",
+        "contentType": "problem"
+      },
+      "expect": [
+        "DP-ASSUMPTIONS",
+        "DP-BLOCKER",
+        "DP-COMPLETENESS",
+        "DP-CRISIS",
+        "DP-LEGAL",
+        "DP-NAMING",
+        "DP-PRIVACY",
+        "DP-TONE"
+      ]
+    },
+    {
+      "name": "DP-CLOSURE on a close proposal for a proposal",
+      "input": {
+        "event": "close_proposed",
+        "contentType": "proposal"
+      },
+      "expect": [
+        "DP-ASSUMPTIONS",
+        "DP-CLOSURE",
+        "DP-COMPLETENESS",
+        "DP-CRISIS",
+        "DP-LEGAL",
+        "DP-NAMING",
+        "DP-PRIVACY",
+        "DP-TONE"
+      ]
+    },
+    {
+      "name": "DP-APPEAL on a filed appeal",
+      "input": {
+        "event": "appeal_filed",
+        "contentType": "appeal"
+      },
+      "expect": [
+        "DP-APPEAL",
+        "DP-ASSUMPTIONS",
+        "DP-COMPLETENESS",
+        "DP-CRISIS",
+        "DP-LEGAL",
+        "DP-NAMING",
+        "DP-PRIVACY",
+        "DP-TONE"
+      ]
+    },
+    {
+      "name": "DP-RERESOLUTION on a policy change of a problem",
+      "input": {
+        "event": "policy_changed",
+        "contentType": "problem"
+      },
+      "expect": [
+        "DP-ASSUMPTIONS",
+        "DP-COMPLETENESS",
+        "DP-CRISIS",
+        "DP-CRITERIA",
+        "DP-DUPLICATE",
+        "DP-ELIGIBILITY",
+        "DP-EVIDENCE-TIER",
+        "DP-FRAMING",
+        "DP-LEGAL",
+        "DP-NAMING",
+        "DP-PRIVACY",
+        "DP-RERESOLUTION",
+        "DP-SOURCE-TRUST",
+        "DP-STAGE-PLAN",
+        "DP-TONE"
+      ]
+    },
+    {
+      "name": "DP-ARCHIVE on problem end",
+      "input": {
+        "event": "problem_ended",
+        "contentType": "problem"
+      },
+      "expect": [
+        "DP-ARCHIVE"
+      ]
+    },
+    {
+      "name": "DP-REUSE-FIT on a suggestion",
+      "input": {
+        "event": "suggestion_requested",
+        "contentType": "problem"
+      },
+      "expect": [
+        "DP-REUSE-FIT"
+      ]
+    },
+    {
+      "name": "DP-STAGE-DRAFT on a draft request",
+      "input": {
+        "event": "stage_draft_requested",
+        "contentType": "problem"
+      },
+      "expect": [
+        "DP-STAGE-DRAFT"
+      ]
+    },
+    {
+      "name": "review_recommendation selects exactly privacy, naming, tone, crisis",
+      "input": {
+        "event": "recommendation_submitted",
+        "contentType": "review_recommendation"
+      },
+      "expect": [
+        "DP-CRISIS",
+        "DP-NAMING",
+        "DP-PRIVACY",
+        "DP-TONE"
+      ]
+    },
+    {
+      "name": "review_recommendation edit is the same four",
+      "input": {
+        "event": "edited",
+        "contentType": "review_recommendation",
+        "changedFields": [
+          "reason"
+        ]
+      },
+      "expect": [
+        "DP-CRISIS",
+        "DP-NAMING",
+        "DP-PRIVACY",
+        "DP-TONE"
+      ]
+    },
+    {
+      "name": "a diff touching only scope",
+      "input": {
+        "event": "edited",
+        "contentType": "problem",
+        "changedFields": [
+          "scope"
+        ],
+        "state": "in_review"
+      },
+      "expect": [
+        "DP-ASSUMPTIONS",
+        "DP-COMPLETENESS",
+        "DP-CRISIS",
+        "DP-DUPLICATE",
+        "DP-FRAMING",
+        "DP-LEGAL",
+        "DP-PRIVACY"
+      ]
+    },
+    {
+      "name": "an unknown diff is not narrowed",
+      "input": {
+        "event": "edited",
+        "contentType": "problem",
+        "state": "active"
+      },
+      "expect": [
+        "DP-ASSUMPTIONS",
+        "DP-COMPLETENESS",
+        "DP-CRISIS",
+        "DP-CRITERIA",
+        "DP-DUPLICATE",
+        "DP-EVIDENCE-TIER",
+        "DP-FRAMING",
+        "DP-LEGAL",
+        "DP-NAMING",
+        "DP-PRIVACY",
+        "DP-SOURCE-TRUST",
+        "DP-TONE"
+      ]
+    }
+  ]
+}
