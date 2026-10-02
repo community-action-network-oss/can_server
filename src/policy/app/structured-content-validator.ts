@@ -51,10 +51,10 @@ export class StructuredContentValidator {
   private compile(hash: string, schema: Record<string, unknown>) {
     let v = this.cache.get(hash);
     if (!v) {
-      // strictTypes off: real can_policy if/then branches say `required`/`minItems` without a type; unknown keywords stay rejected
+      // strict + strictTypes: every can_policy content schema declares types (guard test there); unknown keywords stay rejected
       const ajv = new Ajv2020({
         strict: true,
-        strictTypes: false,
+        strictTypes: true,
         allErrors: true,
       });
       for (const keyword of KEYWORDS) ajv.addKeyword({ keyword }); // annotations: no-ops

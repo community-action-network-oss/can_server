@@ -1,7 +1,7 @@
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { StructuredContentValidator } from '../../src/policy/app/structured-content-validator.js';
-import { FIXTURE_DIR } from './helpers.js';
+import { FIXTURE_DIR, FIXTURE_V1_DIR } from './helpers.js';
 
 const base = JSON.parse(
   readFileSync(
@@ -109,5 +109,24 @@ describe('StructuredContentValidator against real can_policy schemas', () => {
       }
     }
     expect(bad).toEqual([]);
+  });
+});
+
+describe('StructuredContentValidator on the can_policy v1 export', () => {
+  it('compiles every content schema under strict + strictTypes', () => {
+    const dir = join(FIXTURE_V1_DIR, 'base@1.0.0/content-schemas');
+    const types = readdirSync(dir).filter((t) =>
+      statSync(join(dir, t)).isDirectory(),
+    );
+    expect(types.length).toBeGreaterThan(0);
+    for (const t of types) {
+      const schema = JSON.parse(
+        readFileSync(join(dir, t, 'schema.json'), 'utf8'),
+      );
+      expect(
+        () => val.validate(`v1-${t}`, schema, {}, 'draft'),
+        t,
+      ).not.toThrow();
+    }
   });
 });
