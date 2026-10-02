@@ -1,0 +1,149 @@
+[
+  {
+    "id": "r01",
+    "a": "The footbridge over Example Creek has had a broken handrail for many months and children cross it on the way to school every morning. Water pools at the corner of Sample Road after every rain and the drain cover has been missing since the spring flood last year. Streetlights along the Placeholder Lane path stay dark after sunset which makes the walk home from the bus stop feel unsafe for many residents.",
+    "b": "The footbridge over Example Creek has had very broken handrail for many months and children cross it on the way to often every morning. Water pools at the corner of Sample Road after every rain and the drain cover has been missing since the spring flood last year. Streetlights along the Placeholder Lane path stay dark after sunset which makes the walk home from the bus stop feel unsafe for many residents.",
+    "similar": true,
+    "note": "two words edited in the first sentence"
+  },
+  {
+    "id": "r02",
+    "a": "Streetlights along the Placeholder Lane path stay dark after sunset which makes the walk home from the bus stop feel unsafe for many residents. The community noticeboard near the library has been empty since the old one was removed and nobody knows who was meant to replace it. Bus route twelve skips the stop outside the clinic on weekends so people without cars cannot reach their appointments on time.",
+    "b": "Streetlights along the Placeholder Lane path stay very after sunset which makes the walk home from the bus stop feel unsafe often many residents. The community noticeboard near the library has been empty since the old one was removed and nobody knows who was meant to replace it. Bus route twelve skips the stop outside the clinic on weekends so people without cars cannot reach their appointments on time.",
+    "similar": true,
+    "note": "two words edited in the first sentence"
+  },
+  {
+    "id": "r03",
+    "a": "Bus route twelve skips the stop outside the clinic on weekends so people without cars cannot reach their appointments on time. A pothole on Fictional Avenue has grown wide enough to damage bicycle wheels and cyclists now swerve into the traffic lane to avoid it. The playground fence behind the Demo Estate flats has a gap that lets small children wander out toward the busy service road.",
+    "b": "Bus route twelve skips the stop outside very clinic on weekends so people without cars cannot reach their often on time. A pothole on Fictional Avenue has grown wide enough to damage bicycle wheels and cyclists now swerve into the traffic lane to avoid it. The playground fence behind the Demo Estate flats has a gap that lets small children wander out toward the busy service road.",
+    "similar": true,
+    "note": "two words edited in the first sentence"
+  },
+  {
+    "id": "r04",
+    "a": "The playground fence behind the Demo Estate flats has a gap that lets small children wander out toward the busy service road. Recycling bins at the Test Square market overflow by Sunday evening and the loose paper blows across the neighbouring gardens. The public toilets by the Sample Park entrance have been locked since winter and visitors have no signposted alternative nearby.",
+    "b": "The playground fence behind the Demo Estate very has a gap that lets small children wander out toward the often service road. Recycling bins at the Test Square market overflow by Sunday evening and the loose paper blows across the neighbouring gardens. The public toilets by the Sample Park entrance have been locked since winter and visitors have no signposted alternative nearby.",
+    "similar": true,
+    "note": "two words edited in the first sentence"
+  },
+  {
+    "id": "r05",
+    "a": "The public toilets by the Sample Park entrance have been locked since winter and visitors have no signposted alternative nearby. Tree roots have lifted the pavement along Mock Street so wheelchair users must travel in the road for about forty metres. The crossing outside Example School has faded markings and drivers regularly fail to stop when the lollipop warden is not present.",
+    "b": "The public toilets by the Sample Park very have been locked since winter and visitors have no often alternative nearby. Tree roots have lifted the pavement along Mock Street so wheelchair users must travel in the road for about forty metres. The crossing outside Example School has faded markings and drivers regularly fail to stop when the lollipop warden is not present.",
+    "similar": true,
+    "note": "two words edited in the first sentence"
+  },
+  {
+    "id": "r06",
+    "a": "The crossing outside Example School has faded markings and drivers regularly fail to stop when the lollipop warden is not present. Flooding in the underpass beneath the Placeholder rail line makes the only direct route to the allotments impassable for days. The footbridge over Example Creek has had a broken handrail for many months and children cross it on the way to school every morning.",
+    "b": "The crossing outside Example School has faded very and drivers regularly fail to stop when the lollipop warden often not present. Flooding in the underpass beneath the Placeholder rail line makes the only direct route to the allotments impassable for days. The footbridge over Example Creek has had a broken handrail for many months and children cross it on the way to school every morning.",
+    "similar": true,
+    "note": "two words edited in the first sentence"
+  },
+  {
+    "id": "r07",
+    "a": "The footbridge over Example Creek has had a broken handrail for many months and children cross it on the way to school every morning. Water pools at the corner of Sample Road after every rain and the drain cover has been missing since the spring flood last year. Streetlights along the Placeholder Lane path stay dark after sunset which makes the walk home from the bus stop feel unsafe for many residents.",
+    "b": "Streetlights along the Placeholder Lane path stay dark after sunset which makes the walk home from the bus stop feel unsafe for many residents. The footbridge over Example Creek has had a broken handrail for many months and children cross it on the way to school every morning. Water pools at the corner of Sample Road after every rain and the drain cover has been missing since the spring flood last year.",
+    "similar": true,
+    "note": "sentences reordered"
+  },
+  {
+    "id": "r08",
+    "a": "The community noticeboard near the library has been empty since the old one was removed and nobody knows who was meant to replace it. Bus route twelve skips the stop outside the clinic on weekends so people without cars cannot reach their appointments on time. A pothole on Fictional Avenue has grown wide enough to damage bicycle wheels and cyclists now swerve into the traffic lane to avoid it.",
+    "b": "A pothole on Fictional Avenue has grown wide enough to damage bicycle wheels and cyclists now swerve into the traffic lane to avoid it. The community noticeboard near the library has been empty since the old one was removed and nobody knows who was meant to replace it. Bus route twelve skips the stop outside the clinic on weekends so people without cars cannot reach their appointments on time.",
+    "similar": true,
+    "note": "sentences reordered"
+  },
+  {
+    "id": "r09",
+    "a": "The playground fence behind the Demo Estate flats has a gap that lets small children wander out toward the busy service road. Recycling bins at the Test Square market overflow by Sunday evening and the loose paper blows across the neighbouring gardens. The public toilets by the Sample Park entrance have been locked since winter and visitors have no signposted alternative nearby.",
+    "b": "The public toilets by the Sample Park entrance have been locked since winter and visitors have no signposted alternative nearby. The playground fence behind the Demo Estate flats has a gap that lets small children wander out toward the busy service road. Recycling bins at the Test Square market overflow by Sunday evening and the loose paper blows across the neighbouring gardens.",
+    "similar": true,
+    "note": "sentences reordered"
+  },
+  {
+    "id": "r10",
+    "a": "Tree roots have lifted the pavement along Mock Street so wheelchair users must travel in the road for about forty metres. The crossing outside Example School has faded markings and drivers regularly fail to stop when the lollipop warden is not present. Flooding in the underpass beneath the Placeholder rail line makes the only direct route to the allotments impassable for days.",
+    "b": "Flooding in the underpass beneath the Placeholder rail line makes the only direct route to the allotments impassable for days. Tree roots have lifted the pavement along Mock Street so wheelchair users must travel in the road for about forty metres. The crossing outside Example School has faded markings and drivers regularly fail to stop when the lollipop warden is not present.",
+    "similar": true,
+    "note": "sentences reordered"
+  },
+  {
+    "id": "r11",
+    "a": "The footbridge over Example Creek has had a broken handrail for many months and children cross it on the way to school every morning. Water pools at the corner of Sample Road after every rain and the drain cover has been missing since the spring flood last year. Streetlights along the Placeholder Lane path stay dark after sunset which makes the walk home from the bus stop feel unsafe for many residents.",
+    "b": "the footbridge over example creek has had a broken handrail for many months and children cross it on the way to school every morning!! water pools at the corner of sample road after every rain and the drain cover has been missing since the spring flood last year!! streetlights along the placeholder lane path stay dark after sunset which makes the walk home from the bus stop feel unsafe for many residents!!  ",
+    "similar": true,
+    "note": "case and punctuation only"
+  },
+  {
+    "id": "r12",
+    "a": "The community noticeboard near the library has been empty since the old one was removed and nobody knows who was meant to replace it. Bus route twelve skips the stop outside the clinic on weekends so people without cars cannot reach their appointments on time. A pothole on Fictional Avenue has grown wide enough to damage bicycle wheels and cyclists now swerve into the traffic lane to avoid it.",
+    "b": "  THE COMMUNITY NOTICEBOARD NEAR THE LIBRARY HAS BEEN EMPTY SINCE THE OLD ONE WAS REMOVED AND NOBODY KNOWS WHO WAS MEANT TO REPLACE IT.\n\nBus route twelve skips the stop outside the clinic on weekends so people without cars cannot reach their appointments on time.   A pothole on Fictional Avenue has grown wide enough to damage bicycle wheels and cyclists now swerve into the traffic lane to avoid it.",
+    "similar": true,
+    "note": "case and whitespace only"
+  },
+  {
+    "id": "r13",
+    "a": "The playground fence behind the Demo Estate flats has a gap that lets small children wander out toward the busy service road. Recycling bins at the Test Square market overflow by Sunday evening and the loose paper blows across the neighbouring gardens. The public toilets by the Sample Park entrance have been locked since winter and visitors have no signposted alternative nearby.",
+    "b": "The playground fence behind the Demo Estate flats has a gap that lets small children wander out toward the busy service road. Recycling bins at the Test Square market overflow by Sunday evening and the loose paper blows across the neighbouring gardens. The public toilets by the Sample Park entrance have been locked since winter and visitors have no signposted alternative nearby. Our village hall roof leaks into the main room and the weekly food bank has had to move its tables twice this month already.",
+    "similar": true,
+    "note": "one sentence appended"
+  },
+  {
+    "id": "r14",
+    "a": "The footbridge over Example Creek has had a broken handrail for many months and children cross it on the way to school every morning. Water pools at the corner of Sample Road after every rain and the drain cover has been missing since the spring flood last year. Streetlights along the Placeholder Lane path stay dark after sunset which makes the walk home from the bus stop feel unsafe for many residents.",
+    "b": "Our village hall roof leaks into the main room and the weekly food bank has had to move its tables twice this month already. There is no step free access to the Sample Town platform and parents with prams have to carry them over the old footbridge. Mobile signal drops completely in the lower part of Demo Valley so residents cannot call for help during storms or power cuts.",
+    "similar": false,
+    "note": "unrelated texts"
+  },
+  {
+    "id": "r15",
+    "a": "Water pools at the corner of Sample Road after every rain and the drain cover has been missing since the spring flood last year. Streetlights along the Placeholder Lane path stay dark after sunset which makes the walk home from the bus stop feel unsafe for many residents. The community noticeboard near the library has been empty since the old one was removed and nobody knows who was meant to replace it.",
+    "b": "There is no step free access to the Sample Town platform and parents with prams have to carry them over the old footbridge. Mobile signal drops completely in the lower part of Demo Valley so residents cannot call for help during storms or power cuts. Dog waste bags run out at the Fictional Common bins and the grass near the picnic benches is rarely cleaned during summer months.",
+    "similar": false,
+    "note": "unrelated texts"
+  },
+  {
+    "id": "r16",
+    "a": "Streetlights along the Placeholder Lane path stay dark after sunset which makes the walk home from the bus stop feel unsafe for many residents. The community noticeboard near the library has been empty since the old one was removed and nobody knows who was meant to replace it. Bus route twelve skips the stop outside the clinic on weekends so people without cars cannot reach their appointments on time.",
+    "b": "Mobile signal drops completely in the lower part of Demo Valley so residents cannot call for help during storms or power cuts. Dog waste bags run out at the Fictional Common bins and the grass near the picnic benches is rarely cleaned during summer months. Several shops on Test Parade display outdated opening times online so older customers make wasted trips in the cold and rain.",
+    "similar": false,
+    "note": "unrelated texts"
+  },
+  {
+    "id": "r17",
+    "a": "The community noticeboard near the library has been empty since the old one was removed and nobody knows who was meant to replace it. Bus route twelve skips the stop outside the clinic on weekends so people without cars cannot reach their appointments on time. A pothole on Fictional Avenue has grown wide enough to damage bicycle wheels and cyclists now swerve into the traffic lane to avoid it.",
+    "b": "Dog waste bags run out at the Fictional Common bins and the grass near the picnic benches is rarely cleaned during summer months. Several shops on Test Parade display outdated opening times online so older customers make wasted trips in the cold and rain. The river path at Mock Meadow is eroding and a section near the bend is close to collapsing into the water below.",
+    "similar": false,
+    "note": "unrelated texts"
+  },
+  {
+    "id": "r18",
+    "a": "Bus route twelve skips the stop outside the clinic on weekends so people without cars cannot reach their appointments on time. A pothole on Fictional Avenue has grown wide enough to damage bicycle wheels and cyclists now swerve into the traffic lane to avoid it. The playground fence behind the Demo Estate flats has a gap that lets small children wander out toward the busy service road.",
+    "b": "Several shops on Test Parade display outdated opening times online so older customers make wasted trips in the cold and rain. The river path at Mock Meadow is eroding and a section near the bend is close to collapsing into the water below. Our village hall roof leaks into the main room and the weekly food bank has had to move its tables twice this month already.",
+    "similar": false,
+    "note": "unrelated texts"
+  },
+  {
+    "id": "r19",
+    "a": "A pothole on Fictional Avenue has grown wide enough to damage bicycle wheels and cyclists now swerve into the traffic lane to avoid it. The playground fence behind the Demo Estate flats has a gap that lets small children wander out toward the busy service road. Recycling bins at the Test Square market overflow by Sunday evening and the loose paper blows across the neighbouring gardens.",
+    "b": "The river path at Mock Meadow is eroding and a section near the bend is close to collapsing into the water below. Our village hall roof leaks into the main room and the weekly food bank has had to move its tables twice this month already. There is no step free access to the Sample Town platform and parents with prams have to carry them over the old footbridge.",
+    "similar": false,
+    "note": "unrelated texts"
+  },
+  {
+    "id": "r20",
+    "a": "The footbridge over Example Creek has had a broken handrail for many months and children cross it on the way to school every morning. Water pools at the corner of Sample Road after every rain and the drain cover has been missing since the spring flood last year. Streetlights along the Placeholder Lane path stay dark after sunset which makes the walk home from the bus stop feel unsafe for many residents.",
+    "b": "The playground fence behind the Demo Estate flats has a gap that lets small children wander out toward the busy service road. Recycling bins at the Test Square market overflow by Sunday evening and the loose paper blows across the neighbouring gardens. The public toilets by the Sample Park entrance have been locked since winter and visitors have no signposted alternative nearby.",
+    "similar": false,
+    "note": "different problems, same style"
+  },
+  {
+    "id": "r21",
+    "a": "Tree roots have lifted the pavement along Mock Street so wheelchair users must travel in the road for about forty metres. The crossing outside Example School has faded markings and drivers regularly fail to stop when the lollipop warden is not present. Flooding in the underpass beneath the Placeholder rail line makes the only direct route to the allotments impassable for days.",
+    "b": "Water pools at the corner of Sample Road after every rain and the drain cover has been missing since the spring flood last year. Bus route twelve skips the stop outside the clinic on weekends so people without cars cannot reach their appointments on time. Recycling bins at the Test Square market overflow by Sunday evening and the loose paper blows across the neighbouring gardens.",
+    "similar": false,
+    "note": "different problems, same style"
+  }
+]

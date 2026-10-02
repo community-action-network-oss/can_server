@@ -213,3 +213,22 @@ export const problemEvent = pgTable('problem_event', {
   protocolVersion: text('protocol_version').notNull(),
   occurredAt: tz('occurred_at').notNull(),
 });
+
+/**
+ * Repost fingerprints (system-design section 3). Deliberately NO foreign keys, no account id and
+ * no problem id: only salted hashes of text shingles, purged by expiry (90 days).
+ */
+export const draftFingerprint = pgTable(
+  'draft_fingerprint',
+  {
+    id: uuid('id').primaryKey(),
+    hashes: text('hashes').array().notNull(),
+    reason: text('reason').notNull(),
+    createdAt: tz('created_at').notNull(),
+    expiresAt: tz('expires_at').notNull(),
+  },
+  (t) => [
+    check('draft_fingerprint_reason_chk', sql`${t.reason} in ('rejected','withdrawn')`),
+    index('draft_fingerprint_expires_idx').on(t.expiresAt),
+  ],
+);

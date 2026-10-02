@@ -36,6 +36,13 @@
       "when": 1790939808165,
       "tag": "0004_rapid_klaw",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1790940320302,
+      "tag": "0005_last_terrax",
+      "breakpoints": true
     }
   ]
 }
