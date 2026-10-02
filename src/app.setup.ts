@@ -1,9 +1,13 @@
 import { INestApplication, ValidationPipe } from '@nestjs/common';
+import type { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, OpenAPIObject, SwaggerModule } from '@nestjs/swagger';
 import { config } from './config.js';
+import { requestLogger } from './platform/logging/logger.js';
 
 /** Shared by main.ts, e2e tests and the OpenAPI generator. */
 export function configureApp(app: INestApplication): void {
+  // Silent under tests; production and dev log one JSON line per request.
+  if (config.nodeEnv !== 'test') app.use(requestLogger());
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -11,6 +15,7 @@ export function configureApp(app: INestApplication): void {
       transform: true,
     }),
   );
+  if (config.trustProxy) (app as NestExpressApplication).set('trust proxy', 1);
   app.enableCors({ origin: config.corsOrigins });
   app.enableShutdownHooks();
 }
