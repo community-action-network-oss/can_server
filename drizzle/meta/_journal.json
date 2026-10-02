@@ -8,6 +8,20 @@
       "when": 1790813422059,
       "tag": "0000_wakeful_rocket_racer",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1790938853664,
+      "tag": "0001_small_kabuki",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1790938854177,
+      "tag": "0002_roles_and_grants",
+      "breakpoints": true
     }
   ]
 }
