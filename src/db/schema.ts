@@ -3,9 +3,11 @@ import {
   boolean,
   check,
   customType,
+  bigint,
   index,
   integer,
   jsonb,
+  numeric,
   pgTable,
   primaryKey,
   text,
@@ -14,6 +16,8 @@ import {
   uniqueIndex,
   uuid,
 } from 'drizzle-orm/pg-core';
+import { HOLD_REASONS } from '../moderation/domain/hold-reasons.js';
+import { DP_IDS, OUTCOMES } from '../moderation/domain/outcome.js';
 
 /** Append-only event log. Never UPDATE or DELETE rows. Mirrors domain/event.ts. */
 export const events = pgTable(
@@ -261,7 +265,10 @@ export const draftFingerprint = pgTable(
     expiresAt: tz('expires_at').notNull(),
   },
   (t) => [
-    check('draft_fingerprint_reason_chk', sql`${t.reason} in ('rejected','withdrawn')`),
+    check(
+      'draft_fingerprint_reason_chk',
+      sql`${t.reason} in ('rejected','withdrawn')`,
+    ),
     index('draft_fingerprint_expires_idx').on(t.expiresAt),
   ],
 );
@@ -304,6 +311,15 @@ export const moderationDecision = pgTable(
     interim: boolean('interim').notNull().default(true),
     decidedBy: uuid('decided_by'),
     createdAt: tz('created_at').notNull().defaultNow(),
+    // 09-u03: AI-run columns. `transitional` replaces `interim` (kept so old rows stay untouched).
+    runId: uuid('run_id').references(() => moderationRun.id),
+    dpId: text('dp_id'),
+    confidence: numeric('confidence'),
+    modelId: text('model_id'),
+    promptHash: text('prompt_hash'),
+    transitional: boolean('transitional').notNull().default(true),
+    // Insert-only table: a later row cannot flag an earlier one, so this stays null unless set at insert.
+    supersededBy: uuid('superseded_by'),
   },
   (t) => [
     check(
@@ -312,7 +328,16 @@ export const moderationDecision = pgTable(
     ),
     check(
       'moderation_decision_outcome_chk',
-      sql`${t.outcome} in ('published','needs_revision','rejected')`,
+      sql`${t.outcome} in ('published','needs_revision','rejected','publish','reject','route_external','hold','escalate_human')`,
+    ),
+    // New AI outcomes must come from a run; legacy published/needs_revision/rejected may have none.
+    check(
+      'moderation_decision_run_chk',
+      sql`${t.outcome} in ('published','needs_revision','rejected') or ${t.runId} is not null`,
+    ),
+    check(
+      'moderation_decision_escalate_chk',
+      sql`${t.outcome} <> 'escalate_human' or ${t.dpId} in ('DP-CRISIS','DP-LEGAL')`,
     ),
     check(
       'moderation_decision_rule_ids_chk',
@@ -324,9 +349,115 @@ export const moderationDecision = pgTable(
     ),
     check(
       'moderation_decision_explain_chk',
-      sql`${t.outcome} = 'published' or (${t.fieldRef} is not null and (${t.revisionHint} is not null or ${t.safetySensitive}))`,
+      sql`${t.outcome} not in ('needs_revision','reject','rejected') or (${t.fieldRef} is not null and (${t.revisionHint} is not null or ${t.safetySensitive}))`,
     ),
     index('moderation_decision_target_idx').on(t.targetType, t.targetId),
+  ],
+);
+
+/**
+ * One immutable row per AI moderation run (runtime.md "Run record"). No raw text: outputs hold
+ * offsets and codes. can_app_rw may INSERT and may UPDATE only status and held_reason (narrow
+ * column grant, see the migration); DELETE is revoked.
+ */
+export const moderationRun = pgTable(
+  'moderation_run',
+  {
+    id: uuid('id').primaryKey(),
+    eventId: uuid('event_id'),
+    targetKind: text('target_kind').notNull(),
+    targetId: uuid('target_id').notNull(),
+    targetVersion: integer('target_version').notNull(),
+    dpId: text('dp_id').notNull(),
+    mode: text('mode').notNull(),
+    trigger: text('trigger').notNull(),
+    policyVersion: text('policy_version').notNull(),
+    packHash: text('pack_hash').notNull(),
+    stagePromptHashes: jsonb('stage_prompt_hashes')
+      .$type<Record<string, string>>()
+      .notNull()
+      .default({}),
+    stageModels: jsonb('stage_models')
+      .$type<
+        Record<
+          string,
+          { model_id: string; provider: string; route_reason: string }
+        >
+      >()
+      .notNull()
+      .default({}),
+    inputsHash: bytea('inputs_hash'),
+    outputs: jsonb('outputs')
+      .$type<Record<string, unknown>>()
+      .notNull()
+      .default({}),
+    outcome: text('outcome').notNull(),
+    ruleIds: text('rule_ids')
+      .array()
+      .notNull()
+      .default(sql`'{}'`),
+    fieldRef: text('field_ref'),
+    revisionHint: text('revision_hint'),
+    confidence: numeric('confidence'),
+    publicExplanation: text('public_explanation'),
+    tokensIn: integer('tokens_in').notNull().default(0),
+    tokensOut: integer('tokens_out').notNull().default(0),
+    latencyMs: integer('latency_ms').notNull().default(0),
+    costMicroUsd: bigint('cost_micro_usd', { mode: 'number' })
+      .notNull()
+      .default(0),
+    cache: text('cache').notNull().default('bypass'),
+    status: text('status').notNull(),
+    heldReason: text('held_reason'),
+    shadow: boolean('shadow').notNull().default(false),
+    createdAt: tz('created_at').notNull().defaultNow(),
+  },
+  (t) => [
+    check(
+      'moderation_run_target_kind_chk',
+      sql`${t.targetKind} in ('problem','contribution','stage','archive_record')`,
+    ),
+    check(
+      'moderation_run_dp_chk',
+      sql`${t.dpId} in (${sql.raw(DP_IDS.map((d) => `'${d}'`).join(','))})`,
+    ),
+    check('moderation_run_mode_chk', sql`${t.mode} in ('blocking','async')`),
+    check(
+      'moderation_run_trigger_chk',
+      sql`${t.trigger} in ('submit_gate','publish','update','plan_change','stage_evidence','review','policy_change','context_change','sample','appeal','replay','advisory','re_resolution','archive','reuse')`,
+    ),
+    check(
+      'moderation_run_outcome_chk',
+      sql`${t.outcome} in (${sql.raw(OUTCOMES.map((o) => `'${o}'`).join(','))})`,
+    ),
+    check(
+      'moderation_run_escalate_chk',
+      sql`${t.outcome} <> 'escalate_human' or ${t.dpId} in ('DP-CRISIS','DP-LEGAL')`,
+    ),
+    check(
+      'moderation_run_rule_ids_chk',
+      sql`${t.outcome} not in ('needs_revision','reject') or cardinality(${t.ruleIds}) > 0`,
+    ),
+    check(
+      'moderation_run_cache_chk',
+      sql`${t.cache} in ('hit','miss','bypass')`,
+    ),
+    check(
+      'moderation_run_status_chk',
+      sql`${t.status} in ('complete','held','failed','superseded')`,
+    ),
+    check(
+      'moderation_run_held_chk',
+      sql`${t.status} <> 'held' or (${t.heldReason} is not null and ${t.heldReason} in (${sql.raw(HOLD_REASONS.map((h) => `'${h}'`).join(','))}))`,
+    ),
+    check(
+      'moderation_run_confidence_chk',
+      sql`${t.confidence} is null or (${t.confidence} >= 0 and ${t.confidence} <= 1)`,
+    ),
+    uniqueIndex('moderation_run_key_uq')
+      .on(t.targetId, t.targetVersion, t.dpId, t.policyVersion, t.trigger)
+      .where(sql`${t.shadow} = false`),
+    index('moderation_run_target_idx').on(t.targetKind, t.targetId),
   ],
 );
 
