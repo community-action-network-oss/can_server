@@ -1,0 +1,47 @@
+# can_server CI. Runs on GitHub once merged; nothing runs it before that.
+# `npm run verify` starts Postgres 16 (5433) and Mailpit via docker-compose.yml
+# (hosted runners have Docker), then migrates, lints, builds, runs unit and e2e
+# tests, regenerates the OpenAPI contract and diffs it. We do not add service
+# containers: they would collide with compose on the same ports.
+# If this job fails on the openapi diff, openapi/openapi.json is stale: run
+# `npm run openapi` locally and commit the result.
+# Some tests read ../docs from the superproject. This repo is checked out alone,
+# so those tests skip with an explicit reason in CI. That is expected.
+name: ci
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    # CI-safe dummy values mirroring .env.example. No real secrets, none needed.
+    env:
+      NODE_ENV: test
+      PORT: 4000
+      DATABASE_URL: postgres://can:can@localhost:5433/can
+      CAN_NODE_ID: ci
+      CORS_ORIGINS: http://localhost:8081
+      SMTP_URL: smtp://localhost:1025
+      MAIL_TRANSPORT: smtp
+      AI_PROVIDER: fake
+      AI_DATA_COLLECTION: deny
+      POLICY_PACKS_DIR: test/fixtures/policy
+      POLICY_ACTIVE: '{"default":{"name":"fiktiva-city","version":"0.0.1","hash":"f023c240efac8b93a7676a1ec5ecb69c224583e85638d8ac760889c0ae999252"}}'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run verify
+      - name: Stop compose
+        if: always()
+        run: docker compose down -v
