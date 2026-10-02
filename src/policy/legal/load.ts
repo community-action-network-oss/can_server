@@ -170,6 +170,7 @@ export function loadCorpus(
       heading: String(front.heading),
       source_locator: String(front.source_locator),
       text_sha256: String(front.text_sha256),
+      text: m[2],
     });
     bodies.push(m[2]);
   }

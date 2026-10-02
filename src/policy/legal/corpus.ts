@@ -11,6 +11,8 @@ export interface LegalArticle {
   heading: string;
   source_locator: string;
   text_sha256: string;
+  /** The article body exactly as hashed by text_sha256 (retrieval, 10-u56). Never serialised to an output. */
+  text: string;
 }
 
 export interface LoadedCorpus {
