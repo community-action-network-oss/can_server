@@ -24,7 +24,15 @@ const WORDS: Record<string, string> = {
 };
 /** Draft saves are partial, so only completeness-shaped keywords are skipped. */
 const SKIPPED_IN_DRAFT = new Set(['required', 'oneOf', 'anyOf', 'if']);
-const KEYWORDS = ['x-ui', 'x-guidance', 'x-checks', 'x-version'];
+// top-level version/pack (no-op keywords) are can_policy pack metadata, not validation
+const KEYWORDS = [
+  'x-ui',
+  'x-guidance',
+  'x-checks',
+  'x-version',
+  'version',
+  'pack',
+];
 
 const esc = (s: string) => s.replaceAll('~', '~0').replaceAll('/', '~1');
 const pointer = (e: ErrorObject) => {
@@ -43,9 +51,16 @@ export class StructuredContentValidator {
   private compile(hash: string, schema: Record<string, unknown>) {
     let v = this.cache.get(hash);
     if (!v) {
-      const ajv = new Ajv2020({ strict: true, allErrors: true });
+      // strictTypes off: real can_policy if/then branches say `required`/`minItems` without a type; unknown keywords stay rejected
+      const ajv = new Ajv2020({
+        strict: true,
+        strictTypes: false,
+        allErrors: true,
+      });
       for (const keyword of KEYWORDS) ajv.addKeyword({ keyword }); // annotations: no-ops
-      v = ajv.compile(schema);
+      // legacy top-level `id` is rejected by Ajv; the policy store already keys by name, so drop it
+      const { id: _id, ...rest } = schema;
+      v = ajv.compile(rest);
       this.cache.set(hash, v);
     }
     return v;
