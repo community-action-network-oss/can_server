@@ -23,6 +23,9 @@ const ROOT_ENV_NAMES = [
   'ANTHROPIC_API_KEY',
   'AI_SPEND_CAP_MONTHLY_USD',
   'AI_DATA_COLLECTION',
+  'AI_MODEL_REGISTRY',
+  'AI_STAGE_INPUT_TOKENS',
+  'AI_STAGE_OUTPUT_TOKENS',
 ];
 
 function json<T>(raw: string | undefined, fallback: T): T {
@@ -45,6 +48,17 @@ function oneOf<T extends string>(
 function num(name: string, raw: string | undefined, fallback: number): number {
   const n = raw === undefined || raw === '' ? fallback : Number(raw);
   if (!Number.isFinite(n)) throw new Error(`${name} must be a number`);
+  return n;
+}
+
+function posInt(
+  name: string,
+  raw: string | undefined,
+  fallback: number,
+): number {
+  const n = num(name, raw, fallback);
+  if (!Number.isInteger(n) || n <= 0)
+    throw new Error(`${name} must be a positive integer`);
   return n;
 }
 
@@ -154,6 +168,19 @@ export function loadConfig(source: Env, rootEnv: Env = {}) {
       anthropicApiKey: env.ANTHROPIC_API_KEY || undefined,
       spendCapMonthlyUsd: spendCap,
       dataCollection,
+      /** Model register JSON (09-u08); a missing file at the default path means the built-in fake-1 register. */
+      modelRegistryPath: env.AI_MODEL_REGISTRY || 'config/model-register.json',
+      /** Per-stage token budgets, counted before dispatch; over budget is an error, never truncation. */
+      stageInputTokens: posInt(
+        'AI_STAGE_INPUT_TOKENS',
+        env.AI_STAGE_INPUT_TOKENS,
+        6000,
+      ),
+      stageOutputTokens: posInt(
+        'AI_STAGE_OUTPUT_TOKENS',
+        env.AI_STAGE_OUTPUT_TOKENS,
+        600,
+      ),
     },
     policyPacksDir: env.POLICY_PACKS_DIR ?? 'test/fixtures/policy-v1',
     /** {"<jurisdiction|default>": {name, version, hash}}; the pinned hash is authoritative. */
