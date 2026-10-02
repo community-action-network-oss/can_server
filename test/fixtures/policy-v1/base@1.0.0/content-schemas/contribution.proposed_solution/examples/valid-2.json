@@ -1,0 +1,20 @@
+{
+  "type": "proposed_solution",
+  "target": "prob-lights-0042",
+  "claim": "The ring road lights are out most nights.",
+  "basis": "inferred",
+  "evidence_refs": [],
+  "uncertainty": "Not sure.",
+  "assumptions": [],
+  "mechanism": "The district repair crew replaces the failing breaker and adds a second one so one fault no longer darkens the road.",
+  "responsible_role": "District lighting officer",
+  "authority": "The district maintenance budget covers street lighting repairs.",
+  "cost": "Roughly 2,000 to 4,000 in parts and labour from the repair budget.",
+  "success_metric": "All lights on the ring road work for 30 nights in a row.",
+  "risks": [
+    "The repair may leave the road dark for one night."
+  ],
+  "lawful_alternatives": [
+    "Temporary solar lamps at the worst junctions."
+  ]
+}

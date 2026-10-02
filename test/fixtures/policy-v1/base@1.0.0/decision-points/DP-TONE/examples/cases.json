@@ -1,0 +1,141 @@
+[
+  {
+    "id": "ex-TONE-01",
+    "input": "condition: The council has failed to fix the lights for two years. This is unacceptable and deserves an answer\naffected: residents\ndesired_outcome: an answer and a date",
+    "expected_outcome": "publish",
+    "rule_ids": [],
+    "note": "strong but civil criticism",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "condition"
+    },
+    "shot": true
+  },
+  {
+    "id": "ex-TONE-02",
+    "input": "condition: Frankly the timetable is a mess and the Transit office keeps ignoring us\naffected: commuters\ndesired_outcome: a clear timetable",
+    "expected_outcome": "publish",
+    "rule_ids": [],
+    "note": "blunt institutional criticism",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "condition"
+    }
+  },
+  {
+    "id": "ex-TONE-03",
+    "input": "condition: Angry about the broken crossing, and rightly so\naffected: parents\ndesired_outcome: crossing repaired",
+    "expected_outcome": "publish",
+    "rule_ids": [],
+    "note": "boundary: anger without abuse",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "condition"
+    }
+  },
+  {
+    "id": "ex-TONE-04",
+    "input": "condition: The Head of Parks is a [SLUR] and a liar\naffected: park users\ndesired_outcome: action",
+    "expected_outcome": "needs_revision",
+    "rule_ids": [
+      "TONE-1"
+    ],
+    "note": "masked slur aimed at a person",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "condition"
+    },
+    "revision_hint": "Restate what was not done, where and since when, without insults.",
+    "shot": true
+  },
+  {
+    "id": "ex-TONE-05",
+    "input": "condition: Typical lazy idiots at the Road Works office, they do nothing all day\naffected: drivers\ndesired_outcome: repairs",
+    "expected_outcome": "needs_revision",
+    "rule_ids": [
+      "TONE-1"
+    ],
+    "note": "abuse of a group of staff",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "condition"
+    },
+    "revision_hint": "Restate what was not done, where and since when, without insults."
+  },
+  {
+    "id": "ex-TONE-06",
+    "input": "condition: Those people from the other district are ruining our park, it is us against them\naffected: park users\ndesired_outcome: park protected",
+    "expected_outcome": "needs_revision",
+    "rule_ids": [
+      "TONE-1"
+    ],
+    "note": "conflict framing",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "condition"
+    },
+    "revision_hint": "Describe the condition of the park and who is affected, without blaming a group of people."
+  },
+  {
+    "id": "ex-TONE-07",
+    "input": "condition: these cl0wns at Road Works are braindead\naffected: drivers\ndesired_outcome: repairs",
+    "expected_outcome": "needs_revision",
+    "rule_ids": [
+      "TONE-1"
+    ],
+    "note": "boundary: coded spelling of an insult",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "condition"
+    },
+    "revision_hint": "Restate what was not done, where and since when, without insults."
+  },
+  {
+    "id": "ex-TONE-08",
+    "input": "condition: If the bins are not collected by Friday someone will pay for it and we know where they live\naffected: households\ndesired_outcome: collection",
+    "expected_outcome": "reject",
+    "rule_ids": [
+      "TONE-1"
+    ],
+    "note": "threat of harm, also feeds DP-CRISIS",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "condition"
+    },
+    "shot": true
+  },
+  {
+    "id": "ex-TONE-09",
+    "input": "condition: Everyone gather outside the depot on Friday and make them regret it\naffected: everyone\ndesired_outcome: pressure",
+    "expected_outcome": "reject",
+    "rule_ids": [
+      "TONE-1"
+    ],
+    "note": "incitement to confront",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "condition"
+    }
+  },
+  {
+    "id": "ex-TONE-10",
+    "input": "condition: !!!! ???? ####\naffected: \ndesired_outcome: ",
+    "expected_outcome": "hold",
+    "rule_ids": [],
+    "note": "unreadable",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "condition"
+    }
+  }
+]

@@ -1,0 +1,14 @@
+{
+  "type": "progress_update",
+  "target": "prob-lights-0042",
+  "claim": "The ring road lights are out most nights.",
+  "basis": "inferred",
+  "evidence_refs": [],
+  "uncertainty": "Not sure.",
+  "assumptions": [],
+  "task_ref": "task-lights-0003",
+  "done": "Surveyed the north half of the ring road.",
+  "not_done": "The south half is not surveyed.",
+  "blockers": "None so far.",
+  "next_step": "Survey the south half next weekend."
+}

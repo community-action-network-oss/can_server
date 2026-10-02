@@ -1,0 +1,17 @@
+{
+  "template": "one-stage",
+  "stage_plan": [
+    {
+      "name": "resolve",
+      "label": "Resolve the problem",
+      "goal": "Do everything needed so the final criteria are met.",
+      "depends_on": [],
+      "acceptance_criteria": [
+        {
+          "statement": "Fewer than 5 lights out in the district.",
+          "measure": "The public repair log, read at the end of the period."
+        }
+      ]
+    }
+  ]
+}

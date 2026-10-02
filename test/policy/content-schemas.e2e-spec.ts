@@ -8,7 +8,7 @@ import { writeFixture } from './build-fixture.ts';
 import { cpSync, mkdtempSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { FIXTURE_DIR } from './helpers.js';
+import { FIXTURE_DIR, ratifiedV1 } from './helpers.js';
 
 async function boot(
   active: typeof config.policyActive,
@@ -81,5 +81,31 @@ describe('GET /v1/content-schemas/:type (e2e)', () => {
       .expect(503);
     expect(res.body.error.code).toBe('policy_unavailable');
     await bad.close();
+  });
+});
+
+describe('GET /v1/content-schemas/problem on the can_policy v1 export (e2e)', () => {
+  it('serves the real v1.0.0 problem schema', async () => {
+    const v1 = ratifiedV1();
+    config.policyPacksDir = v1.dir;
+    const app = await boot({
+      default: {
+        name: 'fiktiva-city',
+        version: '1.0.0',
+        hash: v1.hash['fiktiva-city'],
+      },
+    });
+    const res = await request(app.getHttpServer())
+      .get('/v1/content-schemas/problem')
+      .expect(200);
+    await app.close();
+    expect(res.body.schema_version).toBe('1.0.0');
+    expect(res.body.policy_version).toBe(
+      `fiktiva-city@1.0.0+${v1.hash['fiktiva-city'].slice(0, 12)}`,
+    );
+    // the unit text said 14 fields; the released schema has 20 properties, 16 of them required
+    expect(Object.keys(res.body.schema.properties)).toHaveLength(20);
+    expect(res.body.schema.required).toHaveLength(16);
+    expect(res.body.schema.properties).toHaveProperty('observed_facts');
   });
 });

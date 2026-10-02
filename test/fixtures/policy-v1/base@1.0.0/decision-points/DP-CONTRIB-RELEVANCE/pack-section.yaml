@@ -1,0 +1,11 @@
+dp: DP-CONTRIB-RELEVANCE
+enforces: [RELEVANCE-1, SOLUTION-ONLY-1]
+mode: blocking
+inputs: [type, state, problem, contribution]
+outcomes: [publish, needs_revision, reject, hold]
+thresholds:
+  confidence_floor:
+    publish: 0.90
+    needs_revision: 0.75
+    reject: 0.92
+  escalate_model_below: 0.85

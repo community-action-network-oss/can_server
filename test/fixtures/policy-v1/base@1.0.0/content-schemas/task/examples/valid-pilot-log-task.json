@@ -1,0 +1,9 @@
+{
+  "stage_ref": "implement_pilot",
+  "question_answered": "Does the repaired feed stay lit for a month?",
+  "deliverable": "A short log of nightly checks on the ring road feed.",
+  "done_criteria": [
+    "The log has one entry for each of 30 nights."
+  ],
+  "owner_role": "District lighting officer"
+}

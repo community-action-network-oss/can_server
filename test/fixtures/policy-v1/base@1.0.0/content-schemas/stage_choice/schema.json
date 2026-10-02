@@ -1,0 +1,453 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "id": "stage_choice",
+  "version": "1.0.0",
+  "x-version": "1.0.0",
+  "pack": "base@1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "stage_ref",
+    "decision_method",
+    "decider_role",
+    "authority",
+    "rationale",
+    "legal_gate_record"
+  ],
+  "properties": {
+    "stage_ref": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]{1,39}$",
+      "minLength": 2,
+      "maxLength": 40,
+      "x-ui": {
+        "widget": "stage_ref",
+        "label_msg": "schema.stage_choice.stage_ref.label",
+        "help_msg": "schema.stage_choice.stage_ref.help",
+        "order": 1,
+        "group": "stage"
+      },
+      "x-guidance": {
+        "why": "Ties this to one stage so it is read against that stage's goal and criteria.",
+        "good": "design_prevention",
+        "bad": "the second one"
+      },
+      "x-checks": {
+        "dps": [
+          "DP-CONTRIB-RELEVANCE"
+        ],
+        "ref_to": "problem.stage_plan.name"
+      }
+    },
+    "chosen_option_ids": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 4,
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,63}$",
+        "x-ui": {
+          "widget": "ref",
+          "label_msg": "schema.stage_choice.chosen_option_ids.item.label",
+          "help_msg": "schema.stage_choice.chosen_option_ids.item.help"
+        }
+      },
+      "x-ui": {
+        "widget": "list",
+        "label_msg": "schema.stage_choice.chosen_option_ids.label",
+        "help_msg": "schema.stage_choice.chosen_option_ids.help",
+        "order": 2,
+        "group": "decision"
+      },
+      "x-guidance": {
+        "why": "Points at the options this choice picks. The server holds the ids.",
+        "good": "opt-lights-0007",
+        "bad": "the first one"
+      },
+      "x-checks": {
+        "dps": [
+          "DP-PRIVACY",
+          "DP-NAMING",
+          "DP-TONE",
+          "DP-DECISION-RECORD"
+        ]
+      }
+    },
+    "decision_method": {
+      "enum": [
+        "poster_after_input",
+        "community_vote",
+        "steward",
+        "other_named"
+      ],
+      "x-ui": {
+        "widget": "select",
+        "label_msg": "schema.stage_choice.decision_method.label",
+        "help_msg": "schema.stage_choice.decision_method.help",
+        "order": 3,
+        "group": "decision"
+      },
+      "x-guidance": {
+        "why": "The stage plan sets how the choice is made. This records the method that was used.",
+        "good": "poster_after_input",
+        "bad": "whim"
+      },
+      "x-checks": {
+        "dps": [
+          "DP-DECISION-RECORD"
+        ],
+        "matches_stage": "decision_method"
+      }
+    },
+    "decider_role": {
+      "type": "string",
+      "minLength": 5,
+      "maxLength": 150,
+      "pattern": "^[A-Za-z][A-Za-z ,'/&()-]{4,149}$",
+      "x-ui": {
+        "widget": "text",
+        "label_msg": "schema.stage_choice.decider_role.label",
+        "help_msg": "schema.stage_choice.decider_role.help",
+        "order": 4,
+        "group": "decision"
+      },
+      "x-guidance": {
+        "why": "A role, not a named person.",
+        "good": "Problem poster",
+        "bad": "Maria Okafor",
+        "min_chars": 5,
+        "max_chars": 150,
+        "limits_key": "fields.stage_choice.decider_role"
+      },
+      "x-checks": {
+        "dps": [
+          "DP-PRIVACY",
+          "DP-NAMING",
+          "DP-TONE",
+          "DP-DECISION-RECORD",
+          "DP-LEGALITY"
+        ],
+        "roles_only": true
+      }
+    },
+    "authority": {
+      "type": "string",
+      "minLength": 10,
+      "maxLength": 300,
+      "x-ui": {
+        "widget": "textarea",
+        "label_msg": "schema.stage_choice.authority.label",
+        "help_msg": "schema.stage_choice.authority.help",
+        "order": 5,
+        "group": "decision"
+      },
+      "x-guidance": {
+        "why": "Shows why this decision is legitimate.",
+        "good": "The stage plan names the poster as decider after community input.",
+        "bad": "I said so.",
+        "min_chars": 10,
+        "max_chars": 300,
+        "limits_key": "fields.stage_choice.authority"
+      },
+      "x-checks": {
+        "dps": [
+          "DP-PRIVACY",
+          "DP-NAMING",
+          "DP-TONE",
+          "DP-DECISION-RECORD",
+          "DP-LEGALITY"
+        ]
+      }
+    },
+    "rationale": {
+      "type": "string",
+      "minLength": 20,
+      "maxLength": 600,
+      "x-ui": {
+        "widget": "textarea",
+        "label_msg": "schema.stage_choice.rationale.label",
+        "help_msg": "schema.stage_choice.rationale.help",
+        "order": 6,
+        "group": "decision"
+      },
+      "x-guidance": {
+        "why": "Lets the community follow the reasoning. It never judges whether the choice is best.",
+        "good": "Option two meets both criteria and costs less than the cable replacement.",
+        "bad": "Best one.",
+        "min_chars": 20,
+        "max_chars": 600,
+        "limits_key": "fields.stage_choice.rationale"
+      },
+      "x-checks": {
+        "dps": [
+          "DP-PRIVACY",
+          "DP-NAMING",
+          "DP-TONE",
+          "DP-DECISION-RECORD"
+        ]
+      }
+    },
+    "dissent_notes": {
+      "type": "array",
+      "minItems": 0,
+      "maxItems": 6,
+      "items": {
+        "type": "string",
+        "minLength": 10,
+        "maxLength": 300,
+        "x-ui": {
+          "widget": "textarea",
+          "label_msg": "schema.stage_choice.dissent_notes.item.label",
+          "help_msg": "schema.stage_choice.dissent_notes.item.help"
+        }
+      },
+      "x-ui": {
+        "widget": "list",
+        "label_msg": "schema.stage_choice.dissent_notes.label",
+        "help_msg": "schema.stage_choice.dissent_notes.help",
+        "order": 7,
+        "group": "dissent"
+      },
+      "x-guidance": {
+        "why": "Keeps disagreement visible and fair.",
+        "good": "Two people preferred solar lamps because they work during outages.",
+        "bad": "Some did not like it."
+      },
+      "x-checks": {
+        "dps": [
+          "DP-PRIVACY",
+          "DP-NAMING",
+          "DP-TONE",
+          "DP-DECISION-RECORD"
+        ]
+      }
+    },
+    "legal_gate_record": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "constraint_checked",
+        "source_ref",
+        "layer",
+        "result"
+      ],
+      "properties": {
+        "constraint_checked": {
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 300,
+          "x-ui": {
+            "widget": "textarea",
+            "label_msg": "schema.stage_choice.legal_gate_record.constraint_checked.label",
+            "help_msg": "schema.stage_choice.legal_gate_record.constraint_checked.help"
+          }
+        },
+        "source_ref": {
+          "type": "string",
+          "minLength": 5,
+          "maxLength": 300,
+          "x-ui": {
+            "widget": "text",
+            "label_msg": "schema.stage_choice.legal_gate_record.source_ref.label",
+            "help_msg": "schema.stage_choice.legal_gate_record.source_ref.help"
+          }
+        },
+        "layer": {
+          "enum": [
+            "constitution",
+            "jurisdiction",
+            "both"
+          ],
+          "x-ui": {
+            "widget": "select",
+            "label_msg": "schema.stage_choice.legal_gate_record.layer.label",
+            "help_msg": "schema.stage_choice.legal_gate_record.layer.help"
+          }
+        },
+        "result": {
+          "enum": [
+            "passed",
+            "blocked",
+            "needs_review"
+          ],
+          "x-ui": {
+            "widget": "select",
+            "label_msg": "schema.stage_choice.legal_gate_record.result.label",
+            "help_msg": "schema.stage_choice.legal_gate_record.result.help"
+          }
+        }
+      },
+      "x-ui": {
+        "widget": "legal_gate",
+        "label_msg": "schema.stage_choice.legal_gate_record.label",
+        "help_msg": "schema.stage_choice.legal_gate_record.help",
+        "order": 8,
+        "group": "legal"
+      },
+      "x-guidance": {
+        "why": "The choice cannot hold without a recorded check against the constitution and the local pack.",
+        "good": "Checked the repair against the municipal roads act, passed.",
+        "bad": "Legal."
+      },
+      "x-checks": {
+        "dps": [
+          "DP-LEGALITY",
+          "DP-DECISION-RECORD"
+        ]
+      }
+    },
+    "steps": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 12,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "step",
+          "owner_role",
+          "done_criterion"
+        ],
+        "properties": {
+          "step": {
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 300,
+            "x-ui": {
+              "widget": "textarea",
+              "label_msg": "schema.stage_choice.steps.step.label",
+              "help_msg": "schema.stage_choice.steps.step.help",
+              "order": 1
+            },
+            "x-guidance": {
+              "why": "One action.",
+              "good": "Order the replacement cable.",
+              "bad": "Do things.",
+              "min_chars": 10,
+              "max_chars": 300
+            },
+            "x-checks": {
+              "dps": [
+                "DP-CONTRIB-RELEVANCE",
+                "DP-PRIVACY",
+                "DP-NAMING",
+                "DP-TONE",
+                "DP-CRISIS"
+              ]
+            }
+          },
+          "owner_role": {
+            "type": "string",
+            "minLength": 5,
+            "maxLength": 150,
+            "pattern": "^[A-Za-z][A-Za-z ,'/&()-]{4,149}$",
+            "x-ui": {
+              "widget": "text",
+              "label_msg": "schema.stage_choice.steps.owner_role.label",
+              "help_msg": "schema.stage_choice.steps.owner_role.help",
+              "order": 2
+            },
+            "x-guidance": {
+              "why": "A role, not a named person.",
+              "good": "District lighting officer",
+              "bad": "Bob",
+              "min_chars": 5,
+              "max_chars": 150
+            },
+            "x-checks": {
+              "dps": [
+                "DP-CONTRIB-RELEVANCE",
+                "DP-PRIVACY",
+                "DP-NAMING",
+                "DP-TONE",
+                "DP-CRISIS"
+              ],
+              "roles_only": true
+            }
+          },
+          "done_criterion": {
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 300,
+            "x-ui": {
+              "widget": "textarea",
+              "label_msg": "schema.stage_choice.steps.done_criterion.label",
+              "help_msg": "schema.stage_choice.steps.done_criterion.help",
+              "order": 3
+            },
+            "x-guidance": {
+              "why": "A check anyone could repeat.",
+              "good": "The cable delivery note is posted.",
+              "bad": "Done when done.",
+              "min_chars": 10,
+              "max_chars": 300
+            },
+            "x-checks": {
+              "dps": [
+                "DP-CONTRIB-RELEVANCE",
+                "DP-PRIVACY",
+                "DP-NAMING",
+                "DP-TONE",
+                "DP-CRISIS"
+              ]
+            }
+          }
+        }
+      },
+      "x-ui": {
+        "widget": "list",
+        "label_msg": "schema.stage_choice.steps.label",
+        "help_msg": "schema.stage_choice.steps.help",
+        "order": 9,
+        "group": "steps"
+      },
+      "x-guidance": {
+        "why": "Turns the choice into tasks, each with an owner role and a clear done check.",
+        "good": "Order the cable, owned by the lighting officer, done when the delivery note is posted.",
+        "bad": "Get it done."
+      },
+      "x-checks": {
+        "dps": [
+          "DP-PRIVACY",
+          "DP-NAMING",
+          "DP-TONE",
+          "DP-DECISION-RECORD"
+        ]
+      }
+    }
+  },
+  "anyOf": [
+    {
+      "required": [
+        "chosen_option_ids"
+      ],
+      "properties": {
+        "chosen_option_ids": {
+          "type": "array"
+        }
+      }
+    },
+    {
+      "required": [
+        "steps"
+      ],
+      "properties": {
+        "steps": {
+          "type": "array"
+        }
+      }
+    }
+  ],
+  "x-checks": {
+    "dps": [
+      "DP-PRIVACY",
+      "DP-NAMING",
+      "DP-TONE",
+      "DP-DECISION-RECORD",
+      "DP-LEGALITY",
+      "DP-COMPLETENESS"
+    ],
+    "roles_only": true,
+    "gate": "CHOICE-GATE"
+  }
+}

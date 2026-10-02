@@ -1,0 +1,107 @@
+{
+  "condition": "Many streets in the north district of Northfold have no working lights after dark.",
+  "affected": "Evening commuters and older residents, size unknown, who avoid the streets after dark.",
+  "place": {
+    "jurisdiction": "Northfold city",
+    "coarse_area": "North district"
+  },
+  "since": {
+    "started": "March of last year",
+    "trend": "worsening"
+  },
+  "observed_facts": [
+    {
+      "statement": "The council report lists 41 street lights out in the north district.",
+      "source_ref": "https://example.org/northfold/lighting-report",
+      "date": "2025-06"
+    }
+  ],
+  "uncertain_claims": [
+    {
+      "statement": "Most outages may follow one shared fault.",
+      "why_uncertain": "No repair log links the outages.",
+      "what_would_settle_it": "The lighting department repair log for the district."
+    }
+  ],
+  "sources": [
+    {
+      "uri": "https://example.org/northfold/lighting-report",
+      "category": "official_record",
+      "establishes": "The count of lights out in the district."
+    }
+  ],
+  "evidence_refs": [],
+  "causal_hypothesis": {
+    "statement": "Repairs may be slow because one fault line feeds many lights (hypothesis).",
+    "status": "untested"
+  },
+  "scope": "Street lighting in the north district since last March, not other utilities.",
+  "responsible_roles": [
+    "City lighting department"
+  ],
+  "desired_outcome": "Every street in the district is lit at night and anyone can check the repair log.",
+  "final_acceptance_criteria": [
+    {
+      "statement": "Fewer than 5 lights out in the district.",
+      "how_observed": "The public repair log, read at the end of the period."
+    }
+  ],
+  "assumptions": [
+    {
+      "statement": "The repair budget is not the limit.",
+      "kind": "factual",
+      "confidence": "low"
+    }
+  ],
+  "out_of_scope": [],
+  "lawful_options": {
+    "status": "unknown",
+    "lawful_only_acknowledged": true
+  },
+  "stage_plan": [
+    {
+      "name": "map_outages",
+      "label": "Map the outages",
+      "goal": "List every street where the lights are out.",
+      "depends_on": [],
+      "needs_choice": false,
+      "acceptance_criteria": [
+        {
+          "statement": "Every street with lights out is listed.",
+          "measure": "A public list checked against the council report.",
+          "target": "all streets"
+        }
+      ]
+    },
+    {
+      "name": "ask_schedule",
+      "label": "Ask for the repair schedule",
+      "goal": "Get the repair schedule from the lighting department.",
+      "depends_on": [],
+      "needs_choice": false,
+      "acceptance_criteria": [
+        {
+          "statement": "The department has published its repair schedule.",
+          "measure": "The schedule is posted on the council site.",
+          "deadline": "2027-03"
+        }
+      ]
+    },
+    {
+      "name": "agree_plan",
+      "label": "Agree a repair plan",
+      "goal": "Settle which streets are repaired first.",
+      "depends_on": [
+        "map_outages",
+        "no_such_stage"
+      ],
+      "decision_method": "community_vote",
+      "acceptance_criteria": [
+        {
+          "statement": "A repair order is agreed.",
+          "measure": "The vote result is recorded with the order of streets."
+        }
+      ]
+    }
+  ]
+}

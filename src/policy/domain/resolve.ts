@@ -71,7 +71,9 @@ export function resolveLayers(
         `${name}: only the base pack may list protected_core`,
       );
   }
-  for (const id of protectedCore)
+  // A base pack lists protected rules that the constitution pack defines (can_policy v1), so a lone
+  // base cannot be checked; the first merge with a child layer does.
+  for (const id of layers.length > 1 ? protectedCore : [])
     if (!merged.has(id))
       throw new PackRefused(`protected_core lists unknown rule ${id}`);
   const rules = [...merged.values()].sort(

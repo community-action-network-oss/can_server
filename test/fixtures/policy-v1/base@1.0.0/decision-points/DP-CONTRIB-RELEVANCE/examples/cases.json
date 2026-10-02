@@ -1,0 +1,141 @@
+[
+ {
+  "id": "ex-RELV-01",
+  "input": "type: observation\nstate: active\nproblem: Street lights on the Birch Quarter ring road stay dark after 22:00 in winter\ncontribution: On three nights last week the lights between the school and the bridge were off by 22:00.",
+  "expected_outcome": "publish",
+  "rule_ids": [],
+  "note": "on type, relevant",
+  "provenance": "fixture",
+  "jurisdiction": "fiktiva-city",
+  "field_ref": {
+   "field": "contribution"
+  },
+  "shot": true
+ },
+ {
+  "id": "ex-RELV-02",
+  "input": "type: evidence\nstate: active\nproblem: Street lights on the Birch Quarter ring road stay dark after 22:00 in winter\ncontribution: A table of reported outage dates from the city's fault log, synthetic sample.",
+  "expected_outcome": "publish",
+  "rule_ids": [],
+  "note": "evidence on type",
+  "provenance": "fixture",
+  "jurisdiction": "fiktiva-city",
+  "field_ref": {
+   "field": "contribution"
+  }
+ },
+ {
+  "id": "ex-RELV-03",
+  "input": "type: observation\nstate: active\nproblem: Street lights on the Birch Quarter ring road stay dark after 22:00 in winter\ncontribution: We should replace all lights with solar ones.",
+  "expected_outcome": "needs_revision",
+  "rule_ids": [
+   "SOLUTION-ONLY-1"
+  ],
+  "note": "solution declared as an observation",
+  "provenance": "fixture",
+  "jurisdiction": "fiktiva-city",
+  "field_ref": {
+   "field": "contribution"
+  },
+  "revision_hint": "Submit this as a proposed solution, or describe what you saw.",
+  "expected": {
+   "reroute_type": "proposed_solution"
+  },
+  "shot": true
+ },
+ {
+  "id": "ex-RELV-04",
+  "input": "type: observation\nstate: active\nproblem: Street lights on the Birch Quarter ring road stay dark after 22:00 in winter\ncontribution: Cheap phone cases for sale, message me.",
+  "expected_outcome": "reject",
+  "rule_ids": [
+   "RELEVANCE-1"
+  ],
+  "note": "unrelated advert",
+  "provenance": "fixture",
+  "jurisdiction": "fiktiva-city",
+  "field_ref": {
+   "field": "contribution"
+  }
+ },
+ {
+  "id": "ex-RELV-05",
+  "input": "type: observation\nstate: closed\nproblem: Street lights on the Birch Quarter ring road stay dark after 22:00 in winter\ncontribution: Another light was out last night.",
+  "expected_outcome": "needs_revision",
+  "rule_ids": [
+   "RELEVANCE-1"
+  ],
+  "note": "state does not allow new observations",
+  "provenance": "fixture",
+  "jurisdiction": "fiktiva-city",
+  "field_ref": {
+   "field": "contribution"
+  },
+  "revision_hint": "The problem is closed; link this to a follow-up problem instead."
+ },
+ {
+  "id": "ex-RELV-06",
+  "input": "type: root_cause\nstate: active\nproblem: Street lights on the Birch Quarter ring road stay dark after 22:00 in winter\ncontribution: My cat was ill last week.",
+  "expected_outcome": "needs_revision",
+  "rule_ids": [
+   "RELEVANCE-1"
+  ],
+  "note": "declared type not matched",
+  "provenance": "fixture",
+  "jurisdiction": "fiktiva-city",
+  "field_ref": {
+   "field": "contribution"
+  },
+  "revision_hint": "A root cause explains why the lights fail; describe that or choose another type."
+ },
+ {
+  "id": "ex-RELV-07",
+  "input": "type: personal_experience\nstate: active\nproblem: Street lights on the Birch Quarter ring road stay dark after 22:00 in winter\ncontribution: I walked home in the dark and felt unsafe near the bridge.",
+  "expected_outcome": "publish",
+  "rule_ids": [],
+  "note": "on type; also passes DP-PRIVACY before it is shown",
+  "provenance": "fixture",
+  "jurisdiction": "fiktiva-city",
+  "field_ref": {
+   "field": "contribution"
+  }
+ },
+ {
+  "id": "ex-RELV-08",
+  "input": "type: ???\nstate: ???\nproblem: \ncontribution: \u200b",
+  "expected_outcome": "hold",
+  "rule_ids": [],
+  "note": "unreadable",
+  "provenance": "fixture",
+  "jurisdiction": "fiktiva-city",
+  "field_ref": {
+   "field": "contribution"
+  }
+ },
+ {
+  "id": "ex-RELV-09",
+  "input": "type: observation\nstate: active\nproblem: Street lights on the Birch Quarter ring road stay dark after 22:00 in winter\ncontribution: The ring road lights, and also the lights on a different road in Elm Court, are off.",
+  "expected_outcome": "publish",
+  "rule_ids": [],
+  "note": "boundary: partly adjacent, still relevant",
+  "provenance": "fixture",
+  "jurisdiction": "fiktiva-city",
+  "field_ref": {
+   "field": "contribution"
+  }
+ },
+ {
+  "id": "ex-RELV-10",
+  "input": "type: proposed_solution\nstate: active\nproblem: Street lights on the Birch Quarter ring road stay dark after 22:00 in winter\ncontribution: Add a lamp fault hotline.",
+  "expected_outcome": "needs_revision",
+  "rule_ids": [
+   "SOLUTION-ONLY-1"
+  ],
+  "note": "boundary: solution with no stated link to the problem",
+  "provenance": "fixture",
+  "jurisdiction": "fiktiva-city",
+  "field_ref": {
+   "field": "contribution"
+  },
+  "revision_hint": "Say which part of the lighting problem the hotline fixes."
+ }
+]

@@ -1,0 +1,90 @@
+{
+  "id": "ps-sim-0002",
+  "record_ids": [
+    "ar-sim-0001"
+  ],
+  "dimensions": [
+    {
+      "name": "geography",
+      "verdict": "different",
+      "draft_value": "rural",
+      "record_value": "city"
+    },
+    {
+      "name": "legal_stack",
+      "verdict": "close",
+      "draft_value": "L0 L3",
+      "record_value": "L0 L2"
+    }
+  ],
+  "reuse_fit": {
+    "legality": [
+      {
+        "stage": "assess",
+        "result": "lawful"
+      },
+      {
+        "stage": "repair",
+        "result": "unlawful_at_L3",
+        "citation": "District works rule 4, permit needed for any lamp repair"
+      }
+    ],
+    "resource_fit": {
+      "fit": "exceeds",
+      "gap": "The path needs about 20 helpers and the draft has fewer than 5."
+    },
+    "differences": [
+      {
+        "dimension": "geography",
+        "note": "The record was in a city; this problem is rural."
+      }
+    ],
+    "adaptations": [
+      {
+        "kind": "add_institution_step",
+        "stage": "repair",
+        "reason": "A permit step is needed under the district rule."
+      },
+      {
+        "kind": "scale_down",
+        "reason": "Fewer helpers are available, so repair one street first."
+      }
+    ],
+    "confidence": "low"
+  },
+  "draft_stages": [
+    {
+      "name": "assess",
+      "goal": "Count which lamps are out and why.",
+      "acceptance_criteria": [
+        {
+          "statement": "The stage result is written down.",
+          "measure": "A short public note lists what was found."
+        }
+      ],
+      "depends_on": []
+    },
+    {
+      "name": "repair",
+      "goal": "Repair the lamps and the feed.",
+      "acceptance_criteria": [
+        {
+          "statement": "The stage result is written down.",
+          "measure": "A short public note lists what was found."
+        }
+      ],
+      "depends_on": [
+        "assess"
+      ]
+    }
+  ],
+  "attribution": [
+    {
+      "record_id": "ar-sim-0001",
+      "credit_text": "Based on the simulated Northvale street lights record.",
+      "source_url": "https://can.example/problems/northvale-lights",
+      "license": "CC-BY-4.0"
+    }
+  ],
+  "state": "accepted"
+}

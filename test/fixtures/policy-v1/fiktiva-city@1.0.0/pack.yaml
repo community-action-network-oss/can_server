@@ -1,0 +1,7 @@
+name: fiktiva-city
+version: 1.0.0
+layer: jurisdiction
+parent: constitution@1.0.0
+effective_from: 2026-10-01
+jurisdiction: fiktiva-city
+status: draft

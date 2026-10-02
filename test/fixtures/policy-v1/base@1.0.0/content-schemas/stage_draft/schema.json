@@ -1,0 +1,367 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "id": "stage_draft",
+  "version": "1.0.0",
+  "x-version": "1.0.0",
+  "pack": "base@1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "plan",
+    "derived_from",
+    "expires_at",
+    "status"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 8,
+      "maxLength": 64,
+      "pattern": "^[a-z0-9][a-z0-9_-]{7,63}$",
+      "x-ui": {
+        "widget": "readonly",
+        "label_msg": "schema.stage_draft.id.label",
+        "help_msg": "schema.stage_draft.id.help"
+      },
+      "x-checks": {
+        "masked_refs_only": true
+      }
+    },
+    "plan": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 12,
+      "items": {
+        "$ref": "#/$defs/stage_node"
+      },
+      "x-ui": {
+        "widget": "list",
+        "label_msg": "schema.stage_draft.plan.label",
+        "help_msg": "schema.stage_draft.plan.help"
+      },
+      "x-checks": {
+        "dps": [
+          "DP-STAGE-PLAN",
+          "DP-CRITERIA",
+          "DP-PRIVACY"
+        ],
+        "unique_names": true,
+        "depends_on_resolves": true,
+        "acyclic": "DP-STAGE-PLAN"
+      }
+    },
+    "derived_from": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 12,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "stage",
+          "suggestion_id",
+          "record_ids",
+          "credit_text"
+        ],
+        "properties": {
+          "stage": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 40,
+            "pattern": "^[a-z][a-z0-9_]{1,39}$",
+            "x-ui": {
+              "widget": "text",
+              "label_msg": "schema.stage_draft.derived_from.stage.label",
+              "help_msg": "schema.stage_draft.derived_from.stage.help"
+            }
+          },
+          "suggestion_id": {
+            "type": "string",
+            "minLength": 8,
+            "maxLength": 64,
+            "pattern": "^[a-z0-9][a-z0-9_-]{7,63}$",
+            "x-ui": {
+              "widget": "readonly",
+              "label_msg": "schema.stage_draft.derived_from.suggestion_id.label"
+            },
+            "x-checks": {
+              "masked_refs_only": true
+            }
+          },
+          "record_ids": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 5,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z0-9][a-z0-9_-]{7,63}$"
+            },
+            "x-ui": {
+              "widget": "readonly",
+              "label_msg": "schema.stage_draft.derived_from.record_ids.label"
+            },
+            "x-checks": {
+              "masked_refs_only": true
+            }
+          },
+          "credit_text": {
+            "type": "string",
+            "minLength": 5,
+            "maxLength": 200,
+            "pattern": "^(?!.*@)(?!.*https?://).*$",
+            "x-ui": {
+              "widget": "textarea",
+              "label_msg": "schema.stage_draft.derived_from.credit_text.label",
+              "help_msg": "schema.stage_draft.derived_from.credit_text.help"
+            },
+            "x-guidance": {
+              "why": "Reuse stays traceable.",
+              "good": "Based on the Northvale street lights record.",
+              "bad": "Ask me at me@example.org",
+              "min_chars": 5,
+              "max_chars": 200
+            },
+            "x-checks": {
+              "dps": [
+                "DP-PRIVACY",
+                "DP-NAMING",
+                "DP-ARCHIVE"
+              ],
+              "masked_refs_only": true
+            }
+          }
+        },
+        "x-ui": {
+          "widget": "group",
+          "label_msg": "schema.stage_draft.derived_from.item.label"
+        }
+      },
+      "x-ui": {
+        "widget": "list",
+        "label_msg": "schema.stage_draft.derived_from.label",
+        "help_msg": "schema.stage_draft.derived_from.help"
+      },
+      "x-checks": {
+        "covers_every_plan_stage": true,
+        "stage_resolves_to": "plan.name"
+      }
+    },
+    "expires_at": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$",
+      "minLength": 20,
+      "maxLength": 20,
+      "x-ui": {
+        "widget": "readonly",
+        "label_msg": "schema.stage_draft.expires_at.label",
+        "help_msg": "schema.stage_draft.expires_at.help"
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "offered",
+        "edited",
+        "accepted",
+        "dismissed",
+        "expired",
+        "held"
+      ],
+      "x-ui": {
+        "widget": "select",
+        "label_msg": "schema.stage_draft.status.label",
+        "help_msg": "schema.stage_draft.status.help"
+      }
+    }
+  },
+  "$defs": {
+    "criterion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "statement",
+        "measure"
+      ],
+      "properties": {
+        "statement": {
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 300,
+          "x-ui": {
+            "widget": "textarea",
+            "label_msg": "schema.stage_draft.plan.criterion.statement.label",
+            "help_msg": "schema.stage_draft.plan.criterion.statement.help"
+          }
+        },
+        "measure": {
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 300,
+          "x-ui": {
+            "widget": "textarea",
+            "label_msg": "schema.stage_draft.plan.criterion.measure.label",
+            "help_msg": "schema.stage_draft.plan.criterion.measure.help"
+          }
+        },
+        "target": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200,
+          "x-ui": {
+            "widget": "text",
+            "label_msg": "schema.stage_draft.plan.criterion.target.label",
+            "help_msg": "schema.stage_draft.plan.criterion.target.help"
+          }
+        },
+        "evidence_hint": {
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 300,
+          "x-ui": {
+            "widget": "textarea",
+            "label_msg": "schema.stage_draft.plan.criterion.evidence_hint.label",
+            "help_msg": "schema.stage_draft.plan.criterion.evidence_hint.help"
+          }
+        },
+        "deadline": {
+          "type": "string",
+          "minLength": 4,
+          "maxLength": 10,
+          "pattern": "^\\d{4}(-\\d{2}(-\\d{2})?)?$",
+          "x-ui": {
+            "widget": "date",
+            "label_msg": "schema.stage_draft.plan.criterion.deadline.label",
+            "help_msg": "schema.stage_draft.plan.criterion.deadline.help"
+          }
+        }
+      }
+    },
+    "stage_node": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "goal",
+        "acceptance_criteria"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 40,
+          "pattern": "^[a-z][a-z0-9_]{1,39}$",
+          "x-ui": {
+            "widget": "text",
+            "label_msg": "schema.stage_draft.plan.stage.name.label",
+            "help_msg": "schema.stage_draft.plan.stage.name.help"
+          }
+        },
+        "label": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 60,
+          "x-ui": {
+            "widget": "text",
+            "label_msg": "schema.stage_draft.plan.stage.label.label",
+            "help_msg": "schema.stage_draft.plan.stage.label.help"
+          }
+        },
+        "goal": {
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 300,
+          "x-ui": {
+            "widget": "textarea",
+            "label_msg": "schema.stage_draft.plan.stage.goal.label",
+            "help_msg": "schema.stage_draft.plan.stage.goal.help"
+          }
+        },
+        "acceptance_criteria": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 6,
+          "items": {
+            "$ref": "#/$defs/criterion"
+          },
+          "x-ui": {
+            "widget": "list",
+            "label_msg": "schema.stage_draft.plan.stage.acceptance_criteria.label",
+            "help_msg": "schema.stage_draft.plan.stage.acceptance_criteria.help"
+          }
+        },
+        "decision_method": {
+          "type": "string",
+          "enum": [
+            "poster_after_input",
+            "community_vote",
+            "steward",
+            "other_named"
+          ],
+          "default": "poster_after_input",
+          "x-ui": {
+            "widget": "select",
+            "label_msg": "schema.stage_draft.plan.stage.decision_method.label",
+            "help_msg": "schema.stage_draft.plan.stage.decision_method.help"
+          }
+        },
+        "depends_on": {
+          "type": "array",
+          "maxItems": 11,
+          "uniqueItems": true,
+          "default": [],
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]{1,39}$"
+          },
+          "x-ui": {
+            "widget": "list",
+            "label_msg": "schema.stage_draft.plan.stage.depends_on.label",
+            "help_msg": "schema.stage_draft.plan.stage.depends_on.help"
+          }
+        },
+        "required": {
+          "type": "boolean",
+          "default": true,
+          "x-ui": {
+            "widget": "toggle",
+            "label_msg": "schema.stage_draft.plan.stage.required.label"
+          }
+        },
+        "needs_choice": {
+          "type": "boolean",
+          "default": true,
+          "x-ui": {
+            "widget": "toggle",
+            "label_msg": "schema.stage_draft.plan.stage.needs_choice.label"
+          }
+        },
+        "auto_start": {
+          "type": "boolean",
+          "default": true,
+          "x-ui": {
+            "widget": "toggle",
+            "label_msg": "schema.stage_draft.plan.stage.auto_start.label"
+          }
+        }
+      },
+      "x-checks": {
+        "unique_names": true,
+        "depends_on_resolves": true,
+        "acyclic": "DP-STAGE-PLAN"
+      }
+    }
+  },
+  "x-checks": {
+    "dps": [
+      "DP-STAGE-DRAFT",
+      "DP-STAGE-PLAN",
+      "DP-CRITERIA",
+      "DP-PRIVACY",
+      "DP-NAMING"
+    ],
+    "private_until_accepted": "WF-STAGEDRAFT-1",
+    "system_built": true
+  }
+}

@@ -1,0 +1,135 @@
+[
+  {
+    "id": "ex-VERI-01",
+    "input": "stage_ref: implement_pilot\nrequired_stages: all resolved\ncriterion_1: No reported outage on the Birch Quarter ring road for 30 days.\nsuccess_metric_restated: No reported outage on the ring road for 30 days.\nevidence: https://example.org/lowmere/repair-log | Council repair log for the ring road feed | official_record\noutcome_1: The log shows no outage report on the ring road for 31 days after the repair.\nlimits: It covers the ring road only, not the side streets.",
+    "expected_outcome": "publish",
+    "rule_ids": [
+      "VERIFY-1"
+    ],
+    "note": "a met criterion: evidence bears on it and the outcome statement answers it",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "outcomes"
+    },
+    "shot": true
+  },
+  {
+    "id": "ex-VERI-02",
+    "input": "stage_ref: implement_pilot\nrequired_stages: all resolved\ncriterion_1: No reported outage on the Birch Quarter ring road for 30 days.\nsuccess_metric_restated: No reported outage on the ring road for 30 days.\nevidence: https://example.org/lowmere/repair-log | Council repair log | official_record\nhttps://example.org/lowmere/log-page | The page where the log is published | official_record\noutcome_1: The log shows no outage report on the ring road for 31 days after the repair.\nlimits: It covers the ring road only, not the side streets.\ncriterion_2: The repair log is public.\noutcome_2: The log is posted on the council site and anyone can read it.",
+    "expected_outcome": "publish",
+    "rule_ids": [
+      "VERIFY-1",
+      "CRITERIA-1"
+    ],
+    "note": "two criteria, each with evidence and an outcome",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "outcomes"
+    }
+  },
+  {
+    "id": "ex-VERI-03",
+    "input": "stage_ref: implement_pilot\nrequired_stages: all resolved\ncriterion_1: No reported outage on the Birch Quarter ring road for 30 days.\nsuccess_metric_restated: No reported outage on the ring road for 30 days.\nevidence: https://example.org/lowmere/dock-count | Dated count by a named public role | firsthand\noutcome_1: The dated count shows 30 nights with every lamp on the ring road lit.\nlimits: It covers the ring road only, not the side streets.",
+    "expected_outcome": "publish",
+    "rule_ids": [
+      "VERIFY-1"
+    ],
+    "note": "boundary: a dated firsthand observation is accepted when it addresses the criterion",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "outcomes"
+    }
+  },
+  {
+    "id": "ex-VERI-04",
+    "input": "stage_ref: implement_pilot\nrequired_stages: all resolved\ncriterion_1: No reported outage on the Birch Quarter ring road for 30 days.\nsuccess_metric_restated: No reported outage on the ring road for 30 days.\nevidence: https://example.org/lowmere/repair-log | Council repair log for the ring road feed | official_record\noutcome_1: The log shows two outage reports in the last 30 days, on day 9 and day 22.\nlimits: It covers the ring road only, not the side streets.",
+    "expected_outcome": "needs_revision",
+    "rule_ids": [
+      "VERIFY-1"
+    ],
+    "note": "criterion unmet: the evidence addresses it but shows not met; no state changes",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "outcomes"
+    },
+    "revision_hint": "The criterion is not met yet; add evidence once the 30 day run is clean."
+  },
+  {
+    "id": "ex-VERI-05",
+    "input": "stage_ref: implement_pilot\nrequired_stages: all resolved\ncriterion_1: No reported outage on the Birch Quarter ring road for 30 days.\nsuccess_metric_restated: No reported outage on the ring road for 30 days.\nevidence: https://example.org/lowmere/budget | The council budget summary | official_record\noutcome_1: The budget has a line for lamp repair.\nlimits: It covers the ring road only, not the side streets.",
+    "expected_outcome": "needs_revision",
+    "rule_ids": [
+      "VERIFY-1"
+    ],
+    "note": "evidence does not address the criterion",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "evidence_refs"
+    },
+    "revision_hint": "Add evidence about outages on the ring road, not the budget."
+  },
+  {
+    "id": "ex-VERI-06",
+    "input": "stage_ref: implement_pilot\nrequired_stages: all resolved\ncriterion_1: No reported outage on the Birch Quarter ring road for 30 days.\nsuccess_metric_restated: No reported outage on the ring road for 30 days.\noutcome_1: The stage was resolved and the cable was installed.\nlimits: It covers the ring road only, not the side streets.",
+    "expected_outcome": "needs_revision",
+    "rule_ids": [
+      "VERIFY-1"
+    ],
+    "note": "stage resolved without final evidence",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "evidence_refs"
+    },
+    "revision_hint": "Add at least one URL that meets each final criterion."
+  },
+  {
+    "id": "ex-VERI-07",
+    "input": "stage_ref: implement_pilot\nrequired_stages: all resolved\ncriterion_1: No reported outage on the Birch Quarter ring road for 30 days.\nsuccess_metric_restated: No reported outage on the ring road for 30 days.\nevidence: https://example.org/lowmere/contract | The repair contract | official_record\noutcome_1: The contractor has promised the repair will hold for 30 days.\nlimits: It covers the ring road only, not the side streets.",
+    "expected_outcome": "reject",
+    "rule_ids": [
+      "VERIFY-1"
+    ],
+    "note": "a promise is not an achievement",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "outcomes"
+    },
+    "shot": true
+  },
+  {
+    "id": "ex-VERI-08",
+    "input": "stage_ref: implement_pilot\nrequired_stages: all resolved\ncriterion_1: No reported outage on the Birch Quarter ring road for 30 days.\nsuccess_metric_restated: No reported outage on the ring road for 30 days.\nevidence: https://example.org/lowmere/tasks | The task list | other\noutcome_1: The last task, order the cable, is marked done.\nlimits: It covers the ring road only, not the side streets.",
+    "expected_outcome": "reject",
+    "rule_ids": [
+      "VERIFY-1"
+    ],
+    "note": "a completed task alone is not solved",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "outcomes"
+    }
+  },
+  {
+    "id": "ex-VERI-09",
+    "input": "stage_ref: implement_pilot\nrequired_stages: design_prevention resolved; implement_pilot active\ncriterion_1: No reported outage on the Birch Quarter ring road for 30 days.\nsuccess_metric_restated: No reported outage on the ring road for 30 days.\nevidence: https://example.org/lowmere/repair-log | Council repair log for the ring road feed | official_record\noutcome_1: The log shows no outage report on the ring road for 31 days after the repair.\nlimits: It covers the ring road only, not the side streets.",
+    "expected_outcome": "hold",
+    "rule_ids": [
+      "VERIFY-1"
+    ],
+    "note": "a required stage is not resolved or skipped",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "required_stages"
+    },
+    "shot": true
+  }
+]

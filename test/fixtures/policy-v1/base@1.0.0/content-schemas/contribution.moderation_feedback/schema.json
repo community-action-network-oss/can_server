@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "id": "contribution.moderation_feedback",
+  "version": "1.0.0",
+  "x-version": "1.0.0",
+  "pack": "base@1.0.0",
+  "$comment": "Reserved. Appeals carry this in slice 1. The renderer treats the type as unsupported.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "type"
+  ],
+  "properties": {
+    "type": {
+      "const": "moderation_feedback",
+      "x-ui": {
+        "widget": "hidden",
+        "label_msg": "schema.contribution.moderation_feedback.type.label",
+        "order": 1,
+        "group": "claim"
+      },
+      "x-guidance": {
+        "why": "Reserved type, not offered to people.",
+        "good": "moderation_feedback",
+        "bad": "other"
+      }
+    }
+  },
+  "x-checks": {
+    "reserved": true,
+    "status": "reserved",
+    "dps": []
+  }
+}

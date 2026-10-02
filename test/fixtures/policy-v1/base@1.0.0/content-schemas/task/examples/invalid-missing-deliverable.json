@@ -1,0 +1,9 @@
+{
+  "stage_ref": "map_faults",
+  "question_answered": "Which poles on the ring road have no working lamp?",
+  "done_criteria": [
+    "Every pole on the ring road has a status in the sheet.",
+    "The sheet is posted to the stage."
+  ],
+  "owner_role": "Volunteer survey lead"
+}

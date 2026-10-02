@@ -1,0 +1,21 @@
+{
+  "stage_choice_ref": "choice-lights-0002",
+  "stage_ref": "design_prevention",
+  "decision_method": "poster_after_input",
+  "decider_role": "Problem poster",
+  "authority": "The stage plan names the poster as decider after community input.",
+  "rationale": "Option seven meets both criteria and costs less than replacing the whole cable run.",
+  "dissent_notes": [
+    "Two people preferred solar lamps because they work during outages."
+  ],
+  "legal_gate_record": {
+    "constraint_checked": "The repair works against the municipal roads act and the district maintenance mandate.",
+    "source_ref": "https://example.org/lowmere/roads-act",
+    "layer": "both",
+    "result": "passed"
+  },
+  "assumptions": [
+    "Fault reports stay near today's rate."
+  ],
+  "review_date": "2026-09-30"
+}

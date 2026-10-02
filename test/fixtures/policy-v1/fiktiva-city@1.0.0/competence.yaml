@@ -1,0 +1,8 @@
+# Invented topic to office table for fiktiva-city. Used by DP-ASSUMPTIONS and DP-LEGALITY examples.
+topics:
+  road-repair: Head of Road Works
+  street-lighting: Head of Road Works
+  waste-collection: Head of Waste Services
+  public-parks: Head of Parks
+  bus-timetables: Head of Transit
+  school-meals: Head of Education Services

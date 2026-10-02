@@ -1,0 +1,308 @@
+# constitution pack rules
+# Source: docs/spec/constitution/rules.md and rules-legal-sim.md (text copied verbatim). Parity: node tools/rules-parity.mjs.
+# Split rule: base holds platform behaviour (pipeline, auth, data shape, stages, process); constitution holds rules that restate a constitution article on rights, privacy, law, appeals and content limits.
+rules:
+- id: PREC-1
+  text: "Must apply the higher tier (rights > crisis/safety > privacy > legal gate > procedure > ranking). Must hold with the state unchanged and queue a policy question for the maintainers if unresolved. Must not let a lower tier override."
+  tier: rights
+  enforcement: hold
+  applies_to: []
+  source: "I.2, V.3"
+  first_phase: S1
+  protected_core: true
+  status: active
+  note: "no decision point lists this rule; enforced by build checks, schema or server code"
+- id: SCOPE-1
+  text: "Must decline with a closed reason code and show an external route. Must not create a public problem or keep the narrative."
+  tier: crisis_safety
+  enforcement: reject
+  applies_to: [DP-ELIGIBILITY, DP-CRISIS]
+  source: "I.3, I.4, I.5, I.6"
+  first_phase: S1
+  protected_core: true
+  status: active
+- id: CRISIS-STATIC-1
+  text: "Must serve static crisis resources. Must not require a dependency, and must not publish."
+  tier: crisis_safety
+  enforcement: hold
+  applies_to: [DP-CRISIS]
+  source: "I.6, V.4"
+  first_phase: S1
+  protected_core: true
+  status: active
+- id: AGE-DENY-1
+  text: "Must deny the capability except public read."
+  tier: legal_gate
+  enforcement: reject
+  applies_to: []
+  source: "II.4"
+  first_phase: S1
+  protected_core: false
+  status: active
+  note: "no decision point lists this rule; enforced by build checks, schema or server code"
+- id: PRIV-GATE-1
+  text: "Must not pass if the detector finds a person name, phone, email, government ID, street address with a number, face image, or EXIF GPS."
+  tier: privacy
+  enforcement: needs_revision
+  applies_to: [DP-PRIVACY]
+  source: "II.6, II.1"
+  first_phase: S1
+  protected_core: false
+  status: active
+- id: NO-INSTANCE-OVERRIDE-1
+  text: "Must change policy through the amendment loop, never edit the single outcome. Exception: the emergency and legal lane, each action logged with reason and rule ids."
+  tier: rights
+  enforcement: reject
+  applies_to: []
+  source: "V.4, V.5, V.6"
+  first_phase: S1
+  protected_core: true
+  status: active
+  note: "no decision point lists this rule; enforced by build checks, schema or server code"
+- id: REMOD-NOTICE-1
+  text: "Must show \"re-reviewed under policy vX\" with the explanation and an appeal path. Must not remove or hide content silently."
+  tier: rights
+  enforcement: reject
+  applies_to: []
+  source: "V.4, V.5"
+  first_phase: S1
+  protected_core: true
+  status: active
+  note: "no decision point lists this rule; enforced by build checks, schema or server code"
+- id: OWN-1
+  text: "Must tombstone the initiator's text and keep the problem. Must not have an `owner` field."
+  tier: rights
+  enforcement: reject
+  applies_to: []
+  source: "II.8, IV.8"
+  first_phase: S1
+  protected_core: true
+  status: active
+  note: "no decision point lists this rule; enforced by build checks, schema or server code"
+- id: NAME-1
+  text: "Must reject and suggest `{office} of {jurisdiction}, officeholder as of {YYYY-MM}`. Exception only when the election layer is on and `jurisdiction.election_enabled`."
+  tier: privacy
+  enforcement: needs_revision
+  applies_to: [DP-NAMING]
+  source: "III.1, III.2, III.3, XI.2"
+  first_phase: S1
+  protected_core: false
+  status: active
+- id: RANK-1
+  text: "Must order by no engagement field (views, reactions, followers, comment count). Must expose its criteria object. Must not bury a minority problem for low engagement."
+  tier: ranking
+  enforcement: reject
+  applies_to: []
+  source: "I.1, I.4, III.4, XI.3"
+  first_phase: S1
+  protected_core: false
+  status: active
+  note: "no decision point lists this rule; enforced by build checks, schema or server code"
+- id: LEGAL-GATE-1
+  text: "Must have a recorded check against the constitution and the jurisdiction pack. If blocked, must enter `stuck` with the blocking constraint, source and version, blocked actions, and recheck condition."
+  tier: legal_gate
+  enforcement: hold
+  applies_to: [DP-LEGALITY, DP-DECISION-RECORD, DP-BLOCKER]
+  source: "IV.5, IV.6"
+  first_phase: S1
+  protected_core: false
+  status: active
+- id: APPEAL-1
+  text: "Must run an independent re-run with a different model or prompt variant. Must send a still-disputed appeal to a randomized, context-masked label task. Must route any lasting change through a policy PR, then re-decide the instance by AI. Must write nothing to grounding tables directly."
+  tier: rights
+  enforcement: reject
+  applies_to: [DP-APPEAL]
+  source: "V.4, V.5"
+  first_phase: S1
+  protected_core: true
+  status: active
+- id: APPEAL-2
+  text: "Must cause zero restriction and zero reputation change."
+  tier: rights
+  enforcement: reject
+  applies_to: []
+  source: "V.4, VI.1, VI.2"
+  first_phase: S1
+  protected_core: true
+  status: active
+  note: "no decision point lists this rule; enforced by build checks, schema or server code"
+- id: RESTORE-1
+  text: "Must have a restoration or review path and a reason. Must not create a permanent, non-reviewable exclusion."
+  tier: rights
+  enforcement: reject
+  applies_to: []
+  source: "VI.1, VI.3"
+  first_phase: P5
+  protected_core: true
+  status: active
+  note: "no decision point lists this rule; enforced by build checks, schema or server code"
+- id: REP-PRIV-1
+  text: "Must be private, context-scoped, and time-decaying. Must not expose a universal score through any API."
+  tier: privacy
+  enforcement: reject
+  applies_to: []
+  source: "VII.3"
+  first_phase: P5
+  protected_core: false
+  status: active
+  note: "no decision point lists this rule; enforced by build checks, schema or server code"
+- id: ASSUMP-1
+  text: "Must hold the post as `needs_revision` with a `revision_hint` beside the field that carries the assumption, citing the source of the correction. Must keep the draft. Must not publish it, silently edit it or reject a fixable error."
+  tier: procedure
+  enforcement: needs_revision
+  applies_to: [DP-ASSUMPTIONS]
+  source: "IV.1, V.4"
+  first_phase: S1
+  protected_core: false
+  status: active
+- id: COMPLETE-1
+  text: "Must check that every required field of the schema is meaningfully answered: not empty, not filler, not a copy of another field. Must return `needs_revision` with a hint beside each empty or hollow field. Must not publish with a required field missing."
+  tier: procedure
+  enforcement: needs_revision
+  applies_to: [DP-COMPLETENESS]
+  source: "IV.1, V.4"
+  first_phase: S1
+  protected_core: false
+  status: active
+- id: FRAME-1
+  text: "Must require a structural statement of a public condition, pattern or failure, not a person, a motive, a verdict or a solution. Must return `needs_revision` with a hint offering a structural rewrite. Must allow the community to challenge the framing later with reasons."
+  tier: procedure
+  enforcement: needs_revision
+  applies_to: [DP-FRAMING]
+  source: "IV.1, III.2"
+  first_phase: S1
+  protected_core: false
+  status: active
+- id: DUP-1
+  text: "Must compare against published problems and the repost fingerprint and return related or duplicate candidates with a reason. A repost match is an input, never an auto-reject. Must link only through `duplicate_of` in slice 1, and not merge or close without a recorded decision citing the rule"
+  tier: procedure
+  enforcement: needs_revision
+  applies_to: [DP-DUPLICATE]
+  source: "IV.1, IV.4"
+  first_phase: S1
+  protected_core: false
+  status: active
+- id: RELEVANCE-1
+  text: "Must check the contribution is of its declared type, allowed in the current state, and relevant to the problem. Must return `needs_revision` with a hint, or a typed reroute, rather than silent removal."
+  tier: procedure
+  enforcement: needs_revision
+  applies_to: [DP-CONTRIB-RELEVANCE]
+  source: "IV.1"
+  first_phase: S1
+  protected_core: false
+  status: active
+- id: SOLUTION-ONLY-1
+  text: "Must route it to a `proposed_solution` contribution or return `needs_revision` asking for the problem it addresses. Must not drop it. Must not let a solution replace the problem statement"
+  tier: procedure
+  enforcement: needs_revision
+  applies_to: [DP-CONTRIB-RELEVANCE]
+  source: "IV.1, IV.3"
+  first_phase: S1
+  protected_core: false
+  status: active
+- id: TONE-1
+  text: "Must return `needs_revision` with a hint naming the span, so the poster can restate the substance civilly. Must send threats of harm or crisis language to `DP-CRISIS`. Must not penalize strong but civil criticism of institutions, and must not judge a person's character"
+  tier: procedure
+  enforcement: needs_revision
+  applies_to: [DP-TONE]
+  source: "III.2, V.4"
+  first_phase: S1
+  protected_core: false
+  status: active
+- id: RERESOLVE-1
+  text: "Must replay the new rule over past `solved`, `closed`, `redirected` and `stuck` problems, their decision records and resolved stages. Must reopen (T20, T21) only when the conclusion changes and the feasibility check passes. Must show \"Reopened under policy vX\", keep the full history, never delete the old record, and make it appealable. Must not reopen silently or undo a lawful completed implementation without a new proposal."
+  tier: procedure
+  enforcement: reject
+  applies_to: [DP-RERESOLUTION]
+  source: "IV.4, V.5"
+  first_phase: S1
+  protected_core: false
+  status: active
+- id: LEGAL-LANE-1
+  text: "Must route only to the small emergency and legal lane, which acts within a logged reason, rule ids and time. Must not use the lane for ordinary moderation. Must publish aggregate lane use"
+  tier: crisis_safety
+  enforcement: hold
+  applies_to: [DP-LEGAL]
+  source: "IV.5, V.4"
+  first_phase: S1
+  protected_core: true
+  status: active
+- id: LEGAL-STACK-1
+  text: "Must apply all legal layers cumulatively for the jurisdiction: L0 CAN rules, L1 UN human rights, L2 supranational where binding, L3 national constitution, L4 national law, L5 regional, L6 city. Must cite the layer and source for each finding. Must not skip a layer because another is silent, or let a lower layer relax a higher one."
+  tier: legal_gate
+  enforcement: hold
+  applies_to: [DP-RERESOLUTION]
+  source: "I.2, IV.5, IV.6"
+  first_phase: S1
+  protected_core: false
+  status: active
+- id: LEGAL-SOURCE-1
+  text: "Must carry provenance: official publisher, URL, original text, language, layer, effective date, retrieval date, version and content hash. Must load by version and hash. Must not be rewritten by an LLM."
+  tier: legal_gate
+  enforcement: hold
+  applies_to: []
+  source: "IV.6"
+  first_phase: S1
+  protected_core: false
+  status: active
+  note: "no decision point lists this rule; enforced by build checks, schema or server code"
+- id: TOPIC-FORBIDDEN-1
+  text: "Must not publish the problem in that jurisdiction. Must log the refusal with its legal basis (layer, source id, version) and show a plain explanation and an appeal path. Must not apply this when only a solution is illegal: then the problem is published and the stage is `blocked` or the problem `stuck` (legally blocked, `BLOCKER-1`)."
+  tier: legal_gate
+  enforcement: reject
+  applies_to: []
+  source: "IV.5, I.2"
+  first_phase: S1
+  protected_core: false
+  status: active
+  note: "no decision point lists this rule; enforced by build checks, schema or server code"
+- id: LEGAL-CITE-1
+  text: "Must cite, for each finding, the layer (L0 to L6), the article or provision, and the legal-corpus version. Must not decide on law without a hash-verified corpus."
+  tier: legal_gate
+  enforcement: hold
+  applies_to: []
+  source: "IV.5, IV.6, V.4"
+  first_phase: S1
+  protected_core: false
+  status: active
+  note: "no decision point lists this rule; enforced by build checks, schema or server code"
+- id: LEGAL-CORPUS-1
+  text: "Must carry a lawyer review record before ratification. A ratified change must trigger re-moderation of published content and re-resolution review (`RERESOLVE-1`). Must not go live on ingestion alone or by LLM rewrite. A conflict between layers is held with a conflict note, never silently resolved."
+  tier: legal_gate
+  enforcement: hold
+  applies_to: []
+  source: "IV.6, V.5"
+  first_phase: S1
+  protected_core: false
+  status: active
+  note: "no decision point lists this rule; enforced by build checks, schema or server code"
+- id: IMPACT-1
+  text: "Must set `impact_label` (`impacted` or `guest`) from the private attestation result at send time and the problem's `area_version`. Must label per message, not per profile. Must default to `guest` on a missing, stale or invalid attestation. Must accept the message either way."
+  tier: rights
+  enforcement: reject
+  applies_to: []
+  source: "IV.2"
+  first_phase: S1
+  protected_core: true
+  status: active
+  enforced_by: server
+- id: LOC-PRIV-1
+  text: "Must not store or log coordinates, cells, geohashes or IP-derived location. Must verify proofs then discard them. Must redact the attestation payload from logs. Must keep the attestation out of every moderation run input. Must not expose a per-person list of areas where someone is impacted."
+  tier: privacy
+  enforcement: reject
+  applies_to: []
+  source: "II.2, II.6"
+  first_phase: S1
+  protected_core: true
+  status: active
+  enforced_by: server
+- id: LOC-DOUBT-1
+  text: "Must downgrade only that message to `guest` with a neutral reason. Must not restrict, sanction, flag or reduce the reputation of the account on location signals alone, and must never say \"suspected spoofing\"."
+  tier: rights
+  enforcement: reject
+  applies_to: []
+  source: "II.2, IV.2"
+  first_phase: S1
+  protected_core: true
+  status: active
+  enforced_by: server

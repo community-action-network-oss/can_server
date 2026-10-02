@@ -1,0 +1,10 @@
+dp: DP-DECISION-RECORD
+enforces: [DECISION-REC-1, LEGAL-GATE-1]
+mode: blocking
+inputs: [stage_choice_ref, stage_ref, stage_decision_method, decision_method, chosen_option_ids, decider_role, authority, rationale, dissent_notes, legal_gate_record, steps, assumptions, review_date]
+outcomes: [publish, needs_revision, hold]
+thresholds:
+  confidence_floor:
+  publish: 0.9
+  needs_revision: 0.75
+  escalate_model_below: 0.85

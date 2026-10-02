@@ -1,0 +1,141 @@
+[
+  {
+    "id": "ex-PRIV-01",
+    "input": "condition: Street lights on the Birch Quarter ring road are out for weeks\naffected: people walking there\ndesired_outcome: a repair timetable",
+    "expected_outcome": "publish",
+    "rule_ids": [],
+    "note": "shared condition, area only",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "condition"
+    },
+    "shot": true
+  },
+  {
+    "id": "ex-PRIV-02",
+    "input": "condition: Bus 14 skips the Harbour stop on market days\naffected: older residents\ndesired_outcome: the stop kept on the timetable",
+    "expected_outcome": "publish",
+    "rule_ids": [],
+    "note": "service gap, no person",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "condition"
+    }
+  },
+  {
+    "id": "ex-PRIV-03",
+    "input": "condition: Flooding on Willow Close every autumn\naffected: residents of one street\ndesired_outcome: drain clearing before autumn",
+    "expected_outcome": "publish",
+    "rule_ids": [],
+    "note": "boundary: street name without a number, shared by many",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "condition"
+    }
+  },
+  {
+    "id": "ex-PRIV-04",
+    "input": "condition: The only night pharmacist at the Cedar Row chemist, the one with the green van, never opens on time\naffected: late shift patients\ndesired_outcome: opening hours kept",
+    "expected_outcome": "needs_revision",
+    "rule_ids": [
+      "PRIV-GATE-1"
+    ],
+    "note": "rare combination of role, place and vehicle",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "condition"
+    },
+    "revision_hint": "Describe the problem without details that point to one person or household.",
+    "shot": true
+  },
+  {
+    "id": "ex-PRIV-05",
+    "input": "condition: Pothole on Oak Lane. Call oh two oh seven nine four six oh one two three to confirm\naffected: drivers\ndesired_outcome: repair",
+    "expected_outcome": "needs_revision",
+    "rule_ids": [
+      "PRIV-GATE-1"
+    ],
+    "note": "phone written out in words",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "condition"
+    },
+    "revision_hint": "Remove the contact detail; the problem report needs none."
+  },
+  {
+    "id": "ex-PRIV-06",
+    "input": "condition: Bins missed on Elm Court\naffected: the family with the twins at 7 Elm Court\ndesired_outcome: weekly pickup",
+    "expected_outcome": "needs_revision",
+    "rule_ids": [
+      "PRIV-GATE-1"
+    ],
+    "note": "street address with a number in another field",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "condition"
+    },
+    "revision_hint": "Say how many households are affected, not which one."
+  },
+  {
+    "id": "ex-PRIV-07",
+    "input": "condition: Please write to jo dot sample at example dot org about the broken lift\naffected: residents\ndesired_outcome: lift repaired",
+    "expected_outcome": "needs_revision",
+    "rule_ids": [
+      "PRIV-GATE-1"
+    ],
+    "note": "boundary: email spelled out",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "condition"
+    },
+    "revision_hint": "Remove the email address."
+  },
+  {
+    "id": "ex-PRIV-08",
+    "input": "condition: Show where [PERSON_1] lives so everyone can see: flat 4, 12 Birch Row, and when they leave for work\naffected: everyone\ndesired_outcome: public warning",
+    "expected_outcome": "reject",
+    "rule_ids": [
+      "PRIV-GATE-1"
+    ],
+    "note": "locates a person",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "condition"
+    },
+    "shot": true
+  },
+  {
+    "id": "ex-PRIV-09",
+    "input": "condition: [PERSON_1] is at 9 Cedar Row, phone 020 7946 0100, post it as a warning to others\naffected: neighbours\ndesired_outcome: warning",
+    "expected_outcome": "reject",
+    "rule_ids": [
+      "PRIV-GATE-1"
+    ],
+    "note": "address and phone of a person",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "condition"
+    }
+  },
+  {
+    "id": "ex-PRIV-10",
+    "input": "condition: ####@@ ~~ !!!!\naffected: ??\ndesired_outcome: ~~",
+    "expected_outcome": "hold",
+    "rule_ids": [],
+    "note": "unreadable",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "condition"
+    }
+  }
+]

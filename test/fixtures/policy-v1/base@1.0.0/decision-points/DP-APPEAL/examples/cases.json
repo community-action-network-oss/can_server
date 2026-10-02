@@ -1,0 +1,151 @@
+[
+ {
+  "id": "ex-APPL-01",
+  "input": "decision_ref: dec_8f21ac\noriginal_decision: DP-NAMING needs_revision NAME-1\nrule_ids_disputed: NAME-1\nwhat_is_wrong: The notice says the post names a person, but it names the Road Works office.\noutcome_sought: Look at the decision again and publish the post.",
+  "expected_outcome": "publish",
+  "rule_ids": [],
+  "note": "plain appeal with a rule id",
+  "provenance": "fixture",
+  "jurisdiction": "fiktiva-city",
+  "field_ref": {
+   "field": "what_is_wrong"
+  },
+  "shot": true,
+  "expected": {
+   "appeal_stays_open": true
+  }
+ },
+ {
+  "id": "ex-APPL-02",
+  "input": "decision_ref: dec_31bb07\noriginal_decision: DP-TONE needs_revision TONE-1\nwhat_is_wrong: This is ridiculous. Your robot flagged a plain complaint about the bins and I am sick of it. Fix it now!\noutcome_sought: Undo the flag.",
+  "expected_outcome": "publish",
+  "rule_ids": [],
+  "note": "angry but valid, no rule ids: still routed",
+  "provenance": "fixture",
+  "jurisdiction": "fiktiva-city",
+  "field_ref": {
+   "field": "what_is_wrong"
+  },
+  "shot": true,
+  "expected": {
+   "appeal_stays_open": true
+  }
+ },
+ {
+  "id": "ex-APPL-03",
+  "input": "decision_ref: dec_77c0de\noriginal_decision: DP-ELIGIBILITY needs_revision ELIG-1\nwhat_is_wrong: Wrong. Please look again.\noutcome_sought: Reconsider.",
+  "expected_outcome": "publish",
+  "rule_ids": [],
+  "note": "boundary: very short, no evidence, still routed",
+  "provenance": "fixture",
+  "jurisdiction": "fiktiva-city",
+  "field_ref": {
+   "field": "what_is_wrong"
+  },
+  "expected": {
+   "appeal_stays_open": true
+  }
+ },
+ {
+  "id": "ex-APPL-04",
+  "input": "decision_ref: (blank)\noriginal_decision: DP-NAMING needs_revision NAME-1\nrule_ids_disputed: NAME-1\nwhat_is_wrong: You flagged my post by mistake and the office is not a person.\noutcome_sought: Publish the post.",
+  "expected_outcome": "needs_revision",
+  "rule_ids": [
+   "APPEAL-1"
+  ],
+  "note": "decision_ref missing: ask for it, appeal stays open",
+  "provenance": "fixture",
+  "jurisdiction": "fiktiva-city",
+  "field_ref": {
+   "field": "decision_ref"
+  },
+  "revision_hint": "Your appeal text is saved and stays open. Add the decision id shown on the notice (for example dec_8f21ac) so the right decision is looked at again.",
+  "shot": true,
+  "expected": {
+   "appeal_stays_open": true
+  }
+ },
+ {
+  "id": "ex-APPL-05",
+  "input": "decision_ref: the thing from last week\noriginal_decision: DP-NAMING needs_revision NAME-1\nwhat_is_wrong: The check was wrong about the office name.\noutcome_sought: Publish the post.",
+  "expected_outcome": "needs_revision",
+  "rule_ids": [
+   "APPEAL-1"
+  ],
+  "note": "decision_ref is not an id",
+  "provenance": "fixture",
+  "jurisdiction": "fiktiva-city",
+  "field_ref": {
+   "field": "decision_ref"
+  },
+  "revision_hint": "Your appeal text is saved and stays open. Add the decision id shown on the notice (for example dec_8f21ac) so the right decision is looked at again.",
+  "expected": {
+   "appeal_stays_open": true
+  }
+ },
+ {
+  "id": "ex-APPL-06",
+  "input": "decision_ref: dec_ext_none\noriginal_decision: not a platform decision (decided by the district planning board)\nwhat_is_wrong: The planning board refused the permit for the Birch Quarter crossing and the refusal is wrong.\noutcome_sought: Overturn the refusal.",
+  "expected_outcome": "route_external",
+  "rule_ids": [
+   "APPEAL-1"
+  ],
+  "note": "decision made outside the platform",
+  "provenance": "fixture",
+  "jurisdiction": "fiktiva-city",
+  "field_ref": {
+   "field": "what_is_wrong"
+  },
+  "revision_hint": "This decision was made by the district planning board, not by this platform. Ask the planning board about its own appeal route. Your appeal is still recorded here.",
+  "expected": {
+   "appeal_stays_open": true
+  }
+ },
+ {
+  "id": "ex-APPL-07",
+  "input": "decision_ref: dec_5d2e90\noriginal_decision: DP-NAMING needs_revision NAME-1\nwhat_is_wrong: qwpo zzk rrtl mnb vvc xsd\noutcome_sought: hhg tt",
+  "expected_outcome": "hold",
+  "rule_ids": [
+   "APPEAL-1"
+  ],
+  "note": "text unreadable: a human reads it with a summary",
+  "provenance": "fixture",
+  "jurisdiction": "fiktiva-city",
+  "field_ref": {
+   "field": "what_is_wrong"
+  },
+  "expected": {
+   "appeal_stays_open": true
+  }
+ },
+ {
+  "id": "ex-APPL-08",
+  "input": "decision_ref: dec_a1b2c3\noriginal_decision: DP-FRAMING needs_revision FRAME-1\nwhat_is_wrong: The framing check is wrong. Also the buses are late, and the park gate is broken, and nobody answers the phone at the depot. But mainly my condition text is a pattern, not a complaint.\noutcome_sought: Re-run the framing check.",
+  "expected_outcome": "publish",
+  "rule_ids": [],
+  "note": "boundary: rambling with unrelated grievances, one valid dispute",
+  "provenance": "fixture",
+  "jurisdiction": "fiktiva-city",
+  "field_ref": {
+   "field": "what_is_wrong"
+  },
+  "expected": {
+   "appeal_stays_open": true
+  }
+ },
+ {
+  "id": "ex-APPL-09",
+  "input": "decision_ref: dec_90e4f1\noriginal_decision: DP-NAMING needs_revision NAME-1\nrule_ids_disputed: FOO-9\nwhat_is_wrong: I disagree with rule FOO-9 as applied here.\noutcome_sought: Reconsider.",
+  "expected_outcome": "publish",
+  "rule_ids": [],
+  "note": "disputed rule id unknown: never blocks",
+  "provenance": "fixture",
+  "jurisdiction": "fiktiva-city",
+  "field_ref": {
+   "field": "what_is_wrong"
+  },
+  "expected": {
+   "appeal_stays_open": true
+  }
+ }
+]

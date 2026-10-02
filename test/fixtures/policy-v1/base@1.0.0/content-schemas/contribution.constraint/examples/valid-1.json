@@ -1,0 +1,21 @@
+{
+  "type": "constraint",
+  "target": "prob-lights-0042",
+  "target_stage": "stage-lights-survey",
+  "claim": "The ring road lights have been out for several weeks.",
+  "basis": "firsthand",
+  "evidence_refs": [
+    {
+      "url": "https://example.org/lighting-register",
+      "supports": "Lists the lights on the ring road."
+    }
+  ],
+  "uncertainty": "I do not know how many lights are affected.",
+  "assumptions": [
+    "I assume the lights share one power feed."
+  ],
+  "constraint": "Repairs to the road feed need a licensed electrician.",
+  "source": "law",
+  "source_ref": "District electrical safety bylaw, section 4.",
+  "recheck_condition": "If the bylaw is amended or the feed is replaced."
+}

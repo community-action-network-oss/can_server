@@ -1,0 +1,182 @@
+{
+  "id": "ar-sim-0002",
+  "problem_ref": "prob-sim-0002",
+  "terminal_state": "stuck",
+  "source": "simulation",
+  "snapshot": {
+    "condition": "Many streets in the north district have no working lights after dark.",
+    "affected": "Residents and people who walk home after dark.",
+    "place": {
+      "jurisdiction": "Northvale district",
+      "coarse_area": "North district"
+    },
+    "observed_facts": [
+      "Forty lamps were out in March."
+    ],
+    "final_acceptance_criteria": [
+      {
+        "statement": "At least 90 percent of lamps work on every street.",
+        "measure": "A night count by volunteers on each street."
+      }
+    ]
+  },
+  "context_profile": {
+    "problem_type": "infrastructure",
+    "category": "public_lighting",
+    "population_scale": "<10k",
+    "geography": {
+      "country": "NL",
+      "region": "Northern Province",
+      "settlement_class": "town",
+      "climate_class": "C"
+    },
+    "resource_band": {
+      "people": "<5",
+      "in_kind": "yes"
+    },
+    "budget_band": {
+      "band": "<10k",
+      "currency_class": "high_income"
+    },
+    "institutions": [
+      "municipal_lighting_dept"
+    ],
+    "legal_stack": [
+      {
+        "layer": "L0",
+        "corpus_version": "2026.1"
+      },
+      {
+        "layer": "L3",
+        "corpus_version": "2026.2"
+      }
+    ],
+    "language": "en",
+    "constraints": [
+      {
+        "type": "legal",
+        "statement": "Repairs need a municipal permit."
+      }
+    ]
+  },
+  "executed_path": [
+    {
+      "name": "assess",
+      "goal": "Count which lamps are out and why.",
+      "criteria": [
+        {
+          "statement": "The stage result is written down.",
+          "measure": "A short public note lists what was found."
+        }
+      ],
+      "outcome": "resolved",
+      "duration_band": "<1m",
+      "cost_band": "none",
+      "depends_on": []
+    },
+    {
+      "name": "permit",
+      "goal": "Get the work permit for the repair.",
+      "criteria": [
+        {
+          "statement": "The stage result is written down.",
+          "measure": "A short public note lists what was found."
+        }
+      ],
+      "outcome": "blocked",
+      "duration_band": "<1y",
+      "cost_band": "none",
+      "depends_on": [
+        "assess"
+      ],
+      "chosen_option": "Apply to the district office."
+    },
+    {
+      "name": "repair",
+      "goal": "Repair the lamps and the feed.",
+      "criteria": [
+        {
+          "statement": "The stage result is written down.",
+          "measure": "A short public note lists what was found."
+        }
+      ],
+      "outcome": "abandoned",
+      "duration_band": "<1w",
+      "cost_band": "none",
+      "depends_on": [
+        "permit"
+      ]
+    }
+  ],
+  "options": [
+    {
+      "stage": "permit",
+      "summary": "Apply to the district office.",
+      "legality": "unlawful_at_L3",
+      "chosen": true,
+      "reason": "It was the only office with a mandate."
+    }
+  ],
+  "evidence_refs": [
+    {
+      "uri": "https://records.example/lamp-count-2026",
+      "tier": "official_record",
+      "stage": "assess"
+    }
+  ],
+  "challenges": [
+    {
+      "stage": "permit",
+      "tried": "Asked the district office for a work permit.",
+      "why_failed_or_blocked": "The permit queue was nine months long.",
+      "kind": "institutional",
+      "resolution": "unresolved"
+    },
+    {
+      "stage": "repair",
+      "tried": "Planned the repair without a permit.",
+      "why_failed_or_blocked": "A repair without a permit is not lawful at the district layer.",
+      "kind": "legal",
+      "resolution": "unresolved",
+      "layer": "L3"
+    }
+  ],
+  "costs": {
+    "total_band": "none",
+    "currency_class": "high_income",
+    "labour_hours_band": "<10",
+    "in_kind": "no",
+    "none_stated": true
+  },
+  "outcome": {
+    "criteria_results": [
+      {
+        "criterion_ref": 1,
+        "result": "not_met"
+      }
+    ],
+    "summary": "No lamp was repaired because the permit never came.",
+    "unresolved": true
+  },
+  "versions": {
+    "policy_version": "base@1.0.0",
+    "schema_version": "1.0.0",
+    "archive_schema_version": "1.0.0",
+    "legal_corpus_versions": [
+      {
+        "layer": "L0",
+        "corpus_version": "2026.1"
+      }
+    ]
+  },
+  "attribution": {
+    "credit_text": "Based on the simulated Northvale street lights record.",
+    "source_url": "https://can.example/problems/northvale-lights",
+    "license": "CC-BY-4.0"
+  },
+  "quality": {
+    "completeness": 0.9,
+    "ratified": true,
+    "dp_archive_run_id": "run-sim-0002"
+  }
+}

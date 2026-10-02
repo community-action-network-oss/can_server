@@ -1,0 +1,19 @@
+{
+  "type": "factual_claim",
+  "target": "prob-lights-0042",
+  "claim": "The lighting register lists 140 lights on the ring road.",
+  "basis": "firsthand",
+  "evidence_refs": [
+    {
+      "url": "https://example.org/lighting-register",
+      "supports": "Lists the lights on the ring road."
+    }
+  ],
+  "uncertainty": "I do not know the exact numbers.",
+  "assumptions": [
+    "I assume the register is up to date."
+  ],
+  "statement": "The district has 140 lights on the ring road.",
+  "source_ref": "https://example.org/lighting-register",
+  "none_stated": true
+}

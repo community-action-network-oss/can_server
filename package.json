@@ -20,6 +20,7 @@
     "test:e2e": "vitest run --config ./vitest.config.e2e.ts",
     "seed": "nest build && node dist/seed.js",
     "seed:reset": "nest build && node dist/seed.js --reset",
+    "sync:policy-fixture": "node scripts/sync-policy-fixture.mjs",
     "sim": "node test/simulation/run.ts",
     "sim:test": "vitest run test/simulation",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",

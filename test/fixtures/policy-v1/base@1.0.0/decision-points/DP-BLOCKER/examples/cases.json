@@ -1,0 +1,154 @@
+[
+  {
+    "id": "ex-BLKR-01",
+    "input": "event: stage_blocked (ST07)\nblocking_constraint: The competence table puts street-light replacement with the Head of Road Works, who has not issued the works permit.\nsource_ref: LEGAL-GATE-1, fiktiva-city pack 0.1.0\nblocked_actions: order lamp drivers; schedule the crew\nrecheck_date: 2026-12-01\nnext_route: Ask the Fiktiva City Ombudsman Desk to review the permit delay\ndocumented_attempts: 2\ncheck_date: 2026-10-02",
+    "expected_outcome": "publish",
+    "rule_ids": [
+      "LEGAL-GATE-1",
+      "BLOCKER-1"
+    ],
+    "note": "complete payload with a real constraint, source and version, recheck date, lawful route and attempts (T13, ST07)",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "blocking_constraint"
+    },
+    "shot": true
+  },
+  {
+    "id": "ex-BLKR-02",
+    "input": "event: problem_stuck (T13)\nblocking_constraint: No required stage can proceed until the bylaw review is decided; every remaining stage is blocked or behind a blocked stage.\nsource_ref: LEGAL-GATE-1, fiktiva-city pack 0.1.0\nblocked_actions: all remaining required stages\nrecheck_date: 2026-11-15\nnext_route: Petition the council committee that owns the bylaw\ndocumented_attempts: 1\ncheck_date: 2026-10-02",
+    "expected_outcome": "publish",
+    "rule_ids": [
+      "LEGAL-GATE-1",
+      "BLOCKER-1"
+    ],
+    "note": "boundary: exactly one documented attempt is enough (1+); problem level T13",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "blocking_constraint"
+    }
+  },
+  {
+    "id": "ex-BLKR-03",
+    "input": "event: stage_blocked (ST07)\nblocking_constraint: A permit is pending for the Birch Quarter lamp works.\nsource_ref: LEGAL-GATE-1, fiktiva-city pack 0.1.0\nblocked_actions: start the works\nrecheck_date: (none)\nnext_route: Ask the Head of Road Works for the permit date\ndocumented_attempts: 1\ncheck_date: 2026-10-02",
+    "expected_outcome": "needs_revision",
+    "rule_ids": [
+      "LEGAL-GATE-1",
+      "BLOCKER-1"
+    ],
+    "note": "no recheck date",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "blocking_constraint"
+    },
+    "revision_hint": "Add a recheck date for when to look at this block again.",
+    "shot": true
+  },
+  {
+    "id": "ex-BLKR-04",
+    "input": "event: stage_blocked (ST07)\nblocking_constraint: The works permit is not yet issued.\nsource_ref: LEGAL-GATE-1, fiktiva-city pack 0.1.0\nblocked_actions: start the works\nrecheck_date: 2026-11-20\nnext_route: Ask the Ombudsman Desk\ndocumented_attempts: 0\ncheck_date: 2026-10-02",
+    "expected_outcome": "needs_revision",
+    "rule_ids": [
+      "LEGAL-GATE-1",
+      "BLOCKER-1"
+    ],
+    "note": "no documented attempt (BLOCKER-1 needs 1+)",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "blocking_constraint"
+    },
+    "revision_hint": "Record at least one attempt: a task, evidence or the legal-gate record."
+  },
+  {
+    "id": "ex-BLKR-05",
+    "input": "event: stage_blocked (ST07)\nblocking_constraint: The competence table does not give this office this topic.\nsource_ref: the competence table\nblocked_actions: ask the office to act\nrecheck_date: 2026-11-20\nnext_route: Ask the Head of Parks to confirm\ndocumented_attempts: 1\ncheck_date: 2026-10-02",
+    "expected_outcome": "needs_revision",
+    "rule_ids": [
+      "LEGAL-GATE-1",
+      "BLOCKER-1"
+    ],
+    "note": "source has no rule id and no pack version",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "blocking_constraint"
+    },
+    "revision_hint": "Cite the rule id and the pack version, for example LEGAL-GATE-1 and the loaded version."
+  },
+  {
+    "id": "ex-BLKR-06",
+    "input": "event: problem_stuck (T13)\nblocking_constraint: Nobody has had time to follow up.\nsource_ref: BLOCKER-1, base pack 0.1.0\nblocked_actions: all work\nrecheck_date: 2026-12-31\nnext_route: Wait\ndocumented_attempts: 1\ncheck_date: 2026-10-02",
+    "expected_outcome": "needs_revision",
+    "rule_ids": [
+      "LEGAL-GATE-1",
+      "BLOCKER-1"
+    ],
+    "note": "stuck must not hide inaction: no real constraint and no lawful route",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "blocking_constraint"
+    },
+    "revision_hint": "Name the actual blocking constraint and a next lawful route, or keep the stage active."
+  },
+  {
+    "id": "ex-BLKR-07",
+    "input": "event: stage_blocked (ST07)\nblocking_constraint: The works permit is pending with the Head of Road Works.\nsource_ref: LEGAL-GATE-1, fiktiva-city pack 0.1.0\nblocked_actions: start the works\nrecheck_date: 2026-11-20\nnext_route: (none)\ndocumented_attempts: 2\ncheck_date: 2026-10-02",
+    "expected_outcome": "needs_revision",
+    "rule_ids": [
+      "LEGAL-GATE-1",
+      "BLOCKER-1"
+    ],
+    "note": "no next lawful route",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "blocking_constraint"
+    },
+    "revision_hint": "Name the next lawful escalation route."
+  },
+  {
+    "id": "ex-BLKR-08",
+    "input": "event: stage_blocked (ST07)\nblocking_constraint: The rule applies from the 9.9.9 pack.\nsource_ref: LEGAL-GATE-1, fiktiva-city pack 9.9.9\nblocked_actions: start the works\nrecheck_date: 2026-11-20\nnext_route: Ask the Ombudsman Desk\ndocumented_attempts: 1\ncheck_date: 2026-10-02",
+    "expected_outcome": "hold",
+    "rule_ids": [
+      "LEGAL-GATE-1",
+      "BLOCKER-1"
+    ],
+    "note": "the cited pack version is not the loaded one, so the source cannot be confirmed; no stuck payload",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "blocking_constraint"
+    }
+  },
+  {
+    "id": "ex-BLKR-09",
+    "input": "event: resume_check (T12)\nresume_condition: The council budget meeting for Fiktiva City has been held.\nresume_note: The published minutes list the lamp budget as approved on 2026-09-28.\ncheck_date: 2026-10-02",
+    "expected_outcome": "publish",
+    "rule_ids": [],
+    "note": "resume condition met (T12); no rule id governs T12 itself",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "blocking_constraint"
+    },
+    "shot": true
+  },
+  {
+    "id": "ex-BLKR-10",
+    "input": "event: resume_check (T12)\nresume_condition: The Head of Road Works issues the permit.\nresume_note: No permit yet; the Head's office says next month.\ncheck_date: 2026-10-02",
+    "expected_outcome": "hold",
+    "rule_ids": [],
+    "note": "resume condition not met (T12): the run waits; no stuck payload",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "blocking_constraint"
+    }
+  }
+]

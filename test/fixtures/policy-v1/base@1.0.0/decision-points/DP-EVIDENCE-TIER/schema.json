@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "can_policy/decision-points/DP-EVIDENCE-TIER/schema.json",
+  "title": "DP-EVIDENCE-TIER output",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "outcome",
+    "rule_ids",
+    "confidence",
+    "reasons"
+  ],
+  "properties": {
+    "outcome": {
+      "enum": [
+        "publish",
+        "needs_revision",
+        "hold"
+      ]
+    },
+    "rule_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "field_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "field"
+      ],
+      "properties": {
+        "field": {
+          "type": "string"
+        },
+        "span": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "minItems": 2,
+          "maxItems": 2
+        }
+      }
+    },
+    "revision_hint": {
+      "type": "string"
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "reasons": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "tier": {
+      "enum": [
+        "official_record",
+        "statistics_body",
+        "court_or_legislature",
+        "reputable_media",
+        "research",
+        "civil_society",
+        "firsthand",
+        "other",
+        null
+      ],
+      "$comment": "PROVISIONAL: this tier list is copied from stage_evidence and verification tier_request (b0d923f, 7adca17). Tier names are still open (OQ-evidence-tier-plain-language). Null when the outcome is hold."
+    }
+  },
+  "$comment": "Extends schemas/dp-output.schema.json: keep its required keys and properties unchanged except outcome, which is narrowed to this DP's outcomes. Add DP-specific optional properties at the end of properties. tools/lint-dp.mjs checks this."
+}

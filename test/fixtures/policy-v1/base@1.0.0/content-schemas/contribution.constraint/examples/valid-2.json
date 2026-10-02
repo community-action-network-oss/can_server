@@ -1,0 +1,13 @@
+{
+  "type": "constraint",
+  "target": "prob-lights-0042",
+  "claim": "The ring road lights are out most nights.",
+  "basis": "inferred",
+  "evidence_refs": [],
+  "uncertainty": "Not sure.",
+  "assumptions": [],
+  "constraint": "Repairs to the road feed need a licensed electrician.",
+  "source": "law",
+  "source_ref": "District electrical safety bylaw, section 4.",
+  "recheck_condition": "If the bylaw is amended or the feed is replaced."
+}

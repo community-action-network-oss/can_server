@@ -1,0 +1,76 @@
+{
+  "template": "classic-5",
+  "stage_plan": [
+    {
+      "name": "facts",
+      "label": "Gathering facts",
+      "goal": "Establish what is known and what is disputed about the outages.",
+      "needs_choice": false,
+      "depends_on": [],
+      "acceptance_criteria": [
+        {
+          "statement": "What is established and what is disputed is summarized.",
+          "measure": "A summary with at least one evidence link or a note on missing evidence."
+        }
+      ]
+    },
+    {
+      "name": "solutions",
+      "label": "Developing solutions",
+      "goal": "Collect workable options for getting the lights repaired.",
+      "depends_on": [
+        "facts"
+      ],
+      "acceptance_criteria": [
+        {
+          "statement": "At least two options are written up, or one option and a note that there are no alternatives.",
+          "measure": "Each option lists its mechanism, success measure, risks and how it would be checked."
+        }
+      ]
+    },
+    {
+      "name": "choose",
+      "label": "Choosing a solution",
+      "goal": "Pick one option and record why.",
+      "depends_on": [
+        "solutions"
+      ],
+      "acceptance_criteria": [
+        {
+          "statement": "A decision record exists for the chosen option.",
+          "measure": "The record names the option, method, reason, decider, authority and legal check."
+        }
+      ]
+    },
+    {
+      "name": "implement",
+      "label": "Doing the work",
+      "goal": "Carry out the chosen option.",
+      "needs_choice": false,
+      "depends_on": [
+        "choose"
+      ],
+      "acceptance_criteria": [
+        {
+          "statement": "Every required task is done or dropped with a reason.",
+          "measure": "The task list shows each task as done or dropped."
+        }
+      ]
+    },
+    {
+      "name": "verify",
+      "label": "Checking the result",
+      "goal": "Check that the result matches what was promised.",
+      "needs_choice": false,
+      "depends_on": [
+        "implement"
+      ],
+      "acceptance_criteria": [
+        {
+          "statement": "The evidence matches the chosen option's success measure.",
+          "measure": "Compare the evidence posted with the success measure."
+        }
+      ]
+    }
+  ]
+}

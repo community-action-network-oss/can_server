@@ -1,0 +1,146 @@
+[
+ {
+  "id": "ex-ELIG-01",
+  "input": "condition: Amsterdam explosions and violence\naffected: residents and visitors\ndesired_outcome: fewer incidents\nplace: Amsterdam\njurisdiction: amsterdam-nl",
+  "expected_outcome": "publish",
+  "rule_ids": [],
+  "note": "Seed 1 framing (D-56), public structural condition",
+  "provenance": "fixture",
+  "jurisdiction": "amsterdam-nl",
+  "field_ref": {
+   "field": "intake"
+  },
+  "shot": true
+ },
+ {
+  "id": "ex-ELIG-02",
+  "input": "condition: Amsterdam city-centre cleanliness\naffected: residents and visitors\ndesired_outcome: cleaner public space\nplace: Amsterdam city centre\njurisdiction: amsterdam-nl",
+  "expected_outcome": "publish",
+  "rule_ids": [],
+  "note": "Seed 2 framing (D-56), public structural condition",
+  "provenance": "fixture",
+  "jurisdiction": "amsterdam-nl",
+  "field_ref": {
+   "field": "intake"
+  }
+ },
+ {
+  "id": "ex-ELIG-03",
+  "input": "condition: Street lights on the whole Birch Quarter ring road stay dark after 22:00 in winter\naffected: people walking and cycling in the quarter\ndesired_outcome: a repair and inspection schedule for lights\nplace: Birch Quarter\njurisdiction: fiktiva-city",
+  "expected_outcome": "publish",
+  "rule_ids": [],
+  "note": "public pattern, many people",
+  "provenance": "fixture",
+  "jurisdiction": "fiktiva-city",
+  "field_ref": {
+   "field": "intake"
+  },
+  "shot": true
+ },
+ {
+  "id": "ex-ELIG-04",
+  "input": "condition: The city fined me wrongly for a parking ticket and the Road Works Office will not answer me\naffected: me\ndesired_outcome: cancel my fine\nplace: Fiktiva City\njurisdiction: fiktiva-city",
+  "expected_outcome": "route_external",
+  "rule_ids": [
+   "SCOPE-1"
+  ],
+  "note": "individual complaint about handling of one case",
+  "provenance": "fixture",
+  "jurisdiction": "fiktiva-city",
+  "field_ref": {
+   "field": "intake"
+  },
+  "revision_hint": "Take the case to the Ombudsman Desk.",
+  "expected": {
+   "route_key": "fiktiva-ombudsman"
+  },
+  "shot": true
+ },
+ {
+  "id": "ex-ELIG-05",
+  "input": "condition: My neighbour [PERSON_1] plays loud music and I want it stopped\naffected: me and my family\ndesired_outcome: make [PERSON_1] stop\nplace: Oak Lane\njurisdiction: fiktiva-city",
+  "expected_outcome": "reject",
+  "rule_ids": [
+   "SCOPE-1"
+  ],
+  "note": "personal dispute with a neighbour, no public condition",
+  "provenance": "fixture",
+  "jurisdiction": "fiktiva-city",
+  "field_ref": {
+   "field": "intake"
+  }
+ },
+ {
+  "id": "ex-ELIG-06",
+  "input": "condition: I cannot cope with my housing benefit paperwork and need someone to sit with me\naffected: me\ndesired_outcome: personal help filling in forms\nplace: Fiktiva City\njurisdiction: fiktiva-city",
+  "expected_outcome": "route_external",
+  "rule_ids": [
+   "SCOPE-1"
+  ],
+  "note": "personal need for one to one help",
+  "provenance": "fixture",
+  "jurisdiction": "fiktiva-city",
+  "field_ref": {
+   "field": "intake"
+  },
+  "expected": {
+   "route_key": "fiktiva-help-line"
+  }
+ },
+ {
+  "id": "ex-ELIG-07",
+  "input": "condition: Bus stops are bad\naffected: people\ndesired_outcome: better\nplace: Fiktiva City\njurisdiction: fiktiva-city",
+  "expected_outcome": "needs_revision",
+  "rule_ids": [
+   "SCOPE-1"
+  ],
+  "note": "too vague to judge public versus personal",
+  "provenance": "fixture",
+  "jurisdiction": "fiktiva-city",
+  "field_ref": {
+   "field": "intake"
+  },
+  "revision_hint": "Say which stops or routes, what goes wrong and for whom."
+ },
+ {
+  "id": "ex-ELIG-08",
+  "input": "condition: xk qw zzv plorf\naffected: -\ndesired_outcome: -\nplace: -\njurisdiction: fiktiva-city",
+  "expected_outcome": "hold",
+  "rule_ids": [],
+  "note": "unreadable, cannot judge",
+  "provenance": "fixture",
+  "jurisdiction": "fiktiva-city",
+  "field_ref": {
+   "field": "intake"
+  }
+ },
+ {
+  "id": "ex-ELIG-09",
+  "input": "condition: Several parks have no working bins, and the same gap shows on the Parks Office service map; one resident [PERSON_2] also reports a missed pickup on their own street\naffected: park users across districts\ndesired_outcome: a bin audit and a fix plan\nplace: Fiktiva City\njurisdiction: fiktiva-city",
+  "expected_outcome": "publish",
+  "rule_ids": [],
+  "note": "boundary: public pattern with one personal anecdote inside",
+  "provenance": "fixture",
+  "jurisdiction": "fiktiva-city",
+  "field_ref": {
+   "field": "intake"
+  }
+ },
+ {
+  "id": "ex-ELIG-10",
+  "input": "condition: My own bus pass was refused at the desk last week\naffected: me\ndesired_outcome: get my pass back\nplace: Fiktiva City\njurisdiction: fiktiva-city",
+  "expected_outcome": "route_external",
+  "rule_ids": [
+   "SCOPE-1"
+  ],
+  "note": "boundary: one person, one event, case handling",
+  "provenance": "fixture",
+  "jurisdiction": "fiktiva-city",
+  "field_ref": {
+   "field": "intake"
+  },
+  "expected": {
+   "route_key": "fiktiva-ombudsman"
+  }
+ }
+]

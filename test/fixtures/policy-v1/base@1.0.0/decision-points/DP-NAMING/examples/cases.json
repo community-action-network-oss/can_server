@@ -1,0 +1,143 @@
+[
+  {
+    "id": "ex-NAME-01",
+    "input": "condition: The Head of Parks of Fiktiva City has not published a mowing schedule for the Birch Quarter park\naffected: park users\ndesired_outcome: a published mowing schedule",
+    "expected_outcome": "publish",
+    "rule_ids": [],
+    "note": "office, no person",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "condition"
+    },
+    "shot": true
+  },
+  {
+    "id": "ex-NAME-02",
+    "input": "condition: Fiktiva City Council has no plan for the Harbour district toilets\naffected: visitors\ndesired_outcome: a plan",
+    "expected_outcome": "publish",
+    "rule_ids": [],
+    "note": "institution",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "condition"
+    }
+  },
+  {
+    "id": "ex-NAME-03",
+    "input": "condition: The Mayor's Office of Fiktiva City has not answered the lighting request\naffected: residents\ndesired_outcome: an answer",
+    "expected_outcome": "publish",
+    "rule_ids": [],
+    "note": "boundary: office of the mayor, not a person",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "condition"
+    }
+  },
+  {
+    "id": "ex-NAME-04",
+    "input": "condition: [PERSON_1], the Head of Parks, has ignored every request\naffected: park users\ndesired_outcome: action",
+    "expected_outcome": "reject",
+    "rule_ids": [
+      "NAME-1"
+    ],
+    "note": "named officeholder",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "condition"
+    },
+    "revision_hint": "Head of Parks of Fiktiva City, officeholder as of 2026-10",
+    "shot": true
+  },
+  {
+    "id": "ex-NAME-05",
+    "input": "condition: Councillor [PERSON_1] voted against the lighting budget\naffected: residents\ndesired_outcome: budget restored",
+    "expected_outcome": "reject",
+    "rule_ids": [
+      "NAME-1"
+    ],
+    "note": "named councillor",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "condition"
+    },
+    "revision_hint": "Ward councillor of Fiktiva City, officeholder as of 2026-10"
+  },
+  {
+    "id": "ex-NAME-06",
+    "input": "condition: [PERSON_1] parks a van on the verge every day\naffected: neighbours\ndesired_outcome: verge kept clear",
+    "expected_outcome": "reject",
+    "rule_ids": [
+      "NAME-1"
+    ],
+    "note": "named private person",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "condition"
+    },
+    "revision_hint": "Describe the parking condition on the verge without naming anyone."
+  },
+  {
+    "id": "ex-NAME-07",
+    "input": "condition: The tall woman who runs the kiosk by the Harbour gate blocks the path\naffected: walkers\ndesired_outcome: path kept clear",
+    "expected_outcome": "needs_revision",
+    "rule_ids": [
+      "NAME-1"
+    ],
+    "note": "described individual, no name",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "condition"
+    },
+    "revision_hint": "Describe the blocked path and who is affected, without describing a person.",
+    "shot": true
+  },
+  {
+    "id": "ex-NAME-08",
+    "input": "condition: The man from the transit office who spoke at the meeting last week promised a new timetable\naffected: commuters\ndesired_outcome: the timetable",
+    "expected_outcome": "needs_revision",
+    "rule_ids": [
+      "NAME-1"
+    ],
+    "note": "boundary: office plus a described person",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "condition"
+    },
+    "revision_hint": "Refer to the office instead, for example: Head of Transit of Fiktiva City, officeholder as of 2026-10."
+  },
+  {
+    "id": "ex-NAME-09",
+    "input": "condition: [PERSON_1] Bridge is closed again and nobody says why\naffected: commuters\ndesired_outcome: an explanation",
+    "expected_outcome": "hold",
+    "rule_ids": [],
+    "note": "token inside a place name, person or landmark unclear",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "condition"
+    }
+  },
+  {
+    "id": "ex-NAME-10",
+    "input": "condition: Vote out [PERSON_1] at the next election\naffected: voters\ndesired_outcome: a new officeholder",
+    "expected_outcome": "reject",
+    "rule_ids": [
+      "NAME-1"
+    ],
+    "note": "election layer is off by default",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "condition"
+    },
+    "revision_hint": "State the condition and the office, not a call for or against a person."
+  }
+]

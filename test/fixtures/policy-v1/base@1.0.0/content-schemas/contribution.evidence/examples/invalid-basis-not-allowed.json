@@ -1,0 +1,20 @@
+{
+  "type": "evidence",
+  "target": "prob-lights-0042",
+  "claim": "The lighting register shows how many lights the ring road has.",
+  "basis": "heard",
+  "evidence_refs": [
+    {
+      "url": "https://example.org/lighting-register",
+      "supports": "Lists the lights on the ring road."
+    }
+  ],
+  "uncertainty": "I do not know the exact numbers.",
+  "assumptions": [
+    "I assume the register is up to date."
+  ],
+  "url": "https://example.org/lighting-register",
+  "source_description": "The district lighting register, published yearly.",
+  "claim_supported": "It lists 140 lights on the ring road.",
+  "what_it_does_not_show": "It does not show how many lights work today."
+}

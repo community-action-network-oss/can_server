@@ -1,0 +1,11 @@
+dp: DP-VERIFICATION
+enforces: [VERIFY-1, CRITERIA-1]
+mode: blocking
+inputs: [stage_ref, required_stages, final_criteria, success_metric_restated, evidence_refs, outcomes, what_the_evidence_does_not_show]
+outcomes: [publish, needs_revision, reject, hold]
+thresholds:
+  confidence_floor:
+  publish: 0.9
+  needs_revision: 0.75
+  reject: 0.9
+  escalate_model_below: 0.85

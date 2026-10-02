@@ -1,0 +1,13 @@
+{
+  "type": "root_cause",
+  "target": "prob-lights-0042",
+  "claim": "Slow repairs may be caused by requests going to the wrong office.",
+  "basis": "firsthand",
+  "evidence_refs": [],
+  "uncertainty": "I do not know the exact numbers.",
+  "assumptions": [],
+  "hypothesis": "Requests are routed to an office that does not handle lighting.",
+  "mechanism": "Requests wait in a queue nobody reads, so repairs never start.",
+  "supporting_evidence_refs": [],
+  "test_that_would_disprove_it": "If the routing record shows the right office got them, this is wrong."
+}

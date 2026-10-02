@@ -1,0 +1,14 @@
+{
+  "type": "verification_evidence",
+  "target": "prob-lights-0042",
+  "claim": "The ring road lights are out most nights.",
+  "basis": "inferred",
+  "evidence_refs": [],
+  "uncertainty": "Not sure.",
+  "assumptions": [],
+  "url": "https://example.org/lighting-report",
+  "metric_addressed": "Share of ring road lights working at night.",
+  "observation_date": "2026-03-14",
+  "source_role": "District lighting inspector",
+  "what_it_does_not_show": "It covers one night only."
+}

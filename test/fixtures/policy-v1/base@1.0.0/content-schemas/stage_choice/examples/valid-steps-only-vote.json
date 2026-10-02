@@ -1,0 +1,20 @@
+{
+  "stage_ref": "measure_outcome",
+  "decision_method": "community_vote",
+  "decider_role": "Neighbourhood assembly",
+  "authority": "The stage plan sets a community vote of the neighbourhood assembly.",
+  "rationale": "The assembly voted for a monthly count because it needs no equipment.",
+  "legal_gate_record": {
+    "constraint_checked": "The repair works against the municipal roads act and the district maintenance mandate.",
+    "source_ref": "https://example.org/lowmere/roads-act",
+    "layer": "constitution",
+    "result": "passed"
+  },
+  "steps": [
+    {
+      "step": "Walk the road monthly and post the count.",
+      "owner_role": "Neighbourhood volunteer team",
+      "done_criterion": "A count for each month is posted to the stage."
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "problem_ref": "prob_4c91",
+  "path": "affected_area",
+  "recommendation": "Narrow the area to the ring road and the two streets that meet it.",
+  "reason": "The wider area would match unrelated lighting problems in the archive.",
+  "status": "accepted",
+  "resolution_reason": "Narrowed the area to the ring road."
+}

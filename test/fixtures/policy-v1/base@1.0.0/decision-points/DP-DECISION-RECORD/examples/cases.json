@@ -1,0 +1,152 @@
+[
+  {
+    "id": "ex-DREC-01",
+    "input": "stage_choice_ref: choice-lights-0002\nstage_ref: design_prevention\nstage_decision_method: poster_after_input\ndecision_method: poster_after_input\nchosen_option_ids: opt-lights-0007\ndecider_role: Problem poster\nauthority: The stage plan names the poster as decider after community input.\nrationale: Option seven meets both stage criteria and costs less than replacing the whole cable run.\ndissent_notes: Two people preferred solar lamps because they work during outages.\nlegal_gate_record: layer=both; result=passed; checked=repair works against the municipal roads act; source=https://example.org/lowmere/roads-act\nassumptions: Fault reports stay near today's rate.\nreview_date: 2026-12-01",
+    "expected_outcome": "publish",
+    "rule_ids": [
+      "DECISION-REC-1"
+    ],
+    "note": "complete and consistent",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "stage_choice_ref"
+    },
+    "shot": true
+  },
+  {
+    "id": "ex-DREC-02",
+    "input": "stage_choice_ref: choice-bench-0004\nstage_ref: pilot_benches\nstage_decision_method: community_vote\ndecision_method: community_vote\ndecider_role: Stage voters\nauthority: The stage plan names a community vote.\nrationale: The vote ended 14 to 6 for the two bench sites nearest the east gate.\ndissent_notes: Two people preferred solar lamps because they work during outages.\nlegal_gate_record: layer=both; result=passed; checked=repair works against the municipal roads act; source=https://example.org/lowmere/roads-act\nassumptions: Fault reports stay near today's rate.\nreview_date: 2026-12-01\nsteps: Order two benches (owner: Head of Parks; done: delivery note posted)",
+    "expected_outcome": "publish",
+    "rule_ids": [
+      "DECISION-REC-1"
+    ],
+    "note": "steps only, vote method matches the stage",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "stage_choice_ref"
+    }
+  },
+  {
+    "id": "ex-DREC-03",
+    "input": "stage_choice_ref: choice-lights-0002\nstage_ref: design_prevention\nstage_decision_method: poster_after_input\ndecision_method: poster_after_input\nchosen_option_ids: opt-lights-0007\ndecider_role: Problem poster\nauthority: The stage plan names the poster as decider after community input.\nrationale: Option seven meets both stage criteria and costs less than replacing the whole cable run.\nlegal_gate_record: layer=both; result=passed; checked=repair works against the municipal roads act; source=https://example.org/lowmere/roads-act\nassumptions: Fault reports stay near today's rate.\nreview_date: 2026-12-01",
+    "expected_outcome": "publish",
+    "rule_ids": [
+      "DECISION-REC-1"
+    ],
+    "note": "boundary: dissent notes are optional",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "stage_choice_ref"
+    }
+  },
+  {
+    "id": "ex-DREC-04",
+    "input": "stage_choice_ref: choice-lights-0002\nstage_ref: design_prevention\nstage_decision_method: poster_after_input\ndecision_method: poster_after_input\nchosen_option_ids: opt-lights-0007\ndecider_role: [PERSON_1]\nauthority: The stage plan names the poster as decider after community input.\nrationale: Option seven meets both stage criteria and costs less than replacing the whole cable run.\ndissent_notes: Two people preferred solar lamps because they work during outages.\nlegal_gate_record: layer=both; result=passed; checked=repair works against the municipal roads act; source=https://example.org/lowmere/roads-act\nassumptions: Fault reports stay near today's rate.\nreview_date: 2026-12-01",
+    "expected_outcome": "needs_revision",
+    "rule_ids": [
+      "DECISION-REC-1"
+    ],
+    "note": "decider must be a role, never a person",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "decider_role"
+    },
+    "revision_hint": "Name the role that decided, not a person."
+  },
+  {
+    "id": "ex-DREC-05",
+    "input": "stage_choice_ref: choice-lights-0002\nstage_ref: design_prevention\nstage_decision_method: poster_after_input\ndecision_method: community_vote\nchosen_option_ids: opt-lights-0007\ndecider_role: Problem poster\nauthority: The stage plan names the poster as decider after community input.\nrationale: Option seven meets both stage criteria and costs less than replacing the whole cable run.\ndissent_notes: Two people preferred solar lamps because they work during outages.\nlegal_gate_record: layer=both; result=passed; checked=repair works against the municipal roads act; source=https://example.org/lowmere/roads-act\nassumptions: Fault reports stay near today's rate.\nreview_date: 2026-12-01",
+    "expected_outcome": "needs_revision",
+    "rule_ids": [
+      "DECISION-REC-1"
+    ],
+    "note": "method differs from the stage's decision method",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "decision_method"
+    },
+    "revision_hint": "Use the method set for the stage, or ask for a plan change."
+  },
+  {
+    "id": "ex-DREC-06",
+    "input": "stage_choice_ref: choice-lights-0002\nstage_ref: design_prevention\nstage_decision_method: poster_after_input\ndecision_method: poster_after_input\nchosen_option_ids: opt-lights-0007\ndecider_role: Problem poster\nauthority: The stage plan names the poster as decider after community input.\nrationale: Option seven meets both stage criteria and costs less than replacing the whole cable run.\ndissent_notes: Two people preferred solar lamps because they work during outages.\nlegal_gate_record: layer=both; result=passed; checked=repair works against the municipal roads act; source=https://example.org/lowmere/roads-act\nassumptions: Fault reports stay near today's rate.\nreview_date: next spring",
+    "expected_outcome": "needs_revision",
+    "rule_ids": [
+      "DECISION-REC-1"
+    ],
+    "note": "review date is not year-month-day",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "review_date"
+    },
+    "revision_hint": "Write the review date as year-month-day."
+  },
+  {
+    "id": "ex-DREC-07",
+    "input": "stage_choice_ref: choice-lights-0002\nstage_ref: design_prevention\nstage_decision_method: poster_after_input\ndecision_method: poster_after_input\ndecider_role: Problem poster\nauthority: The stage plan names the poster as decider after community input.\nrationale: Option seven meets both stage criteria and costs less than replacing the whole cable run.\ndissent_notes: Two people preferred solar lamps because they work during outages.\nlegal_gate_record: layer=both; result=passed; checked=repair works against the municipal roads act; source=https://example.org/lowmere/roads-act\nassumptions: Fault reports stay near today's rate.\nreview_date: 2026-12-01",
+    "expected_outcome": "needs_revision",
+    "rule_ids": [
+      "DECISION-REC-1"
+    ],
+    "note": "neither chosen options nor steps given",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "chosen_option_ids"
+    },
+    "revision_hint": "Give the chosen option ids or the steps that follow."
+  },
+  {
+    "id": "ex-DREC-08",
+    "input": "stage_choice_ref: choice-lights-0002\nstage_ref: design_prevention\nstage_decision_method: poster_after_input\ndecision_method: poster_after_input\nchosen_option_ids: opt-lights-0007\ndecider_role: Problem poster\nauthority: The stage plan names the poster as decider after community input.\nrationale: Option seven meets both stage criteria and costs less than replacing the whole cable run.\ndissent_notes: Two people preferred solar lamps because they work during outages.\nassumptions: Fault reports stay near today's rate.\nreview_date: 2026-12-01",
+    "expected_outcome": "hold",
+    "rule_ids": [
+      "DECISION-REC-1",
+      "LEGAL-GATE-1"
+    ],
+    "note": "required legal-gate record missing",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "legal_gate_record"
+    },
+    "revision_hint": "Add the legal check record before the stage's tasks start."
+  },
+  {
+    "id": "ex-DREC-09",
+    "input": "stage_choice_ref: choice-lights-0002\nstage_ref: design_prevention\nstage_decision_method: poster_after_input\ndecision_method: poster_after_input\nchosen_option_ids: opt-lights-0007\ndecider_role: Problem poster\nauthority: The stage plan names the poster as decider after community input.\nrationale: Option seven meets both stage criteria and costs less than replacing the whole cable run.\ndissent_notes: Two people preferred solar lamps because they work during outages.\nlegal_gate_record: layer=jurisdiction; result=blocked; checked=lane closure needs a council order; source=FIKT-COMPETENCE-1 pack fiktiva-city\nassumptions: Fault reports stay near today's rate.\nreview_date: 2026-12-01",
+    "expected_outcome": "hold",
+    "rule_ids": [
+      "DECISION-REC-1",
+      "LEGAL-GATE-1"
+    ],
+    "note": "legal gate result is blocked: tasks must not start",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "legal_gate_record"
+    },
+    "shot": true
+  },
+  {
+    "id": "ex-DREC-10",
+    "input": "stage_choice_ref: choice-lights-0002\nstage_ref: design_prevention\nstage_decision_method: poster_after_input\ndecision_method: poster_after_input\nchosen_option_ids: opt-lights-0007\ndecider_role: Problem poster\nauthority: The stage plan names the poster as decider after community input.\nrationale: Option seven meets both stage criteria and costs less than replacing the whole cable run.\ndissent_notes: Two people preferred solar lamps because they work during outages.\nlegal_gate_record: layer=constitution; result=needs_review; checked=data sharing step; source=LEGAL-GATE-1\nassumptions: Fault reports stay near today's rate.\nreview_date: 2026-12-01",
+    "expected_outcome": "hold",
+    "rule_ids": [
+      "DECISION-REC-1",
+      "LEGAL-GATE-1"
+    ],
+    "note": "legal gate result needs review",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "legal_gate_record"
+    }
+  }
+]

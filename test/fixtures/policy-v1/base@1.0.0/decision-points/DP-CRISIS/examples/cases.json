@@ -1,0 +1,146 @@
+[
+  {
+    "id": "ex-CRIS-01",
+    "input": "text: The street lights on the Birch Quarter ring road are out and nobody has said when they will be fixed",
+    "expected_outcome": "publish",
+    "rule_ids": [],
+    "note": "no signal",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "text"
+    },
+    "shot": true
+  },
+  {
+    "id": "ex-CRIS-02",
+    "input": "text: This queue at the permit office is killing me, I have waited three hours",
+    "expected_outcome": "publish",
+    "rule_ids": [],
+    "note": "boundary: figure of speech",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "text"
+    }
+  },
+  {
+    "id": "ex-CRIS-03",
+    "input": "text: I do not want to be alive any more and I do not know who to tell",
+    "expected_outcome": "route_external",
+    "rule_ids": [
+      "SCOPE-1",
+      "CRISIS-STATIC-1"
+    ],
+    "note": "plain statement of crisis, not imminent",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "text"
+    },
+    "shot": true
+  },
+  {
+    "id": "ex-CRIS-04",
+    "input": "text: My neighbour [PERSON_1] has told me they feel there is no point going on",
+    "expected_outcome": "route_external",
+    "rule_ids": [
+      "SCOPE-1",
+      "CRISIS-STATIC-1"
+    ],
+    "note": "third party distress",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "text"
+    }
+  },
+  {
+    "id": "ex-CRIS-05",
+    "input": "text: I cannot cope any more and I am scared of my partner",
+    "expected_outcome": "route_external",
+    "rule_ids": [
+      "SCOPE-1",
+      "CRISIS-STATIC-1"
+    ],
+    "note": "personal danger, not a public problem",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "text"
+    }
+  },
+  {
+    "id": "ex-CRIS-06",
+    "input": "text: A few years ago I wanted to give up, and I still struggle on bad days",
+    "expected_outcome": "route_external",
+    "rule_ids": [
+      "SCOPE-1",
+      "CRISIS-STATIC-1"
+    ],
+    "note": "boundary: past and ongoing low mood",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "text"
+    }
+  },
+  {
+    "id": "ex-CRIS-07",
+    "input": "text: [PERSON_1] is outside the Harbour library right now and says they will hurt themselves tonight",
+    "expected_outcome": "escalate_human",
+    "rule_ids": [
+      "CRISIS-STATIC-1"
+    ],
+    "note": "imminent danger to a person",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "text"
+    },
+    "shot": true
+  },
+  {
+    "id": "ex-CRIS-08",
+    "input": "text: A child is alone in a flat at [ADDRESS_1] and an adult there is threatening them right now",
+    "expected_outcome": "escalate_human",
+    "rule_ids": [
+      "CRISIS-STATIC-1"
+    ],
+    "note": "imminent danger to a child",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "text"
+    }
+  },
+  {
+    "id": "ex-CRIS-09",
+    "input": "text: I am done. I cannot do this any more.",
+    "expected_outcome": "hold",
+    "rule_ids": [
+      "CRISIS-STATIC-1"
+    ],
+    "note": "ambiguous, could be fatigue or crisis",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "text"
+    },
+    "shot": true
+  },
+  {
+    "id": "ex-CRIS-10",
+    "input": "text: ???? #### ~~~~",
+    "expected_outcome": "hold",
+    "rule_ids": [
+      "CRISIS-STATIC-1"
+    ],
+    "note": "unreadable",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "text"
+    }
+  }
+]

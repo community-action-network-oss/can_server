@@ -1,0 +1,140 @@
+[
+  {
+    "id": "ex-LGTY-01",
+    "input": "stage_option: Replace the failed lamp drivers on the Birch Quarter ring road with a standard LED set.\ntopic: street-lighting\nstated_office: Head of Road Works\ncheck_date: 2026-09-20",
+    "expected_outcome": "publish",
+    "rule_ids": [
+      "LEGAL-GATE-1",
+      "FIKT-LAW-UPDATE-1"
+    ],
+    "note": "lawful, office matches topic; check is after the law update date so the reasons say the law may have changed",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "stage_option"
+    },
+    "shot": true
+  },
+  {
+    "id": "ex-LGTY-02",
+    "input": "stage_option: Ask the Head of Parks to add two benches near the east gate of Quarry Park.\ntopic: public-parks\nstated_office: Head of Parks\ncheck_date: 2026-09-15",
+    "expected_outcome": "publish",
+    "rule_ids": [
+      "LEGAL-GATE-1"
+    ],
+    "note": "boundary: check date equals the law update date, no change note needed",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "stage_option"
+    }
+  },
+  {
+    "id": "ex-LGTY-03",
+    "input": "stage_option: Ask the council to review the opening hours set by the bin collection bylaw.\ntopic: waste-collection\nstated_office: Head of Waste Services\ncheck_date: 2026-09-28",
+    "expected_outcome": "publish",
+    "rule_ids": [
+      "LEGAL-GATE-1",
+      "FIKT-LAW-UPDATE-1"
+    ],
+    "note": "boundary: mentions a bylaw but asks only for a review, which is lawful",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "stage_option"
+    }
+  },
+  {
+    "id": "ex-LGTY-04",
+    "input": "stage_option: Move the Line 12 night service stop to the Mill Street corner.\ntopic: bus-timetables\nstated_office: Head of Parks\ncheck_date: 2026-09-22",
+    "expected_outcome": "needs_revision",
+    "rule_ids": [
+      "LEGAL-GATE-1",
+      "FIKT-COMPETENCE-1"
+    ],
+    "note": "office does not match the topic: an assumption to confirm, not a rejection",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "stage_option"
+    },
+    "revision_hint": "Name the Head of Transit as the office, or state why another office holds this decision."
+  },
+  {
+    "id": "ex-LGTY-05",
+    "input": "stage_option: Fit a new crossing signal at the school gate.\ntopic: road-repair\nstated_office: none stated\ncheck_date: 2026-09-25",
+    "expected_outcome": "needs_revision",
+    "rule_ids": [
+      "LEGAL-GATE-1",
+      "FIKT-COMPETENCE-1"
+    ],
+    "note": "no office or body stated",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "stage_option"
+    },
+    "revision_hint": "State which office would carry this out."
+  },
+  {
+    "id": "ex-LGTY-06",
+    "input": "stage_option: Publish the home addresses of residents who filed complaints so neighbours can contact them.\ntopic: public-parks\nstated_office: Head of Parks\ncheck_date: 2026-09-21",
+    "expected_outcome": "reject",
+    "rule_ids": [
+      "LEGAL-GATE-1"
+    ],
+    "note": "constitution layer: exposes individuals, no lawful variant",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "stage_option"
+    },
+    "shot": true
+  },
+  {
+    "id": "ex-LGTY-07",
+    "input": "stage_option: Serve the school meal programme only to children of one named faith.\ntopic: school-meals\nstated_office: Head of Education Services\ncheck_date: 2026-09-23",
+    "expected_outcome": "reject",
+    "rule_ids": [
+      "LEGAL-GATE-1"
+    ],
+    "note": "constitution layer: discrimination on a protected ground, no lawful variant",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "stage_option"
+    }
+  },
+  {
+    "id": "ex-LGTY-08",
+    "input": "stage_option: Close the inner lane of Harbour Road for a bike lane starting next week.\ntopic: road-repair\nstated_office: Head of Road Works\ncheck_date: 2026-09-24\nlegal_note: the council order for lane closures has not been issued yet",
+    "expected_outcome": "hold",
+    "rule_ids": [
+      "LEGAL-GATE-1"
+    ],
+    "note": "blocked by a jurisdiction constraint: stuck payload required, recheck when the order is issued",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "stage_option"
+    },
+    "shot": true,
+    "expected": {
+      "stuck_payload_required": true
+    }
+  },
+  {
+    "id": "ex-LGTY-09",
+    "input": "stage_option: Do the thing as discussed last time.\ntopic: unknown\nstated_office: unknown\ncheck_date: 2026-09-26",
+    "expected_outcome": "hold",
+    "rule_ids": [
+      "LEGAL-GATE-1"
+    ],
+    "note": "option cannot be read as a stage option, nothing to check",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "stage_option"
+    }
+  }
+]

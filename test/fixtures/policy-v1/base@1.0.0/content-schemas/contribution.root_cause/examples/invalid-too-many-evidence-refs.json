@@ -1,0 +1,46 @@
+{
+  "type": "root_cause",
+  "target": "prob-lights-0042",
+  "claim": "The dark stretch may come from an overloaded feed on market days.",
+  "basis": "firsthand",
+  "evidence_refs": [
+    {
+      "url": "https://example.org/lighting-register",
+      "supports": "Lists the lights on the ring road."
+    },
+    {
+      "url": "https://example.org/lighting-register",
+      "supports": "Lists the lights on the ring road."
+    },
+    {
+      "url": "https://example.org/lighting-register",
+      "supports": "Lists the lights on the ring road."
+    },
+    {
+      "url": "https://example.org/lighting-register",
+      "supports": "Lists the lights on the ring road."
+    },
+    {
+      "url": "https://example.org/lighting-register",
+      "supports": "Lists the lights on the ring road."
+    },
+    {
+      "url": "https://example.org/lighting-register",
+      "supports": "Lists the lights on the ring road."
+    },
+    {
+      "url": "https://example.org/lighting-register",
+      "supports": "Lists the lights on the ring road."
+    }
+  ],
+  "uncertainty": "I do not know the exact numbers.",
+  "assumptions": [
+    "I assume the register is up to date."
+  ],
+  "hypothesis": "The ring road feed may be overloaded after the new market stalls were added.",
+  "mechanism": "More load trips the breaker, which darkens the whole stretch.",
+  "supporting_evidence_refs": [
+    "contrib-0012"
+  ],
+  "test_that_would_disprove_it": "If the breaker log shows no trips, the overload idea is wrong."
+}

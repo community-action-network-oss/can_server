@@ -1,0 +1,125 @@
+[
+ {
+  "id": "ex-DUPL-01",
+  "input": "lang: en\nplace: Birch Quarter\ncondition: Street lights on the Birch Quarter ring road are dark in winter\nfingerprint_matches: PROB-0007 jaccard 0.86\ncandidates:\n- PROB-0007: Ring road lights in Birch Quarter fail after dusk",
+  "expected_outcome": "needs_revision",
+  "rule_ids": [
+   "DUP-1"
+  ],
+  "note": "near-duplicate, same condition and place",
+  "provenance": "fixture",
+  "jurisdiction": "fiktiva-city",
+  "field_ref": {
+   "field": "matches"
+  },
+  "revision_hint": "Link to PROB-0007 and add only what is new there.",
+  "expected": {
+   "duplicate_of": "PROB-0007"
+  },
+  "shot": true
+ },
+ {
+  "id": "ex-DUPL-02",
+  "input": "lang: en\nplace: Birch Quarter\ncondition: Waste collection skips Harbour Row\nfingerprint_matches: none\ncandidates:\n- PROB-0012: Bus timetables are not posted at night stops",
+  "expected_outcome": "publish",
+  "rule_ids": [],
+  "note": "unrelated candidates",
+  "provenance": "fixture",
+  "jurisdiction": "fiktiva-city",
+  "field_ref": {
+   "field": "matches"
+  },
+  "shot": true
+ },
+ {
+  "id": "ex-DUPL-03",
+  "input": "lang: nl\nplace: Birch Quarter\ncondition: Straatverlichting in de Berkenwijk is uitgevallen op de ringweg\nfingerprint_matches: PROB-0007 jaccard 0.71\ncandidates:\n- PROB-0007: Ring road lights in Birch Quarter fail after dusk",
+  "expected_outcome": "needs_revision",
+  "rule_ids": [
+   "DUP-1"
+  ],
+  "note": "language marker: Dutch wording of the same condition",
+  "provenance": "fixture",
+  "jurisdiction": "fiktiva-city",
+  "field_ref": {
+   "field": "matches"
+  },
+  "revision_hint": "Link to PROB-0007; the problem is the same in another language.",
+  "expected": {
+   "duplicate_of": "PROB-0007"
+  }
+ },
+ {
+  "id": "ex-DUPL-04",
+  "input": "lang: en\nplace: Birch Lane\ncondition: Lights are out on one block of Birch Lane\nfingerprint_matches: PROB-0007 jaccard 0.52\ncandidates:\n- PROB-0007: Ring road lights in Birch Quarter fail after dusk",
+  "expected_outcome": "publish",
+  "rule_ids": [],
+  "note": "boundary: narrower place granularity, related but distinct",
+  "provenance": "fixture",
+  "jurisdiction": "fiktiva-city",
+  "field_ref": {
+   "field": "matches"
+  },
+  "shot": true
+ },
+ {
+  "id": "ex-DUPL-05",
+  "input": "lang: en\nplace: Fiktiva City\ncondition: Bins are missed across Fiktiva City\nfingerprint_matches: PROB-0020 jaccard 0.60\ncandidates:\n- PROB-0020: Waste collection skips Harbour Row two weeks in three",
+  "expected_outcome": "needs_revision",
+  "rule_ids": [
+   "DUP-1"
+  ],
+  "note": "boundary: wider place granularity contains the candidate",
+  "provenance": "fixture",
+  "jurisdiction": "fiktiva-city",
+  "field_ref": {
+   "field": "matches"
+  },
+  "revision_hint": "Link to PROB-0020 as related and say what is wider here.",
+  "expected": {
+   "duplicate_of": "PROB-0020"
+  }
+ },
+ {
+  "id": "ex-DUPL-06",
+  "input": "lang: en\nplace: ?\ncondition: ???\nfingerprint_matches: error\ncandidates:\n(unavailable)",
+  "expected_outcome": "hold",
+  "rule_ids": [],
+  "note": "inputs missing, cannot compare",
+  "provenance": "fixture",
+  "jurisdiction": "fiktiva-city",
+  "field_ref": {
+   "field": "matches"
+  }
+ },
+ {
+  "id": "ex-DUPL-07",
+  "input": "lang: en\nplace: Fiktiva City\ncondition: School meal portions cut\nfingerprint_matches: PROB-0031 jaccard 0.40\ncandidates:\n- PROB-0031: School meal portions are cut without notice\n- PROB-0044: School meal prices rose twice this year",
+  "expected_outcome": "needs_revision",
+  "rule_ids": [
+   "DUP-1"
+  ],
+  "note": "two candidates, one matches",
+  "provenance": "fixture",
+  "jurisdiction": "fiktiva-city",
+  "field_ref": {
+   "field": "matches"
+  },
+  "revision_hint": "Link to PROB-0031 and add new evidence there.",
+  "expected": {
+   "duplicate_of": "PROB-0031"
+  }
+ },
+ {
+  "id": "ex-DUPL-08",
+  "input": "lang: en\nplace: Fiktiva City\ncondition: Fiktiva night buses stop early on Sundays\nfingerprint_matches: none\ncandidates:\nnone",
+  "expected_outcome": "publish",
+  "rule_ids": [],
+  "note": "no candidates",
+  "provenance": "fixture",
+  "jurisdiction": "fiktiva-city",
+  "field_ref": {
+   "field": "matches"
+  }
+ }
+]

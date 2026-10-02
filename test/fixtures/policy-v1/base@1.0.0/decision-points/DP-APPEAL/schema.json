@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "can_policy/decision-points/DP-APPEAL/schema.json",
+  "title": "DP-APPEAL output",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "outcome",
+    "rule_ids",
+    "confidence",
+    "reasons"
+  ],
+  "properties": {
+    "outcome": {
+      "enum": [
+        "publish",
+        "needs_revision",
+        "route_external",
+        "hold"
+      ]
+    },
+    "rule_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "field_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "field"
+      ],
+      "properties": {
+        "field": {
+          "type": "string"
+        },
+        "span": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "minItems": 2,
+          "maxItems": 2
+        }
+      }
+    },
+    "revision_hint": {
+      "type": "string"
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "reasons": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "summary_for_reviewer": {
+      "type": "string"
+    },
+    "appeal_stays_open": {
+      "const": true
+    }
+  }
+}

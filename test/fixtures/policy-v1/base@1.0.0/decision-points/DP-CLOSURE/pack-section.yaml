@@ -1,0 +1,12 @@
+dp: DP-CLOSURE
+enforces: [CLOSE-1]
+mode: blocking
+inputs: [transition, reason_code, explanation, duplicate_of, destination, other_accepted_contribution, policy_version]
+outcomes: [publish, needs_revision, reject, route_external, hold]
+thresholds:
+  confidence_floor:
+    publish: 0.90
+    needs_revision: 0.75
+    reject: 0.95
+    route_external: 0.90
+  escalate_model_below: 0.9

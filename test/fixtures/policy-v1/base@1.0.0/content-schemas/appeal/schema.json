@@ -1,0 +1,185 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "id": "appeal",
+  "version": "1.0.0",
+  "x-version": "1.0.0",
+  "pack": "base@1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "decision_ref",
+    "what_is_wrong",
+    "outcome_sought"
+  ],
+  "properties": {
+    "decision_ref": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]{4,64}$",
+      "minLength": 4,
+      "maxLength": 64,
+      "x-ui": {
+        "widget": "decision_ref",
+        "label_msg": "schema.appeal.decision_ref.label",
+        "help_msg": "schema.appeal.decision_ref.help",
+        "order": 1,
+        "group": "decision"
+      },
+      "x-guidance": {
+        "why": "Names the one decision to look at again.",
+        "good": "dec_8f21ac",
+        "bad": "the thing from last week"
+      }
+    },
+    "rule_ids_disputed": {
+      "type": "array",
+      "maxItems": 10,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Z][A-Z0-9]*(-[A-Z0-9]+)+$",
+        "maxLength": 40
+      },
+      "x-ui": {
+        "widget": "rule_id_list",
+        "label_msg": "schema.appeal.rule_ids_disputed.label",
+        "help_msg": "schema.appeal.rule_ids_disputed.help",
+        "order": 2,
+        "group": "decision"
+      },
+      "x-guidance": {
+        "why": "Optional. Helps the re-run focus, never required to appeal.",
+        "good": "SCOPE-1",
+        "bad": "all of them"
+      },
+      "x-checks": {
+        "optional_on_purpose": true
+      }
+    },
+    "what_is_wrong": {
+      "type": "string",
+      "minLength": 10,
+      "maxLength": 1500,
+      "x-ui": {
+        "widget": "textarea",
+        "label_msg": "schema.appeal.what_is_wrong.label",
+        "help_msg": "schema.appeal.what_is_wrong.help",
+        "order": 3,
+        "group": "reason"
+      },
+      "x-guidance": {
+        "why": "Says which fact or reading is wrong. Short is fine; the bound is low on purpose so appealing stays easy.",
+        "good": "The notice says the road is private, but it is a public road.",
+        "bad": "Wrong."
+      },
+      "x-checks": {
+        "dps": [
+          "DP-APPEAL",
+          "DP-PRIVACY",
+          "DP-NAMING"
+        ],
+        "no_tone_gate": true
+      }
+    },
+    "outcome_sought": {
+      "type": "string",
+      "minLength": 5,
+      "maxLength": 500,
+      "x-ui": {
+        "widget": "textarea",
+        "label_msg": "schema.appeal.outcome_sought.label",
+        "help_msg": "schema.appeal.outcome_sought.help",
+        "order": 4,
+        "group": "outcome"
+      },
+      "x-guidance": {
+        "why": "Says what a good result would be.",
+        "good": "Publish my post about the broken crossing light.",
+        "bad": "Fix it."
+      },
+      "x-checks": {
+        "dps": [
+          "DP-APPEAL",
+          "DP-PRIVACY",
+          "DP-NAMING"
+        ]
+      }
+    },
+    "new_evidence_refs": {
+      "type": "array",
+      "maxItems": 6,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "url"
+        ],
+        "properties": {
+          "url": {
+            "type": "string",
+            "minLength": 9,
+            "maxLength": 300,
+            "pattern": "^https?://\\S+$",
+            "x-ui": {
+              "widget": "evidence_url",
+              "label_msg": "schema.appeal.new_evidence_refs.url.label",
+              "help_msg": "schema.appeal.new_evidence_refs.url.help"
+            },
+            "x-checks": {
+              "dps": [
+                "DP-EVIDENCE-TIER",
+                "DP-SOURCE-TRUST",
+                "DP-PRIVACY"
+              ],
+              "no_uploads_of_people": true
+            }
+          },
+          "description": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 300,
+            "x-ui": {
+              "widget": "textarea",
+              "label_msg": "schema.appeal.new_evidence_refs.description.label",
+              "help_msg": "schema.appeal.new_evidence_refs.description.help"
+            }
+          }
+        }
+      },
+      "x-ui": {
+        "widget": "list",
+        "label_msg": "schema.appeal.new_evidence_refs.label",
+        "help_msg": "schema.appeal.new_evidence_refs.help",
+        "order": 5,
+        "group": "evidence"
+      },
+      "x-guidance": {
+        "why": "Optional links that were not in the original post. Never new personal data.",
+        "good": "Council notice, shows the road was adopted in 2019.",
+        "bad": "A photo of the neighbour."
+      },
+      "x-checks": {
+        "dps": [
+          "DP-EVIDENCE-TIER",
+          "DP-SOURCE-TRUST",
+          "DP-PRIVACY"
+        ],
+        "no_new_personal_data": true,
+        "optional_on_purpose": true
+      }
+    }
+  },
+  "x-checks": {
+    "dps": [
+      "DP-APPEAL",
+      "DP-PRIVACY",
+      "DP-NAMING",
+      "DP-EVIDENCE-TIER",
+      "DP-SOURCE-TRUST"
+    ],
+    "never_blocks_appeal": true,
+    "protected_rules": [
+      "APPEAL-1",
+      "APPEAL-2"
+    ]
+  }
+}

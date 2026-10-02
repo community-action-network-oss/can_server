@@ -1,0 +1,10 @@
+{
+  "decision_ref": "dec_77b3e0",
+  "rule_ids_disputed": ["SCOPE-1"],
+  "what_is_wrong": "The post describes a drainage fault on a public road, not a private matter between neighbours.",
+  "outcome_sought": "Look at the decision again and publish the post if it fits.",
+  "new_evidence_refs": [
+    { "url": "https://example.org/lowmere/road-register", "description": "Road register entry, shows the road is adopted." },
+    { "url": "https://example.org/lowmere/notice-14" }
+  ]
+}

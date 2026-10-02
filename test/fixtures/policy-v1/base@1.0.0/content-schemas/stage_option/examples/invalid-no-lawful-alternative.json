@@ -1,0 +1,30 @@
+{
+  "stage_ref": "design_prevention",
+  "option_statement": "Repair the ring road feed and add a second breaker so one fault cannot darken the whole road.",
+  "mechanism": "The district crew replaces the faulty cable section and the council adds one breaker for each block.",
+  "responsible_role": "District lighting officer",
+  "authority_and_legal_basis": "The district maintenance budget covers street lighting repairs under the municipal roads act.",
+  "cost_estimate": {
+    "band": "<10k",
+    "amount": 4000
+  },
+  "funding": "The district repair budget, with volunteers marking the faults.",
+  "how_it_meets_stage_criteria": [
+    {
+      "criterion_ref": 1,
+      "how": "The council fault log shows no outage report on the road for 30 days."
+    },
+    {
+      "criterion_ref": 2,
+      "how": "A monthly walk by volunteers counts working lights and posts the count."
+    }
+  ],
+  "risks_and_rights_impact": "The road may be dark for one night during the repair. Pedestrians keep access to the lit side path.",
+  "lawful_alternatives": [],
+  "dependencies": [
+    "The council must publish the cable map."
+  ],
+  "assumptions": [
+    "I assume the lights share one power feed."
+  ]
+}

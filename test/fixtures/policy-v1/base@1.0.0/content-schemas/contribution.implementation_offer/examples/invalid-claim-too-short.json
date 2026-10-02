@@ -1,0 +1,21 @@
+{
+  "type": "implementation_offer",
+  "target": "prob-lights-0042",
+  "target_stage": "stage-lights-survey",
+  "claim": "Too short.",
+  "basis": "firsthand",
+  "evidence_refs": [
+    {
+      "url": "https://example.org/lighting-register",
+      "supports": "Lists the lights on the ring road."
+    }
+  ],
+  "uncertainty": "I do not know how many lights are affected.",
+  "assumptions": [
+    "I assume the lights share one power feed."
+  ],
+  "offered_work": "I can survey the ring road lights on two weekends.",
+  "role_capacity": "Volunteer surveyor, about six hours a month.",
+  "limits": "I cannot work with electrical equipment.",
+  "lawful_basis": "Walking public roads and noting what I see needs no permit."
+}

@@ -1,0 +1,12 @@
+{
+  "type": "clarifying_question",
+  "target": "prob-lights-0042",
+  "claim": "It is unclear whether the repair log covers the whole north district.",
+  "basis": "firsthand",
+  "evidence_refs": [],
+  "uncertainty": "I do not know the exact numbers.",
+  "assumptions": [],
+  "missing_information": "Whether the repair log covers the whole district.",
+  "why_it_matters": "Without it we cannot tell if the fault is local.",
+  "who_could_answer": "Records clerk at the lighting office"
+}

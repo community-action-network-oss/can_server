@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "can_policy/decision-points/DP-CLOSURE/schema.json",
+  "title": "DP-CLOSURE output",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "outcome",
+    "rule_ids",
+    "confidence",
+    "reasons"
+  ],
+  "properties": {
+    "outcome": {
+      "enum": [
+        "publish",
+        "needs_revision",
+        "reject",
+        "route_external",
+        "hold"
+      ]
+    },
+    "rule_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "field_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "field"
+      ],
+      "properties": {
+        "field": {
+          "type": "string"
+        },
+        "span": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "minItems": 2,
+          "maxItems": 2
+        }
+      }
+    },
+    "revision_hint": {
+      "type": "string"
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "reasons": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "reason_code": {
+      "enum": [
+        "duplicate",
+        "invalid",
+        "out_of_scope",
+        "no_longer_relevant",
+        "initiator_request",
+        "rule_violation"
+      ],
+      "$comment": "The closure reason codes of CLOSE-1 and T16. Set when the closure is judged."
+    },
+    "duplicate_of": {
+      "type": "string",
+      "$comment": "Set when reason_code is duplicate; the id of the problem it duplicates."
+    }
+  },
+  "$comment": "Extends schemas/dp-output.schema.json: keep its required keys and properties unchanged except outcome, which is narrowed to this DP's outcomes. Add DP-specific optional properties at the end of properties. tools/lint-dp.mjs checks this."
+}

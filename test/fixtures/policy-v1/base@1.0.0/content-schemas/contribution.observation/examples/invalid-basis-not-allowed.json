@@ -1,0 +1,20 @@
+{
+  "type": "observation",
+  "target": "prob-lights-0042",
+  "claim": "Several lights between the bridge and the market were dark in the evening.",
+  "basis": "heard",
+  "evidence_refs": [
+    {
+      "url": "https://example.org/lighting-register",
+      "supports": "Lists the lights on the ring road."
+    }
+  ],
+  "uncertainty": "I do not know the exact numbers.",
+  "assumptions": [
+    "I assume the register is up to date."
+  ],
+  "what_observed": "Eight lights in a row were dark between the bridge and the market.",
+  "when": "March 2026, after 8 pm",
+  "where_coarse": "North district",
+  "how_observed": "Walked the road on three evenings and counted."
+}

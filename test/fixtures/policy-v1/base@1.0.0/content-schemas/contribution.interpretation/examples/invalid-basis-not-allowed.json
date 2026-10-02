@@ -1,0 +1,20 @@
+{
+  "type": "interpretation",
+  "target": "prob-lights-0042",
+  "claim": "The dark stretch looks like a single power feed fault, not many broken lights.",
+  "basis": "heard",
+  "evidence_refs": [
+    {
+      "url": "https://example.org/lighting-register",
+      "supports": "Lists the lights on the ring road."
+    }
+  ],
+  "uncertainty": "I do not know the exact numbers.",
+  "assumptions": [
+    "I assume the register is up to date."
+  ],
+  "reading_of": "The repair log and the evening count taken together.",
+  "alternatives_considered": [
+    "Several lamps may have failed at the same time by chance."
+  ]
+}

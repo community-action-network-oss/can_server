@@ -1,9 +1,19 @@
+import {
+  cpSync,
+  mkdirSync,
+  mkdtempSync,
+  readFileSync,
+  writeFileSync,
+} from 'node:fs';
+import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import type { PackSource } from '../../src/policy/app/pack-source.js';
 import { FsPackSource } from '../../src/policy/infra/fs-pack-source.js';
 import { buildManifest, ratificationText } from './build-fixture.ts';
 
 export const FIXTURE_DIR = join(process.cwd(), 'test/fixtures/policy');
+/** Committed can_policy v1.0.0 export (D-82); refresh with scripts/sync-policy-fixture.mjs. */
+export const FIXTURE_V1_DIR = join(process.cwd(), 'test/fixtures/policy-v1');
 export type Files = Map<string, Uint8Array>;
 
 /** In-memory pack source seeded from the fixture; tests mutate it to make negative packs. */
@@ -50,4 +60,27 @@ export class MemorySource implements PackSource {
     }
     return hashes;
   }
+}
+
+/**
+ * Copy of the v1 export with a test ratification per pack. The released candidate carries none
+ * (FOUNDER-TRANS-1 refuses it); ratifications are outside the pack hash, so the pinned hashes hold.
+ */
+export function ratifiedV1(): { dir: string; hash: Record<string, string> } {
+  const dir = mkdtempSync(join(tmpdir(), 'policy-v1-'));
+  cpSync(FIXTURE_V1_DIR, dir, { recursive: true });
+  const pins: Record<string, string> = JSON.parse(
+    readFileSync(join(FIXTURE_V1_DIR, 'PINS.json'), 'utf8'),
+  );
+  const hash: Record<string, string> = {};
+  for (const [key, h] of Object.entries(pins)) {
+    const [name, semver] = key.split('@');
+    mkdirSync(join(dir, key, 'ratifications'), { recursive: true });
+    writeFileSync(
+      join(dir, key, 'ratifications', `${name}-${semver}.md`),
+      ratificationText(`${key}+${h.slice(0, 12)}`, h),
+    );
+    hash[name] = h;
+  }
+  return { dir, hash };
 }

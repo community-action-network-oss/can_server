@@ -1,0 +1,10 @@
+dp: DP-LEGAL
+enforces: [LEGAL-LANE-1]
+mode: blocking
+inputs: [text]
+outcomes: [escalate_human, hold, publish]
+thresholds:
+  confidence_floor:
+  escalate_human: 0.95
+  publish: 0.9
+  escalate_model_below: 0.9

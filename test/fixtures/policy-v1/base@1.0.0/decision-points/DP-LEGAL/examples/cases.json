@@ -1,0 +1,123 @@
+[
+  {
+    "id": "ex-LEGL-01",
+    "input": "text: The bus shelter on Canal Quay has had a broken roof for two months and nobody replies.",
+    "expected_outcome": "publish",
+    "rule_ids": [],
+    "note": "no signal",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "text"
+    },
+    "shot": true
+  },
+  {
+    "id": "ex-LEGL-02",
+    "input": "text: This level of neglect on the pavement is criminal, honestly.",
+    "expected_outcome": "publish",
+    "rule_ids": [],
+    "note": "boundary: figure of speech",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "text"
+    }
+  },
+  {
+    "id": "ex-LEGL-03",
+    "input": "text: The bylaw says bins go out by 7 in the morning, but the truck comes at noon.",
+    "expected_outcome": "publish",
+    "rule_ids": [],
+    "note": "boundary: names a rule as part of a public problem",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "text"
+    }
+  },
+  {
+    "id": "ex-LEGL-04",
+    "input": "text: I have received a court notice asking me to hand over the records of this platform about [PERSON_1]. It is dated this week.",
+    "expected_outcome": "escalate_human",
+    "rule_ids": [
+      "LEGAL-LANE-1"
+    ],
+    "note": "pasted legal process document",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "text"
+    },
+    "shot": true
+  },
+  {
+    "id": "ex-LEGL-05",
+    "input": "text: A police officer asked me to give them the names of the people who commented on the Harbour Road problem.",
+    "expected_outcome": "escalate_human",
+    "rule_ids": [
+      "LEGAL-LANE-1"
+    ],
+    "note": "law-enforcement request for identities",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "text"
+    }
+  },
+  {
+    "id": "ex-LEGL-06",
+    "input": "text: I want the platform to tell me who [PERSON_1] really is so my lawyer can send them a letter.",
+    "expected_outcome": "escalate_human",
+    "rule_ids": [
+      "LEGAL-LANE-1"
+    ],
+    "note": "request about a specific person for legal action",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "text"
+    }
+  },
+  {
+    "id": "ex-LEGL-07",
+    "input": "text: My solicitor says this post is defamation and I must send it to your legal office.",
+    "expected_outcome": "escalate_human",
+    "rule_ids": [
+      "LEGAL-LANE-1"
+    ],
+    "note": "claim that needs counsel and a legal reviewer",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "text"
+    }
+  },
+  {
+    "id": "ex-LEGL-08",
+    "input": "text: Can I sue the council for the damage the pothole did to my wheel?",
+    "expected_outcome": "hold",
+    "rule_ids": [],
+    "note": "individual legal advice request: not the legal lane; the intake check offers fiktiva-ombudsman or fiktiva-help-line",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "text"
+    },
+    "shot": true
+  },
+  {
+    "id": "ex-LEGL-09",
+    "input": "text: My lawyer told me to put this here but I do not know why.",
+    "expected_outcome": "hold",
+    "rule_ids": [
+      "LEGAL-LANE-1"
+    ],
+    "note": "ambiguous: a lawyer is mentioned, no legal matter is clear",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "text"
+    }
+  }
+]

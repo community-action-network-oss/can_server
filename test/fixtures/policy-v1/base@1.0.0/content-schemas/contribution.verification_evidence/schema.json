@@ -1,0 +1,409 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "id": "contribution.verification_evidence",
+  "version": "1.0.0",
+  "x-version": "1.0.0",
+  "pack": "base@1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "type",
+    "target",
+    "claim",
+    "basis",
+    "evidence_refs",
+    "uncertainty",
+    "assumptions",
+    "url",
+    "metric_addressed",
+    "observation_date",
+    "source_role",
+    "what_it_does_not_show"
+  ],
+  "properties": {
+    "type": {
+      "const": "verification_evidence",
+      "x-ui": {
+        "widget": "hidden",
+        "label_msg": "schema.contribution.common.type.label",
+        "order": 1,
+        "group": "claim"
+      },
+      "x-guidance": {
+        "why": "Fixed by the form the person opened.",
+        "good": "root_cause",
+        "bad": "other"
+      }
+    },
+    "target": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,63}$",
+      "x-ui": {
+        "widget": "ref",
+        "label_msg": "schema.contribution.common.target.label",
+        "help_msg": "schema.contribution.common.target.help",
+        "order": 2,
+        "group": "claim"
+      },
+      "x-guidance": {
+        "why": "Says what this contribution answers: a problem, a task or another contribution.",
+        "good": "prob-lights-0042",
+        "bad": "the thing above"
+      },
+      "x-checks": {
+        "dps": [
+          "DP-CONTRIB-RELEVANCE"
+        ]
+      }
+    },
+    "claim": {
+      "type": "string",
+      "minLength": 20,
+      "maxLength": 500,
+      "x-ui": {
+        "widget": "textarea",
+        "label_msg": "schema.contribution.common.claim.label",
+        "help_msg": "schema.contribution.common.claim.help",
+        "order": 3,
+        "group": "claim"
+      },
+      "x-guidance": {
+        "why": "One clear statement the public can read, check and answer.",
+        "good": "The lights on the north ring road have been out for several weeks.",
+        "bad": "It is all broken.",
+        "min_chars": 20,
+        "max_chars": 500,
+        "limits_key": "fields.contribution.verification_evidence.claim"
+      },
+      "x-checks": {
+        "dps": [
+          "DP-CONTRIB-RELEVANCE",
+          "DP-PRIVACY",
+          "DP-NAMING",
+          "DP-TONE",
+          "DP-CRISIS",
+          "DP-ASSUMPTIONS",
+          "DP-COMPLETENESS"
+        ]
+      }
+    },
+    "basis": {
+      "enum": [
+        "firsthand",
+        "cited",
+        "inferred"
+      ],
+      "x-ui": {
+        "widget": "select",
+        "label_msg": "schema.contribution.common.basis.label",
+        "help_msg": "schema.contribution.common.basis.help",
+        "order": 4,
+        "group": "grounds"
+      },
+      "x-guidance": {
+        "why": "Shows whether the claim was seen first hand, taken from a source or reasoned out.",
+        "good": "firsthand",
+        "bad": "sure"
+      }
+    },
+    "evidence_refs": {
+      "type": "array",
+      "minItems": 0,
+      "maxItems": 6,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "url",
+          "supports"
+        ],
+        "properties": {
+          "url": {
+            "type": "string",
+            "minLength": 9,
+            "maxLength": 300,
+            "pattern": "^https?://\\S+$",
+            "x-ui": {
+              "widget": "url",
+              "label_msg": "schema.contribution.common.evidence_refs.url.label",
+              "help_msg": "schema.contribution.common.evidence_refs.url.help",
+              "order": 1
+            }
+          },
+          "supports": {
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 300,
+            "x-ui": {
+              "widget": "textarea",
+              "label_msg": "schema.contribution.common.evidence_refs.supports.label",
+              "help_msg": "schema.contribution.common.evidence_refs.supports.help",
+              "order": 2
+            }
+          }
+        }
+      },
+      "x-ui": {
+        "widget": "list",
+        "label_msg": "schema.contribution.common.evidence_refs.label",
+        "help_msg": "schema.contribution.common.evidence_refs.help",
+        "order": 5,
+        "group": "grounds"
+      },
+      "x-guidance": {
+        "why": "A link is not proof, so each one says what it supports.",
+        "good": "Council repair log, supports the claim that the fault was reported.",
+        "bad": "See link."
+      },
+      "x-checks": {
+        "dps": [
+          "DP-EVIDENCE-TIER",
+          "DP-PRIVACY"
+        ]
+      }
+    },
+    "uncertainty": {
+      "type": "string",
+      "minLength": 5,
+      "maxLength": 300,
+      "x-ui": {
+        "widget": "textarea",
+        "label_msg": "schema.contribution.common.uncertainty.label",
+        "help_msg": "schema.contribution.common.uncertainty.help",
+        "order": 6,
+        "group": "doubts"
+      },
+      "x-guidance": {
+        "why": "Says what is not known so readers can weigh the claim.",
+        "good": "I do not know how many lights are affected.",
+        "bad": "None.",
+        "min_chars": 5,
+        "max_chars": 300
+      },
+      "x-checks": {
+        "dps": [
+          "DP-CONTRIB-RELEVANCE",
+          "DP-PRIVACY",
+          "DP-NAMING",
+          "DP-TONE",
+          "DP-CRISIS",
+          "DP-ASSUMPTIONS",
+          "DP-COMPLETENESS"
+        ]
+      }
+    },
+    "assumptions": {
+      "type": "array",
+      "minItems": 0,
+      "maxItems": 8,
+      "items": {
+        "type": "string",
+        "minLength": 10,
+        "maxLength": 300
+      },
+      "x-ui": {
+        "widget": "list",
+        "label_msg": "schema.contribution.common.assumptions.label",
+        "help_msg": "schema.contribution.common.assumptions.help",
+        "order": 7,
+        "group": "doubts"
+      },
+      "x-guidance": {
+        "why": "Saying what you take for granted lets others check it.",
+        "good": "I assume the lights share one power feed.",
+        "bad": "No assumptions."
+      },
+      "x-checks": {
+        "dps": [
+          "DP-CONTRIB-RELEVANCE",
+          "DP-PRIVACY",
+          "DP-NAMING",
+          "DP-TONE",
+          "DP-CRISIS",
+          "DP-ASSUMPTIONS",
+          "DP-COMPLETENESS"
+        ]
+      }
+    },
+    "target_stage": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,63}$",
+      "x-ui": {
+        "widget": "ref",
+        "label_msg": "schema.contribution.common.target_stage.label",
+        "help_msg": "schema.contribution.common.target_stage.help",
+        "order": 8,
+        "group": "claim"
+      },
+      "x-guidance": {
+        "why": "Says which stage of the plan this contribution is for. Leave it out to address the whole problem.",
+        "good": "stage-lights-survey",
+        "bad": "the next one"
+      },
+      "x-checks": {
+        "dps": [
+          "DP-CONTRIB-RELEVANCE"
+        ]
+      }
+    },
+    "for_later_stage": {
+      "type": "boolean",
+      "x-ui": {
+        "widget": "hidden",
+        "label_msg": "schema.contribution.common.for_later_stage.label",
+        "help_msg": "schema.contribution.common.for_later_stage.help",
+        "order": 9,
+        "group": "claim"
+      },
+      "x-guidance": {
+        "why": "Set by the server when the stage has not started. Not filled in by the person.",
+        "good": "true",
+        "bad": "yes"
+      }
+    },
+    "url": {
+      "type": "string",
+      "minLength": 9,
+      "maxLength": 300,
+      "pattern": "^https?://\\S+$",
+      "x-ui": {
+        "widget": "url",
+        "label_msg": "schema.contribution.verification_evidence.url.label",
+        "help_msg": "schema.contribution.verification_evidence.url.help",
+        "order": 10,
+        "group": "details"
+      },
+      "x-guidance": {
+        "why": "A web address that starts with http or https. No file uploads.",
+        "good": "https://example.org/lighting-report",
+        "bad": "ftp://x"
+      },
+      "x-checks": {
+        "dps": [
+          "DP-EVIDENCE-TIER",
+          "DP-PRIVACY"
+        ]
+      }
+    },
+    "metric_addressed": {
+      "type": "string",
+      "minLength": 5,
+      "maxLength": 200,
+      "x-ui": {
+        "widget": "text",
+        "label_msg": "schema.contribution.verification_evidence.metric_addressed.label",
+        "help_msg": "schema.contribution.verification_evidence.metric_addressed.help",
+        "order": 11,
+        "group": "details"
+      },
+      "x-guidance": {
+        "why": "The success measure or criterion it relates to.",
+        "good": "Share of ring road lights working at night.",
+        "bad": "Stuff.",
+        "min_chars": 5,
+        "max_chars": 200
+      },
+      "x-checks": {
+        "dps": [
+          "DP-CONTRIB-RELEVANCE",
+          "DP-PRIVACY",
+          "DP-NAMING",
+          "DP-TONE",
+          "DP-CRISIS",
+          "DP-ASSUMPTIONS",
+          "DP-COMPLETENESS"
+        ]
+      }
+    },
+    "observation_date": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+      "x-ui": {
+        "widget": "date",
+        "label_msg": "schema.contribution.verification_evidence.observation_date.label",
+        "help_msg": "schema.contribution.verification_evidence.observation_date.help",
+        "order": 12,
+        "group": "details"
+      },
+      "x-guidance": {
+        "why": "A date written year-month-day.",
+        "good": "2026-03-14",
+        "bad": "last week"
+      }
+    },
+    "source_role": {
+      "type": "string",
+      "minLength": 5,
+      "maxLength": 150,
+      "x-ui": {
+        "widget": "text",
+        "label_msg": "schema.contribution.verification_evidence.source_role.label",
+        "help_msg": "schema.contribution.verification_evidence.source_role.help",
+        "order": 13,
+        "group": "details"
+      },
+      "x-guidance": {
+        "why": "The role of the source, not a person.",
+        "good": "District lighting inspector",
+        "bad": "Bob",
+        "min_chars": 5,
+        "max_chars": 150
+      },
+      "x-checks": {
+        "dps": [
+          "DP-CONTRIB-RELEVANCE",
+          "DP-PRIVACY",
+          "DP-NAMING",
+          "DP-TONE",
+          "DP-CRISIS",
+          "DP-ASSUMPTIONS",
+          "DP-COMPLETENESS"
+        ]
+      }
+    },
+    "what_it_does_not_show": {
+      "type": "string",
+      "minLength": 10,
+      "maxLength": 300,
+      "x-ui": {
+        "widget": "textarea",
+        "label_msg": "schema.contribution.verification_evidence.what_it_does_not_show.label",
+        "help_msg": "schema.contribution.verification_evidence.what_it_does_not_show.help",
+        "order": 14,
+        "group": "details"
+      },
+      "x-guidance": {
+        "why": "The limits of this evidence.",
+        "good": "It covers one night only.",
+        "bad": "Nothing.",
+        "min_chars": 10,
+        "max_chars": 300
+      },
+      "x-checks": {
+        "dps": [
+          "DP-CONTRIB-RELEVANCE",
+          "DP-PRIVACY",
+          "DP-NAMING",
+          "DP-TONE",
+          "DP-CRISIS",
+          "DP-ASSUMPTIONS",
+          "DP-COMPLETENESS"
+        ]
+      }
+    }
+  },
+  "x-checks": {
+    "dps": [
+      "DP-CONTRIB-RELEVANCE",
+      "DP-PRIVACY",
+      "DP-NAMING",
+      "DP-TONE",
+      "DP-CRISIS",
+      "DP-ASSUMPTIONS",
+      "DP-COMPLETENESS",
+      "DP-EVIDENCE-TIER",
+      "DP-VERIFICATION"
+    ],
+    "cooldown_exempt": true
+  }
+}

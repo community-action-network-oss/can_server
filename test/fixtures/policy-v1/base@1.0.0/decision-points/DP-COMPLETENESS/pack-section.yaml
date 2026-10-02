@@ -1,0 +1,10 @@
+dp: DP-COMPLETENESS
+enforces: [COMPLETE-1, STRUCT-ONLY-1]
+mode: blocking
+inputs: [schema, condition, affected, desired_outcome, causal_hypothesis, assumptions, may_be_unknown]
+outcomes: [publish, needs_revision, hold]
+thresholds:
+  confidence_floor:
+    publish: 0.85
+    needs_revision: 0.70
+  escalate_model_below: 0.85

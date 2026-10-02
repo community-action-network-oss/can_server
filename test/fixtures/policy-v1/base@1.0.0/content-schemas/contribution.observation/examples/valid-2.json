@@ -1,0 +1,13 @@
+{
+  "type": "observation",
+  "target": "prob-lights-0042",
+  "claim": "The pedestrian crossing signal near the market stays red for a long time.",
+  "basis": "firsthand",
+  "evidence_refs": [],
+  "uncertainty": "I do not know the exact numbers.",
+  "assumptions": [],
+  "what_observed": "The signal stayed red for about two minutes with no traffic.",
+  "when": "April 2026, midday",
+  "where_coarse": "Market quarter",
+  "how_observed": "Timed it with a phone on two days."
+}

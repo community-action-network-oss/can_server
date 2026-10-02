@@ -1,0 +1,11 @@
+dp: DP-CRISIS
+enforces: [CRISIS-STATIC-1, SCOPE-1]
+mode: blocking
+inputs: [text]
+outcomes: [route_external, escalate_human, hold, publish]
+thresholds:
+  confidence_floor:
+    route_external: 0.90
+    escalate_human: 0.95
+    publish: 0.90
+  escalate_model_below: 0.90

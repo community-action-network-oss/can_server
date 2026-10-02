@@ -1,0 +1,45 @@
+{
+  "type": "risk",
+  "target": "prob-lights-0042",
+  "target_stage": "stage-lights-survey",
+  "claim": "The ring road lights have been out for several weeks.",
+  "basis": "firsthand",
+  "evidence_refs": [
+    {
+      "url": "https://example.org/a",
+      "supports": "Backs the claim in some way."
+    },
+    {
+      "url": "https://example.org/a",
+      "supports": "Backs the claim in some way."
+    },
+    {
+      "url": "https://example.org/a",
+      "supports": "Backs the claim in some way."
+    },
+    {
+      "url": "https://example.org/a",
+      "supports": "Backs the claim in some way."
+    },
+    {
+      "url": "https://example.org/a",
+      "supports": "Backs the claim in some way."
+    },
+    {
+      "url": "https://example.org/a",
+      "supports": "Backs the claim in some way."
+    },
+    {
+      "url": "https://example.org/a",
+      "supports": "Backs the claim in some way."
+    }
+  ],
+  "uncertainty": "I do not know how many lights are affected.",
+  "assumptions": [
+    "I assume the lights share one power feed."
+  ],
+  "risk": "A second breaker could shift the overload to the market stalls.",
+  "likelihood_basis": "The stalls already use most of their feed.",
+  "who_bears_it": "Stall holders",
+  "mitigation_idea": "Check the stall load before changing the feed."
+}

@@ -1,0 +1,7 @@
+{
+  "problem_ref": "prob_4c91",
+  "path": "stage_plan.map_faults.criteria",
+  "recommendation": "Add a second criterion that says how many poles must be checked before the stage is done.",
+  "reason": "Without a count, nobody can tell when the survey of the unlit poles is finished.",
+  "status": "open"
+}

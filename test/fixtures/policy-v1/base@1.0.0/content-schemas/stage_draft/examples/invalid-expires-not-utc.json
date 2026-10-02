@@ -1,0 +1,49 @@
+{
+  "id": "sd-sim-0001",
+  "plan": [
+    {
+      "name": "assess",
+      "goal": "Count which lamps are out and why.",
+      "acceptance_criteria": [
+        {
+          "statement": "The stage result is written down.",
+          "measure": "A short public note lists what was found."
+        }
+      ],
+      "depends_on": []
+    },
+    {
+      "name": "repair",
+      "goal": "Repair the lamps and the feed.",
+      "acceptance_criteria": [
+        {
+          "statement": "The stage result is written down.",
+          "measure": "A short public note lists what was found."
+        }
+      ],
+      "depends_on": [
+        "assess"
+      ]
+    }
+  ],
+  "derived_from": [
+    {
+      "stage": "assess",
+      "suggestion_id": "ps-sim-0001",
+      "record_ids": [
+        "ar-sim-0001"
+      ],
+      "credit_text": "Based on the simulated Northvale street lights record."
+    },
+    {
+      "stage": "repair",
+      "suggestion_id": "ps-sim-0001",
+      "record_ids": [
+        "ar-sim-0001"
+      ],
+      "credit_text": "Based on the simulated Northvale street lights record."
+    }
+  ],
+  "expires_at": "tomorrow",
+  "status": "offered"
+}

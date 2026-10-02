@@ -1,0 +1,7 @@
+{
+  "stage_ref": "map_faults",
+  "question_answered": "Which poles on the ring road have no working lamp?",
+  "deliverable": "A shared sheet listing every unlit pole with its number.",
+  "done_criteria": [],
+  "owner_role": "Volunteer survey lead"
+}

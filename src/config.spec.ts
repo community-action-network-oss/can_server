@@ -44,7 +44,7 @@ describe('loadConfig', () => {
 
   it('keeps the policy keys', () => {
     const c = loadConfig({ POLICY_CACHE_TTL_SECONDS: '5' });
-    expect(c.policyPacksDir).toBe('test/fixtures/policy');
+    expect(c.policyPacksDir).toBe('test/fixtures/policy-v1');
     expect(c.policyCacheTtlSeconds).toBe(5);
     expect(c.policyActive).toEqual({});
     expect(config.policyActive).toBeTypeOf('object');

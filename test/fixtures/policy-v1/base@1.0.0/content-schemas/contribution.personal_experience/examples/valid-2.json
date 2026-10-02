@@ -1,0 +1,11 @@
+{
+  "type": "personal_experience",
+  "target": "prob-lights-0042",
+  "claim": "Residents report a fault and then hear nothing about its progress.",
+  "basis": "firsthand",
+  "evidence_refs": [],
+  "uncertainty": "I do not know the exact numbers.",
+  "assumptions": [],
+  "pattern_illustrated": "Faults are reported but progress is never shared back.",
+  "period": "2025 to 2026"
+}

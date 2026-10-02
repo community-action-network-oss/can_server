@@ -1,0 +1,480 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "id": "stage_option",
+  "version": "1.0.0",
+  "x-version": "1.0.0",
+  "pack": "base@1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "stage_ref",
+    "option_statement",
+    "mechanism",
+    "responsible_role",
+    "authority_and_legal_basis",
+    "cost_estimate",
+    "how_it_meets_stage_criteria",
+    "risks_and_rights_impact",
+    "lawful_alternatives",
+    "assumptions"
+  ],
+  "properties": {
+    "stage_ref": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]{1,39}$",
+      "minLength": 2,
+      "maxLength": 40,
+      "x-ui": {
+        "widget": "stage_ref",
+        "label_msg": "schema.stage_option.stage_ref.label",
+        "help_msg": "schema.stage_option.stage_ref.help",
+        "order": 1,
+        "group": "stage"
+      },
+      "x-guidance": {
+        "why": "Ties this to one stage so it is read against that stage's goal and criteria.",
+        "good": "design_prevention",
+        "bad": "the second one"
+      },
+      "x-checks": {
+        "dps": [
+          "DP-CONTRIB-RELEVANCE"
+        ],
+        "ref_to": "problem.stage_plan.name"
+      }
+    },
+    "option_statement": {
+      "type": "string",
+      "minLength": 20,
+      "maxLength": 500,
+      "x-ui": {
+        "widget": "textarea",
+        "label_msg": "schema.stage_option.option_statement.label",
+        "help_msg": "schema.stage_option.option_statement.help",
+        "order": 2,
+        "group": "option"
+      },
+      "x-guidance": {
+        "why": "One clear option the community can compare with others.",
+        "good": "Repair the ring road feed and add a second breaker so one fault cannot darken the whole road.",
+        "bad": "Make it better.",
+        "min_chars": 20,
+        "max_chars": 500,
+        "limits_key": "fields.stage_option.option_statement"
+      },
+      "x-checks": {
+        "dps": [
+          "DP-CONTRIB-RELEVANCE",
+          "DP-PRIVACY",
+          "DP-NAMING",
+          "DP-TONE",
+          "DP-CRISIS"
+        ]
+      }
+    },
+    "mechanism": {
+      "type": "string",
+      "minLength": 20,
+      "maxLength": 500,
+      "x-ui": {
+        "widget": "textarea",
+        "label_msg": "schema.stage_option.mechanism.label",
+        "help_msg": "schema.stage_option.mechanism.help",
+        "order": 3,
+        "group": "option"
+      },
+      "x-guidance": {
+        "why": "The steps that turn the action into the result.",
+        "good": "The district crew replaces the cable section and the council adds a breaker per block.",
+        "bad": "It just works.",
+        "min_chars": 20,
+        "max_chars": 500,
+        "limits_key": "fields.stage_option.mechanism"
+      },
+      "x-checks": {
+        "dps": [
+          "DP-CONTRIB-RELEVANCE",
+          "DP-PRIVACY",
+          "DP-NAMING",
+          "DP-TONE",
+          "DP-CRISIS"
+        ]
+      }
+    },
+    "responsible_role": {
+      "type": "string",
+      "minLength": 5,
+      "maxLength": 150,
+      "pattern": "^[A-Za-z][A-Za-z ,'/&()-]{4,149}$",
+      "x-ui": {
+        "widget": "text",
+        "label_msg": "schema.stage_option.responsible_role.label",
+        "help_msg": "schema.stage_option.responsible_role.help",
+        "order": 4,
+        "group": "option"
+      },
+      "x-guidance": {
+        "why": "A role, not a named person.",
+        "good": "District lighting officer",
+        "bad": "Bob",
+        "min_chars": 5,
+        "max_chars": 150,
+        "limits_key": "fields.stage_option.responsible_role"
+      },
+      "x-checks": {
+        "dps": [
+          "DP-CONTRIB-RELEVANCE",
+          "DP-PRIVACY",
+          "DP-NAMING",
+          "DP-TONE",
+          "DP-CRISIS"
+        ],
+        "roles_only": true
+      }
+    },
+    "authority_and_legal_basis": {
+      "type": "string",
+      "minLength": 20,
+      "maxLength": 500,
+      "x-ui": {
+        "widget": "textarea",
+        "label_msg": "schema.stage_option.authority_and_legal_basis.label",
+        "help_msg": "schema.stage_option.authority_and_legal_basis.help",
+        "order": 5,
+        "group": "option"
+      },
+      "x-guidance": {
+        "why": "Shows the option sits inside a rule or mandate, so DP-LEGALITY can read it.",
+        "good": "The district maintenance budget covers street lighting repairs.",
+        "bad": "They can.",
+        "min_chars": 20,
+        "max_chars": 500,
+        "limits_key": "fields.stage_option.authority_and_legal_basis"
+      },
+      "x-checks": {
+        "dps": [
+          "DP-CONTRIB-RELEVANCE",
+          "DP-PRIVACY",
+          "DP-NAMING",
+          "DP-TONE",
+          "DP-CRISIS",
+          "DP-LEGALITY"
+        ]
+      }
+    },
+    "cost_estimate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "band"
+      ],
+      "properties": {
+        "band": {
+          "enum": [
+            "none",
+            "<1k",
+            "<10k",
+            "<100k",
+            ">=100k",
+            "unknown"
+          ],
+          "x-ui": {
+            "widget": "select",
+            "label_msg": "schema.stage_option.cost_estimate.band.label",
+            "help_msg": "schema.stage_option.cost_estimate.band.help"
+          }
+        },
+        "amount": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1000000000000,
+          "x-ui": {
+            "widget": "number",
+            "label_msg": "schema.stage_option.cost_estimate.amount.label",
+            "help_msg": "schema.stage_option.cost_estimate.amount.help"
+          }
+        }
+      },
+      "x-ui": {
+        "widget": "cost_estimate",
+        "label_msg": "schema.stage_option.cost_estimate.label",
+        "help_msg": "schema.stage_option.cost_estimate.help",
+        "order": 6,
+        "group": "cost"
+      },
+      "x-guidance": {
+        "why": "A rough size lets people compare options without false precision.",
+        "good": "Band under 10k, best guess 4000.",
+        "bad": "Free."
+      },
+      "x-checks": {
+        "dps": [
+          "DP-CONTRIB-RELEVANCE",
+          "DP-ASSUMPTIONS"
+        ],
+        "exact_not_required": true
+      }
+    },
+    "funding": {
+      "type": "string",
+      "minLength": 10,
+      "maxLength": 300,
+      "x-ui": {
+        "widget": "textarea",
+        "label_msg": "schema.stage_option.funding.label",
+        "help_msg": "schema.stage_option.funding.help",
+        "order": 7,
+        "group": "cost"
+      },
+      "x-guidance": {
+        "why": "Says where the money or work comes from.",
+        "good": "The district repair budget, with volunteers marking the faults.",
+        "bad": "Someone.",
+        "min_chars": 10,
+        "max_chars": 300,
+        "limits_key": "fields.stage_option.funding"
+      },
+      "x-checks": {
+        "dps": [
+          "DP-CONTRIB-RELEVANCE",
+          "DP-PRIVACY",
+          "DP-NAMING",
+          "DP-TONE",
+          "DP-CRISIS"
+        ]
+      }
+    },
+    "how_it_meets_stage_criteria": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 6,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "criterion_ref",
+          "how"
+        ],
+        "properties": {
+          "criterion_ref": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 6,
+            "x-ui": {
+              "widget": "criterion_ref",
+              "label_msg": "schema.stage_option.how_it_meets_stage_criteria.criterion_ref.label",
+              "help_msg": "schema.stage_option.how_it_meets_stage_criteria.criterion_ref.help",
+              "order": 1
+            },
+            "x-guidance": {
+              "why": "The position (1 to 6) of one acceptance criterion in the stage's list.",
+              "good": "2",
+              "bad": "all of them"
+            },
+            "x-checks": {
+              "dps": [
+                "DP-STAGE-RESOLUTION"
+              ],
+              "ref_to": "problem.stage_plan.acceptance_criteria",
+              "one_based_position": true
+            }
+          },
+          "how": {
+            "type": "string",
+            "minLength": 20,
+            "maxLength": 300,
+            "x-ui": {
+              "widget": "textarea",
+              "label_msg": "schema.stage_option.how_it_meets_stage_criteria.how.label",
+              "help_msg": "schema.stage_option.how_it_meets_stage_criteria.how.help",
+              "order": 2
+            },
+            "x-guidance": {
+              "why": "A check anyone could repeat.",
+              "good": "The council fault log shows no outage report on the road for 30 days.",
+              "bad": "It will obviously work.",
+              "min_chars": 20,
+              "max_chars": 300
+            },
+            "x-checks": {
+              "dps": [
+                "DP-STAGE-RESOLUTION"
+              ]
+            }
+          }
+        }
+      },
+      "x-ui": {
+        "widget": "list",
+        "label_msg": "schema.stage_option.how_it_meets_stage_criteria.label",
+        "help_msg": "schema.stage_option.how_it_meets_stage_criteria.help",
+        "order": 8,
+        "group": "criteria"
+      },
+      "x-guidance": {
+        "why": "How anyone could tell the option meets the stage criteria. The stage resolution check and the legality check read it.",
+        "good": "Criterion 1: the repair log shows the road lit on 30 nights in a row.",
+        "bad": "It meets them."
+      },
+      "x-checks": {
+        "dps": [
+          "DP-STAGE-RESOLUTION",
+          "DP-LEGALITY"
+        ]
+      }
+    },
+    "risks_and_rights_impact": {
+      "type": "string",
+      "minLength": 20,
+      "maxLength": 500,
+      "x-ui": {
+        "widget": "textarea",
+        "label_msg": "schema.stage_option.risks_and_rights_impact.label",
+        "help_msg": "schema.stage_option.risks_and_rights_impact.help",
+        "order": 9,
+        "group": "risks"
+      },
+      "x-guidance": {
+        "why": "Names risks and rights effects early so they can be handled.",
+        "good": "The road may be dark for one night during the repair. Shops close early that night.",
+        "bad": "No risks.",
+        "min_chars": 20,
+        "max_chars": 500,
+        "limits_key": "fields.stage_option.risks_and_rights_impact"
+      },
+      "x-checks": {
+        "dps": [
+          "DP-CONTRIB-RELEVANCE",
+          "DP-PRIVACY",
+          "DP-NAMING",
+          "DP-TONE",
+          "DP-CRISIS",
+          "DP-LEGALITY"
+        ]
+      }
+    },
+    "lawful_alternatives": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 5,
+      "items": {
+        "type": "string",
+        "minLength": 10,
+        "maxLength": 300,
+        "x-ui": {
+          "widget": "textarea",
+          "label_msg": "schema.stage_option.lawful_alternatives.item.label",
+          "help_msg": "schema.stage_option.lawful_alternatives.item.help"
+        }
+      },
+      "x-ui": {
+        "widget": "list",
+        "label_msg": "schema.stage_option.lawful_alternatives.label",
+        "help_msg": "schema.stage_option.lawful_alternatives.help",
+        "order": 10,
+        "group": "risks"
+      },
+      "x-guidance": {
+        "why": "Other lawful ways to reach the same goal, at least one.",
+        "good": "Temporary solar lamps at the worst junctions.",
+        "bad": "Do something else."
+      },
+      "x-checks": {
+        "dps": [
+          "DP-CONTRIB-RELEVANCE",
+          "DP-PRIVACY",
+          "DP-NAMING",
+          "DP-TONE",
+          "DP-CRISIS"
+        ]
+      }
+    },
+    "dependencies": {
+      "type": "array",
+      "minItems": 0,
+      "maxItems": 8,
+      "items": {
+        "type": "string",
+        "minLength": 10,
+        "maxLength": 300,
+        "x-ui": {
+          "widget": "textarea",
+          "label_msg": "schema.stage_option.dependencies.item.label",
+          "help_msg": "schema.stage_option.dependencies.item.help"
+        }
+      },
+      "x-ui": {
+        "widget": "list",
+        "label_msg": "schema.stage_option.dependencies.label",
+        "help_msg": "schema.stage_option.dependencies.help",
+        "order": 11,
+        "group": "doubts"
+      },
+      "x-guidance": {
+        "why": "Shows what the option waits for.",
+        "good": "The council must publish the cable map.",
+        "bad": "Stuff."
+      },
+      "x-checks": {
+        "dps": [
+          "DP-CONTRIB-RELEVANCE",
+          "DP-PRIVACY",
+          "DP-NAMING",
+          "DP-TONE",
+          "DP-CRISIS"
+        ]
+      }
+    },
+    "assumptions": {
+      "type": "array",
+      "minItems": 0,
+      "maxItems": 8,
+      "items": {
+        "type": "string",
+        "minLength": 10,
+        "maxLength": 300,
+        "x-ui": {
+          "widget": "textarea",
+          "label_msg": "schema.stage_option.assumptions.item.label",
+          "help_msg": "schema.stage_option.assumptions.item.help"
+        }
+      },
+      "x-ui": {
+        "widget": "list",
+        "label_msg": "schema.stage_option.assumptions.label",
+        "help_msg": "schema.stage_option.assumptions.help",
+        "order": 12,
+        "group": "doubts"
+      },
+      "x-guidance": {
+        "why": "Saying what you take for granted lets others check it.",
+        "good": "I assume the lights share one power feed.",
+        "bad": "No assumptions."
+      },
+      "x-checks": {
+        "dps": [
+          "DP-CONTRIB-RELEVANCE",
+          "DP-PRIVACY",
+          "DP-NAMING",
+          "DP-TONE",
+          "DP-CRISIS",
+          "DP-ASSUMPTIONS"
+        ]
+      }
+    }
+  },
+  "x-checks": {
+    "dps": [
+      "DP-CONTRIB-RELEVANCE",
+      "DP-PRIVACY",
+      "DP-NAMING",
+      "DP-TONE",
+      "DP-CRISIS",
+      "DP-ASSUMPTIONS",
+      "DP-COMPLETENESS",
+      "DP-LEGALITY",
+      "DP-STAGE-RESOLUTION"
+    ],
+    "replaces": "proposal"
+  }
+}

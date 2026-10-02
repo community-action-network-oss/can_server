@@ -1,0 +1,22 @@
+{
+  "type": "verification_evidence",
+  "target": "prob-lights-0042",
+  "target_stage": "stage-lights-survey",
+  "claim": "The ring road lights have been out for several weeks.",
+  "basis": "sure",
+  "evidence_refs": [
+    {
+      "url": "https://example.org/lighting-register",
+      "supports": "Lists the lights on the ring road."
+    }
+  ],
+  "uncertainty": "I do not know how many lights are affected.",
+  "assumptions": [
+    "I assume the lights share one power feed."
+  ],
+  "url": "https://example.org/lighting-report",
+  "metric_addressed": "Share of ring road lights working at night.",
+  "observation_date": "2026-03-14",
+  "source_role": "District lighting inspector",
+  "what_it_does_not_show": "It covers one night only."
+}

@@ -1,0 +1,13 @@
+{
+  "type": "implementation_offer",
+  "target": "prob-lights-0042",
+  "claim": "The ring road lights are out most nights.",
+  "basis": "inferred",
+  "evidence_refs": [],
+  "uncertainty": "Not sure.",
+  "assumptions": [],
+  "offered_work": "I can survey the ring road lights on two weekends.",
+  "role_capacity": "Volunteer surveyor, about six hours a month.",
+  "limits": "I cannot work with electrical equipment.",
+  "lawful_basis": "Walking public roads and noting what I see needs no permit."
+}

@@ -1,0 +1,22 @@
+{
+  "type": "progress_update",
+  "target": "prob-lights-0042",
+  "target_stage": "stage-lights-survey",
+  "claim": "The ring road lights have been out for several weeks.",
+  "basis": "firsthand",
+  "evidence_refs": [
+    {
+      "url": "https://example.org/lighting-register",
+      "supports": "Lists the lights on the ring road."
+    }
+  ],
+  "uncertainty": "I do not know how many lights are affected.",
+  "assumptions": [
+    "I assume the lights share one power feed."
+  ],
+  "task_ref": "the task",
+  "done": "Surveyed the north half of the ring road.",
+  "not_done": "The south half is not surveyed.",
+  "blockers": "None so far.",
+  "next_step": "Survey the south half next weekend."
+}

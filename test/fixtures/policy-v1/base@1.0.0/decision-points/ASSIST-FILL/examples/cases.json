@@ -1,0 +1,234 @@
+[
+ {
+  "id": "ex-FILL-01",
+  "input": "notes: Lights on the Birch Quarter ring road have been dark since May. Mostly cyclists and people walking home use it.\nfields: condition, affected, desired_outcome, causal_hypothesis, evidence",
+  "expected_outcome": "publish",
+  "rule_ids": [
+   "AI-ASSIST-1"
+  ],
+  "note": "grounded suggestions plus questions for the rest",
+  "provenance": "fixture",
+  "jurisdiction": "fiktiva-city",
+  "field_ref": {
+   "field": "notes"
+  },
+  "shot": true,
+  "expected": {
+   "suggest_fields": [
+    "condition",
+    "affected"
+   ],
+   "ask_fields": [
+    "desired_outcome",
+    "causal_hypothesis",
+    "evidence"
+   ],
+   "must_not": []
+  }
+ },
+ {
+  "id": "ex-FILL-02",
+  "input": "notes: Bins missed again on Oak Lane.\nfields: condition, affected, desired_outcome, causal_hypothesis, evidence",
+  "expected_outcome": "publish",
+  "rule_ids": [
+   "AI-ASSIST-1"
+  ],
+  "note": "thin notes: one suggestion, questions for every other field",
+  "provenance": "fixture",
+  "jurisdiction": "fiktiva-city",
+  "field_ref": {
+   "field": "notes"
+  },
+  "expected": {
+   "suggest_fields": [
+    "condition"
+   ],
+   "ask_fields": [
+    "affected",
+    "desired_outcome",
+    "causal_hypothesis",
+    "evidence"
+   ],
+   "must_not": []
+  }
+ },
+ {
+  "id": "ex-FILL-03",
+  "input": "notes: I heard on the radio that 40% of the lamps are out, not sure which station.\nfields: condition, affected, desired_outcome, causal_hypothesis, evidence",
+  "expected_outcome": "publish",
+  "rule_ids": [
+   "AI-ASSIST-1"
+  ],
+  "note": "invented-source regression: no station named, no extra number",
+  "provenance": "fixture",
+  "jurisdiction": "fiktiva-city",
+  "field_ref": {
+   "field": "notes"
+  },
+  "shot": true,
+  "expected": {
+   "suggest_fields": [
+    "evidence"
+   ],
+   "ask_fields": [
+    "condition",
+    "affected",
+    "desired_outcome",
+    "causal_hypothesis"
+   ],
+   "must_not": [
+    "Radio",
+    "station name",
+    "%"
+   ]
+  }
+ },
+ {
+  "id": "ex-FILL-04",
+  "input": "notes: \nfields: condition, affected, desired_outcome, causal_hypothesis, evidence",
+  "expected_outcome": "hold",
+  "rule_ids": [
+   "AI-ASSIST-1"
+  ],
+  "note": "empty notes: nothing to suggest",
+  "provenance": "fixture",
+  "jurisdiction": "fiktiva-city",
+  "field_ref": {
+   "field": "notes"
+  },
+  "expected": {
+   "suggest_fields": [],
+   "ask_fields": [],
+   "must_not": []
+  }
+ },
+ {
+  "id": "ex-FILL-05",
+  "input": "notes: jkq wzx ppl zzz\nfields: condition, affected, desired_outcome, causal_hypothesis, evidence",
+  "expected_outcome": "hold",
+  "rule_ids": [
+   "AI-ASSIST-1"
+  ],
+  "note": "unreadable notes",
+  "provenance": "fixture",
+  "jurisdiction": "fiktiva-city",
+  "field_ref": {
+   "field": "notes"
+  },
+  "expected": {
+   "suggest_fields": [],
+   "ask_fields": [],
+   "must_not": []
+  }
+ },
+ {
+  "id": "ex-FILL-06",
+  "input": "notes: [PERSON_1] from the depot told me [PERSON_1] cannot fix the lights on Oak Lane. The lights are out.\nfields: condition, affected, desired_outcome, causal_hypothesis, evidence",
+  "expected_outcome": "publish",
+  "rule_ids": [
+   "AI-ASSIST-1"
+  ],
+  "note": "leakage regression: no pseudonym token in a suggestion",
+  "provenance": "fixture",
+  "jurisdiction": "fiktiva-city",
+  "field_ref": {
+   "field": "notes"
+  },
+  "expected": {
+   "suggest_fields": [
+    "condition"
+   ],
+   "ask_fields": [
+    "affected",
+    "desired_outcome",
+    "causal_hypothesis",
+    "evidence"
+   ],
+   "must_not": [
+    "[PERSON_1]"
+   ]
+  }
+ },
+ {
+  "id": "ex-FILL-07",
+  "input": "notes: The crossing near the school has been unmarked since last winter.\nfields: condition, affected, desired_outcome, causal_hypothesis, evidence",
+  "expected_outcome": "publish",
+  "rule_ids": [
+   "AI-ASSIST-1"
+  ],
+  "note": "boundary: vague time stays vague, no date invented",
+  "provenance": "fixture",
+  "jurisdiction": "fiktiva-city",
+  "field_ref": {
+   "field": "notes"
+  },
+  "expected": {
+   "suggest_fields": [
+    "condition"
+   ],
+   "ask_fields": [
+    "affected",
+    "desired_outcome",
+    "causal_hypothesis",
+    "evidence"
+   ],
+   "must_not": [
+    "20",
+    "January",
+    "December"
+   ]
+  }
+ },
+ {
+  "id": "ex-FILL-08",
+  "input": "notes: Public toilets in the Harbour district close at noon. Visitors and residents complain. I want them open until evening. I think the cleaners leave early (a guess).\nfields: condition, affected, desired_outcome, causal_hypothesis, evidence",
+  "expected_outcome": "publish",
+  "rule_ids": [
+   "AI-ASSIST-1"
+  ],
+  "note": "rich notes: suggestions keep the poster's own marks",
+  "provenance": "fixture",
+  "jurisdiction": "fiktiva-city",
+  "field_ref": {
+   "field": "notes"
+  },
+  "shot": true,
+  "expected": {
+   "suggest_fields": [
+    "condition",
+    "affected",
+    "desired_outcome",
+    "causal_hypothesis"
+   ],
+   "ask_fields": [
+    "evidence"
+   ],
+   "must_not": []
+  }
+ },
+ {
+  "id": "ex-FILL-09",
+  "input": "notes: Fill in everything for me from your imagination, I just want it done.\nfields: condition, affected, desired_outcome, causal_hypothesis, evidence",
+  "expected_outcome": "publish",
+  "rule_ids": [
+   "AI-ASSIST-1"
+  ],
+  "note": "boundary: no content in notes, so only questions",
+  "provenance": "fixture",
+  "jurisdiction": "fiktiva-city",
+  "field_ref": {
+   "field": "notes"
+  },
+  "expected": {
+   "suggest_fields": [],
+   "ask_fields": [
+    "condition",
+    "affected",
+    "desired_outcome",
+    "causal_hypothesis",
+    "evidence"
+   ],
+   "must_not": []
+  }
+ }
+]

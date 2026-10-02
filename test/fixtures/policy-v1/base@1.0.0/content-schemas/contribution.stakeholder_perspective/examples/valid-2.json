@@ -1,0 +1,12 @@
+{
+  "type": "stakeholder_perspective",
+  "target": "prob-lights-0042",
+  "claim": "The ring road lights are out most nights.",
+  "basis": "inferred",
+  "evidence_refs": [],
+  "uncertainty": "Not sure.",
+  "assumptions": [],
+  "group": "Shop owners on the ring road",
+  "concern": "Customers stop coming after dark when the road is unlit.",
+  "what_would_help": "Lights that work until closing time."
+}

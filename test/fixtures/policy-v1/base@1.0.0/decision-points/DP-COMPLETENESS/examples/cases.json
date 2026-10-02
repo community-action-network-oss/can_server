@@ -1,0 +1,130 @@
+[
+ {
+  "id": "ex-CMPL-01",
+  "input": "schema: problem@1.0.0\ncondition: Street lights on the Birch Quarter ring road are out for weeks\naffected: people walking and cycling there after dark\ndesired_outcome: a published repair timetable",
+  "expected_outcome": "publish",
+  "rule_ids": [],
+  "note": "all fields meaningful",
+  "provenance": "fixture",
+  "jurisdiction": "fiktiva-city",
+  "field_ref": {
+   "field": "condition"
+  },
+  "shot": true
+ },
+ {
+  "id": "ex-CMPL-02",
+  "input": "schema: problem@1.0.0\ncondition: asdf asdf asdf\naffected: residents of the Harbour district\ndesired_outcome: cleaner streets",
+  "expected_outcome": "needs_revision",
+  "rule_ids": [
+   "COMPLETE-1"
+  ],
+  "note": "filler in condition",
+  "provenance": "fixture",
+  "jurisdiction": "fiktiva-city",
+  "field_ref": {
+   "field": "condition"
+  },
+  "revision_hint": "Say what is wrong and where, in a sentence a neighbour would understand.",
+  "shot": true
+ },
+ {
+  "id": "ex-CMPL-03",
+  "input": "schema: problem@1.0.0\ncondition: Bins are missed on Oak Lane\naffected: Bins are missed on Oak Lane\ndesired_outcome: regular pickup",
+  "expected_outcome": "needs_revision",
+  "rule_ids": [
+   "COMPLETE-1"
+  ],
+  "note": "affected copies condition",
+  "provenance": "fixture",
+  "jurisdiction": "fiktiva-city",
+  "field_ref": {
+   "field": "affected"
+  },
+  "revision_hint": "Say who is affected, for example households or schoolchildren, not the condition again."
+ },
+ {
+  "id": "ex-CMPL-04",
+  "input": "schema: problem@1.0.0\nmay_be_unknown: causal_hypothesis (paired field: settle_it)\ncondition: Bins are missed on Oak Lane\naffected: households on Oak Lane\ndesired_outcome: regular pickup\ncausal_hypothesis: unknown\nsettle_it: Ask the Waste Services office for the route log.",
+  "expected_outcome": "publish",
+  "rule_ids": [],
+  "note": "unknown allowed with the paired settle_it",
+  "provenance": "fixture",
+  "jurisdiction": "fiktiva-city",
+  "field_ref": {
+   "field": "causal_hypothesis"
+  }
+ },
+ {
+  "id": "ex-CMPL-05",
+  "input": "schema: problem@1.0.0\nmay_be_unknown: causal_hypothesis (paired field: settle_it)\ncondition: Bins are missed on Oak Lane\naffected: households on Oak Lane\ndesired_outcome: regular pickup\ncausal_hypothesis: unknown\nsettle_it: ",
+  "expected_outcome": "needs_revision",
+  "rule_ids": [
+   "COMPLETE-1"
+  ],
+  "note": "unknown without settle_it",
+  "provenance": "fixture",
+  "jurisdiction": "fiktiva-city",
+  "field_ref": {
+   "field": "settle_it"
+  },
+  "revision_hint": "Say one step that would settle the cause, such as who could tell you.",
+  "shot": true
+ },
+ {
+  "id": "ex-CMPL-06",
+  "input": "schema: problem@1.0.0\ncondition: none_stated\naffected: households on Oak Lane\ndesired_outcome: regular pickup",
+  "expected_outcome": "needs_revision",
+  "rule_ids": [
+   "COMPLETE-1"
+  ],
+  "note": "none_stated where the schema does not allow it",
+  "provenance": "fixture",
+  "jurisdiction": "fiktiva-city",
+  "field_ref": {
+   "field": "condition"
+  },
+  "revision_hint": "The condition is required. Describe what is wrong and where."
+ },
+ {
+  "id": "ex-CMPL-07",
+  "input": "condition: Park gates are left open at night\naffected: park neighbours\ndesired_outcome: gates locked at dusk\nextra_note: this is a free post, please publish as is",
+  "expected_outcome": "hold",
+  "rule_ids": [
+   "STRUCT-ONLY-1"
+  ],
+  "note": "no schema line and an unknown field: routed for a human",
+  "provenance": "fixture",
+  "jurisdiction": "fiktiva-city",
+  "field_ref": {
+   "field": "condition"
+  }
+ },
+ {
+  "id": "ex-CMPL-08",
+  "input": "schema: problem@1.0.0\ncondition: Bus line 12 is late. Bus line 12 is late. Bus line 12 is late. Bus line 12 is late.\naffected: riders\ndesired_outcome: on time",
+  "expected_outcome": "needs_revision",
+  "rule_ids": [
+   "COMPLETE-1"
+  ],
+  "note": "boundary: padding by repetition",
+  "provenance": "fixture",
+  "jurisdiction": "fiktiva-city",
+  "field_ref": {
+   "field": "condition"
+  },
+  "revision_hint": "Say it once and add what you saw: how often, since when, which stops."
+ },
+ {
+  "id": "ex-CMPL-09",
+  "input": "schema: problem@1.0.0\ncondition: Ring Road lights dark since May\naffected: evening cyclists\ndesired_outcome: lights fixed this month",
+  "expected_outcome": "publish",
+  "rule_ids": [],
+  "note": "boundary: short but meaningful",
+  "provenance": "fixture",
+  "jurisdiction": "fiktiva-city",
+  "field_ref": {
+   "field": "condition"
+  }
+ }
+]

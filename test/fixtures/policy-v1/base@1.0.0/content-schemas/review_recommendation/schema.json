@@ -1,0 +1,211 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "id": "review_recommendation",
+  "version": "1.0.0",
+  "x-version": "1.0.0",
+  "pack": "base@1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "problem_ref",
+    "path",
+    "recommendation",
+    "reason",
+    "status"
+  ],
+  "properties": {
+    "problem_ref": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,63}$",
+      "x-ui": {
+        "widget": "hidden",
+        "label_msg": "schema.review_recommendation.problem_ref.label",
+        "help_msg": "schema.review_recommendation.problem_ref.help",
+        "order": 1,
+        "group": "target"
+      },
+      "x-guidance": {
+        "why": "Fixed by the problem the reviewer opened.",
+        "good": "prob_4c91",
+        "bad": "the lights one"
+      },
+      "x-checks": {
+        "ref_to": "problem"
+      }
+    },
+    "path": {
+      "type": "string",
+      "pattern": "^(condition|affected|place|since|observed_facts|uncertain_claims|sources|evidence_refs|causal_hypothesis|scope|responsible_roles|desired_outcome|final_acceptance_criteria|assumptions|out_of_scope|lawful_options|existing_efforts|stage_plan|context_profile|affected_area|stage_plan\\.[a-z][a-z0-9_]{1,39}(\\.criteria)?)$",
+      "minLength": 4,
+      "maxLength": 80,
+      "x-ui": {
+        "widget": "path_picker",
+        "label_msg": "schema.review_recommendation.path.label",
+        "help_msg": "schema.review_recommendation.path.help",
+        "order": 2,
+        "group": "target"
+      },
+      "x-guidance": {
+        "why": "Points at the one part of the problem you want changed.",
+        "good": "stage_plan.map_faults.criteria",
+        "bad": "somewhere in the middle"
+      },
+      "x-checks": {
+        "path_exists_in": "problem",
+        "reference_paths": [
+          "stage_plan.<stage>",
+          "stage_plan.<stage>.criteria"
+        ]
+      }
+    },
+    "recommendation": {
+      "type": "string",
+      "minLength": 20,
+      "maxLength": 600,
+      "x-ui": {
+        "widget": "textarea",
+        "label_msg": "schema.review_recommendation.recommendation.label",
+        "help_msg": "schema.review_recommendation.recommendation.help",
+        "order": 3,
+        "group": "change"
+      },
+      "x-guidance": {
+        "why": "Says what to change, so the poster can act on it or say why not.",
+        "good": "Add a second criterion that says how many poles must be checked.",
+        "bad": "Needs work.",
+        "min_chars": 20,
+        "max_chars": 600
+      },
+      "x-checks": {
+        "dps": [
+          "DP-PRIVACY",
+          "DP-NAMING",
+          "DP-TONE",
+          "DP-CRISIS"
+        ],
+        "never_checked_for_merit": true
+      }
+    },
+    "reason": {
+      "type": "string",
+      "minLength": 20,
+      "maxLength": 600,
+      "x-ui": {
+        "widget": "textarea",
+        "label_msg": "schema.review_recommendation.reason.label",
+        "help_msg": "schema.review_recommendation.reason.help",
+        "order": 4,
+        "group": "change"
+      },
+      "x-guidance": {
+        "why": "Says why the change helps, in terms of the problem, never the poster.",
+        "good": "Without a count, nobody can tell when the survey is finished.",
+        "bad": "The poster did this badly.",
+        "min_chars": 20,
+        "max_chars": 600
+      },
+      "x-checks": {
+        "dps": [
+          "DP-PRIVACY",
+          "DP-NAMING",
+          "DP-TONE",
+          "DP-CRISIS"
+        ],
+        "never_checked_for_merit": true
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "open",
+        "accepted",
+        "declined"
+      ],
+      "x-ui": {
+        "widget": "hidden",
+        "label_msg": "schema.review_recommendation.status.label",
+        "order": 5,
+        "group": "resolution"
+      },
+      "x-guidance": {
+        "why": "Set by the server: open until the poster accepts or declines.",
+        "good": "open",
+        "bad": "done"
+      },
+      "x-checks": {
+        "server_set": true
+      }
+    },
+    "resolution_reason": {
+      "type": "string",
+      "minLength": 10,
+      "maxLength": 600,
+      "x-ui": {
+        "widget": "textarea",
+        "label_msg": "schema.review_recommendation.resolution_reason.label",
+        "help_msg": "schema.review_recommendation.resolution_reason.help",
+        "order": 6,
+        "group": "resolution"
+      },
+      "x-guidance": {
+        "why": "The poster says why a recommendation was accepted or declined. Kept with the record.",
+        "good": "Added a pole count to the second criterion.",
+        "bad": "No.",
+        "min_chars": 10,
+        "max_chars": 600
+      },
+      "x-checks": {
+        "dps": [
+          "DP-PRIVACY",
+          "DP-NAMING",
+          "DP-TONE",
+          "DP-CRISIS"
+        ],
+        "poster_only": true,
+        "optional_on_purpose": true
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "enum": [
+              "accepted",
+              "declined"
+            ]
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "type": "object",
+        "required": [
+          "resolution_reason"
+        ],
+        "properties": {
+          "resolution_reason": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  ],
+  "x-checks": {
+    "dps": [
+      "DP-PRIVACY",
+      "DP-NAMING",
+      "DP-TONE",
+      "DP-CRISIS"
+    ],
+    "masked_refs_only": true,
+    "private_content": true,
+    "protected_rules": [
+      "REVIEW-1",
+      "RECO-1"
+    ]
+  }
+}

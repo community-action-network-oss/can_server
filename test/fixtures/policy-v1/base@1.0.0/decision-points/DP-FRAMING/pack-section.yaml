@@ -1,0 +1,10 @@
+dp: DP-FRAMING
+enforces: [FRAME-1]
+mode: blocking
+inputs: [condition, affected, desired_outcome]
+outcomes: [publish, needs_revision, hold]
+thresholds:
+  confidence_floor:
+    publish: 0.90
+    needs_revision: 0.75
+  escalate_model_below: 0.85

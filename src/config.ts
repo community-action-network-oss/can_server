@@ -150,7 +150,7 @@ export function loadConfig(source: Env, rootEnv: Env = {}) {
       spendCapMonthlyUsd: spendCap,
       dataCollection,
     },
-    policyPacksDir: env.POLICY_PACKS_DIR ?? 'test/fixtures/policy',
+    policyPacksDir: env.POLICY_PACKS_DIR ?? 'test/fixtures/policy-v1',
     /** {"<jurisdiction|default>": {name, version, hash}}; the pinned hash is authoritative. */
     policyActive: json<Record<string, PackPin>>(env.POLICY_ACTIVE, {}),
     policyShadow: json<PackPin | null>(env.POLICY_SHADOW, null),

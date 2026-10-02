@@ -1,0 +1,73 @@
+{
+  "id": "ps-sim-0001",
+  "record_ids": [
+    "ar-sim-0001"
+  ],
+  "dimensions": [
+    {
+      "name": "problem_type",
+      "verdict": "same",
+      "draft_value": "infrastructure",
+      "record_value": "infrastructure"
+    },
+    {
+      "name": "population_scale",
+      "verdict": "close",
+      "draft_value": "<10k",
+      "record_value": "<1k"
+    }
+  ],
+  "reuse_fit": {
+    "legality": [
+      {
+        "stage": "assess",
+        "result": "lawful"
+      },
+      {
+        "stage": "repair",
+        "result": "unknown"
+      }
+    ],
+    "resource_fit": {
+      "fit": "fits"
+    },
+    "differences": [],
+    "adaptations": [],
+    "confidence": "medium"
+  },
+  "draft_stages": [
+    {
+      "name": "assess",
+      "goal": "Count which lamps are out and why.",
+      "acceptance_criteria": [
+        {
+          "statement": "The stage result is written down.",
+          "measure": "A short public note lists what was found."
+        }
+      ],
+      "depends_on": []
+    },
+    {
+      "name": "repair",
+      "goal": "Repair the lamps and the feed.",
+      "acceptance_criteria": [
+        {
+          "statement": "The stage result is written down.",
+          "measure": "A short public note lists what was found."
+        }
+      ],
+      "depends_on": [
+        "assess"
+      ]
+    }
+  ],
+  "attribution": [
+    {
+      "record_id": "ar-sim-0001",
+      "credit_text": "Based on the simulated Northvale street lights record.",
+      "source_url": "https://can.example/problems/northvale-lights",
+      "license": "CC-BY-4.0"
+    }
+  ],
+  "state": "ready"
+}

@@ -1,0 +1,198 @@
+[
+  {
+    "id": "ex-CLSR-01",
+    "input": "transition: T16\nreason_code: duplicate\nexplanation: Same broken lamp feed on the Elm Row ring road as the older problem.\nduplicate_of: PR-0042\ndestination: (none)\nother_accepted_contribution: no\npolicy_version: base 0.1.0",
+    "expected_outcome": "publish",
+    "rule_ids": [
+      "CLOSE-1"
+    ],
+    "note": "duplicate with duplicate_of (T16)",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "reason_code"
+    },
+    "shot": true,
+    "expected": {
+      "reason_code": "duplicate",
+      "duplicate_of": "PR-0042"
+    }
+  },
+  {
+    "id": "ex-CLSR-02",
+    "input": "transition: T16\nreason_code: no_longer_relevant\nexplanation: The Line 12 night service was withdrawn by the city, so the stop change has no purpose.\nduplicate_of: (none)\ndestination: (none)\nother_accepted_contribution: no\npolicy_version: base 0.1.0",
+    "expected_outcome": "publish",
+    "rule_ids": [
+      "CLOSE-1"
+    ],
+    "note": "no longer relevant (T16)",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "reason_code"
+    },
+    "expected": {
+      "reason_code": "no_longer_relevant"
+    }
+  },
+  {
+    "id": "ex-CLSR-03",
+    "input": "transition: T16\nreason_code: out_of_scope\nexplanation: The request is about a private shop, not a public problem.\nduplicate_of: (none)\ndestination: (none)\nother_accepted_contribution: no\npolicy_version: base 0.1.0",
+    "expected_outcome": "publish",
+    "rule_ids": [
+      "CLOSE-1"
+    ],
+    "note": "out of scope (T16)",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "reason_code"
+    },
+    "expected": {
+      "reason_code": "out_of_scope"
+    }
+  },
+  {
+    "id": "ex-CLSR-04",
+    "input": "transition: T16\nreason_code: duplicate\nexplanation: Same as another problem about the Canal Quay stop.\nduplicate_of: (none)\ndestination: (none)\nother_accepted_contribution: no\npolicy_version: base 0.1.0",
+    "expected_outcome": "needs_revision",
+    "rule_ids": [
+      "CLOSE-1"
+    ],
+    "note": "duplicate without duplicate_of",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "reason_code"
+    },
+    "revision_hint": "Name the problem it duplicates in duplicate_of.",
+    "shot": true
+  },
+  {
+    "id": "ex-CLSR-05",
+    "input": "transition: T16\nreason_code: no_longer_relevant\nexplanation: This repeats the Mill Street bench problem that is already open.\nduplicate_of: (none)\ndestination: (none)\nother_accepted_contribution: no\npolicy_version: base 0.1.0",
+    "expected_outcome": "needs_revision",
+    "rule_ids": [
+      "CLOSE-1"
+    ],
+    "note": "reason code does not match the facts: the explanation describes a duplicate",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "reason_code"
+    },
+    "revision_hint": "Use reason code duplicate and add duplicate_of."
+  },
+  {
+    "id": "ex-CLSR-06",
+    "input": "transition: T16\nreason_code: initiator_request\nexplanation: The poster asked to close it.\nduplicate_of: (none)\ndestination: (none)\nother_accepted_contribution: yes\npolicy_version: base 0.1.0",
+    "expected_outcome": "needs_revision",
+    "rule_ids": [
+      "CLOSE-1"
+    ],
+    "note": "boundary: initiator request alone while another account's accepted contribution is at stake",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "reason_code"
+    },
+    "revision_hint": "Show why closing is fair to the other accepted contribution, or leave it open."
+  },
+  {
+    "id": "ex-CLSR-07",
+    "input": "transition: T17\nreason_code: out_of_scope\nexplanation: A personal matter that needs one to one help.\nduplicate_of: (none)\ndestination: fiktiva-help-line (institution): Fiktiva City Civic Help Line\nother_accepted_contribution: no\npolicy_version: base 0.1.0",
+    "expected_outcome": "route_external",
+    "rule_ids": [
+      "CLOSE-1"
+    ],
+    "note": "redirect to an institution (T17)",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "reason_code"
+    },
+    "shot": true,
+    "expected": {
+      "destination": "fiktiva-help-line"
+    }
+  },
+  {
+    "id": "ex-CLSR-08",
+    "input": "transition: T17\nreason_code: out_of_scope\nexplanation: A complaint about how the city handled a case.\nduplicate_of: (none)\ndestination: fiktiva-ombudsman (institution): Fiktiva City Ombudsman Desk\nother_accepted_contribution: no\npolicy_version: base 0.1.0",
+    "expected_outcome": "route_external",
+    "rule_ids": [
+      "CLOSE-1"
+    ],
+    "note": "redirect to an institution (T17)",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "reason_code"
+    },
+    "expected": {
+      "destination": "fiktiva-ombudsman"
+    }
+  },
+  {
+    "id": "ex-CLSR-09",
+    "input": "transition: T17\nreason_code: out_of_scope\nexplanation: Please send this to [PERSON_1], who knows how to fix it.\nduplicate_of: (none)\ndestination: [PERSON_1] (individual)\nother_accepted_contribution: no\npolicy_version: base 0.1.0",
+    "expected_outcome": "reject",
+    "rule_ids": [
+      "CLOSE-1"
+    ],
+    "note": "redirect destination is an individual, never allowed (T17)",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "reason_code"
+    }
+  },
+  {
+    "id": "ex-CLSR-10",
+    "input": "transition: T16\nreason_code: duplicate\nexplanation: Same as the lamp problem the poster says is PR-9999.\nduplicate_of: PR-9999 (not found in the problem list)\ndestination: (none)\nother_accepted_contribution: no\npolicy_version: base 0.1.0",
+    "expected_outcome": "hold",
+    "rule_ids": [
+      "CLOSE-1"
+    ],
+    "note": "duplicate_of cannot be found, so the closure cannot be judged",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "reason_code"
+    }
+  },
+  {
+    "id": "ex-CLSR-11",
+    "input": "transition: T16\nreason_code: no_longer_relevant\nexplanation: The pause condition (the council hearing) was cancelled, so it cannot resume (T11, T12).\nduplicate_of: (none)\ndestination: (none)\nother_accepted_contribution: no\npolicy_version: base 0.1.0",
+    "expected_outcome": "publish",
+    "rule_ids": [
+      "CLOSE-1"
+    ],
+    "note": "boundary: paused problem whose resume condition can never be met (T11, T12 moved here from the retired DP-STAGE)",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "reason_code"
+    },
+    "expected": {
+      "reason_code": "no_longer_relevant"
+    }
+  },
+  {
+    "id": "ex-CLSR-12",
+    "input": "transition: T16\nreason_code: no_longer_relevant\nexplanation: The Quarry Park tap was fixed by the city before any stage started; a paused problem that waited for a permit has nothing left to resume (T11, T12).\nduplicate_of: (none)\ndestination: (none)\nother_accepted_contribution: no\npolicy_version: base 0.1.0",
+    "expected_outcome": "publish",
+    "rule_ids": [
+      "CLOSE-1"
+    ],
+    "note": "paused problem overtaken by events (T11, T12)",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "reason_code"
+    },
+    "expected": {
+      "reason_code": "no_longer_relevant"
+    }
+  }
+]

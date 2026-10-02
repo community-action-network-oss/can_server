@@ -1,0 +1,172 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "id": "task",
+  "version": "1.0.0",
+  "x-version": "1.0.0",
+  "pack": "base@1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "stage_ref",
+    "question_answered",
+    "deliverable",
+    "done_criteria",
+    "owner_role"
+  ],
+  "properties": {
+    "stage_ref": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]{1,39}$",
+      "minLength": 2,
+      "maxLength": 40,
+      "x-ui": {
+        "widget": "stage_ref",
+        "label_msg": "schema.task.stage_ref.label",
+        "help_msg": "schema.task.stage_ref.help",
+        "order": 1,
+        "group": "stage"
+      },
+      "x-guidance": {
+        "why": "Ties this to one stage so it is read against that stage's goal and criteria.",
+        "good": "design_prevention",
+        "bad": "the second one"
+      },
+      "x-checks": {
+        "dps": [
+          "DP-STAGE-RESOLUTION"
+        ],
+        "ref_to": "problem.stage_plan.name"
+      }
+    },
+    "question_answered": {
+      "type": "string",
+      "minLength": 10,
+      "maxLength": 300,
+      "x-ui": {
+        "widget": "textarea",
+        "label_msg": "schema.task.question_answered.label",
+        "help_msg": "schema.task.question_answered.help",
+        "order": 2,
+        "group": "task"
+      },
+      "x-guidance": {
+        "why": "The task exists to answer one question of the stage.",
+        "good": "Which poles on the ring road have no working lamp?",
+        "bad": "Stuff.",
+        "min_chars": 10,
+        "max_chars": 300,
+        "limits_key": "fields.task.question_answered"
+      },
+      "x-checks": {
+        "dps": [
+          "DP-PRIVACY",
+          "DP-NAMING",
+          "DP-TONE",
+          "DP-STAGE-RESOLUTION"
+        ]
+      }
+    },
+    "deliverable": {
+      "type": "string",
+      "minLength": 10,
+      "maxLength": 300,
+      "x-ui": {
+        "widget": "textarea",
+        "label_msg": "schema.task.deliverable.label",
+        "help_msg": "schema.task.deliverable.help",
+        "order": 3,
+        "group": "task"
+      },
+      "x-guidance": {
+        "why": "What exists when the task is done.",
+        "good": "A shared sheet listing every unlit pole with its number.",
+        "bad": "Progress.",
+        "min_chars": 10,
+        "max_chars": 300,
+        "limits_key": "fields.task.deliverable"
+      },
+      "x-checks": {
+        "dps": [
+          "DP-PRIVACY",
+          "DP-NAMING",
+          "DP-TONE",
+          "DP-STAGE-RESOLUTION"
+        ]
+      }
+    },
+    "done_criteria": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 6,
+      "items": {
+        "type": "string",
+        "minLength": 10,
+        "maxLength": 300,
+        "x-ui": {
+          "widget": "textarea",
+          "label_msg": "schema.task.done_criteria.item.label",
+          "help_msg": "schema.task.done_criteria.item.help"
+        }
+      },
+      "x-ui": {
+        "widget": "list",
+        "label_msg": "schema.task.done_criteria.label",
+        "help_msg": "schema.task.done_criteria.help",
+        "order": 4,
+        "group": "task"
+      },
+      "x-guidance": {
+        "why": "Checks anyone could repeat to tell the task is done.",
+        "good": "Every pole on the ring road has a status in the sheet.",
+        "bad": "Done when done."
+      },
+      "x-checks": {
+        "dps": [
+          "DP-PRIVACY",
+          "DP-NAMING",
+          "DP-TONE",
+          "DP-STAGE-RESOLUTION"
+        ]
+      }
+    },
+    "owner_role": {
+      "type": "string",
+      "minLength": 5,
+      "maxLength": 150,
+      "pattern": "^[A-Za-z][A-Za-z ,'/&()-]{4,149}$",
+      "x-ui": {
+        "widget": "text",
+        "label_msg": "schema.task.owner_role.label",
+        "help_msg": "schema.task.owner_role.help",
+        "order": 5,
+        "group": "task"
+      },
+      "x-guidance": {
+        "why": "A role, not a named person.",
+        "good": "District lighting officer",
+        "bad": "Bob",
+        "min_chars": 5,
+        "max_chars": 150,
+        "limits_key": "fields.task.owner_role"
+      },
+      "x-checks": {
+        "dps": [
+          "DP-PRIVACY",
+          "DP-NAMING",
+          "DP-TONE",
+          "DP-STAGE-RESOLUTION"
+        ],
+        "roles_only": true
+      }
+    }
+  },
+  "x-checks": {
+    "dps": [
+      "DP-PRIVACY",
+      "DP-NAMING",
+      "DP-TONE",
+      "DP-STAGE-RESOLUTION"
+    ],
+    "roles_only": true
+  }
+}

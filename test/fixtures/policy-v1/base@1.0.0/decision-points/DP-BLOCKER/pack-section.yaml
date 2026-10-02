@@ -1,0 +1,10 @@
+dp: DP-BLOCKER
+enforces: [LEGAL-GATE-1, BLOCKER-1]
+mode: blocking
+inputs: [event, blocking_constraint, source_ref, blocked_actions, recheck_date, next_route, documented_attempts, check_date, resume_condition, resume_note]
+outcomes: [publish, needs_revision, hold]
+thresholds:
+  confidence_floor:
+    publish: 0.90
+    needs_revision: 0.75
+  escalate_model_below: 0.9

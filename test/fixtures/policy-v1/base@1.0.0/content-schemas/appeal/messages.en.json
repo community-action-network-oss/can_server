@@ -1,0 +1,20 @@
+{
+  "schema.appeal.group.decision": "What you are appealing",
+  "schema.appeal.group.reason": "What went wrong",
+  "schema.appeal.group.outcome": "What you want",
+  "schema.appeal.group.evidence": "New evidence",
+  "schema.appeal.decision_ref.label": "Which decision are you appealing?",
+  "schema.appeal.decision_ref.help": "Pick it from your notices. The reference is filled in for you when you start from a notice.",
+  "schema.appeal.rule_ids_disputed.label": "Which rules do you think were misapplied? (optional)",
+  "schema.appeal.rule_ids_disputed.help": "Leave this empty if you do not know. The notice lists the rules that were used.",
+  "schema.appeal.what_is_wrong.label": "What is wrong with the decision?",
+  "schema.appeal.what_is_wrong.help": "Say which fact or which reading you think is wrong. Plain words are fine.",
+  "schema.appeal.outcome_sought.label": "What outcome are you asking for?",
+  "schema.appeal.outcome_sought.help": "For example: publish the post, or look at the decision again.",
+  "schema.appeal.new_evidence_refs.label": "New evidence (optional)",
+  "schema.appeal.new_evidence_refs.help": "Only add what was not in the original post. Never add new personal data about anyone.",
+  "schema.appeal.new_evidence_refs.url.label": "Web address",
+  "schema.appeal.new_evidence_refs.url.help": "Starts with http or https. Do not link to anything showing a private person.",
+  "schema.appeal.new_evidence_refs.description.label": "What it shows (optional)",
+  "schema.appeal.new_evidence_refs.description.help": "One sentence is enough."
+}

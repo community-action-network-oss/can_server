@@ -1,0 +1,20 @@
+{
+  "rule_ids_and_dps_touched": [
+    "privacy"
+  ],
+  "change_summary": "Ask for the place name at city level, not street level.",
+  "reason": "Three audit findings show street names let people be identified.",
+  "motivating_examples": [
+    "audit:a_2041",
+    "appeal:p_117"
+  ],
+  "expected_flips": "Posts naming a street would be held, not published.",
+  "protected_core_check": {
+    "acknowledged": true,
+    "touches_protected_core": false
+  },
+  "rollback_plan": "Revert to the previous pack version.",
+  "who_is_affected": "Everyone posting a first problem in one region.",
+  "lawful_basis": "The pack privacy rule PRIV-GATE-1; unverified beyond that.",
+  "risks": "Some real problems may be held back at first."
+}

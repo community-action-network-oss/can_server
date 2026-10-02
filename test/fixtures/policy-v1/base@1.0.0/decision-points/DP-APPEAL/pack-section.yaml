@@ -1,0 +1,12 @@
+dp: DP-APPEAL
+enforces: [APPEAL-1, APPEAL-2]
+mode: async
+inputs: [decision_ref, original_decision, rule_ids_disputed, what_is_wrong, outcome_sought]
+outcomes: [publish, needs_revision, route_external, hold]
+thresholds:
+  confidence_floor:
+    publish: 0.50
+    needs_revision: 0.80
+    route_external: 0.80
+    hold: 0.50
+  escalate_model_below: 0.70

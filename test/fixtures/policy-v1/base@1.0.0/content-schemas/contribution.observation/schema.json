@@ -1,0 +1,360 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "id": "contribution.observation",
+  "version": "1.0.0",
+  "x-version": "1.0.0",
+  "pack": "base@1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "type",
+    "target",
+    "claim",
+    "basis",
+    "evidence_refs",
+    "uncertainty",
+    "assumptions",
+    "what_observed",
+    "when",
+    "where_coarse",
+    "how_observed"
+  ],
+  "properties": {
+    "type": {
+      "const": "observation",
+      "x-ui": {
+        "widget": "hidden",
+        "label_msg": "schema.contribution.common.type.label",
+        "order": 1,
+        "group": "claim"
+      },
+      "x-guidance": {
+        "why": "Fixed by the form the person opened.",
+        "good": "observation",
+        "bad": "other"
+      }
+    },
+    "target": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,63}$",
+      "x-ui": {
+        "widget": "ref",
+        "label_msg": "schema.contribution.common.target.label",
+        "help_msg": "schema.contribution.common.target.help",
+        "order": 2,
+        "group": "claim"
+      },
+      "x-guidance": {
+        "why": "Says what this contribution answers: a problem, a task or another contribution.",
+        "good": "prob-lights-0042",
+        "bad": "the thing above"
+      },
+      "x-checks": {
+        "dps": [
+          "DP-CONTRIB-RELEVANCE"
+        ]
+      }
+    },
+    "claim": {
+      "type": "string",
+      "minLength": 20,
+      "maxLength": 500,
+      "x-ui": {
+        "widget": "textarea",
+        "label_msg": "schema.contribution.common.claim.label",
+        "help_msg": "schema.contribution.common.claim.help",
+        "order": 3,
+        "group": "claim"
+      },
+      "x-guidance": {
+        "why": "One clear statement the public can read, check and answer.",
+        "good": "The lights on the north ring road have been out for several weeks.",
+        "bad": "It is all broken.",
+        "min_chars": 20,
+        "max_chars": 500,
+        "limits_key": "fields.contribution.observation.claim"
+      },
+      "x-checks": {
+        "dps": [
+          "DP-CONTRIB-RELEVANCE",
+          "DP-PRIVACY",
+          "DP-NAMING",
+          "DP-TONE",
+          "DP-CRISIS",
+          "DP-ASSUMPTIONS",
+          "DP-COMPLETENESS"
+        ]
+      }
+    },
+    "basis": {
+      "enum": [
+        "firsthand",
+        "cited",
+        "inferred"
+      ],
+      "x-ui": {
+        "widget": "select",
+        "label_msg": "schema.contribution.common.basis.label",
+        "help_msg": "schema.contribution.common.basis.help",
+        "order": 4,
+        "group": "grounds"
+      },
+      "x-guidance": {
+        "why": "Shows whether the claim was seen first hand, taken from a source or reasoned out.",
+        "good": "firsthand",
+        "bad": "sure"
+      }
+    },
+    "evidence_refs": {
+      "type": "array",
+      "minItems": 0,
+      "maxItems": 6,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "url",
+          "supports"
+        ],
+        "properties": {
+          "url": {
+            "type": "string",
+            "minLength": 9,
+            "maxLength": 300,
+            "pattern": "^https?://\\S+$",
+            "x-ui": {
+              "widget": "url",
+              "label_msg": "schema.contribution.common.evidence_refs.url.label",
+              "help_msg": "schema.contribution.common.evidence_refs.url.help",
+              "order": 1
+            }
+          },
+          "supports": {
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 300,
+            "x-ui": {
+              "widget": "textarea",
+              "label_msg": "schema.contribution.common.evidence_refs.supports.label",
+              "help_msg": "schema.contribution.common.evidence_refs.supports.help",
+              "order": 2
+            }
+          }
+        }
+      },
+      "x-ui": {
+        "widget": "list",
+        "label_msg": "schema.contribution.common.evidence_refs.label",
+        "help_msg": "schema.contribution.common.evidence_refs.help",
+        "order": 5,
+        "group": "grounds"
+      },
+      "x-guidance": {
+        "why": "A link is not proof, so each one says what it supports.",
+        "good": "Council repair log, supports the claim that the fault was reported.",
+        "bad": "See link."
+      },
+      "x-checks": {
+        "dps": [
+          "DP-EVIDENCE-TIER",
+          "DP-PRIVACY"
+        ]
+      }
+    },
+    "uncertainty": {
+      "type": "string",
+      "minLength": 5,
+      "maxLength": 300,
+      "x-ui": {
+        "widget": "textarea",
+        "label_msg": "schema.contribution.common.uncertainty.label",
+        "help_msg": "schema.contribution.common.uncertainty.help",
+        "order": 6,
+        "group": "doubts"
+      },
+      "x-guidance": {
+        "why": "Says what is not known so readers can weigh the claim.",
+        "good": "I do not know how many lights are affected.",
+        "bad": "None.",
+        "min_chars": 5,
+        "max_chars": 300
+      },
+      "x-checks": {
+        "dps": [
+          "DP-CONTRIB-RELEVANCE",
+          "DP-PRIVACY",
+          "DP-NAMING",
+          "DP-TONE",
+          "DP-CRISIS",
+          "DP-ASSUMPTIONS",
+          "DP-COMPLETENESS"
+        ]
+      }
+    },
+    "assumptions": {
+      "type": "array",
+      "minItems": 0,
+      "maxItems": 8,
+      "items": {
+        "type": "string",
+        "minLength": 10,
+        "maxLength": 300
+      },
+      "x-ui": {
+        "widget": "list",
+        "label_msg": "schema.contribution.common.assumptions.label",
+        "help_msg": "schema.contribution.common.assumptions.help",
+        "order": 7,
+        "group": "doubts"
+      },
+      "x-guidance": {
+        "why": "Saying what you take for granted lets others check it.",
+        "good": "I assume the lights share one power feed.",
+        "bad": "No assumptions."
+      },
+      "x-checks": {
+        "dps": [
+          "DP-CONTRIB-RELEVANCE",
+          "DP-PRIVACY",
+          "DP-NAMING",
+          "DP-TONE",
+          "DP-CRISIS",
+          "DP-ASSUMPTIONS",
+          "DP-COMPLETENESS"
+        ]
+      }
+    },
+    "what_observed": {
+      "type": "string",
+      "minLength": 10,
+      "maxLength": 400,
+      "x-ui": {
+        "widget": "textarea",
+        "label_msg": "schema.contribution.observation.what_observed.label",
+        "help_msg": "schema.contribution.observation.what_observed.help",
+        "order": 10,
+        "group": "details"
+      },
+      "x-guidance": {
+        "why": "Keeps what was seen apart from what it means.",
+        "good": "Eight lights in a row were dark between the bridge and the market.",
+        "bad": "The council is lazy.",
+        "min_chars": 10,
+        "max_chars": 400
+      },
+      "x-checks": {
+        "dps": [
+          "DP-CONTRIB-RELEVANCE",
+          "DP-PRIVACY",
+          "DP-NAMING",
+          "DP-TONE",
+          "DP-CRISIS",
+          "DP-ASSUMPTIONS",
+          "DP-COMPLETENESS"
+        ]
+      }
+    },
+    "when": {
+      "type": "string",
+      "minLength": 4,
+      "maxLength": 60,
+      "x-ui": {
+        "widget": "text",
+        "label_msg": "schema.contribution.observation.when.label",
+        "help_msg": "schema.contribution.observation.when.help",
+        "order": 11,
+        "group": "details"
+      },
+      "x-guidance": {
+        "why": "Gives the time frame so others can compare.",
+        "good": "March 2026, after 8 pm",
+        "bad": "Recently",
+        "min_chars": 4,
+        "max_chars": 60
+      },
+      "x-checks": {
+        "dps": [
+          "DP-CONTRIB-RELEVANCE",
+          "DP-PRIVACY",
+          "DP-NAMING",
+          "DP-TONE",
+          "DP-CRISIS",
+          "DP-ASSUMPTIONS",
+          "DP-COMPLETENESS"
+        ]
+      }
+    },
+    "where_coarse": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 120,
+      "pattern": "^[^0-9]*$",
+      "x-ui": {
+        "widget": "text",
+        "label_msg": "schema.contribution.observation.where_coarse.label",
+        "help_msg": "schema.contribution.observation.where_coarse.help",
+        "order": 12,
+        "group": "details"
+      },
+      "x-guidance": {
+        "why": "A wider area only, never an address.",
+        "good": "North district",
+        "bad": "12 Ring Road",
+        "min_chars": 2,
+        "max_chars": 120
+      },
+      "x-checks": {
+        "dps": [
+          "DP-CONTRIB-RELEVANCE",
+          "DP-PRIVACY",
+          "DP-NAMING",
+          "DP-TONE",
+          "DP-CRISIS",
+          "DP-ASSUMPTIONS",
+          "DP-COMPLETENESS"
+        ]
+      }
+    },
+    "how_observed": {
+      "type": "string",
+      "minLength": 10,
+      "maxLength": 300,
+      "x-ui": {
+        "widget": "textarea",
+        "label_msg": "schema.contribution.observation.how_observed.label",
+        "help_msg": "schema.contribution.observation.how_observed.help",
+        "order": 13,
+        "group": "details"
+      },
+      "x-guidance": {
+        "why": "Lets readers judge how reliable the observation is.",
+        "good": "Walked the road on three evenings and counted.",
+        "bad": "Seen it.",
+        "min_chars": 10,
+        "max_chars": 300
+      },
+      "x-checks": {
+        "dps": [
+          "DP-CONTRIB-RELEVANCE",
+          "DP-PRIVACY",
+          "DP-NAMING",
+          "DP-TONE",
+          "DP-CRISIS",
+          "DP-ASSUMPTIONS",
+          "DP-COMPLETENESS"
+        ]
+      }
+    }
+  },
+  "x-checks": {
+    "dps": [
+      "DP-CONTRIB-RELEVANCE",
+      "DP-PRIVACY",
+      "DP-NAMING",
+      "DP-TONE",
+      "DP-CRISIS",
+      "DP-ASSUMPTIONS",
+      "DP-COMPLETENESS"
+    ]
+  }
+}

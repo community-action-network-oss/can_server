@@ -1,0 +1,16 @@
+{
+  "schema.task.group.stage": "The stage",
+  "schema.task.group.task": "The task",
+  "schema.task.stage_ref.label": "Which stage is this task for?",
+  "schema.task.stage_ref.help": "Pick one stage of the plan. It is named by its short name.",
+  "schema.task.question_answered.label": "Which question does it answer?",
+  "schema.task.question_answered.help": "One question of the stage.",
+  "schema.task.deliverable.label": "What will exist when it is done?",
+  "schema.task.deliverable.help": "Say what can be seen or read.",
+  "schema.task.done_criteria.label": "How will anyone know it is done?",
+  "schema.task.done_criteria.help": "Checks someone else could make. One to six.",
+  "schema.task.done_criteria.item.label": "One entry",
+  "schema.task.done_criteria.item.help": "A short plain sentence.",
+  "schema.task.owner_role.label": "Which role owns it?",
+  "schema.task.owner_role.help": "A role, never a named person."
+}

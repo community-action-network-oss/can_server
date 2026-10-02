@@ -1,0 +1,18 @@
+{
+  "stage_ref": "map_faults",
+  "criterion_ref": 2,
+  "evidence_refs": [
+    {
+      "url": "https://example.org/lowmere/survey-sheet",
+      "description": "Shared survey sheet listing every unlit pole found."
+    },
+    {
+      "url": "https://example.org/lowmere/pole-register",
+      "description": "Public pole register used to match pole numbers.",
+      "tier_request": "official_record"
+    }
+  ],
+  "observation_date": "2026-02-20",
+  "outcome_statement": "All 142 poles on the ring road have a recorded status after two weeks of walks.",
+  "what_the_evidence_does_not_show": "Walks happened after dusk only, so daytime faults are not covered."
+}

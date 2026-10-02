@@ -1,0 +1,10 @@
+dp: ASSIST-FILL
+enforces: [AI-ASSIST-1]
+mode: blocking
+inputs: [notes, fields]
+outcomes: [publish, hold]
+thresholds:
+  confidence_floor:
+    publish: 0.80
+    hold: 0.70
+  escalate_model_below: 0.85

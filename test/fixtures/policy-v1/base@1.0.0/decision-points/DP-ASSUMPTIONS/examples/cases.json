@@ -1,0 +1,125 @@
+[
+ {
+  "id": "ex-ASMP-01",
+  "input": "jurisdiction: fiktiva-city\ncondition: Street lights on the Birch Quarter ring road are out for weeks\ncausal_hypothesis: The faults may come from a shared cable (hypothesis, not checked).",
+  "expected_outcome": "publish",
+  "rule_ids": [],
+  "note": "honestly marked hypothesis",
+  "provenance": "fixture",
+  "jurisdiction": "fiktiva-city",
+  "field_ref": {
+   "field": "causal_hypothesis"
+  },
+  "shot": true
+ },
+ {
+  "id": "ex-ASMP-02",
+  "input": "jurisdiction: fiktiva-city\ncondition: Bins are missed in many streets\nassumptions: I assume the depot owns the collection routes (factual, unverified).",
+  "expected_outcome": "publish",
+  "rule_ids": [],
+  "note": "honestly marked factual assumption",
+  "provenance": "fixture",
+  "jurisdiction": "fiktiva-city",
+  "field_ref": {
+   "field": "assumptions"
+  }
+ },
+ {
+  "id": "ex-ASMP-03",
+  "input": "jurisdiction: fiktiva-city\ncondition: Street lights on the Birch Quarter ring road are out\ncausal_hypothesis: The lights are out because the contractor stopped paying the power bill.",
+  "expected_outcome": "needs_revision",
+  "rule_ids": [
+   "ASSUMP-1"
+  ],
+  "note": "cause stated as fact",
+  "provenance": "fixture",
+  "jurisdiction": "fiktiva-city",
+  "field_ref": {
+   "field": "causal_hypothesis"
+  },
+  "revision_hint": "Mark this as a hypothesis, or say where you saw the unpaid bill.",
+  "shot": true
+ },
+ {
+  "id": "ex-ASMP-04",
+  "input": "jurisdiction: fiktiva-city\ncondition: Waste collection is skipped in the Harbour district\nassumptions: The city is legally required to collect bins every 7 days.",
+  "expected_outcome": "needs_revision",
+  "rule_ids": [
+   "ASSUMP-1"
+  ],
+  "note": "legal reading stated as fact",
+  "provenance": "fixture",
+  "jurisdiction": "fiktiva-city",
+  "field_ref": {
+   "field": "assumptions"
+  },
+  "revision_hint": "Cite the policy pack version shown on the form for this rule, or mark the reading as unverified."
+ },
+ {
+  "id": "ex-ASMP-05",
+  "input": "jurisdiction: fiktiva-city\ncompetence: street-lighting -> Head of Road Works\ncondition: Street lights are out on Oak Lane\ncausal_hypothesis: The Head of Parks is responsible for these lights and has not acted.",
+  "expected_outcome": "needs_revision",
+  "rule_ids": [
+   "ASSUMP-1"
+  ],
+  "note": "responsibility contradicts the competence table",
+  "provenance": "fixture",
+  "jurisdiction": "fiktiva-city",
+  "field_ref": {
+   "field": "causal_hypothesis"
+  },
+  "revision_hint": "The competence table lists the Head of Road Works for street lighting. Check that office, or mark your claim as unverified.",
+  "shot": true
+ },
+ {
+  "id": "ex-ASMP-06",
+  "input": "jurisdiction: \ncondition: The tenant rules were broken\nassumptions: Under the rules the landlord must pay.",
+  "expected_outcome": "hold",
+  "rule_ids": [],
+  "note": "no jurisdiction, legal reading cannot be judged",
+  "provenance": "fixture",
+  "jurisdiction": "fiktiva-city",
+  "field_ref": {
+   "field": "assumptions"
+  }
+ },
+ {
+  "id": "ex-ASMP-07",
+  "input": "jurisdiction: fiktiva-city\ncondition: Buses on line 12 are often late\nassumptions: Probably most evening buses are affected, as far as I can tell.",
+  "expected_outcome": "publish",
+  "rule_ids": [],
+  "note": "boundary: scope hedged honestly",
+  "provenance": "fixture",
+  "jurisdiction": "fiktiva-city",
+  "field_ref": {
+   "field": "assumptions"
+  }
+ },
+ {
+  "id": "ex-ASMP-08",
+  "input": "jurisdiction: fiktiva-city\ncondition: Park gates are left open at night\nassumptions: Every park in every district has this problem.",
+  "expected_outcome": "needs_revision",
+  "rule_ids": [
+   "ASSUMP-1"
+  ],
+  "note": "boundary: scope generalised without a mark",
+  "provenance": "fixture",
+  "jurisdiction": "fiktiva-city",
+  "field_ref": {
+   "field": "assumptions"
+  },
+  "revision_hint": "Say which parks you have seen, or mark the wider claim as an assumption."
+ },
+ {
+  "id": "ex-ASMP-09",
+  "input": "jurisdiction: fiktiva-city\ncondition: I counted 14 dark street lights on the Ring Road on 3 May\ncausal_hypothesis: No cause known.",
+  "expected_outcome": "publish",
+  "rule_ids": [],
+  "note": "observation, no assumption",
+  "provenance": "fixture",
+  "jurisdiction": "fiktiva-city",
+  "field_ref": {
+   "field": "condition"
+  }
+ }
+]

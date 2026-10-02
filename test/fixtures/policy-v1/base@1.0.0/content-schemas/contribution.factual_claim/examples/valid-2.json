@@ -1,0 +1,12 @@
+{
+  "type": "factual_claim",
+  "target": "prob-lights-0042",
+  "claim": "I was told the feed fails when it rains, but I have no source for it.",
+  "basis": "firsthand",
+  "evidence_refs": [],
+  "uncertainty": "I do not know the exact numbers.",
+  "assumptions": [],
+  "statement": "The ring road feed fails when it rains.",
+  "none_stated": true,
+  "answers_contribution_id": "contrib-0007"
+}

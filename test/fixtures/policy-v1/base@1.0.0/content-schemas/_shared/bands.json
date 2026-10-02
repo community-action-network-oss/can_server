@@ -1,0 +1,54 @@
+{
+  "$comment": "Band scales shared by the problem schema (inlined, drift-tested) and by 10-u61. Values are strings; unknown is always allowed.",
+  "population_scale": [
+    "<100",
+    "<1k",
+    "<10k",
+    "<100k",
+    "<1M",
+    ">=1M",
+    "unknown"
+  ],
+  "budget_band": [
+    "none",
+    "<1k",
+    "<10k",
+    "<100k",
+    ">=100k",
+    "unknown"
+  ],
+  "currency_class": [
+    "low_income",
+    "lower_middle",
+    "upper_middle",
+    "high_income",
+    "unknown"
+  ],
+  "resource_people": [
+    "none",
+    "<5",
+    "<20",
+    ">=20",
+    "unknown"
+  ],
+  "resource_in_kind": [
+    "yes",
+    "no",
+    "unknown"
+  ],
+  "settlement_class": [
+    "rural",
+    "town",
+    "city",
+    "metro",
+    "unknown"
+  ],
+  "climate_class": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "unknown"
+  ]
+}

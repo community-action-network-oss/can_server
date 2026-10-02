@@ -1,0 +1,14 @@
+{
+  "type": "interpretation",
+  "target": "prob-lights-0042",
+  "claim": "The slow replies point to a staffing gap, not a lack of interest.",
+  "basis": "firsthand",
+  "evidence_refs": [],
+  "uncertainty": "I do not know the exact numbers.",
+  "assumptions": [],
+  "reading_of": "Reply times in the public repair log.",
+  "alternatives_considered": [
+    "Requests may have been sent to the wrong office.",
+    "The log may not record phone replies."
+  ]
+}

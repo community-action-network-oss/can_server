@@ -1,0 +1,12 @@
+dp: DP-ELIGIBILITY
+enforces: [SCOPE-1]
+mode: blocking
+inputs: [condition, affected, desired_outcome, place, jurisdiction]
+outcomes: [publish, needs_revision, reject, route_external, hold]
+thresholds:
+  confidence_floor:
+    publish: 0.90
+    needs_revision: 0.75
+    reject: 0.92
+    route_external: 0.90
+  escalate_model_below: 0.85

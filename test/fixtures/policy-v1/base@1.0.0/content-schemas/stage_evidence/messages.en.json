@@ -1,0 +1,23 @@
+{
+  "schema.stage_evidence.group.stage": "The stage",
+  "schema.stage_evidence.group.evidence": "The evidence",
+  "schema.stage_evidence.group.outcome": "What it shows",
+  "schema.stage_evidence.stage_ref.label": "Which stage is this for?",
+  "schema.stage_evidence.stage_ref.help": "Pick one stage of the plan. It is named by its short name.",
+  "schema.stage_evidence.criterion_ref.label": "Which criterion does this address?",
+  "schema.stage_evidence.criterion_ref.help": "One item addresses one criterion. Post another item for another criterion.",
+  "schema.stage_evidence.evidence_refs.url.label": "Web address",
+  "schema.stage_evidence.evidence_refs.url.help": "Starts with http or https. Uploads of people are not allowed.",
+  "schema.stage_evidence.evidence_refs.description.label": "What is this source?",
+  "schema.stage_evidence.evidence_refs.description.help": "Say what it is and what it shows.",
+  "schema.stage_evidence.evidence_refs.tier_request.label": "What kind of source is it?",
+  "schema.stage_evidence.evidence_refs.tier_request.help": "Optional. The check decides the final tier.",
+  "schema.stage_evidence.evidence_refs.label": "Evidence links",
+  "schema.stage_evidence.evidence_refs.help": "Web addresses only. No files and no photos of people.",
+  "schema.stage_evidence.observation_date.label": "When was it observed?",
+  "schema.stage_evidence.observation_date.help": "Year-month-day.",
+  "schema.stage_evidence.outcome_statement.label": "What does the evidence show about the criterion?",
+  "schema.stage_evidence.outcome_statement.help": "Say how it meets or falls short of the criterion.",
+  "schema.stage_evidence.what_the_evidence_does_not_show.label": "What does it not show?",
+  "schema.stage_evidence.what_the_evidence_does_not_show.help": "The limits of this evidence."
+}

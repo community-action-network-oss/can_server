@@ -1,0 +1,1665 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "id": "archive_record",
+  "version": "1.0.0",
+  "x-version": "1.0.0",
+  "pack": "base@1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "problem_ref",
+    "terminal_state",
+    "source",
+    "snapshot",
+    "context_profile",
+    "executed_path",
+    "options",
+    "evidence_refs",
+    "challenges",
+    "costs",
+    "outcome",
+    "versions",
+    "attribution",
+    "quality"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 8,
+      "maxLength": 64,
+      "pattern": "^[a-z0-9][a-z0-9_-]{7,63}$",
+      "x-ui": {
+        "widget": "readonly",
+        "label_msg": "schema.archive_record.id.label",
+        "help_msg": "schema.archive_record.id.help"
+      },
+      "x-checks": {
+        "masked_refs_only": true
+      }
+    },
+    "problem_ref": {
+      "type": "string",
+      "minLength": 8,
+      "maxLength": 64,
+      "pattern": "^[a-z0-9][a-z0-9_-]{7,63}$",
+      "x-ui": {
+        "widget": "readonly",
+        "label_msg": "schema.archive_record.problem_ref.label",
+        "help_msg": "schema.archive_record.problem_ref.help"
+      },
+      "x-checks": {
+        "masked_refs_only": true
+      }
+    },
+    "terminal_state": {
+      "type": "string",
+      "enum": [
+        "solved",
+        "closed",
+        "redirected",
+        "withdrawn",
+        "stuck"
+      ],
+      "x-ui": {
+        "widget": "select",
+        "label_msg": "schema.archive_record.terminal_state.label",
+        "help_msg": "schema.archive_record.terminal_state.help"
+      }
+    },
+    "source": {
+      "type": "string",
+      "enum": [
+        "real",
+        "simulation"
+      ],
+      "x-ui": {
+        "widget": "select",
+        "label_msg": "schema.archive_record.source.label",
+        "help_msg": "schema.archive_record.source.help"
+      }
+    },
+    "snapshot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "condition",
+        "final_acceptance_criteria"
+      ],
+      "properties": {
+        "condition": {
+          "type": "string",
+          "minLength": 40,
+          "maxLength": 400,
+          "pattern": "^(?!.*@)(?!.*https?://).*$",
+          "x-ui": {
+            "widget": "textarea",
+            "label_msg": "schema.archive_record.snapshot.condition.label",
+            "help_msg": "schema.archive_record.snapshot.condition.help"
+          },
+          "x-guidance": {
+            "why": "The reusable core of the problem.",
+            "good": "Many streets in the north district have no working lights after dark.",
+            "bad": "My neighbour is to blame.",
+            "min_chars": 40,
+            "max_chars": 400
+          },
+          "x-checks": {
+            "dps": [
+              "DP-PRIVACY",
+              "DP-NAMING",
+              "DP-ARCHIVE"
+            ],
+            "masked_refs_only": true
+          }
+        },
+        "affected": {
+          "type": "string",
+          "minLength": 20,
+          "maxLength": 400,
+          "pattern": "^(?!.*@)(?!.*https?://).*$",
+          "x-ui": {
+            "widget": "textarea",
+            "label_msg": "schema.archive_record.snapshot.affected.label",
+            "help_msg": "schema.archive_record.snapshot.affected.help"
+          },
+          "x-guidance": {
+            "why": "Matches on who is affected.",
+            "good": "Residents and people walking after dark.",
+            "bad": "Me and my family.",
+            "min_chars": 20,
+            "max_chars": 400
+          },
+          "x-checks": {
+            "dps": [
+              "DP-PRIVACY",
+              "DP-NAMING",
+              "DP-ARCHIVE"
+            ],
+            "masked_refs_only": true
+          }
+        },
+        "place": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "jurisdiction",
+            "coarse_area"
+          ],
+          "properties": {
+            "jurisdiction": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 120,
+              "x-ui": {
+                "widget": "text",
+                "label_msg": "schema.archive_record.snapshot.place.jurisdiction.label"
+              }
+            },
+            "coarse_area": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 120,
+              "pattern": "^[^0-9@]*$",
+              "x-ui": {
+                "widget": "text",
+                "label_msg": "schema.archive_record.snapshot.place.coarse_area.label",
+                "help_msg": "schema.archive_record.snapshot.place.coarse_area.help"
+              }
+            }
+          },
+          "x-ui": {
+            "widget": "group",
+            "label_msg": "schema.archive_record.snapshot.place.label",
+            "help_msg": "schema.archive_record.snapshot.place.help"
+          },
+          "x-checks": {
+            "no_address": true,
+            "masked_refs_only": true
+          }
+        },
+        "observed_facts": {
+          "type": "array",
+          "minItems": 0,
+          "maxItems": 10,
+          "items": {
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 300,
+            "pattern": "^(?!.*@)(?!.*https?://).*$",
+            "x-ui": {
+              "widget": "textarea",
+              "label_msg": "schema.archive_record.snapshot.observed_facts.item.label",
+              "help_msg": "schema.archive_record.snapshot.observed_facts.item.help"
+            },
+            "x-guidance": {
+              "why": "Facts carry over.",
+              "good": "Forty lamps were out in March.",
+              "bad": "It is bad.",
+              "min_chars": 10,
+              "max_chars": 300
+            },
+            "x-checks": {
+              "dps": [
+                "DP-PRIVACY",
+                "DP-NAMING",
+                "DP-ARCHIVE"
+              ],
+              "masked_refs_only": true
+            }
+          },
+          "x-ui": {
+            "widget": "list",
+            "label_msg": "schema.archive_record.snapshot.observed_facts.label",
+            "help_msg": "schema.archive_record.snapshot.observed_facts.help"
+          }
+        },
+        "assumptions": {
+          "type": "array",
+          "minItems": 0,
+          "maxItems": 8,
+          "items": {
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 300,
+            "pattern": "^(?!.*@)(?!.*https?://).*$",
+            "x-ui": {
+              "widget": "textarea",
+              "label_msg": "schema.archive_record.snapshot.assumptions.item.label",
+              "help_msg": "schema.archive_record.snapshot.assumptions.item.help"
+            },
+            "x-guidance": {
+              "why": "Assumptions carry over.",
+              "good": "The district owns the lamps.",
+              "bad": "Probably.",
+              "min_chars": 10,
+              "max_chars": 300
+            },
+            "x-checks": {
+              "dps": [
+                "DP-PRIVACY",
+                "DP-NAMING",
+                "DP-ARCHIVE"
+              ],
+              "masked_refs_only": true
+            }
+          },
+          "x-ui": {
+            "widget": "list",
+            "label_msg": "schema.archive_record.snapshot.assumptions.label",
+            "help_msg": "schema.archive_record.snapshot.assumptions.help"
+          }
+        },
+        "final_acceptance_criteria": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 6,
+          "items": {
+            "$ref": "#/$defs/criterion"
+          },
+          "x-ui": {
+            "widget": "list",
+            "label_msg": "schema.archive_record.snapshot.final_acceptance_criteria.label",
+            "help_msg": "schema.archive_record.snapshot.final_acceptance_criteria.help"
+          }
+        }
+      },
+      "x-ui": {
+        "widget": "group",
+        "label_msg": "schema.archive_record.snapshot.label",
+        "help_msg": "schema.archive_record.snapshot.help"
+      },
+      "x-checks": {
+        "masked_refs_only": true
+      }
+    },
+    "context_profile": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "problem_type": {
+          "type": "string",
+          "pattern": "^(unknown|[a-z][a-z0-9_.-]{1,63})$",
+          "maxLength": 64,
+          "x-checks": {
+            "allow_unknown": true,
+            "taxonomy": "archive.taxonomy"
+          },
+          "x-ui": {
+            "widget": "taxonomy_pick",
+            "label_msg": "schema.archive_record.context_profile.problem_type.label",
+            "help_msg": "schema.archive_record.context_profile.problem_type.help"
+          }
+        },
+        "category": {
+          "type": "string",
+          "pattern": "^(unknown|[a-z][a-z0-9_.-]{1,63})$",
+          "maxLength": 64,
+          "x-checks": {
+            "allow_unknown": true,
+            "taxonomy": "archive.taxonomy"
+          },
+          "x-ui": {
+            "widget": "taxonomy_pick",
+            "label_msg": "schema.archive_record.context_profile.category.label",
+            "help_msg": "schema.archive_record.context_profile.category.help"
+          }
+        },
+        "population_scale": {
+          "type": "string",
+          "enum": [
+            "<100",
+            "<1k",
+            "<10k",
+            "<100k",
+            "<1M",
+            ">=1M",
+            "unknown"
+          ],
+          "x-checks": {
+            "allow_unknown": true
+          },
+          "x-ui": {
+            "widget": "select",
+            "label_msg": "schema.archive_record.context_profile.population_scale.label",
+            "help_msg": "schema.archive_record.context_profile.population_scale.help"
+          }
+        },
+        "geography": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "country": {
+              "type": "string",
+              "pattern": "^([A-Z]{2}|unknown)$",
+              "x-ui": {
+                "widget": "text",
+                "label_msg": "schema.archive_record.context_profile.geography.country.label",
+                "help_msg": "schema.archive_record.context_profile.geography.country.help"
+              }
+            },
+            "region": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 80,
+              "pattern": "^(?!\\d)(?!.*\\d\\d)(?!.*[#@/\\\\]).*$",
+              "x-checks": {
+                "no_address": true
+              },
+              "x-ui": {
+                "widget": "text",
+                "label_msg": "schema.archive_record.context_profile.geography.region.label",
+                "help_msg": "schema.archive_record.context_profile.geography.region.help"
+              }
+            },
+            "settlement_class": {
+              "type": "string",
+              "enum": [
+                "rural",
+                "town",
+                "city",
+                "metro",
+                "unknown"
+              ],
+              "x-ui": {
+                "widget": "select",
+                "label_msg": "schema.archive_record.context_profile.geography.settlement_class.label"
+              }
+            },
+            "climate_class": {
+              "type": "string",
+              "enum": [
+                "A",
+                "B",
+                "C",
+                "D",
+                "E",
+                "unknown"
+              ],
+              "x-ui": {
+                "widget": "select",
+                "label_msg": "schema.archive_record.context_profile.geography.climate_class.label",
+                "help_msg": "schema.archive_record.context_profile.geography.climate_class.help"
+              }
+            }
+          },
+          "x-checks": {
+            "allow_unknown": true,
+            "no_address": true
+          },
+          "x-ui": {
+            "widget": "group",
+            "label_msg": "schema.archive_record.context_profile.geography.label",
+            "help_msg": "schema.archive_record.context_profile.geography.help"
+          }
+        },
+        "resource_band": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "people": {
+              "type": "string",
+              "enum": [
+                "none",
+                "<5",
+                "<20",
+                ">=20",
+                "unknown"
+              ],
+              "x-ui": {
+                "widget": "select",
+                "label_msg": "schema.archive_record.context_profile.resource_band.people.label"
+              }
+            },
+            "in_kind": {
+              "type": "string",
+              "enum": [
+                "yes",
+                "no",
+                "unknown"
+              ],
+              "x-ui": {
+                "widget": "select",
+                "label_msg": "schema.archive_record.context_profile.resource_band.in_kind.label"
+              }
+            }
+          },
+          "x-checks": {
+            "allow_unknown": true,
+            "private_until_publication": true
+          },
+          "x-ui": {
+            "widget": "group",
+            "label_msg": "schema.archive_record.context_profile.resource_band.label",
+            "help_msg": "schema.archive_record.context_profile.resource_band.help"
+          }
+        },
+        "budget_band": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "band": {
+              "type": "string",
+              "enum": [
+                "none",
+                "<1k",
+                "<10k",
+                "<100k",
+                ">=100k",
+                "unknown"
+              ],
+              "x-ui": {
+                "widget": "select",
+                "label_msg": "schema.archive_record.context_profile.budget_band.band.label"
+              }
+            },
+            "currency_class": {
+              "type": "string",
+              "enum": [
+                "low_income",
+                "lower_middle",
+                "upper_middle",
+                "high_income",
+                "unknown"
+              ],
+              "x-ui": {
+                "widget": "select",
+                "label_msg": "schema.archive_record.context_profile.budget_band.currency_class.label",
+                "help_msg": "schema.archive_record.context_profile.budget_band.currency_class.help"
+              }
+            }
+          },
+          "x-checks": {
+            "allow_unknown": true,
+            "private_until_publication": true
+          },
+          "x-ui": {
+            "widget": "group",
+            "label_msg": "schema.archive_record.context_profile.budget_band.label",
+            "help_msg": "schema.archive_record.context_profile.budget_band.help"
+          }
+        },
+        "institutions": {
+          "type": "array",
+          "maxItems": 8,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]{2,63}$"
+          },
+          "x-checks": {
+            "allow_unknown": true,
+            "roles_only": true
+          },
+          "x-ui": {
+            "widget": "list",
+            "label_msg": "schema.archive_record.context_profile.institutions.label",
+            "help_msg": "schema.archive_record.context_profile.institutions.help"
+          }
+        },
+        "legal_stack": {
+          "type": "array",
+          "maxItems": 7,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "layer",
+              "corpus_version"
+            ],
+            "properties": {
+              "layer": {
+                "type": "string",
+                "enum": [
+                  "L0",
+                  "L1",
+                  "L2",
+                  "L3",
+                  "L4",
+                  "L5",
+                  "L6"
+                ]
+              },
+              "corpus_version": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 64
+              }
+            }
+          },
+          "x-checks": {
+            "allow_unknown": true,
+            "derived": "jurisdiction_resolver"
+          },
+          "x-ui": {
+            "widget": "readonly",
+            "label_msg": "schema.archive_record.context_profile.legal_stack.label",
+            "help_msg": "schema.archive_record.context_profile.legal_stack.help"
+          }
+        },
+        "language": {
+          "type": "string",
+          "pattern": "^(unknown|[A-Za-z]{2,3}(-[A-Za-z0-9]{2,8}){0,3})$",
+          "maxLength": 35,
+          "x-checks": {
+            "allow_unknown": true
+          },
+          "x-ui": {
+            "widget": "text",
+            "label_msg": "schema.archive_record.context_profile.language.label",
+            "help_msg": "schema.archive_record.context_profile.language.help"
+          }
+        },
+        "constraints": {
+          "type": "array",
+          "maxItems": 10,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "type",
+              "statement"
+            ],
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "legal",
+                  "time",
+                  "skills",
+                  "political",
+                  "physical"
+                ],
+                "x-ui": {
+                  "widget": "select",
+                  "label_msg": "schema.archive_record.context_profile.constraints.type.label"
+                }
+              },
+              "statement": {
+                "type": "string",
+                "minLength": 5,
+                "maxLength": 200,
+                "x-ui": {
+                  "widget": "text",
+                  "label_msg": "schema.archive_record.context_profile.constraints.statement.label",
+                  "help_msg": "schema.archive_record.context_profile.constraints.statement.help"
+                }
+              }
+            }
+          },
+          "x-checks": {
+            "allow_unknown": true,
+            "dps": [
+              "DP-PRIVACY",
+              "DP-NAMING"
+            ]
+          },
+          "x-ui": {
+            "widget": "list",
+            "label_msg": "schema.archive_record.context_profile.constraints.label",
+            "help_msg": "schema.archive_record.context_profile.constraints.help"
+          }
+        }
+      },
+      "x-ui": {
+        "widget": "group",
+        "label_msg": "schema.archive_record.context_profile.label",
+        "help_msg": "schema.archive_record.context_profile.help",
+        "order": 19,
+        "group": "context"
+      },
+      "x-guidance": {
+        "why": "Lets people find earlier problems like this one and what worked there.",
+        "good": "A town of about ten thousand people, a mild climate, one municipal lighting office, unknown budget.",
+        "bad": "A street address or the name of an official."
+      },
+      "x-checks": {
+        "allow_unknown": true,
+        "derived_from": [
+          "condition",
+          "affected",
+          "place",
+          "responsible_roles",
+          "assumptions",
+          "out_of_scope",
+          "lawful_options"
+        ],
+        "ai_fill_assist": "poster_confirms"
+      },
+      "required": [
+        "problem_type",
+        "category",
+        "population_scale",
+        "geography",
+        "resource_band",
+        "budget_band",
+        "language"
+      ]
+    },
+    "executed_path": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 12,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "name",
+          "goal",
+          "criteria",
+          "outcome",
+          "duration_band",
+          "cost_band",
+          "depends_on"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 40,
+            "pattern": "^[a-z][a-z0-9_]{1,39}$",
+            "x-ui": {
+              "widget": "text",
+              "label_msg": "schema.archive_record.executed_path.name.label",
+              "help_msg": "schema.archive_record.executed_path.name.help"
+            }
+          },
+          "goal": {
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 300,
+            "pattern": "^(?!.*@)(?!.*https?://).*$",
+            "x-ui": {
+              "widget": "textarea",
+              "label_msg": "schema.archive_record.executed_path.goal.label",
+              "help_msg": "schema.archive_record.executed_path.goal.help"
+            },
+            "x-guidance": {
+              "why": "Shows what each step was for.",
+              "good": "Confirm which lamps are out and why.",
+              "bad": "Do stuff.",
+              "min_chars": 10,
+              "max_chars": 300
+            },
+            "x-checks": {
+              "dps": [
+                "DP-PRIVACY",
+                "DP-NAMING",
+                "DP-ARCHIVE"
+              ],
+              "masked_refs_only": true
+            }
+          },
+          "criteria": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 6,
+            "items": {
+              "$ref": "#/$defs/criterion"
+            },
+            "x-ui": {
+              "widget": "list",
+              "label_msg": "schema.archive_record.executed_path.criteria.label",
+              "help_msg": "schema.archive_record.executed_path.criteria.help"
+            }
+          },
+          "outcome": {
+            "type": "string",
+            "enum": [
+              "resolved",
+              "skipped",
+              "blocked",
+              "abandoned"
+            ],
+            "x-ui": {
+              "widget": "select",
+              "label_msg": "schema.archive_record.executed_path.outcome.label",
+              "help_msg": "schema.archive_record.executed_path.outcome.help"
+            }
+          },
+          "duration_band": {
+            "type": "string",
+            "enum": [
+              "<1w",
+              "<1m",
+              "<3m",
+              "<1y",
+              ">=1y",
+              "unknown"
+            ],
+            "x-ui": {
+              "widget": "select",
+              "label_msg": "schema.archive_record.executed_path.duration_band.label",
+              "help_msg": "schema.archive_record.executed_path.duration_band.help"
+            }
+          },
+          "cost_band": {
+            "type": "string",
+            "enum": [
+              "none",
+              "<1k",
+              "<10k",
+              "<100k",
+              ">=100k",
+              "unknown"
+            ],
+            "x-ui": {
+              "widget": "select",
+              "label_msg": "schema.archive_record.executed_path.cost_band.label",
+              "help_msg": "schema.archive_record.executed_path.cost_band.help"
+            }
+          },
+          "depends_on": {
+            "type": "array",
+            "maxItems": 11,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_]{1,39}$"
+            },
+            "x-ui": {
+              "widget": "list",
+              "label_msg": "schema.archive_record.executed_path.depends_on.label",
+              "help_msg": "schema.archive_record.executed_path.depends_on.help"
+            }
+          },
+          "chosen_option": {
+            "type": "string",
+            "minLength": 5,
+            "maxLength": 300,
+            "pattern": "^(?!.*@)(?!.*https?://).*$",
+            "x-ui": {
+              "widget": "textarea",
+              "label_msg": "schema.archive_record.executed_path.chosen_option.label",
+              "help_msg": "schema.archive_record.executed_path.chosen_option.help"
+            },
+            "x-guidance": {
+              "why": "Links the stage to its choice.",
+              "good": "Repair the feed.",
+              "bad": "The one.",
+              "min_chars": 5,
+              "max_chars": 300
+            },
+            "x-checks": {
+              "dps": [
+                "DP-PRIVACY",
+                "DP-NAMING",
+                "DP-ARCHIVE"
+              ],
+              "masked_refs_only": true
+            }
+          }
+        },
+        "x-ui": {
+          "widget": "group",
+          "label_msg": "schema.archive_record.executed_path.item.label",
+          "help_msg": "schema.archive_record.executed_path.item.help"
+        }
+      },
+      "x-ui": {
+        "widget": "list",
+        "label_msg": "schema.archive_record.executed_path.label",
+        "help_msg": "schema.archive_record.executed_path.help"
+      },
+      "x-checks": {
+        "unique_names": true,
+        "depends_on_resolves": true
+      }
+    },
+    "options": {
+      "type": "array",
+      "minItems": 0,
+      "maxItems": 40,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "stage",
+          "summary",
+          "legality",
+          "chosen",
+          "reason"
+        ],
+        "properties": {
+          "stage": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 40,
+            "pattern": "^[a-z][a-z0-9_]{1,39}$",
+            "x-ui": {
+              "widget": "text",
+              "label_msg": "schema.archive_record.options.stage.label",
+              "help_msg": "schema.archive_record.options.stage.help"
+            }
+          },
+          "summary": {
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 300,
+            "pattern": "^(?!.*@)(?!.*https?://).*$",
+            "x-ui": {
+              "widget": "textarea",
+              "label_msg": "schema.archive_record.options.summary.label",
+              "help_msg": "schema.archive_record.options.summary.help"
+            },
+            "x-guidance": {
+              "why": "Lets later problems compare options.",
+              "good": "Repair the feed and add a second breaker.",
+              "bad": "Ask Bob on bob@example.org",
+              "min_chars": 10,
+              "max_chars": 300
+            },
+            "x-checks": {
+              "dps": [
+                "DP-PRIVACY",
+                "DP-NAMING",
+                "DP-ARCHIVE"
+              ],
+              "masked_refs_only": true
+            }
+          },
+          "legality": {
+            "type": "string",
+            "pattern": "^(lawful|unknown|unlawful_at_L[0-6])$",
+            "x-ui": {
+              "widget": "select",
+              "label_msg": "schema.archive_record.options.legality.label",
+              "help_msg": "schema.archive_record.options.legality.help"
+            }
+          },
+          "chosen": {
+            "type": "boolean",
+            "x-ui": {
+              "widget": "toggle",
+              "label_msg": "schema.archive_record.options.chosen.label",
+              "help_msg": "schema.archive_record.options.chosen.help"
+            }
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 300,
+            "pattern": "^(?!.*@)(?!.*https?://).*$",
+            "x-ui": {
+              "widget": "textarea",
+              "label_msg": "schema.archive_record.options.reason.label",
+              "help_msg": "schema.archive_record.options.reason.help"
+            },
+            "x-guidance": {
+              "why": "Reasons carry the lesson.",
+              "good": "Cheapest option that met the criteria.",
+              "bad": "Because.",
+              "min_chars": 10,
+              "max_chars": 300
+            },
+            "x-checks": {
+              "dps": [
+                "DP-PRIVACY",
+                "DP-NAMING",
+                "DP-ARCHIVE"
+              ],
+              "masked_refs_only": true
+            }
+          }
+        },
+        "x-ui": {
+          "widget": "group",
+          "label_msg": "schema.archive_record.options.item.label",
+          "help_msg": "schema.archive_record.options.item.help"
+        }
+      },
+      "x-ui": {
+        "widget": "list",
+        "label_msg": "schema.archive_record.options.label",
+        "help_msg": "schema.archive_record.options.help"
+      }
+    },
+    "evidence_refs": {
+      "type": "array",
+      "minItems": 0,
+      "maxItems": 20,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "uri",
+          "tier"
+        ],
+        "properties": {
+          "uri": {
+            "type": "string",
+            "minLength": 9,
+            "maxLength": 300,
+            "pattern": "^https?://\\S+$",
+            "x-ui": {
+              "widget": "url",
+              "label_msg": "schema.archive_record.evidence_refs.uri.label",
+              "help_msg": "schema.archive_record.evidence_refs.uri.help"
+            },
+            "x-checks": {
+              "no_uploads_of_people": true
+            }
+          },
+          "tier": {
+            "type": "string",
+            "enum": [
+              "official_record",
+              "statistics_body",
+              "court_or_legislature",
+              "reputable_media",
+              "research",
+              "civil_society",
+              "other"
+            ],
+            "x-ui": {
+              "widget": "select",
+              "label_msg": "schema.archive_record.evidence_refs.tier.label",
+              "help_msg": "schema.archive_record.evidence_refs.tier.help"
+            }
+          },
+          "stage": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 40,
+            "pattern": "^[a-z][a-z0-9_]{1,39}$",
+            "x-ui": {
+              "widget": "text",
+              "label_msg": "schema.archive_record.evidence_refs.stage.label",
+              "help_msg": "schema.archive_record.evidence_refs.stage.help"
+            }
+          }
+        },
+        "x-ui": {
+          "widget": "group",
+          "label_msg": "schema.archive_record.evidence_refs.item.label"
+        }
+      },
+      "x-ui": {
+        "widget": "list",
+        "label_msg": "schema.archive_record.evidence_refs.label",
+        "help_msg": "schema.archive_record.evidence_refs.help"
+      }
+    },
+    "challenges": {
+      "type": "array",
+      "minItems": 0,
+      "maxItems": 30,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "stage",
+          "tried",
+          "why_failed_or_blocked",
+          "kind",
+          "resolution"
+        ],
+        "properties": {
+          "stage": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 40,
+            "pattern": "^[a-z][a-z0-9_]{1,39}$",
+            "x-ui": {
+              "widget": "text",
+              "label_msg": "schema.archive_record.challenges.stage.label",
+              "help_msg": "schema.archive_record.challenges.stage.help"
+            }
+          },
+          "tried": {
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 300,
+            "pattern": "^(?!.*@)(?!.*https?://).*$",
+            "x-ui": {
+              "widget": "textarea",
+              "label_msg": "schema.archive_record.challenges.tried.label",
+              "help_msg": "schema.archive_record.challenges.tried.help"
+            },
+            "x-guidance": {
+              "why": "Failures are first-class (ARCHIVE-1).",
+              "good": "Asked the district for a work permit.",
+              "bad": "Tried.",
+              "min_chars": 10,
+              "max_chars": 300
+            },
+            "x-checks": {
+              "dps": [
+                "DP-PRIVACY",
+                "DP-NAMING",
+                "DP-ARCHIVE"
+              ],
+              "masked_refs_only": true
+            }
+          },
+          "why_failed_or_blocked": {
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 300,
+            "pattern": "^(?!.*@)(?!.*https?://).*$",
+            "x-ui": {
+              "widget": "textarea",
+              "label_msg": "schema.archive_record.challenges.why.label",
+              "help_msg": "schema.archive_record.challenges.why.help"
+            },
+            "x-guidance": {
+              "why": "Lets others avoid the same wall.",
+              "good": "The permit queue was nine months long.",
+              "bad": "Bad luck.",
+              "min_chars": 10,
+              "max_chars": 300
+            },
+            "x-checks": {
+              "dps": [
+                "DP-PRIVACY",
+                "DP-NAMING",
+                "DP-ARCHIVE"
+              ],
+              "masked_refs_only": true
+            }
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "legal",
+              "resource",
+              "institutional",
+              "evidence",
+              "social",
+              "technical"
+            ],
+            "x-ui": {
+              "widget": "select",
+              "label_msg": "schema.archive_record.challenges.kind.label",
+              "help_msg": "schema.archive_record.challenges.kind.help"
+            }
+          },
+          "resolution": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 300,
+            "pattern": "^(?!.*@)(?!.*https?://).*$",
+            "x-ui": {
+              "widget": "textarea",
+              "label_msg": "schema.archive_record.challenges.resolution.label",
+              "help_msg": "schema.archive_record.challenges.resolution.help"
+            },
+            "x-guidance": {
+              "why": "Shows what worked next.",
+              "good": "unresolved",
+              "bad": "n/a",
+              "min_chars": 1,
+              "max_chars": 300
+            },
+            "x-checks": {
+              "dps": [
+                "DP-PRIVACY",
+                "DP-NAMING",
+                "DP-ARCHIVE"
+              ],
+              "masked_refs_only": true
+            }
+          },
+          "layer": {
+            "type": "string",
+            "enum": [
+              "L0",
+              "L1",
+              "L2",
+              "L3",
+              "L4",
+              "L5",
+              "L6"
+            ],
+            "x-ui": {
+              "widget": "select",
+              "label_msg": "schema.archive_record.challenges.layer.label",
+              "help_msg": "schema.archive_record.challenges.layer.help"
+            }
+          }
+        },
+        "x-ui": {
+          "widget": "group",
+          "label_msg": "schema.archive_record.challenges.item.label",
+          "help_msg": "schema.archive_record.challenges.item.help"
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "const": "legal"
+                }
+              },
+              "required": [
+                "kind"
+              ]
+            },
+            "then": {
+              "type": "object",
+              "required": [
+                "layer"
+              ],
+              "properties": {
+                "layer": {}
+              }
+            }
+          }
+        ]
+      },
+      "x-ui": {
+        "widget": "list",
+        "label_msg": "schema.archive_record.challenges.label",
+        "help_msg": "schema.archive_record.challenges.help"
+      }
+    },
+    "costs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "total_band",
+        "currency_class",
+        "labour_hours_band",
+        "in_kind"
+      ],
+      "properties": {
+        "total_band": {
+          "type": "string",
+          "enum": [
+            "none",
+            "<1k",
+            "<10k",
+            "<100k",
+            ">=100k",
+            "unknown"
+          ],
+          "x-ui": {
+            "widget": "select",
+            "label_msg": "schema.archive_record.costs.total_band.label",
+            "help_msg": "schema.archive_record.costs.total_band.help"
+          }
+        },
+        "currency_class": {
+          "type": "string",
+          "enum": [
+            "low_income",
+            "lower_middle",
+            "upper_middle",
+            "high_income",
+            "unknown"
+          ],
+          "x-ui": {
+            "widget": "select",
+            "label_msg": "schema.archive_record.costs.currency_class.label",
+            "help_msg": "schema.archive_record.costs.currency_class.help"
+          }
+        },
+        "labour_hours_band": {
+          "type": "string",
+          "enum": [
+            "<10",
+            "<100",
+            "<1000",
+            ">=1000",
+            "unknown"
+          ],
+          "x-ui": {
+            "widget": "select",
+            "label_msg": "schema.archive_record.costs.labour_hours_band.label",
+            "help_msg": "schema.archive_record.costs.labour_hours_band.help"
+          }
+        },
+        "in_kind": {
+          "type": "string",
+          "enum": [
+            "yes",
+            "no",
+            "unknown"
+          ],
+          "x-ui": {
+            "widget": "select",
+            "label_msg": "schema.archive_record.costs.in_kind.label",
+            "help_msg": "schema.archive_record.costs.in_kind.help"
+          }
+        },
+        "none_stated": {
+          "type": "boolean",
+          "x-ui": {
+            "widget": "toggle",
+            "label_msg": "schema.archive_record.costs.none_stated.label",
+            "help_msg": "schema.archive_record.costs.none_stated.help"
+          }
+        }
+      },
+      "x-ui": {
+        "widget": "group",
+        "label_msg": "schema.archive_record.costs.label",
+        "help_msg": "schema.archive_record.costs.help"
+      }
+    },
+    "outcome": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "criteria_results"
+      ],
+      "properties": {
+        "criteria_results": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 6,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "criterion_ref",
+              "result"
+            ],
+            "properties": {
+              "criterion_ref": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 6,
+                "x-ui": {
+                  "widget": "number",
+                  "label_msg": "schema.archive_record.outcome.criteria_results.criterion_ref.label",
+                  "help_msg": "schema.archive_record.outcome.criteria_results.criterion_ref.help"
+                }
+              },
+              "result": {
+                "type": "string",
+                "enum": [
+                  "met",
+                  "partly",
+                  "not_met",
+                  "unknown"
+                ],
+                "x-ui": {
+                  "widget": "select",
+                  "label_msg": "schema.archive_record.outcome.criteria_results.result.label"
+                }
+              }
+            },
+            "x-ui": {
+              "widget": "group",
+              "label_msg": "schema.archive_record.outcome.criteria_results.item.label"
+            }
+          },
+          "x-ui": {
+            "widget": "list",
+            "label_msg": "schema.archive_record.outcome.criteria_results.label",
+            "help_msg": "schema.archive_record.outcome.criteria_results.help"
+          }
+        },
+        "summary": {
+          "type": "string",
+          "minLength": 20,
+          "maxLength": 500,
+          "pattern": "^(?!.*@)(?!.*https?://).*$",
+          "x-ui": {
+            "widget": "textarea",
+            "label_msg": "schema.archive_record.outcome.summary.label",
+            "help_msg": "schema.archive_record.outcome.summary.help"
+          },
+          "x-guidance": {
+            "why": "Says plainly what happened.",
+            "good": "Lamps on two streets were repaired; the third street was never fixed.",
+            "bad": "It went fine.",
+            "min_chars": 20,
+            "max_chars": 500
+          },
+          "x-checks": {
+            "dps": [
+              "DP-PRIVACY",
+              "DP-NAMING",
+              "DP-ARCHIVE"
+            ],
+            "masked_refs_only": true
+          }
+        },
+        "unresolved": {
+          "type": "boolean",
+          "x-ui": {
+            "widget": "toggle",
+            "label_msg": "schema.archive_record.outcome.unresolved.label",
+            "help_msg": "schema.archive_record.outcome.unresolved.help"
+          }
+        }
+      },
+      "x-ui": {
+        "widget": "group",
+        "label_msg": "schema.archive_record.outcome.label",
+        "help_msg": "schema.archive_record.outcome.help"
+      }
+    },
+    "versions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "policy_version",
+        "schema_version",
+        "archive_schema_version"
+      ],
+      "properties": {
+        "policy_version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "x-ui": {
+            "widget": "readonly",
+            "label_msg": "schema.archive_record.versions.policy_version.label"
+          }
+        },
+        "schema_version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "x-ui": {
+            "widget": "readonly",
+            "label_msg": "schema.archive_record.versions.schema_version.label"
+          }
+        },
+        "archive_schema_version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "x-ui": {
+            "widget": "readonly",
+            "label_msg": "schema.archive_record.versions.archive_schema_version.label"
+          }
+        },
+        "legal_corpus_versions": {
+          "type": "array",
+          "maxItems": 7,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "layer",
+              "corpus_version"
+            ],
+            "properties": {
+              "layer": {
+                "type": "string",
+                "enum": [
+                  "L0",
+                  "L1",
+                  "L2",
+                  "L3",
+                  "L4",
+                  "L5",
+                  "L6"
+                ]
+              },
+              "corpus_version": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 64
+              }
+            }
+          },
+          "x-ui": {
+            "widget": "readonly",
+            "label_msg": "schema.archive_record.versions.legal_corpus_versions.label",
+            "help_msg": "schema.archive_record.versions.legal_corpus_versions.help"
+          }
+        }
+      },
+      "x-ui": {
+        "widget": "group",
+        "label_msg": "schema.archive_record.versions.label",
+        "help_msg": "schema.archive_record.versions.help"
+      }
+    },
+    "attribution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "credit_text",
+        "source_url",
+        "license"
+      ],
+      "properties": {
+        "credit_text": {
+          "type": "string",
+          "minLength": 5,
+          "maxLength": 200,
+          "pattern": "^(?!.*@)(?!.*https?://).*$",
+          "x-ui": {
+            "widget": "textarea",
+            "label_msg": "schema.archive_record.attribution.credit_text.label",
+            "help_msg": "schema.archive_record.attribution.credit_text.help"
+          },
+          "x-guidance": {
+            "why": "Reuse stays traceable.",
+            "good": "Based on the Northvale street lights record.",
+            "bad": "Ask me at me@example.org",
+            "min_chars": 5,
+            "max_chars": 200
+          },
+          "x-checks": {
+            "dps": [
+              "DP-PRIVACY",
+              "DP-NAMING",
+              "DP-ARCHIVE"
+            ],
+            "masked_refs_only": true
+          }
+        },
+        "source_url": {
+          "type": "string",
+          "minLength": 9,
+          "maxLength": 300,
+          "pattern": "^https?://\\S+$",
+          "x-ui": {
+            "widget": "url",
+            "label_msg": "schema.archive_record.attribution.source_url.label",
+            "help_msg": "schema.archive_record.attribution.source_url.help"
+          }
+        },
+        "license": {
+          "type": "string",
+          "enum": [
+            "CC-BY-4.0",
+            "CC0-1.0"
+          ],
+          "default": "CC-BY-4.0",
+          "x-ui": {
+            "widget": "select",
+            "label_msg": "schema.archive_record.attribution.license.label",
+            "help_msg": "schema.archive_record.attribution.license.help"
+          }
+        },
+        "handles": {
+          "type": "array",
+          "maxItems": 20,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_.-]{2,40}$"
+          },
+          "x-ui": {
+            "widget": "list",
+            "label_msg": "schema.archive_record.attribution.handles.label",
+            "help_msg": "schema.archive_record.attribution.handles.help"
+          },
+          "x-checks": {
+            "opted_in_only": true
+          }
+        }
+      },
+      "x-ui": {
+        "widget": "group",
+        "label_msg": "schema.archive_record.attribution.label",
+        "help_msg": "schema.archive_record.attribution.help"
+      }
+    },
+    "quality": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "completeness",
+        "ratified",
+        "dp_archive_run_id"
+      ],
+      "properties": {
+        "completeness": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "x-ui": {
+            "widget": "readonly",
+            "label_msg": "schema.archive_record.quality.completeness.label",
+            "help_msg": "schema.archive_record.quality.completeness.help"
+          }
+        },
+        "ratified": {
+          "type": "boolean",
+          "x-ui": {
+            "widget": "readonly",
+            "label_msg": "schema.archive_record.quality.ratified.label",
+            "help_msg": "schema.archive_record.quality.ratified.help"
+          }
+        },
+        "dp_archive_run_id": {
+          "type": "string",
+          "minLength": 8,
+          "maxLength": 64,
+          "pattern": "^[a-z0-9][a-z0-9_-]{7,63}$",
+          "x-ui": {
+            "widget": "readonly",
+            "label_msg": "schema.archive_record.quality.dp_archive_run_id.label",
+            "help_msg": "schema.archive_record.quality.dp_archive_run_id.help"
+          },
+          "x-checks": {
+            "masked_refs_only": true
+          }
+        }
+      },
+      "x-ui": {
+        "widget": "group",
+        "label_msg": "schema.archive_record.quality.label",
+        "help_msg": "schema.archive_record.quality.help"
+      }
+    },
+    "previous_record_id": {
+      "type": "string",
+      "minLength": 8,
+      "maxLength": 64,
+      "pattern": "^[a-z0-9][a-z0-9_-]{7,63}$",
+      "x-ui": {
+        "widget": "readonly",
+        "label_msg": "schema.archive_record.previous_record_id.label",
+        "help_msg": "schema.archive_record.previous_record_id.help"
+      },
+      "x-checks": {
+        "masked_refs_only": true
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "terminal_state": {
+            "const": "stuck"
+          }
+        },
+        "required": [
+          "terminal_state"
+        ]
+      },
+      "then": {
+        "type": "object",
+        "properties": {
+          "outcome": {
+            "type": "object",
+            "required": [
+              "unresolved"
+            ],
+            "properties": {
+              "unresolved": {
+                "const": true
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "criterion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "statement",
+        "measure"
+      ],
+      "properties": {
+        "statement": {
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 300,
+          "x-ui": {
+            "widget": "textarea",
+            "label_msg": "schema.archive_record.criterion_defs.criterion.statement.label",
+            "help_msg": "schema.archive_record.criterion_defs.criterion.statement.help"
+          }
+        },
+        "measure": {
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 300,
+          "x-ui": {
+            "widget": "textarea",
+            "label_msg": "schema.archive_record.criterion_defs.criterion.measure.label",
+            "help_msg": "schema.archive_record.criterion_defs.criterion.measure.help"
+          }
+        },
+        "target": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200,
+          "x-ui": {
+            "widget": "text",
+            "label_msg": "schema.archive_record.criterion_defs.criterion.target.label",
+            "help_msg": "schema.archive_record.criterion_defs.criterion.target.help"
+          }
+        },
+        "evidence_hint": {
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 300,
+          "x-ui": {
+            "widget": "textarea",
+            "label_msg": "schema.archive_record.criterion_defs.criterion.evidence_hint.label",
+            "help_msg": "schema.archive_record.criterion_defs.criterion.evidence_hint.help"
+          }
+        },
+        "deadline": {
+          "type": "string",
+          "minLength": 4,
+          "maxLength": 10,
+          "pattern": "^\\d{4}(-\\d{2}(-\\d{2})?)?$",
+          "x-ui": {
+            "widget": "date",
+            "label_msg": "schema.archive_record.criterion_defs.criterion.deadline.label",
+            "help_msg": "schema.archive_record.criterion_defs.criterion.deadline.help"
+          }
+        }
+      }
+    }
+  },
+  "x-checks": {
+    "dps": [
+      "DP-ARCHIVE",
+      "DP-PRIVACY",
+      "DP-NAMING",
+      "DP-TONE",
+      "DP-CRISIS"
+    ],
+    "lint_rule": "archive-record-challenge",
+    "public": true,
+    "masked_refs_only": true,
+    "system_built": true
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "type": "evidence",
+  "target": "prob-lights-0042",
+  "claim": "A repair log records when the fault was first reported.",
+  "basis": "firsthand",
+  "evidence_refs": [],
+  "uncertainty": "I do not know the exact numbers.",
+  "assumptions": [],
+  "url": "https://example.org/repair-log",
+  "source_description": "A public repair log kept by the lighting office.",
+  "claim_supported": "The fault was logged in March 2026.",
+  "what_it_does_not_show": "It does not show whether anyone visited the site."
+}

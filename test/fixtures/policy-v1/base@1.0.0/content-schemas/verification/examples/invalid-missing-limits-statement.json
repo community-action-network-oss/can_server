@@ -1,0 +1,20 @@
+{
+  "stage_ref": "implement_pilot",
+  "final_criterion_refs": [
+    1
+  ],
+  "success_metric_restated": "No reported outage on the ring road for 30 days.",
+  "evidence_refs": [
+    {
+      "url": "https://example.org/lowmere/repair-log",
+      "description": "Council repair log entry for the ring road feed.",
+      "tier_request": "official_record"
+    }
+  ],
+  "outcomes": [
+    {
+      "criterion_ref": 1,
+      "outcome_statement": "The log shows no outage report on the ring road for 31 days after the repair."
+    }
+  ]
+}

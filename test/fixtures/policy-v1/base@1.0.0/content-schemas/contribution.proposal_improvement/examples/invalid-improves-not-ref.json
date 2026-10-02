@@ -1,0 +1,30 @@
+{
+  "type": "proposal_improvement",
+  "target": "prob-lights-0042",
+  "target_stage": "stage-lights-survey",
+  "claim": "The ring road lights have been out for several weeks.",
+  "basis": "firsthand",
+  "evidence_refs": [
+    {
+      "url": "https://example.org/lighting-register",
+      "supports": "Lists the lights on the ring road."
+    }
+  ],
+  "uncertainty": "I do not know how many lights are affected.",
+  "assumptions": [
+    "I assume the lights share one power feed."
+  ],
+  "improves": "the one above",
+  "change": "Add a second breaker so a single fault cannot darken the road.",
+  "mechanism": "The district repair crew replaces the failing breaker and adds a second one so one fault no longer darkens the road.",
+  "responsible_role": "District lighting officer",
+  "authority": "The district maintenance budget covers street lighting repairs.",
+  "cost": "Roughly 2,000 to 4,000 in parts and labour from the repair budget.",
+  "success_metric": "All lights on the ring road work for 30 nights in a row.",
+  "risks": [
+    "The repair may leave the road dark for one night."
+  ],
+  "lawful_alternatives": [
+    "Temporary solar lamps at the worst junctions."
+  ]
+}

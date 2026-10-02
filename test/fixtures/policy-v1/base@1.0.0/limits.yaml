@@ -1,0 +1,333 @@
+# Per-account caps, field bounds and cooldowns. Pack values, never code constants.
+# Defaults: docs/open-questions/OQ-limits.md and docs/design/ai/decision-points.md.
+# Rules and the public: false convention: docs/limits.md
+schema_version: 1
+caps:
+  problems_per_account_per_period:
+    count: 3
+    days: 7
+    note: Problems one account may submit per period.
+  contributions_per_account_per_day:
+    total: 20
+    per_problem: 8
+    note: All contribution types except the exempt ones under cooldowns.
+  proposals_per_account_per_problem:
+    value: 2
+    note: Proposals one account may make on one problem.
+  open_drafts_per_account:
+    value: 5
+    note: Unsubmitted drafts.
+  appeals_per_account_per_period:
+    count: 3
+    days: 7
+    note: Appeals per period.
+# Entries are added by the content schema units. Char bounds equal the schema x-guidance.
+# List sizes (sources 1 to 10, facts 1 to 10, criteria 1 to 6, assumptions 1 to 8) live in
+# content-schemas/problem/schema.json as minItems and maxItems: this file allows one list key per type.
+fields:
+  problem:
+    condition:
+      min_chars: 40
+      max_chars: 400
+      note: Length of the shared public condition.
+    causal_hypothesis:
+      min_chars: 40
+      max_chars: 600
+      note: Length of the causal hypothesis statement.
+  # Contribution types: key is the schema folder name. Evidence ref and assumption list sizes are in the schemas.
+  contribution.clarifying_question:
+    claim:
+      min_chars: 20
+      max_chars: 500
+      note: Length of the contribution claim.
+    list:
+      min: 0
+      max: 6
+      note: Evidence refs per contribution, 0 to 6.
+  contribution.observation:
+    claim:
+      min_chars: 20
+      max_chars: 500
+      note: Length of the contribution claim.
+    list:
+      min: 0
+      max: 6
+      note: Evidence refs per contribution, 0 to 6.
+  contribution.personal_experience:
+    claim:
+      min_chars: 20
+      max_chars: 500
+      note: Length of the contribution claim.
+    list:
+      min: 0
+      max: 6
+      note: Evidence refs per contribution, 0 to 6.
+  contribution.factual_claim:
+    claim:
+      min_chars: 20
+      max_chars: 500
+      note: Length of the contribution claim.
+    list:
+      min: 0
+      max: 6
+      note: Evidence refs per contribution, 0 to 6.
+  contribution.evidence:
+    claim:
+      min_chars: 20
+      max_chars: 500
+      note: Length of the contribution claim.
+    list:
+      min: 0
+      max: 6
+      note: Evidence refs per contribution, 0 to 6.
+  contribution.interpretation:
+    claim:
+      min_chars: 20
+      max_chars: 500
+      note: Length of the contribution claim.
+    list:
+      min: 0
+      max: 6
+      note: Evidence refs per contribution, 0 to 6.
+  contribution.root_cause:
+    claim:
+      min_chars: 20
+      max_chars: 500
+      note: Length of the contribution claim.
+    list:
+      min: 0
+      max: 6
+      note: Evidence refs per contribution, 0 to 6.
+  contribution.constraint:
+    claim:
+      min_chars: 20
+      max_chars: 500
+      note: Length of the contribution claim.
+    list:
+      min: 0
+      max: 6
+      note: Evidence refs per contribution, 0 to 6.
+  contribution.stakeholder_perspective:
+    claim:
+      min_chars: 20
+      max_chars: 500
+      note: Length of the contribution claim.
+    list:
+      min: 0
+      max: 6
+      note: Evidence refs per contribution, 0 to 6.
+  contribution.proposed_solution:
+    claim:
+      min_chars: 20
+      max_chars: 500
+      note: Length of the contribution claim.
+    list:
+      min: 0
+      max: 6
+      note: Evidence refs per contribution, 0 to 6.
+  contribution.proposal_improvement:
+    claim:
+      min_chars: 20
+      max_chars: 500
+      note: Length of the contribution claim.
+    list:
+      min: 0
+      max: 6
+      note: Evidence refs per contribution, 0 to 6.
+  contribution.risk:
+    claim:
+      min_chars: 20
+      max_chars: 500
+      note: Length of the contribution claim.
+    list:
+      min: 0
+      max: 6
+      note: Evidence refs per contribution, 0 to 6.
+  contribution.implementation_offer:
+    claim:
+      min_chars: 20
+      max_chars: 500
+      note: Length of the contribution claim.
+    list:
+      min: 0
+      max: 6
+      note: Evidence refs per contribution, 0 to 6.
+  contribution.progress_update:
+    claim:
+      min_chars: 20
+      max_chars: 500
+      note: Length of the contribution claim.
+    list:
+      min: 0
+      max: 6
+      note: Evidence refs per contribution, 0 to 6.
+  contribution.verification_evidence:
+    claim:
+      min_chars: 20
+      max_chars: 500
+      note: Length of the contribution claim.
+    list:
+      min: 0
+      max: 6
+      note: Evidence refs per contribution, 0 to 6.
+  # Stage content types. One list key per type; the other list sizes are minItems and maxItems in the schemas.
+  stage_option:
+    option_statement:
+      min_chars: 20
+      max_chars: 500
+      note: Length of the option statement.
+    mechanism:
+      min_chars: 20
+      max_chars: 500
+      note: Length of the mechanism.
+    responsible_role:
+      min_chars: 5
+      max_chars: 150
+      note: Length of the responsible role.
+    authority_and_legal_basis:
+      min_chars: 20
+      max_chars: 500
+      note: Length of the authority and legal basis.
+    funding:
+      min_chars: 10
+      max_chars: 300
+      note: Length of the funding note.
+    risks_and_rights_impact:
+      min_chars: 20
+      max_chars: 500
+      note: Length of the risks and rights impact.
+    list:
+      min: 1
+      max: 6
+      note: Criteria an option maps to, 1 to 6.
+  stage_choice:
+    decider_role:
+      min_chars: 5
+      max_chars: 150
+      note: Length of the decider role.
+    authority:
+      min_chars: 10
+      max_chars: 300
+      note: Length of the authority statement.
+    rationale:
+      min_chars: 20
+      max_chars: 600
+      note: Length of the rationale.
+    list:
+      min: 1
+      max: 12
+      note: Steps in one choice, 1 to 12.
+  stage_evidence:
+    outcome_statement:
+      min_chars: 20
+      max_chars: 500
+      note: Length of the outcome statement.
+    what_the_evidence_does_not_show:
+      min_chars: 10
+      max_chars: 300
+      note: Length of the limits statement.
+    list:
+      min: 1
+      max: 6
+      note: Evidence refs per item, 1 to 6.
+  review_recommendation:
+    recommendation:
+      min_chars: 20
+      max_chars: 600
+      note: Length of the change a volunteer asks for.
+    reason:
+      min_chars: 20
+      max_chars: 600
+      note: Length of the reason for the change.
+    resolution_reason:
+      min_chars: 10
+      max_chars: 600
+      note: Length of the poster reason for accepting or declining.
+  # Archive types are system-built: no free-text field has a char bound here, only list sizes.
+  archive_record:
+    list:
+      min: 1
+      max: 12
+      note: Stages in executed_path, equal to the problem stage plan cap.
+  path_suggestion:
+    list:
+      min: 1
+      max: 12
+      note: Stages in draft_stages, equal to the problem stage plan cap.
+  stage_draft:
+    list:
+      min: 1
+      max: 12
+      note: Stages in the draft plan, equal to the problem stage plan cap.
+  decision_record:
+    decider_role:
+      min_chars: 5
+      max_chars: 150
+      note: Length of the decider role.
+    authority:
+      min_chars: 10
+      max_chars: 300
+      note: Length of the authority statement.
+    rationale:
+      min_chars: 20
+      max_chars: 600
+      note: Length of the rationale.
+    list:
+      min: 1
+      max: 12
+      note: Steps in one record, 1 to 12.
+  task:
+    question_answered:
+      min_chars: 10
+      max_chars: 300
+      note: Length of the question the task answers.
+    deliverable:
+      min_chars: 10
+      max_chars: 300
+      note: Length of the deliverable.
+    owner_role:
+      min_chars: 5
+      max_chars: 150
+      note: Length of the owner role.
+    list:
+      min: 1
+      max: 6
+      note: Done criteria per task, 1 to 6.
+  verification:
+    success_metric_restated:
+      min_chars: 10
+      max_chars: 300
+      note: Length of the restated success measure.
+    what_the_evidence_does_not_show:
+      min_chars: 10
+      max_chars: 300
+      note: Length of the limits statement.
+    list:
+      min: 1
+      max: 6
+      note: Evidence refs per verification, 1 to 6.
+cooldowns:
+  between_contributions_same_problem:
+    seconds: 120
+    provisional: true
+    note: Reflection delay, final length is OQ-cooldown-lengths.
+  after_rejected_contribution:
+    seconds: 600
+    provisional: true
+    note: Delay after a reject, final length is OQ-cooldown-lengths.
+  exempt_types:
+    value: [progress_update, verification_evidence]
+    note: Never delayed and not counted against the daily contribution cap.
+grace:
+  schema_major_draft_days:
+    value: 30
+    unit: days
+    note: How long an old-major draft stays usable after a schema major bump.
+risk_period:
+  burst_threshold:
+    public: false
+    provisional: true
+    value:
+      events: 37
+      window_seconds: 90
+    note: Burst that tightens caps. Never shown in any explanation.

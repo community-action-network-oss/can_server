@@ -1,0 +1,19 @@
+{
+  "type": "clarifying_question",
+  "target": "prob-lights-0042",
+  "claim": "The problem says lights are out but not how many are affected.",
+  "basis": "heard",
+  "evidence_refs": [
+    {
+      "url": "https://example.org/lighting-register",
+      "supports": "Lists the lights on the ring road."
+    }
+  ],
+  "uncertainty": "I do not know the exact numbers.",
+  "assumptions": [
+    "I assume the register is up to date."
+  ],
+  "missing_information": "The number of lights that are out along the ring road.",
+  "why_it_matters": "The count decides whether one repair visit is enough.",
+  "who_could_answer": "District lighting office"
+}

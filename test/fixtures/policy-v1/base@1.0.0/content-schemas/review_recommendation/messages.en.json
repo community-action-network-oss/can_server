@@ -1,0 +1,17 @@
+{
+  "schema.review_recommendation.group.target": "What you are reviewing",
+  "schema.review_recommendation.group.change": "What to change",
+  "schema.review_recommendation.group.resolution": "The poster's answer",
+  "schema.review_recommendation.problem_ref.label": "Problem",
+  "schema.review_recommendation.problem_ref.help": "Filled in for you from the problem you opened.",
+  "schema.review_recommendation.path.label": "Which part?",
+  "schema.review_recommendation.path.help": "Pick the field, the stage or the stage criteria you mean.",
+  "schema.review_recommendation.recommendation.label": "What should change?",
+  "schema.review_recommendation.recommendation.help": "Say the change you would make. Never name or describe a person, and never copy personal data from the masked view.",
+  "schema.review_recommendation.reason.label": "Why would it help?",
+  "schema.review_recommendation.reason.help": "Explain how the change helps the problem. Keep it about the problem, not the poster.",
+  "schema.review_recommendation.status.label": "Status",
+  "schema.review_recommendation.status.help": "Set automatically.",
+  "schema.review_recommendation.resolution_reason.label": "Why accepted or declined?",
+  "schema.review_recommendation.resolution_reason.help": "The poster says why. One or two plain sentences are enough."
+}

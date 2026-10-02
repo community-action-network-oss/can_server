@@ -1,0 +1,11 @@
+dp: DP-LEGALITY
+enforces: [LEGAL-GATE-1, FIKT-COMPETENCE-1, FIKT-LAW-UPDATE-1]
+mode: blocking
+inputs: [stage_option, topic, stated_office, check_date, legal_note]
+outcomes: [publish, needs_revision, reject, hold]
+thresholds:
+  confidence_floor:
+  publish: 0.9
+  needs_revision: 0.75
+  reject: 0.95
+  escalate_model_below: 0.9

@@ -1,0 +1,125 @@
+[
+ {
+  "id": "ex-FRAM-01",
+  "input": "condition: Amsterdam explosions and violence\naffected: residents and visitors\ndesired_outcome: fewer incidents",
+  "expected_outcome": "publish",
+  "rule_ids": [],
+  "note": "Seed 1 framing (D-56)",
+  "provenance": "fixture",
+  "jurisdiction": "amsterdam-nl",
+  "field_ref": {
+   "field": "condition"
+  },
+  "shot": true
+ },
+ {
+  "id": "ex-FRAM-02",
+  "input": "condition: Amsterdam city-centre cleanliness\naffected: residents and visitors\ndesired_outcome: cleaner public space",
+  "expected_outcome": "publish",
+  "rule_ids": [],
+  "note": "Seed 2 framing (D-56)",
+  "provenance": "fixture",
+  "jurisdiction": "amsterdam-nl",
+  "field_ref": {
+   "field": "condition"
+  }
+ },
+ {
+  "id": "ex-FRAM-03",
+  "input": "condition: Street lights on the Birch Quarter ring road are out for weeks and no repair timetable is published\naffected: people walking and cycling there\ndesired_outcome: a published repair timetable",
+  "expected_outcome": "publish",
+  "rule_ids": [],
+  "note": "shared condition, institutional gap",
+  "provenance": "fixture",
+  "jurisdiction": "fiktiva-city",
+  "field_ref": {
+   "field": "condition"
+  },
+  "shot": true
+ },
+ {
+  "id": "ex-FRAM-04",
+  "input": "condition: The Head of Parks is lazy and does not care\naffected: everyone\ndesired_outcome: get rid of the Head of Parks",
+  "expected_outcome": "needs_revision",
+  "rule_ids": [
+   "FRAME-1"
+  ],
+  "note": "person and motive, not a condition",
+  "provenance": "fixture",
+  "jurisdiction": "fiktiva-city",
+  "field_ref": {
+   "field": "condition"
+  },
+  "revision_hint": "Describe what is not happening in the parks and who is affected, without judging a person.",
+  "shot": true
+ },
+ {
+  "id": "ex-FRAM-05",
+  "input": "condition: We need a new bus depot\naffected: commuters\ndesired_outcome: build a new bus depot",
+  "expected_outcome": "needs_revision",
+  "rule_ids": [
+   "FRAME-1"
+  ],
+  "note": "solution stated as the problem",
+  "provenance": "fixture",
+  "jurisdiction": "fiktiva-city",
+  "field_ref": {
+   "field": "condition"
+  },
+  "revision_hint": "Say what fails today (for example late buses at one stop) and keep the depot as a possible solution."
+ },
+ {
+  "id": "ex-FRAM-06",
+  "input": "condition: My bin was missed on Tuesday\naffected: me\ndesired_outcome: collect it",
+  "expected_outcome": "needs_revision",
+  "rule_ids": [
+   "FRAME-1"
+  ],
+  "note": "single complaint, no pattern",
+  "provenance": "fixture",
+  "jurisdiction": "fiktiva-city",
+  "field_ref": {
+   "field": "condition"
+  },
+  "revision_hint": "Say whether other streets are affected and how often it happens."
+ },
+ {
+  "id": "ex-FRAM-07",
+  "input": "condition: ;;; qwe zxc\naffected: 0\ndesired_outcome: 0",
+  "expected_outcome": "hold",
+  "rule_ids": [],
+  "note": "unreadable",
+  "provenance": "fixture",
+  "jurisdiction": "fiktiva-city",
+  "field_ref": {
+   "field": "condition"
+  }
+ },
+ {
+  "id": "ex-FRAM-08",
+  "input": "condition: Waste collection is late in many streets, which looks like a staffing shortage\naffected: households in several districts\ndesired_outcome: a collection plan that holds",
+  "expected_outcome": "publish",
+  "rule_ids": [],
+  "note": "boundary: cause guessed but condition is shared and scoped",
+  "provenance": "fixture",
+  "jurisdiction": "fiktiva-city",
+  "field_ref": {
+   "field": "condition"
+  }
+ },
+ {
+  "id": "ex-FRAM-09",
+  "input": "condition: The council is corrupt and hides the road budget\naffected: taxpayers\ndesired_outcome: investigate the council",
+  "expected_outcome": "needs_revision",
+  "rule_ids": [
+   "FRAME-1"
+  ],
+  "note": "boundary: verdict not a structural statement",
+  "provenance": "fixture",
+  "jurisdiction": "fiktiva-city",
+  "field_ref": {
+   "field": "condition"
+  },
+  "revision_hint": "State what is not published (for example the road budget by district) and who is affected."
+ }
+]

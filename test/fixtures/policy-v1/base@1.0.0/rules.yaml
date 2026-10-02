@@ -1,0 +1,389 @@
+# base pack rules
+# Source: docs/spec/constitution/rules.md and rules-legal-sim.md (text copied verbatim). Parity: node tools/rules-parity.mjs.
+# Split rule: base holds platform behaviour (pipeline, auth, data shape, stages, process); constitution holds rules that restate a constitution article on rights, privacy, law, appeals and content limits.
+# protected_core lists every protected rule of both packs (rights, crisis_safety, plus IMPACT-1 and LOC-PRIV-1). Only base may list it.
+protected_core: [APPEAL-1, APPEAL-2, CRISIS-STATIC-1, IMPACT-1, LEGAL-LANE-1, LOC-DOUBT-1, LOC-PRIV-1, NO-INSTANCE-OVERRIDE-1, OWN-1, PREC-1, REMOD-NOTICE-1, RESTORE-1, SCOPE-1]
+rules:
+- id: MONEY-0
+  text: "Must not contain a payment SDK. Must not define columns typed currency, amount, or balance."
+  tier: procedure
+  enforcement: reject
+  applies_to: []
+  source: "I.7, IX.4"
+  first_phase: S1
+  protected_core: false
+  status: active
+  note: "no decision point lists this rule; enforced by build checks, schema or server code"
+- id: IDENT-1
+  text: "Email must be encrypted at rest and never in any API response. The public handle must be generated, not user-typed."
+  tier: privacy
+  enforcement: reject
+  applies_to: []
+  source: "II.1"
+  first_phase: S1
+  protected_core: false
+  status: active
+  note: "no decision point lists this rule; enforced by build checks, schema or server code"
+- id: ACCT-REQ-1
+  text: "Must have a valid session for an account. Must not accept anonymous writes. Reads need no account."
+  tier: procedure
+  enforcement: reject
+  applies_to: []
+  source: "II.2, I.4"
+  first_phase: S1
+  protected_core: false
+  status: active
+  note: "no decision point lists this rule; enforced by build checks, schema or server code"
+- id: DEVICE-0
+  text: "Must not hold IMEI, hardware serial, or raw biometric columns."
+  tier: privacy
+  enforcement: reject
+  applies_to: []
+  source: "II.2"
+  first_phase: S1
+  protected_core: false
+  status: active
+  note: "no decision point lists this rule; enforced by build checks, schema or server code"
+- id: DRAFT-TTL-1
+  text: "Must hard-delete within 30 days, caches included. Must keep only a salted fingerprint, for 90 days. UI shows the deletion date."
+  tier: privacy
+  enforcement: reject
+  applies_to: []
+  source: "II.6, V.4"
+  first_phase: S1
+  protected_core: false
+  status: active
+  note: "no decision point lists this rule; enforced by build checks, schema or server code"
+- id: NOTIFY-CONSENT-1
+  text: "Must have recorded opt-in consent. Must give mute, unfollow, and leave. Must not reuse public problem content for anything outside constitutional uses."
+  tier: privacy
+  enforcement: reject
+  applies_to: []
+  source: "II.6, III.6"
+  first_phase: S1
+  protected_core: false
+  status: active
+  note: "no decision point lists this rule; enforced by build checks, schema or server code"
+- id: PRIV-GATEWAY-1
+  text: "Must pass through the privacy gateway first (redaction, pseudonymization, data zone, approved provider). Must not call a model directly from a feature. Live provider calls need the founder gate (API key, spend cap)."
+  tier: privacy
+  enforcement: hold
+  applies_to: []
+  source: "II.6, V.2"
+  first_phase: S1
+  protected_core: false
+  status: active
+  note: "no decision point lists this rule; enforced by build checks, schema or server code"
+- id: POLICY-CITE-1
+  text: "Must record `rule_ids`, `policy_version`, `prompt_hash`, `model_id`, confidence and a run id with the outcome. Must give a plain explanation citing the rules. Must not decide without a loaded, hash-verified policy pack."
+  tier: procedure
+  enforcement: hold
+  applies_to: []
+  source: "V.1, V.4"
+  first_phase: S1
+  protected_core: false
+  status: active
+  note: "no decision point lists this rule; enforced by build checks, schema or server code"
+- id: FAIL-CLOSED-AI-1
+  text: "Must hold the item (`hold`, state unchanged, nothing public). Must not publish, and must not fall back to a weaker policy or an unapproved provider."
+  tier: procedure
+  enforcement: hold
+  applies_to: []
+  source: "V.4, V.2"
+  first_phase: S1
+  protected_core: false
+  status: active
+  note: "no decision point lists this rule; enforced by build checks, schema or server code"
+- id: AGENT-NO-TOOLS-1
+  text: "Must have no tools or network access beyond the gateway. Must treat user content as quoted data, never as instructions. Must return schema-constrained output."
+  tier: procedure
+  enforcement: reject
+  applies_to: []
+  source: "V.1, V.2"
+  first_phase: S1
+  protected_core: false
+  status: active
+  note: "no decision point lists this rule; enforced by build checks, schema or server code"
+- id: EVID-URL-1
+  text: "Must store only a URL, category, date, and attestation. Must not accept an uploaded or identifying file."
+  tier: privacy
+  enforcement: reject
+  applies_to: [DP-EVIDENCE-TIER, DP-SOURCE-TRUST]
+  source: "III.3, III.5"
+  first_phase: S1
+  protected_core: false
+  status: active
+- id: PUB-FAILCLOSED-1
+  text: "Item must be held (`held`, T08 and T09) and must not reach `active`. Must create no public row."
+  tier: procedure
+  enforcement: hold
+  applies_to: []
+  source: "V.4"
+  first_phase: S1
+  protected_core: false
+  status: active
+  note: "no decision point lists this rule; enforced by build checks, schema or server code"
+- id: MOD-EXPLAIN-1
+  text: "Must carry non-null `rule_ids`, a field or span reference, `policy_version`, `prompt_hash`, `model_id`, confidence, `revision_hint` (null only if `safety_sensitive`), and `appealable_until`."
+  tier: procedure
+  enforcement: reject
+  applies_to: []
+  source: "V.4"
+  first_phase: S1
+  protected_core: false
+  status: active
+  note: "no decision point lists this rule; enforced by build checks, schema or server code"
+- id: INTERIM-1
+  text: "Must mark the decision `transitional`, write an audit event, and show \"Policy vX, transitional stewardship\". Must clear the marking only for a version a ratifying panel approved."
+  tier: procedure
+  enforcement: hold
+  applies_to: []
+  source: "V.4, VIII.2, IV.8"
+  first_phase: S1
+  protected_core: false
+  status: active
+  note: "no decision point lists this rule; enforced by build checks, schema or server code"
+- id: FOUNDER-TRANS-1
+  text: "Must log the approval publicly with rule IDs. Must record `approved_by` and `expires_at`. Must not change the protected core."
+  tier: procedure
+  enforcement: reject
+  applies_to: []
+  source: "VIII.2"
+  first_phase: S1
+  protected_core: false
+  status: active
+  note: "no decision point lists this rule; enforced by build checks, schema or server code"
+- id: DECENT-1
+  text: "Must use UUIDv7 ids, set `origin_node_id` and `protocol_version`, and append to events with a nullable `prev_hash`."
+  tier: procedure
+  enforcement: reject
+  applies_to: []
+  source: "IX.2"
+  first_phase: S1
+  protected_core: false
+  status: active
+  note: "no decision point lists this rule; enforced by build checks, schema or server code"
+- id: STRUCT-ONLY-1
+  text: "Must be a structured response to a schema ratified in the policy pack before the content arrived. Must reject a payload with no schema version or unknown fields. Must not offer a free-form post route or a hard-coded form."
+  tier: procedure
+  enforcement: reject
+  applies_to: [DP-COMPLETENESS]
+  source: "IV.1, V.5"
+  first_phase: S1
+  protected_core: false
+  status: active
+- id: DECISION-REC-1
+  text: "Must require the recorded method, rationale, decider, authority, dissent notes (optional) and a legal-gate record before the stage's tasks start. Must hold if any required part is missing. Must not decide which option is best"
+  tier: procedure
+  enforcement: hold
+  applies_to: [DP-DECISION-RECORD]
+  source: "IV.3, IV.8"
+  first_phase: S1
+  protected_core: false
+  status: active
+- id: VERIFY-1
+  text: "Must require, for every final acceptance criterion, evidence (1+ URL) that meets it and an outcome statement, with every required stage `resolved` or `skipped`. Must decide through `DP-VERIFICATION` and `DP-EVIDENCE-TIER`. Must not mark solved on a completed task alone or on a promise. A \"not met\" result changes no state"
+  tier: procedure
+  enforcement: needs_revision
+  applies_to: [DP-VERIFICATION]
+  source: "IV.4"
+  first_phase: S1
+  protected_core: false
+  status: active
+- id: BLOCKER-1
+  text: "Must record the blocking constraint, its source and version, the blocked actions, a recheck date, the next lawful escalation route and 1+ documented attempt. Must show the blocker publicly. Must not use `stuck` to hide inaction"
+  tier: legal_gate
+  enforcement: hold
+  applies_to: [DP-BLOCKER]
+  source: "IV.4, IV.5"
+  first_phase: S1
+  protected_core: false
+  status: active
+- id: CLOSE-1
+  text: "Must require a reason code (duplicate, invalid, out of scope, no longer relevant, initiator request, rule violation), a plain explanation, and `duplicate_of` for a duplicate. Must show the policy version and an appeal path. Must not close on initiator request alone while another account's accepted contribution is at stake without that reason shown"
+  tier: procedure
+  enforcement: needs_revision
+  applies_to: [DP-CLOSURE]
+  source: "IV.4"
+  first_phase: S1
+  protected_core: false
+  status: active
+- id: SCHEMA-1
+  text: "Must render only from a schema version loaded from the policy pack and show that version. Must not hard-code fields in the app. Must keep a draft on its own schema version until the poster migrates it."
+  tier: procedure
+  enforcement: reject
+  applies_to: []
+  source: "IV.1"
+  first_phase: S1
+  protected_core: false
+  status: active
+  note: "no decision point lists this rule; enforced by build checks, schema or server code"
+- id: AI-ASSIST-1
+  text: "Must flag the value as AI-suggested and require the poster to confirm or edit it before submit. Must not submit an unconfirmed suggestion. Suggestions pass through the privacy gateway like any model call."
+  tier: procedure
+  enforcement: reject
+  applies_to: []
+  source: "IV.1, V.1"
+  first_phase: S1
+  protected_core: false
+  status: active
+  note: "no decision point lists this rule; enforced by build checks, schema or server code"
+- id: CRITERIA-1
+  text: "Must have 1+ final acceptance criterion on the problem and 1+ criterion on every stage, each measurable and checked by `DP-CRITERIA`. Must not leave `draft`, or accept a plan change, without them."
+  tier: procedure
+  enforcement: needs_revision
+  applies_to: [DP-VERIFICATION, DP-CRITERIA]
+  source: "IV.4, IV.8"
+  first_phase: S1
+  protected_core: false
+  status: active
+- id: REVIEW-1
+  text: "Must finish the volunteer review quorum before T04 (`OQ-review-quorum`), and never publish without at least one completed review. With zero reviews the problem stays `in_review` and shows a \"needs reviewers\" call. Must keep review content private and personal data masked by the privacy gateway. Must not show a recommendation publicly, let the poster review their own problem, or let a volunteer publish, reject or edit."
+  tier: procedure
+  enforcement: hold
+  applies_to: [DP-PUBLISH]
+  source: "V.4, II.6"
+  first_phase: S1
+  protected_core: false
+  status: active
+- id: RECO-1
+  text: "Must keep it `open` until the poster accepts or declines it with a reason, and show the poster every open one with its age. Must pass the ones still open to `DP-PUBLISH`, which weighs and cites them. Must not treat silence as accept or decline, or hide a declined reason."
+  tier: procedure
+  enforcement: needs_revision
+  applies_to: [DP-PUBLISH]
+  source: "IV.8, V.4"
+  first_phase: S1
+  protected_core: false
+  status: active
+- id: SOURCE-1
+  text: "Must require every cited URI to be from a trusted source category or corroborated, and to establish authenticity (`authenticity_note`). Must return `needs_revision` with a hint beside the source. Must not treat a source as proof beyond what it establishes."
+  tier: procedure
+  enforcement: needs_revision
+  applies_to: [DP-SOURCE-TRUST]
+  source: "III.3, III.5"
+  first_phase: S1
+  protected_core: false
+  status: active
+- id: STAGE-GATE-1
+  text: "Must not make a stage `active` until every predecessor is `resolved` or `skipped`. Must recompute successors in the same transaction as the change. Must not let a person or a timeout start a `planned` stage."
+  tier: procedure
+  enforcement: reject
+  applies_to: [DP-STAGE-PLAN, DP-STAGE-RESOLUTION]
+  source: "IV.4"
+  first_phase: S1
+  protected_core: false
+  status: active
+- id: STAGE-PREP-1
+  text: "Must accept and keep it, checked like any contribution and labeled \"for a later stage\". Must not count it as `stage_evidence`, or let it resolve a stage, until the steward attaches it in an `active` stage."
+  tier: procedure
+  enforcement: reject
+  applies_to: []
+  source: "IV.1, IV.4"
+  first_phase: S1
+  protected_core: false
+  status: active
+  enforced_by: server
+- id: STAGE-RESOLVE-1
+  text: "Must resolve a stage only through `DP-STAGE-RESOLUTION`, with `stage_evidence` mapped to each criterion, citing rule ids and the policy version, and make it appealable. Must not resolve on completed tasks or a promise, and must not pause live successor stages during an appeal."
+  tier: procedure
+  enforcement: needs_revision
+  applies_to: [DP-STAGE-RESOLUTION]
+  source: "IV.4, V.4"
+  first_phase: S1
+  protected_core: false
+  status: active
+- id: PLAN-CHANGE-1
+  text: "Must need a proposal with a reason, checked by `DP-STAGE-PLAN` and `DP-CRITERIA`, and a new `plan_version`. Must show the change publicly. Must not edit the plan silently or lose accepted contributions of a removed stage."
+  tier: procedure
+  enforcement: reject
+  applies_to: [DP-STAGE-PLAN]
+  source: "IV.8, V.4"
+  first_phase: S1
+  protected_core: false
+  status: active
+- id: PROFILE-LOCAL-1
+  text: "Must not accept, store or log any capability profile field, or anything derived from it, server side."
+  tier: privacy
+  enforcement: reject
+  applies_to: []
+  source: "II.10"
+  first_phase: P2
+  protected_core: false
+  status: active
+  note: "no decision point lists this rule; enforced by build checks, schema or server code"
+- id: SIM-GATE-1
+  text: "Must not open public writes until criteria G1 to G13 (`docs/design/ai/simulation.md` section 8, values held in the ratified pack) hold on a recorded persona-simulation run set of seeds 1 and 2, with run ids. Must re-run the simulation after a pack change touching those decision points before it goes live."
+  tier: procedure
+  enforcement: hold
+  applies_to: []
+  source: "V.5, VIII.2"
+  first_phase: S1
+  protected_core: false
+  status: active
+  note: "no decision point lists this rule; enforced by build checks, schema or server code"
+- id: SIM-LABEL-1
+  text: "Must be labeled synthetic (\"Seed problem, synthetic evidence\", a persona marker) on every surface and export. Must never reach a public surface as real or count as real participation."
+  tier: procedure
+  enforcement: reject
+  applies_to: []
+  source: "V.5"
+  first_phase: S1
+  protected_core: false
+  status: active
+  note: "no decision point lists this rule; enforced by build checks, schema or server code"
+- id: SIM-NOSECRET-1
+  text: "Must hold no production secrets and no tools beyond the API client. Must act only through the public API as an ordinary account. Must not touch the database or the policy repo directly."
+  tier: procedure
+  enforcement: reject
+  applies_to: []
+  source: "V.5, V.2"
+  first_phase: S1
+  protected_core: false
+  status: active
+  note: "no decision point lists this rule; enforced by build checks, schema or server code"
+- id: GUEST-LABEL-1
+  text: "Must show a visible label on every guest contribution, offer an \"Impacted only\" filter on every content list, and keep the filter off by default. The filter must hide, never delete or alter, guest content."
+  tier: procedure
+  enforcement: reject
+  applies_to: []
+  source: "IV.2"
+  first_phase: S1
+  protected_core: false
+  status: active
+  enforced_by: server
+- id: ARCHIVE-1
+  text: "Must build a public archive record with the full path, options and choices, evidence, failed paths and challenges, costs and outcome, through `DP-ARCHIVE`. Must strip personal data with the privacy gateway before it is public. Must not archive pre-publication problems. Must not rank or score records. A failed build holds and retries and leaves the problem's state unchanged."
+  tier: procedure
+  enforcement: reject
+  applies_to: [DP-ARCHIVE]
+  source: "IV.7"
+  first_phase: S1
+  protected_core: false
+  status: active
+- id: REUSE-CONTEXT-1
+  text: "Must show the context differences and the legality (L0 to L6 of the new problem) and resource-fit results from `DP-REUSE-FIT`. Must not adopt a suggestion automatically or hide one that fails legality."
+  tier: procedure
+  enforcement: reject
+  applies_to: [DP-REUSE-FIT]
+  source: "IV.7"
+  first_phase: S1
+  protected_core: false
+  status: active
+- id: REUSE-CREDIT-1
+  text: "Must show `attribution` to the source archive records and carry it into the derived stage plan. Must not strip the credit line."
+  tier: procedure
+  enforcement: reject
+  applies_to: [DP-REUSE-FIT, DP-STAGE-DRAFT]
+  source: "IV.7"
+  first_phase: S1
+  protected_core: false
+  status: active
+- id: REUSE-NOBLOCK-1
+  text: "Must still require at least one completed volunteer review (`REVIEW-1`). Must invite community input without making it a blocker. Must not treat strong archive evidence as a review."
+  tier: procedure
+  enforcement: reject
+  applies_to: [DP-STAGE-DRAFT]
+  source: "IV.7, V.4"
+  first_phase: S1
+  protected_core: false
+  status: active

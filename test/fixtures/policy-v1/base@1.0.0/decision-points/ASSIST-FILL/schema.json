@@ -1,0 +1,125 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "can_policy/decision-points/ASSIST-FILL/schema.json",
+  "title": "ASSIST-FILL output",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "outcome",
+    "rule_ids",
+    "confidence",
+    "reasons"
+  ],
+  "properties": {
+    "outcome": {
+      "enum": [
+        "publish",
+        "hold"
+      ]
+    },
+    "rule_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "field_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "field"
+      ],
+      "properties": {
+        "field": {
+          "type": "string"
+        },
+        "span": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "minItems": 2,
+          "maxItems": 2
+        }
+      }
+    },
+    "revision_hint": {
+      "type": "string"
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "reasons": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "suggestions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "field_ref",
+          "value",
+          "basis"
+        ],
+        "properties": {
+          "field_ref": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "field"
+            ],
+            "properties": {
+              "field": {
+                "type": "string"
+              }
+            }
+          },
+          "value": {
+            "type": "string"
+          },
+          "basis": {
+            "type": "string"
+          },
+          "ai_suggested": {
+            "const": true
+          }
+        }
+      }
+    },
+    "questions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "field_ref",
+          "text"
+        ],
+        "properties": {
+          "field_ref": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "field"
+            ],
+            "properties": {
+              "field": {
+                "type": "string"
+              }
+            }
+          },
+          "text": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,9 @@
+dp: __DP__
+enforces: [__RULES__]
+mode: __MODE__
+inputs: [field_text, field_ref]
+outcomes: [__OUTCOMES__]
+thresholds:
+  confidence_floor:
+    __FLOORS__
+  escalate_model_below: 0.85

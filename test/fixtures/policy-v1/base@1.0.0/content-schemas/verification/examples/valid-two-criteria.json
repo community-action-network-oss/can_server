@@ -1,0 +1,30 @@
+{
+  "stage_ref": "check_results",
+  "final_criterion_refs": [
+    1,
+    2
+  ],
+  "success_metric_restated": "Fewer faults per month and every pole checked.",
+  "evidence_refs": [
+    {
+      "url": "https://example.org/lowmere/fault-counts",
+      "description": "Monthly fault counts from the public register.",
+      "tier_request": "statistics_body"
+    },
+    {
+      "url": "https://example.org/lowmere/walk-notes",
+      "description": "Notes from the community walk after dusk."
+    }
+  ],
+  "outcomes": [
+    {
+      "criterion_ref": 1,
+      "outcome_statement": "Fault counts fell from nine a month to two over three months."
+    },
+    {
+      "criterion_ref": 2,
+      "outcome_statement": "All 142 poles have a recorded status after the second walk."
+    }
+  ],
+  "what_the_evidence_does_not_show": "It does not show faults the register never received."
+}

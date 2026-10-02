@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "can_policy/decision-points/DP-LEGALITY/schema.json",
+  "title": "DP-LEGALITY output",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "outcome",
+    "rule_ids",
+    "confidence",
+    "reasons"
+  ],
+  "properties": {
+    "outcome": {
+      "enum": [
+        "publish",
+        "needs_revision",
+        "reject",
+        "hold"
+      ]
+    },
+    "rule_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "field_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "field"
+      ],
+      "properties": {
+        "field": {
+          "type": "string"
+        },
+        "span": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "minItems": 2,
+          "maxItems": 2
+        }
+      }
+    },
+    "revision_hint": {
+      "type": "string"
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "reasons": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "stuck_payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "blocking_constraint",
+        "source_ref",
+        "blocked_actions",
+        "recheck_condition"
+      ],
+      "$comment": "Required when outcome is hold because the option is blocked by a constraint: the blocking constraint, its source (a rule id and pack version, never a corpus quote), the actions that are blocked, and when to look again. DP-BLOCKER validates it.",
+      "properties": {
+        "blocking_constraint": {
+          "type": "string"
+        },
+        "source_ref": {
+          "type": "string"
+        },
+        "blocked_actions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        },
+        "recheck_condition": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "$comment": "Extends schemas/dp-output.schema.json: keep its required keys and properties unchanged except outcome, which is narrowed to this DP's outcomes. Add DP-specific optional properties at the end of properties. tools/lint-dp.mjs checks this."
+}

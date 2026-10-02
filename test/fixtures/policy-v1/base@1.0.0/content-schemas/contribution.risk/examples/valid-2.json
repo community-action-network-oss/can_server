@@ -1,0 +1,13 @@
+{
+  "type": "risk",
+  "target": "prob-lights-0042",
+  "claim": "The ring road lights are out most nights.",
+  "basis": "inferred",
+  "evidence_refs": [],
+  "uncertainty": "Not sure.",
+  "assumptions": [],
+  "risk": "A second breaker could shift the overload to the market stalls.",
+  "likelihood_basis": "The stalls already use most of their feed.",
+  "who_bears_it": "Stall holders",
+  "mitigation_idea": "Check the stall load before changing the feed."
+}

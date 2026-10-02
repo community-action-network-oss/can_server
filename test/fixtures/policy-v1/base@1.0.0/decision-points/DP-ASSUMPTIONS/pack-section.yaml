@@ -1,0 +1,10 @@
+dp: DP-ASSUMPTIONS
+enforces: [ASSUMP-1]
+mode: blocking
+inputs: [condition, causal_hypothesis, assumptions, affected, competence]
+outcomes: [publish, needs_revision, hold]
+thresholds:
+  confidence_floor:
+    publish: 0.85
+    needs_revision: 0.70
+  escalate_model_below: 0.85

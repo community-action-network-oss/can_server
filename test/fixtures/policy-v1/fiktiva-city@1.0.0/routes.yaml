@@ -1,0 +1,7 @@
+# External routes named by FIKT-ROUTES-1. Keys are what DP-ELIGIBILITY route_external cites. Invented, no real contact data.
+fiktiva-ombudsman:
+  label: Fiktiva City Ombudsman Desk
+  for: an individual complaint about how the city handled a case
+fiktiva-help-line:
+  label: Fiktiva City Civic Help Line
+  for: a personal matter that needs one to one help

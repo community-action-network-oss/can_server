@@ -1,0 +1,21 @@
+{
+  "stage_ref": "map_faults",
+  "option_statement": "Run a two week volunteer survey that marks every dark light on a shared sheet.",
+  "mechanism": "Volunteers walk set sections after dusk and record each unlit pole by number.",
+  "responsible_role": "Neighbourhood volunteer team",
+  "authority_and_legal_basis": "Public road walking needs no permit, and pole numbers are public asset data in Lowmere.",
+  "cost_estimate": {
+    "band": "none"
+  },
+  "how_it_meets_stage_criteria": [
+    {
+      "criterion_ref": 1,
+      "how": "Every pole on the ring road has a recorded status after the second week."
+    }
+  ],
+  "risks_and_rights_impact": "Walkers may be mistaken for loiterers after dark. Walk in pairs and carry a team card.",
+  "lawful_alternatives": [
+    "Ask the council to share its own inspection list."
+  ],
+  "assumptions": []
+}

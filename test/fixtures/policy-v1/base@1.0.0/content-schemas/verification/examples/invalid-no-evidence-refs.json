@@ -1,0 +1,15 @@
+{
+  "stage_ref": "implement_pilot",
+  "final_criterion_refs": [
+    1
+  ],
+  "success_metric_restated": "No reported outage on the ring road for 30 days.",
+  "evidence_refs": [],
+  "outcomes": [
+    {
+      "criterion_ref": 1,
+      "outcome_statement": "The log shows no outage report on the ring road for 31 days after the repair."
+    }
+  ],
+  "what_the_evidence_does_not_show": "It covers the ring road only, not the side streets."
+}

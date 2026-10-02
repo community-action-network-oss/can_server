@@ -1,0 +1,783 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "id": "path_suggestion",
+  "version": "1.0.0",
+  "x-version": "1.0.0",
+  "pack": "base@1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "record_ids",
+    "dimensions",
+    "reuse_fit",
+    "draft_stages",
+    "attribution",
+    "state"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 8,
+      "maxLength": 64,
+      "pattern": "^[a-z0-9][a-z0-9_-]{7,63}$",
+      "x-ui": {
+        "widget": "readonly",
+        "label_msg": "schema.path_suggestion.id.label",
+        "help_msg": "schema.path_suggestion.id.help"
+      },
+      "x-checks": {
+        "masked_refs_only": true
+      }
+    },
+    "record_ids": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 5,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z0-9][a-z0-9_-]{7,63}$"
+      },
+      "x-ui": {
+        "widget": "readonly",
+        "label_msg": "schema.path_suggestion.record_ids.label",
+        "help_msg": "schema.path_suggestion.record_ids.help"
+      },
+      "x-checks": {
+        "masked_refs_only": true
+      }
+    },
+    "dimensions": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 10,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "name",
+          "verdict",
+          "draft_value",
+          "record_value"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "enum": [
+              "problem_type",
+              "category",
+              "population_scale",
+              "geography",
+              "resource_band",
+              "budget_band",
+              "institutions",
+              "legal_stack",
+              "language",
+              "constraints"
+            ],
+            "x-ui": {
+              "widget": "select",
+              "label_msg": "schema.path_suggestion.dimensions.name.label"
+            }
+          },
+          "verdict": {
+            "type": "string",
+            "enum": [
+              "same",
+              "close",
+              "different"
+            ],
+            "x-ui": {
+              "widget": "select",
+              "label_msg": "schema.path_suggestion.dimensions.verdict.label"
+            }
+          },
+          "draft_value": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120,
+            "pattern": "^(?!.*@)(?!.*https?://).*$",
+            "x-ui": {
+              "widget": "text",
+              "label_msg": "schema.path_suggestion.dimensions.draft_value.label"
+            },
+            "x-checks": {
+              "masked_refs_only": true
+            }
+          },
+          "record_value": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120,
+            "pattern": "^(?!.*@)(?!.*https?://).*$",
+            "x-ui": {
+              "widget": "text",
+              "label_msg": "schema.path_suggestion.dimensions.record_value.label"
+            },
+            "x-checks": {
+              "masked_refs_only": true
+            }
+          }
+        },
+        "x-ui": {
+          "widget": "group",
+          "label_msg": "schema.path_suggestion.dimensions.item.label"
+        }
+      },
+      "x-ui": {
+        "widget": "list",
+        "label_msg": "schema.path_suggestion.dimensions.label",
+        "help_msg": "schema.path_suggestion.dimensions.help"
+      },
+      "x-checks": {
+        "unique_names": true
+      }
+    },
+    "reuse_fit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "legality",
+        "resource_fit",
+        "differences",
+        "adaptations",
+        "confidence"
+      ],
+      "properties": {
+        "legality": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 12,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "stage",
+              "result"
+            ],
+            "properties": {
+              "stage": {
+                "type": "string",
+                "minLength": 2,
+                "maxLength": 40,
+                "pattern": "^[a-z][a-z0-9_]{1,39}$",
+                "x-ui": {
+                  "widget": "text",
+                  "label_msg": "schema.path_suggestion.reuse_fit.legality.stage.label"
+                }
+              },
+              "result": {
+                "type": "string",
+                "pattern": "^(lawful|unknown|unlawful_at_L[0-6])$",
+                "x-ui": {
+                  "widget": "select",
+                  "label_msg": "schema.path_suggestion.reuse_fit.legality.result.label",
+                  "help_msg": "schema.path_suggestion.reuse_fit.legality.result.help"
+                }
+              },
+              "citation": {
+                "type": "string",
+                "minLength": 5,
+                "maxLength": 300,
+                "pattern": "^(?!.*@).*$",
+                "x-ui": {
+                  "widget": "text",
+                  "label_msg": "schema.path_suggestion.reuse_fit.legality.citation.label",
+                  "help_msg": "schema.path_suggestion.reuse_fit.legality.citation.help"
+                },
+                "x-checks": {
+                  "masked_refs_only": true
+                }
+              }
+            },
+            "x-ui": {
+              "widget": "group",
+              "label_msg": "schema.path_suggestion.reuse_fit.legality.item.label"
+            },
+            "allOf": [
+              {
+                "if": {
+                  "properties": {
+                    "result": {
+                      "type": "string",
+                      "pattern": "^unlawful_at_"
+                    }
+                  },
+                  "required": [
+                    "result"
+                  ]
+                },
+                "then": {
+                  "type": "object",
+                  "required": [
+                    "citation"
+                  ],
+                  "properties": {
+                    "citation": {}
+                  }
+                }
+              }
+            ]
+          },
+          "x-ui": {
+            "widget": "list",
+            "label_msg": "schema.path_suggestion.reuse_fit.legality.label",
+            "help_msg": "schema.path_suggestion.reuse_fit.legality.help"
+          }
+        },
+        "resource_fit": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "fit"
+          ],
+          "properties": {
+            "fit": {
+              "type": "string",
+              "enum": [
+                "fits",
+                "stretch",
+                "exceeds"
+              ],
+              "x-ui": {
+                "widget": "select",
+                "label_msg": "schema.path_suggestion.reuse_fit.resource_fit.fit.label"
+              }
+            },
+            "gap": {
+              "type": "string",
+              "minLength": 10,
+              "maxLength": 300,
+              "pattern": "^(?!.*@)(?!.*https?://).*$",
+              "x-ui": {
+                "widget": "textarea",
+                "label_msg": "schema.path_suggestion.reuse_fit.resource_fit.gap.label",
+                "help_msg": "schema.path_suggestion.reuse_fit.resource_fit.gap.help"
+              },
+              "x-guidance": {
+                "why": "Shows how far off it is.",
+                "good": "The path needs about 20 helpers and the draft has fewer than 5.",
+                "bad": "Too much.",
+                "min_chars": 10,
+                "max_chars": 300
+              },
+              "x-checks": {
+                "dps": [
+                  "DP-PRIVACY",
+                  "DP-NAMING",
+                  "DP-ARCHIVE"
+                ],
+                "masked_refs_only": true
+              }
+            }
+          },
+          "x-ui": {
+            "widget": "group",
+            "label_msg": "schema.path_suggestion.reuse_fit.resource_fit.label"
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "fit": {
+                    "enum": [
+                      "stretch",
+                      "exceeds"
+                    ]
+                  }
+                },
+                "required": [
+                  "fit"
+                ]
+              },
+              "then": {
+                "type": "object",
+                "required": [
+                  "gap"
+                ],
+                "properties": {
+                  "gap": {}
+                }
+              }
+            }
+          ]
+        },
+        "differences": {
+          "type": "array",
+          "minItems": 0,
+          "maxItems": 12,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "dimension",
+              "note"
+            ],
+            "properties": {
+              "dimension": {
+                "type": "string",
+                "enum": [
+                  "problem_type",
+                  "category",
+                  "population_scale",
+                  "geography",
+                  "resource_band",
+                  "budget_band",
+                  "institutions",
+                  "legal_stack",
+                  "language",
+                  "constraints",
+                  "policy_version",
+                  "legal_corpus_version"
+                ],
+                "x-ui": {
+                  "widget": "select",
+                  "label_msg": "schema.path_suggestion.reuse_fit.differences.dimension.label"
+                }
+              },
+              "note": {
+                "type": "string",
+                "minLength": 10,
+                "maxLength": 300,
+                "pattern": "^(?!.*@)(?!.*https?://).*$",
+                "x-ui": {
+                  "widget": "textarea",
+                  "label_msg": "schema.path_suggestion.reuse_fit.differences.note.label",
+                  "help_msg": "schema.path_suggestion.reuse_fit.differences.note.help"
+                },
+                "x-guidance": {
+                  "why": "Names the gap.",
+                  "good": "The record was in a rural area; this problem is in a city.",
+                  "bad": "Different.",
+                  "min_chars": 10,
+                  "max_chars": 300
+                },
+                "x-checks": {
+                  "dps": [
+                    "DP-PRIVACY",
+                    "DP-NAMING",
+                    "DP-ARCHIVE"
+                  ],
+                  "masked_refs_only": true
+                }
+              }
+            },
+            "x-ui": {
+              "widget": "group",
+              "label_msg": "schema.path_suggestion.reuse_fit.differences.item.label"
+            }
+          },
+          "x-ui": {
+            "widget": "list",
+            "label_msg": "schema.path_suggestion.reuse_fit.differences.label",
+            "help_msg": "schema.path_suggestion.reuse_fit.differences.help"
+          }
+        },
+        "adaptations": {
+          "type": "array",
+          "minItems": 0,
+          "maxItems": 12,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "kind",
+              "reason"
+            ],
+            "properties": {
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "substitute",
+                  "scale_down",
+                  "add_institution_step",
+                  "drop_step"
+                ],
+                "x-ui": {
+                  "widget": "select",
+                  "label_msg": "schema.path_suggestion.reuse_fit.adaptations.kind.label"
+                }
+              },
+              "stage": {
+                "type": "string",
+                "minLength": 2,
+                "maxLength": 40,
+                "pattern": "^[a-z][a-z0-9_]{1,39}$",
+                "x-ui": {
+                  "widget": "text",
+                  "label_msg": "schema.path_suggestion.reuse_fit.adaptations.stage.label"
+                }
+              },
+              "reason": {
+                "type": "string",
+                "minLength": 10,
+                "maxLength": 300,
+                "pattern": "^(?!.*@)(?!.*https?://).*$",
+                "x-ui": {
+                  "widget": "textarea",
+                  "label_msg": "schema.path_suggestion.reuse_fit.adaptations.reason.label",
+                  "help_msg": "schema.path_suggestion.reuse_fit.adaptations.reason.help"
+                },
+                "x-guidance": {
+                  "why": "Every change has a reason.",
+                  "good": "The district has no lamp crew, so the council crew steps in.",
+                  "bad": "Needed.",
+                  "min_chars": 10,
+                  "max_chars": 300
+                },
+                "x-checks": {
+                  "dps": [
+                    "DP-PRIVACY",
+                    "DP-NAMING",
+                    "DP-ARCHIVE"
+                  ],
+                  "masked_refs_only": true
+                }
+              }
+            },
+            "x-ui": {
+              "widget": "group",
+              "label_msg": "schema.path_suggestion.reuse_fit.adaptations.item.label"
+            }
+          },
+          "x-ui": {
+            "widget": "list",
+            "label_msg": "schema.path_suggestion.reuse_fit.adaptations.label",
+            "help_msg": "schema.path_suggestion.reuse_fit.adaptations.help"
+          }
+        },
+        "confidence": {
+          "type": "string",
+          "enum": [
+            "low",
+            "medium",
+            "high"
+          ],
+          "x-ui": {
+            "widget": "select",
+            "label_msg": "schema.path_suggestion.reuse_fit.confidence.label",
+            "help_msg": "schema.path_suggestion.reuse_fit.confidence.help"
+          }
+        }
+      },
+      "x-ui": {
+        "widget": "group",
+        "label_msg": "schema.path_suggestion.reuse_fit.label",
+        "help_msg": "schema.path_suggestion.reuse_fit.help"
+      }
+    },
+    "draft_stages": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 12,
+      "items": {
+        "$ref": "#/$defs/stage_node"
+      },
+      "x-ui": {
+        "widget": "list",
+        "label_msg": "schema.path_suggestion.draft_stages.label",
+        "help_msg": "schema.path_suggestion.draft_stages.help"
+      },
+      "x-checks": {
+        "unique_names": true,
+        "depends_on_resolves": true,
+        "acyclic": "DP-STAGE-PLAN"
+      }
+    },
+    "attribution": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 5,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "record_id",
+          "credit_text",
+          "source_url",
+          "license"
+        ],
+        "properties": {
+          "record_id": {
+            "type": "string",
+            "minLength": 8,
+            "maxLength": 64,
+            "pattern": "^[a-z0-9][a-z0-9_-]{7,63}$",
+            "x-ui": {
+              "widget": "readonly",
+              "label_msg": "schema.path_suggestion.attribution.record_id.label",
+              "help_msg": "schema.path_suggestion.attribution.record_id.help"
+            },
+            "x-checks": {
+              "masked_refs_only": true
+            }
+          },
+          "credit_text": {
+            "type": "string",
+            "minLength": 5,
+            "maxLength": 200,
+            "pattern": "^(?!.*@)(?!.*https?://).*$",
+            "x-ui": {
+              "widget": "textarea",
+              "label_msg": "schema.path_suggestion.attribution.credit_text.label",
+              "help_msg": "schema.path_suggestion.attribution.credit_text.help"
+            },
+            "x-guidance": {
+              "why": "Reuse stays traceable.",
+              "good": "Based on the Northvale street lights record.",
+              "bad": "Ask me at me@example.org",
+              "min_chars": 5,
+              "max_chars": 200
+            },
+            "x-checks": {
+              "dps": [
+                "DP-PRIVACY",
+                "DP-NAMING",
+                "DP-ARCHIVE"
+              ],
+              "masked_refs_only": true
+            }
+          },
+          "source_url": {
+            "type": "string",
+            "minLength": 9,
+            "maxLength": 300,
+            "pattern": "^https?://\\S+$",
+            "x-ui": {
+              "widget": "url",
+              "label_msg": "schema.path_suggestion.attribution.source_url.label",
+              "help_msg": "schema.path_suggestion.attribution.source_url.help"
+            }
+          },
+          "license": {
+            "type": "string",
+            "enum": [
+              "CC-BY-4.0",
+              "CC0-1.0"
+            ],
+            "default": "CC-BY-4.0",
+            "x-ui": {
+              "widget": "select",
+              "label_msg": "schema.path_suggestion.attribution.license.label",
+              "help_msg": "schema.path_suggestion.attribution.license.help"
+            }
+          }
+        },
+        "x-ui": {
+          "widget": "group",
+          "label_msg": "schema.path_suggestion.attribution.item.label",
+          "help_msg": "schema.path_suggestion.attribution.item.help"
+        }
+      },
+      "x-ui": {
+        "widget": "list",
+        "label_msg": "schema.path_suggestion.attribution.label",
+        "help_msg": "schema.path_suggestion.attribution.help"
+      }
+    },
+    "state": {
+      "type": "string",
+      "enum": [
+        "computing",
+        "ready",
+        "stale",
+        "dismissed",
+        "accepted",
+        "used"
+      ],
+      "x-ui": {
+        "widget": "select",
+        "label_msg": "schema.path_suggestion.state.label",
+        "help_msg": "schema.path_suggestion.state.help"
+      }
+    }
+  },
+  "$defs": {
+    "criterion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "statement",
+        "measure"
+      ],
+      "properties": {
+        "statement": {
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 300,
+          "x-ui": {
+            "widget": "textarea",
+            "label_msg": "schema.path_suggestion.draft_stages.criterion.statement.label",
+            "help_msg": "schema.path_suggestion.draft_stages.criterion.statement.help"
+          }
+        },
+        "measure": {
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 300,
+          "x-ui": {
+            "widget": "textarea",
+            "label_msg": "schema.path_suggestion.draft_stages.criterion.measure.label",
+            "help_msg": "schema.path_suggestion.draft_stages.criterion.measure.help"
+          }
+        },
+        "target": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200,
+          "x-ui": {
+            "widget": "text",
+            "label_msg": "schema.path_suggestion.draft_stages.criterion.target.label",
+            "help_msg": "schema.path_suggestion.draft_stages.criterion.target.help"
+          }
+        },
+        "evidence_hint": {
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 300,
+          "x-ui": {
+            "widget": "textarea",
+            "label_msg": "schema.path_suggestion.draft_stages.criterion.evidence_hint.label",
+            "help_msg": "schema.path_suggestion.draft_stages.criterion.evidence_hint.help"
+          }
+        },
+        "deadline": {
+          "type": "string",
+          "minLength": 4,
+          "maxLength": 10,
+          "pattern": "^\\d{4}(-\\d{2}(-\\d{2})?)?$",
+          "x-ui": {
+            "widget": "date",
+            "label_msg": "schema.path_suggestion.draft_stages.criterion.deadline.label",
+            "help_msg": "schema.path_suggestion.draft_stages.criterion.deadline.help"
+          }
+        }
+      }
+    },
+    "stage_node": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "goal",
+        "acceptance_criteria"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 40,
+          "pattern": "^[a-z][a-z0-9_]{1,39}$",
+          "x-ui": {
+            "widget": "text",
+            "label_msg": "schema.path_suggestion.draft_stages.stage.name.label",
+            "help_msg": "schema.path_suggestion.draft_stages.stage.name.help"
+          }
+        },
+        "label": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 60,
+          "x-ui": {
+            "widget": "text",
+            "label_msg": "schema.path_suggestion.draft_stages.stage.label.label",
+            "help_msg": "schema.path_suggestion.draft_stages.stage.label.help"
+          }
+        },
+        "goal": {
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 300,
+          "x-ui": {
+            "widget": "textarea",
+            "label_msg": "schema.path_suggestion.draft_stages.stage.goal.label",
+            "help_msg": "schema.path_suggestion.draft_stages.stage.goal.help"
+          }
+        },
+        "acceptance_criteria": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 6,
+          "items": {
+            "$ref": "#/$defs/criterion"
+          },
+          "x-ui": {
+            "widget": "list",
+            "label_msg": "schema.path_suggestion.draft_stages.stage.acceptance_criteria.label",
+            "help_msg": "schema.path_suggestion.draft_stages.stage.acceptance_criteria.help"
+          }
+        },
+        "decision_method": {
+          "type": "string",
+          "enum": [
+            "poster_after_input",
+            "community_vote",
+            "steward",
+            "other_named"
+          ],
+          "default": "poster_after_input",
+          "x-ui": {
+            "widget": "select",
+            "label_msg": "schema.path_suggestion.draft_stages.stage.decision_method.label",
+            "help_msg": "schema.path_suggestion.draft_stages.stage.decision_method.help"
+          }
+        },
+        "depends_on": {
+          "type": "array",
+          "maxItems": 11,
+          "uniqueItems": true,
+          "default": [],
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]{1,39}$"
+          },
+          "x-ui": {
+            "widget": "list",
+            "label_msg": "schema.path_suggestion.draft_stages.stage.depends_on.label",
+            "help_msg": "schema.path_suggestion.draft_stages.stage.depends_on.help"
+          }
+        },
+        "required": {
+          "type": "boolean",
+          "default": true,
+          "x-ui": {
+            "widget": "toggle",
+            "label_msg": "schema.path_suggestion.draft_stages.stage.required.label"
+          }
+        },
+        "needs_choice": {
+          "type": "boolean",
+          "default": true,
+          "x-ui": {
+            "widget": "toggle",
+            "label_msg": "schema.path_suggestion.draft_stages.stage.needs_choice.label"
+          }
+        },
+        "auto_start": {
+          "type": "boolean",
+          "default": true,
+          "x-ui": {
+            "widget": "toggle",
+            "label_msg": "schema.path_suggestion.draft_stages.stage.auto_start.label"
+          }
+        }
+      },
+      "x-checks": {
+        "unique_names": true,
+        "depends_on_resolves": true,
+        "acyclic": "DP-STAGE-PLAN"
+      }
+    }
+  },
+  "x-checks": {
+    "dps": [
+      "DP-REUSE-FIT",
+      "DP-PRIVACY",
+      "DP-NAMING",
+      "DP-LEGALITY"
+    ],
+    "never_applied_automatically": "REUSE-CONTEXT-1",
+    "system_built": true
+  }
+}

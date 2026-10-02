@@ -1,0 +1,43 @@
+{
+  "pack": "fiktiva-city",
+  "version": "1.0.0",
+  "layer": "jurisdiction",
+  "parent": {
+    "name": "constitution",
+    "version": "1.0.0",
+    "pack_hash": "bc5371db3af32e1705caa64c80cbe3cd5423ce8256ab838ab34532df0629f5c3"
+  },
+  "files": [
+    {
+      "path": "competence.yaml",
+      "sha256": "26f9fb33285ac1dbbac522809ae01514d1897ede56082b10f7babedff2de1286",
+      "bytes": 330
+    },
+    {
+      "path": "pack.yaml",
+      "sha256": "e71fc2e1963d6f680c66091bc16d5292350ab3c930f069215da1b6475e2ac082",
+      "bytes": 149
+    },
+    {
+      "path": "reviewer.yaml",
+      "sha256": "cf2bdf83deff6f1b82df6dea735868fd3d92b39e67d712bcd2945ceb7f70fe01",
+      "bytes": 31
+    },
+    {
+      "path": "routes.yaml",
+      "sha256": "321abcdbf6689f7eac2b2f1455551a0bce14d8d96e4f7a5358ef4b7a7e5764b8",
+      "bytes": 355
+    },
+    {
+      "path": "rules.yaml",
+      "sha256": "635903e19b2b12c058de755b8790e134f91ff71d219e2f26e7105e66852c9d8d",
+      "bytes": 1769
+    },
+    {
+      "path": "sources.md",
+      "sha256": "ed4638400e33d3499e84bcccc0e8a7e640d252a12c1ba27bac6ff4723e2b99f7",
+      "bytes": 284
+    }
+  ],
+  "pack_hash": "c0e3d3cd2eabdf904f2daf3c080ee678d70b78eec7f4f53a6887c077f852c0da"
+}

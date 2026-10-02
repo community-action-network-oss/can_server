@@ -14,11 +14,12 @@ import { FsPackSource } from '../../src/policy/infra/fs-pack-source.js';
 import { writeFixture } from './build-fixture.ts';
 import { FIXTURE_DIR, MemorySource } from './helpers.js';
 
-const pinned = JSON.parse(
-  readFileSync(join(process.cwd(), '.env.example'), 'utf8').match(
-    /^POLICY_ACTIVE=(.*)$/m,
-  )![1],
-).default;
+// The miniature 0.0.1 fixture is kept for negative and reseal tests; the .env.example pin is the v1 export.
+const pinned = {
+  name: 'fiktiva-city',
+  version: '0.0.1',
+  hash: 'f023c240efac8b93a7676a1ec5ecb69c224583e85638d8ac760889c0ae999252',
+};
 
 async function sealed(
   mutate?: (m: MemorySource) => void,
@@ -31,7 +32,7 @@ async function sealed(
 }
 
 describe('policy pack loader', () => {
-  it('loads the committed fixture; hash is stable and matches the pin in .env.example', async () => {
+  it('loads the committed fixture; hash is stable and matches its pin', async () => {
     const store = new PolicyStore(new FsPackSource(FIXTURE_DIR));
     const p = await store.load(pinned.name, pinned.version, pinned.hash);
     expect(p.hash).toBe(pinned.hash);

@@ -1,0 +1,152 @@
+[
+  {
+    "id": "ex-EVTR-01",
+    "input": "claim: The repair log shows the Elm Row lamps were fixed on 2026-09-03.\nsource_description: City repair log entry listing the Elm Row lamp repair and its date.\nsource_category: official_record\ntier_request: official_record\nobservation_date: 2026-09-04",
+    "expected_outcome": "publish",
+    "rule_ids": [
+      "EVID-URL-1"
+    ],
+    "note": "claim matches the stored description; tier follows the category",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "claim"
+    },
+    "shot": true,
+    "expected": {
+      "tier": "official_record"
+    }
+  },
+  {
+    "id": "ex-EVTR-02",
+    "input": "claim: A survey found most Birch Quarter riders wait over ten minutes at the Canal Quay stop.\nsource_description: Fictional university transport survey of 400 Birch Quarter riders, published as a report page.\nsource_category: research\ntier_request: research\nobservation_date: 2026-08-20",
+    "expected_outcome": "publish",
+    "rule_ids": [
+      "EVID-URL-1"
+    ],
+    "note": "research source, claim within what the description says",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "claim"
+    },
+    "expected": {
+      "tier": "research"
+    }
+  },
+  {
+    "id": "ex-EVTR-03",
+    "input": "claim: All 142 poles on the ring road were repaired.\nsource_description: Repair log extract covering a sample of 20 poles on the ring road.\nsource_category: official_record\ntier_request: official_record\nobservation_date: 2026-09-05",
+    "expected_outcome": "needs_revision",
+    "rule_ids": [
+      "EVID-URL-1"
+    ],
+    "note": "claim is wider than the source description (142 versus a sample of 20)",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "claim"
+    },
+    "revision_hint": "Narrow the claim to the 20 poles the log covers, or add a source for the rest.",
+    "shot": true
+  },
+  {
+    "id": "ex-EVTR-04",
+    "input": "claim: The council confirmed the bus stop will move.\nsource_description: A post on a neighbourhood forum thread about the Mill Street stop.\nsource_category: civil_society\ntier_request: official_record\nobservation_date: 2026-09-06",
+    "expected_outcome": "needs_revision",
+    "rule_ids": [
+      "EVID-URL-1"
+    ],
+    "note": "boundary: tier requested is higher than the stored category supports",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "claim"
+    },
+    "revision_hint": "The source is a forum post, so it fits civil_society. Ask for an official notice if you need official_record."
+  },
+  {
+    "id": "ex-EVTR-05",
+    "input": "claim: The lamp outage was reported 12 times in August.\nsource_description: (no description stored)\nsource_category: unknown\ntier_request: other\nobservation_date: 2026-09-01",
+    "expected_outcome": "hold",
+    "rule_ids": [
+      "EVID-URL-1"
+    ],
+    "note": "stored metadata is empty so the match cannot be judged",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "claim"
+    },
+    "expected": {
+      "tier": null
+    }
+  },
+  {
+    "id": "ex-EVTR-06",
+    "input": "claim: I counted 9 broken lamps on Mill Street on 2026-09-10.\nsource_description: My own dated walk notes, kept as a page I wrote.\nsource_category: firsthand\ntier_request: firsthand\nobservation_date: 2026-09-10",
+    "expected_outcome": "publish",
+    "rule_ids": [
+      "EVID-URL-1"
+    ],
+    "note": "boundary: lowest tier is still valid when the claim is only what was seen",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "claim"
+    },
+    "expected": {
+      "tier": "firsthand"
+    }
+  },
+  {
+    "id": "ex-EVTR-07",
+    "input": "claim: The man in the photo is the one who blocked the drain.\nsource_description: A photo page showing [PERSON_1] standing at the Quay Street drain.\nsource_category: other\ntier_request: firsthand\nobservation_date: 2026-09-07",
+    "expected_outcome": "needs_revision",
+    "rule_ids": [
+      "EVID-URL-1"
+    ],
+    "note": "the source identifies a person; only a URL, category, date and attestation are stored",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "claim"
+    },
+    "revision_hint": "Use a source that does not identify a person, and describe the place and the fault instead."
+  },
+  {
+    "id": "ex-EVTR-08",
+    "input": "claim: The regional count shows fewer night buses in 2026.\nsource_description: Page was removed; no copy is stored.\nsource_category: statistics_body\ntier_request: statistics_body\nobservation_date: 2026-09-08",
+    "expected_outcome": "hold",
+    "rule_ids": [
+      "EVID-URL-1"
+    ],
+    "note": "stored metadata says the page is gone, so the claim cannot be checked",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "claim"
+    },
+    "expected": {
+      "tier": null
+    }
+  },
+  {
+    "id": "ex-EVTR-09",
+    "input": "claim: Fiktiva City counted 31 outage reports in the month after the repair.\nsource_description: Statistics office table of lamp outage reports by month for Fiktiva City.\nsource_category: statistics_body\ntier_request: statistics_body\nobservation_date: 2026-09-30",
+    "expected_outcome": "publish",
+    "rule_ids": [
+      "EVID-URL-1"
+    ],
+    "note": "claim narrower than the table, matches the stated month",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "claim"
+    },
+    "shot": true,
+    "expected": {
+      "tier": "statistics_body"
+    }
+  }
+]

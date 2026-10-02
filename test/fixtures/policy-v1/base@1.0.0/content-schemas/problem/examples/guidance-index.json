@@ -1,0 +1,32 @@
+[
+  {
+    "id": "problem.condition",
+    "field": "condition",
+    "eval_for": [
+      "DP-COMPLETENESS",
+      "DP-ASSUMPTIONS"
+    ],
+    "good": "Many streets in the north district have no working lights after dark.",
+    "bad": "My neighbour never fixes anything and I am furious."
+  },
+  {
+    "id": "problem.causal_hypothesis",
+    "field": "causal_hypothesis",
+    "eval_for": [
+      "DP-COMPLETENESS",
+      "DP-ASSUMPTIONS"
+    ],
+    "good": "Repairs may be too slow because the fault line is shared (hypothesis, untested).",
+    "bad": "The city does not care."
+  },
+  {
+    "id": "problem.assumptions",
+    "field": "assumptions",
+    "eval_for": [
+      "DP-COMPLETENESS",
+      "DP-ASSUMPTIONS"
+    ],
+    "good": "I assume the repair budget is not the limit (factual, low confidence).",
+    "bad": "No assumptions."
+  }
+]
