@@ -11,6 +11,7 @@ import { PolicyProposalsModule } from './policy-proposals/policy-proposals.modul
 import { StagesModule } from './stages/stages.module.js';
 import { EventRelay } from './moderation/app/event-relay.js';
 import { RelayCursor } from './moderation/infra/relay-cursor.js';
+import { PrivacyGatewayModule } from './ai-gateway/app/redaction/privacy-gateway.module.js';
 import { ModerationModule } from './moderation/moderation.module.js';
 
 @Module({
@@ -25,6 +26,7 @@ import { ModerationModule } from './moderation/moderation.module.js';
     ProblemsModule,
     StagesModule,
     ModerationModule,
+    PrivacyGatewayModule,
     JurisdictionsModule,
   ],
   providers: [RelayCursor, EventRelay],

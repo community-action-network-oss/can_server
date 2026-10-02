@@ -1,0 +1,32 @@
+{
+  "positive": [
+    { "id": "latin-email", "script": "latin", "fields": [{ "fieldRef": "description", "text": "Contact me at maria.lopez@example.org about the pothole." }], "seeds": ["maria.lopez@example.org"] },
+    { "id": "latin-phone", "script": "latin", "fields": [{ "fieldRef": "description", "text": "Call 020 7946 0958 after six." }], "seeds": ["020 7946 0958"] },
+    { "id": "latin-name-title", "script": "latin", "fields": [{ "fieldRef": "description", "text": "Mr Daniel Okafor blocked the drain." }], "seeds": ["Daniel Okafor"] },
+    { "id": "latin-name-plain", "script": "latin", "fields": [{ "fieldRef": "description", "text": "It was Priya Raman who dumped the bags." }], "seeds": ["Priya Raman"] },
+    { "id": "latin-address", "script": "latin", "fields": [{ "fieldRef": "description", "text": "He lives at 14 Marsh Lane near the school." }], "seeds": ["14 Marsh Lane"] },
+    { "id": "latin-gov-id", "script": "latin", "fields": [{ "fieldRef": "description", "text": "The form said ID number 123456789 and reference ABC-123456." }], "seeds": ["123456789", "ABC-123456"] },
+    { "id": "latin-plate", "script": "latin", "fields": [{ "fieldRef": "description", "text": "The van KX 4821 parks here every night." }], "seeds": ["KX 4821"] },
+    { "id": "secrets", "script": "latin", "fields": [{ "fieldRef": "description", "text": "Their api key: sk-test-abcdefghijklmnop1234 and the password is hunter2hunter2 were pasted." }], "seeds": ["sk-test-abcdefghijklmnop1234", "hunter2hunter2"] },
+    { "id": "coordinates", "script": "latin", "fields": [{ "fieldRef": "description", "text": "Dumped at 51.50721, -0.12765 by the river." }], "seeds": ["51.50721, -0.12765"] },
+    { "id": "arabic-name-phone", "script": "arabic", "fields": [{ "fieldRef": "description", "text": "اتصل بالسيد خالد المنصوري على الرقم ٠٧٧٠٠٩٠٠١٢٣" }], "seeds": ["خالد المنصوري", "٠٧٧٠٠٩٠٠١٢٣"] },
+    { "id": "arabic-email", "script": "arabic", "fields": [{ "fieldRef": "description", "text": "راسلني على layla.h@example.org بخصوص الحفرة" }], "seeds": ["layla.h@example.org"] },
+    { "id": "devanagari-name-phone", "script": "devanagari", "fields": [{ "fieldRef": "description", "text": "श्री राजेश कुमार से संपर्क करें, फोन ९८७६५४३२१०" }], "seeds": ["राजेश कुमार", "९८७६५४३२१०"] },
+    { "id": "rare-combination", "script": "latin", "fields": [{ "fieldRef": "description", "text": "The night nurse on Ward 7 refused me at 3:15 am on 12 March." }], "seeds": ["Ward 7", "3:15 am", "12 March"] },
+    { "id": "evasion-email-words", "script": "latin", "fields": [{ "fieldRef": "description", "text": "write to j.smith at example dot com please" }], "seeds": ["j.smith at example dot com"] },
+    { "id": "evasion-phone-spacing", "script": "latin", "fields": [{ "fieldRef": "description", "text": "my number is 0 7 7 0 0 9 0 0 1 2 3 thanks" }], "seeds": ["0 7 7 0 0 9 0 0 1 2 3"] },
+    { "id": "evasion-leetspeak", "script": "latin", "fields": [{ "fieldRef": "description", "text": "J0hn Sm1th took the bins." }], "seeds": ["J0hn Sm1th"] },
+    { "id": "evasion-homoglyph", "script": "latin", "fields": [{ "fieldRef": "description", "text": "Jоhn Smith took the bins." }], "seeds": ["Jоhn Smith"] },
+    { "id": "evasion-spaced-letters", "script": "latin", "fields": [{ "fieldRef": "description", "text": "ask for d a n i e l at the desk" }], "seeds": ["d a n i e l"] },
+    { "id": "split-name-across-fields", "script": "latin", "fields": [{ "fieldRef": "description", "text": "Reported by Priya" }, { "fieldRef": "authenticity_note", "text": "Raman, flat two" }], "seeds": ["Priya", "Raman"] },
+    { "id": "split-phone-across-fields", "script": "latin", "fields": [{ "fieldRef": "description", "text": "call 0770 090" }, { "fieldRef": "authenticity_note", "text": "0123 now" }], "seeds": ["0770 090", "0123"] },
+    { "id": "later-mention", "script": "latin", "fields": [{ "fieldRef": "description", "text": "Mayor Jones said no. Later Jones left." }], "seeds": ["Jones"] }
+  ],
+  "benign": [
+    { "id": "plain", "fields": [{ "fieldRef": "description", "text": "The pothole on the main road has been open for three weeks and nobody has fixed it." }] },
+    { "id": "institutions", "fields": [{ "fieldRef": "description", "text": "The Water Board and the City Council promised repairs by the end of the year." }] },
+    { "id": "counts", "fields": [{ "fieldRef": "description", "text": "About 40 families use the footbridge every day and it floods when it rains." }] },
+    { "id": "acronyms", "fields": [{ "fieldRef": "description", "text": "The ISO audit and the PDF report were attached last Friday." }] },
+    { "id": "request", "fields": [{ "fieldRef": "description", "text": "Please add streetlights at the junction near the library, the street is dark." }] }
+  ]
+}

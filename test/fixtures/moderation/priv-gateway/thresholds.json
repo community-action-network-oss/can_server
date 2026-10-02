@@ -1,0 +1,5 @@
+{
+  "min_recall": 1,
+  "max_over_redaction": 0.2,
+  "note": "recall = seeded identifiers absent from redact() output / seeded identifiers. over_redaction = benign cases with any redaction / benign cases. All text is synthetic."
+}

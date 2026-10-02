@@ -880,3 +880,27 @@ export const moderationEvent = pgTable(
     ),
   ],
 );
+
+/**
+ * Pseudonym token mapping (09-u09). The ciphertext is the ORIGINAL personal data, so this is personal data:
+ * operation scoped, expiring, purgeable, never joined from run tables, never logged or serialised.
+ * A trigger forbids UPDATE (the app role owns the table, so REVOKE alone is not enforced); DELETE is the purge.
+ */
+export const pseudonymToken = pgTable(
+  'pseudonym_token',
+  {
+    id: uuid('id').primaryKey(),
+    operationId: uuid('operation_id').notNull(),
+    kind: text('kind').notNull(),
+    token: text('token').notNull(),
+    ciphertext: bytea('ciphertext').notNull(),
+    createdAt: tz('created_at').notNull().defaultNow(),
+    expiresAt: tz('expires_at')
+      .notNull()
+      .default(sql`now() + interval '1 hour'`),
+  },
+  (t) => [
+    unique('pseudonym_token_op_token_uq').on(t.operationId, t.token),
+    index('pseudonym_token_expires_idx').on(t.expiresAt),
+  ],
+);
