@@ -1,0 +1,114 @@
+{
+ "allowed_rule_ids": [
+  "PRIV-GATEWAY-1",
+  "FRAME-1"
+ ],
+ "input_tokens": [
+  "[PERSON_1]",
+  "[EMAIL_1]"
+ ],
+ "originals": [
+  "Marcus Vellan"
+ ],
+ "restricted": [
+  "The operator of a public facility shall publish the annual inspection report no later than the thirtieth day after the end of each calendar year"
+ ],
+ "canary": "canary-0a1b2c3d4e5f",
+ "reject": [
+  {
+   "id": "email",
+   "text": "Please write to jo.bloggs@example.com about this.",
+   "code": "pii_leak"
+  },
+  {
+   "id": "phone",
+   "text": "Call 020 7946 0958 to discuss it.",
+   "code": "pii_leak"
+  },
+  {
+   "id": "name_echo",
+   "text": "This describes Marcus Vellan, which FRAME-1 does not allow.",
+   "code": "pii_leak"
+  },
+  {
+   "id": "secret",
+   "text": "The key sk-abcdEFGH1234567890abcdEFGH was found in the text.",
+   "code": "secret"
+  },
+  {
+   "id": "token_unresolved",
+   "text": "The statement names [PERSON_1] directly.",
+   "code": "unresolved_token"
+  },
+  {
+   "id": "token_other",
+   "text": "Please remove [ORG_7] from the statement.",
+   "code": "unresolved_token"
+  },
+  {
+   "id": "quote",
+   "text": "The text says the operator shall publish the annual inspection report no later than the thirtieth day after the end.",
+   "code": "restricted_quote"
+  },
+  {
+   "id": "threshold",
+   "text": "Your post scored below the threshold of 0.7 for FRAME-1.",
+   "code": "score_disclosure"
+  },
+  {
+   "id": "confidence",
+   "text": "We are 82% confident that FRAME-1 applies.",
+   "code": "score_disclosure"
+  },
+  {
+   "id": "floor",
+   "text": "The floor is 60 for this check.",
+   "code": "score_disclosure"
+  },
+  {
+   "id": "unknown_rule",
+   "text": "This breaks rule NAME-1 and also FRAME-1.",
+   "code": "unknown_rule"
+  },
+  {
+   "id": "dp_id",
+   "text": "Flagged by DP-SECRET-STUFF.",
+   "code": "unknown_rule"
+  },
+  {
+   "id": "canary",
+   "text": "The marker canary-0a1b2c3d4e5f was in the prompt.",
+   "code": "canary"
+  },
+  {
+   "id": "url",
+   "text": "See https://evil.example/path for details.",
+   "code": "url"
+  },
+  {
+   "id": "bare_domain",
+   "text": "Details are at evil-site.com/help for you.",
+   "code": "url"
+  },
+  {
+   "id": "too_long",
+   "text": "a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a ",
+   "code": "too_long"
+  },
+  {
+   "id": "script",
+   "text": "\u8fd9\u662f\u4e00\u4e2a\u89e3\u91ca\u3002",
+   "code": "unscreenable"
+  },
+  {
+   "id": "empty",
+   "text": "   ",
+   "code": "unscreenable"
+  }
+ ],
+ "accept": [
+  "The statement describes a person rather than a public condition (FRAME-1). Try describing the pattern instead.",
+  "Please describe the broken streetlights on the road in neutral terms.",
+  "Your post needs more detail in the scope field, then it can go ahead."
+ ]
+}
