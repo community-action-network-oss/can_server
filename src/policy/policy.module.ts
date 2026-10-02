@@ -79,6 +79,7 @@ import {
     },
   ],
   exports: [
+    PACK_SOURCE,
     PolicyStore,
     ContentSchemaRegistry,
     DecisionCache,
