@@ -277,3 +277,53 @@ export const contentSchemaVersion = pgTable(
   },
   (t) => [primaryKey({ columns: [t.type, t.schemaHash] })],
 );
+
+/**
+ * One row per moderation run decision (MOD-EXPLAIN-1). Insert-only for can_app_rw: a changed
+ * outcome is a new row (NO-INSTANCE-OVERRIDE-1). No personal data, no human-decider or note columns.
+ * `decided_by` is null for runs; `interim` is the legacy name 09-u03 replaces with `transitional`.
+ */
+export const moderationDecision = pgTable(
+  'moderation_decision',
+  {
+    id: uuid('id').primaryKey(),
+    targetType: text('target_type').notNull(),
+    targetId: uuid('target_id').notNull(),
+    outcome: text('outcome').notNull(),
+    ruleIds: text('rule_ids').array().notNull(),
+    fieldRef: text('field_ref'),
+    spanStart: integer('span_start'),
+    spanEnd: integer('span_end'),
+    revisionHint: text('revision_hint'),
+    safetySensitive: boolean('safety_sensitive').notNull().default(false),
+    policyVersion: text('policy_version').notNull(),
+    publicExplanation: text('public_explanation').notNull(),
+    appealableUntil: tz('appealable_until').notNull(),
+    interim: boolean('interim').notNull().default(true),
+    decidedBy: uuid('decided_by'),
+    createdAt: tz('created_at').notNull().defaultNow(),
+  },
+  (t) => [
+    check(
+      'moderation_decision_target_type_chk',
+      sql`${t.targetType} in ('problem','contribution')`,
+    ),
+    check(
+      'moderation_decision_outcome_chk',
+      sql`${t.outcome} in ('published','needs_revision','rejected')`,
+    ),
+    check(
+      'moderation_decision_rule_ids_chk',
+      sql`cardinality(${t.ruleIds}) > 0`,
+    ),
+    check(
+      'moderation_decision_span_chk',
+      sql`(${t.spanStart} is null and ${t.spanEnd} is null) or (${t.spanStart} is not null and ${t.spanEnd} is not null and ${t.spanStart} < ${t.spanEnd})`,
+    ),
+    check(
+      'moderation_decision_explain_chk',
+      sql`${t.outcome} = 'published' or (${t.fieldRef} is not null and (${t.revisionHint} is not null or ${t.safetySensitive}))`,
+    ),
+    index('moderation_decision_target_idx').on(t.targetType, t.targetId),
+  ],
+);

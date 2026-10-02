@@ -1038,6 +1038,47 @@
         ],
         "type": "object"
       },
+      "RuleDto": {
+        "properties": {
+          "enforcement": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "plainText": {
+            "type": "string"
+          },
+          "tier": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "plainText",
+          "tier",
+          "enforcement"
+        ],
+        "type": "object"
+      },
+      "RulesDto": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/RuleDto"
+            },
+            "type": "array"
+          },
+          "policyVersion": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "policyVersion",
+          "items"
+        ],
+        "type": "object"
+      },
       "SignUpDto": {
         "properties": {
           "ageConfirmed": {
@@ -3117,6 +3158,57 @@
         "summary": "Timeline of a visible problem, oldest first; payloads are never returned",
         "tags": [
           "problems"
+        ]
+      }
+    },
+    "/v1/rules": {
+      "get": {
+        "operationId": "listRules",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "jurisdiction",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RulesDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "summary": "Rules of the active policy pack",
+        "tags": [
+          "moderation"
         ]
       }
     }
