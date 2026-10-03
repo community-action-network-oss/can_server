@@ -42,6 +42,50 @@ const cleanup = async () => {
     'delete from invite where issued_by = any($1) or redeemed_by = any($1)',
     [accountIds],
   );
+  // Stage fixtures (seed --fixture) hang off the fixture problems: delete FK-safe, leaves first.
+  const byProblem = (t: string) =>
+    pool.query(`delete from ${t} where problem_id = any($1)`, [
+      FIXTURE_PROBLEM_IDS,
+    ]);
+  const byStage = (t: string) =>
+    pool.query(
+      `delete from ${t} where stage_id in (select id from stage where problem_id = any($1))`,
+      [FIXTURE_PROBLEM_IDS],
+    );
+  await pool.query(
+    'delete from task_blocker where task_id in (select id from task where problem_id = any($1))',
+    [FIXTURE_PROBLEM_IDS],
+  );
+  await byProblem('task');
+  await pool.query(
+    'delete from evidence_ref where contribution_id in (select id from contribution where problem_id = any($1))',
+    [FIXTURE_PROBLEM_IDS],
+  );
+  await byProblem('contribution');
+  // Insert-only tables: the owner switches the guard off for teardown only.
+  await pool.query('alter table decision_record disable trigger user');
+  await pool.query('alter table legal_gate_record disable trigger user');
+  await pool.query('alter table stage_event disable trigger user');
+  try {
+    await byProblem('legal_gate_record');
+    await byProblem('decision_record');
+    await byProblem('stage_event');
+  } finally {
+    await pool.query('alter table decision_record enable trigger user');
+    await pool.query('alter table legal_gate_record enable trigger user');
+    await pool.query('alter table stage_event enable trigger user');
+  }
+  await byStage('stage_choice');
+  await byStage('stage_option');
+  await byStage('stage_evidence');
+  await byStage('acceptance_criterion');
+  await pool.query(
+    'delete from stage_edge where stage_id in (select id from stage where problem_id = any($1)) or depends_on_id in (select id from stage where problem_id = any($1))',
+    [FIXTURE_PROBLEM_IDS],
+  );
+  await byProblem('acceptance_criterion');
+  await byProblem('source_ref');
+  await byProblem('stage');
   await pool.query('delete from problem_event where problem_id = any($1)', [
     FIXTURE_PROBLEM_IDS,
   ]);
