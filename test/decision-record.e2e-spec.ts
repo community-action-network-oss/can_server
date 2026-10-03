@@ -300,6 +300,19 @@ describe('decision record (04-u05)', () => {
     });
   });
 
+  it('holds when an article is retrieved but no judge has read it (never permission)', async () => {
+    const w = await world('Assembly on the square');
+    const r = await choose(w);
+    expect(r.status).toBe(409);
+    expect(r.body.code ?? r.body.error?.code).toBe('gate_held');
+    expect(await counts(w.stageId)).toEqual({
+      records: 0,
+      gates: 0,
+      choices: 0,
+    });
+    expect((await decision(w.stageId)).body.choiceGate).toBe('missing');
+  });
+
   it('a block at any layer stands: gate record kept, choice not kept, stage blocked', async () => {
     const w = await world('Moon-market assembly on the square');
     const r = await choose(w);
@@ -319,7 +332,7 @@ describe('decision record (04-u05)', () => {
       finding: string;
       blocks: boolean;
     }[];
-    expect(f.find((x) => x.layer === 'L3')?.finding).toBe('permits');
+    expect(f.find((x) => x.layer === 'L3')?.finding).toBe('unjudged');
     expect(f.find((x) => x.layer === 'L6')).toMatchObject({
       finding: 'constrains',
       blocks: true,

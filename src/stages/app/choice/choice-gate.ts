@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, Logger, Optional } from '@nestjs/common';
 import { and, eq, inArray } from 'drizzle-orm';
 import { type GateRecordInput } from '../../../decisions/app/decision-records.service.js';
 import {
@@ -17,40 +17,55 @@ import {
 import type { LegalRetrieval } from '../../../policy/legal/index.js';
 import { PolicyStore } from '../../../policy/app/policy-store.js';
 import type { ChoiceGatePort } from '../ports.js';
+import {
+  FailClosedLegalJudge,
+  LEGAL_JUDGE,
+  type LegalJudgePort,
+} from './legal-judge.js';
 
 const str = (v: unknown) => (typeof v === 'string' ? v : '');
 
-/** One finding per layer from what retrieval cites. ponytail: a retrieved article without a topic ban reads as `permits`; a model judge (FakeModel offline) can refine it later. */
-export function findingsFrom(r: LegalRetrieval): GateFinding[] {
-  return r.layers.map((l): GateFinding => {
-    const base = {
-      layer: l.layer as GateLayer,
-      corpus_version: l.corpus_version,
-    };
-    if (l.notApplicable)
+type Finding = Omit<GateFinding, 'finding'> & {
+  finding: GateFinding['finding'] | 'unjudged';
+};
+
+/** One finding per layer. A topic ban blocks; any other retrieved article goes to the judge (fail-closed default: `unjudged`). */
+export async function findingsFrom(
+  r: LegalRetrieval,
+  judge: LegalJudgePort,
+): Promise<Finding[]> {
+  return Promise.all(
+    r.layers.map(async (l): Promise<Finding> => {
+      const base = {
+        layer: l.layer as GateLayer,
+        corpus_version: l.corpus_version,
+      };
+      if (l.notApplicable)
+        return {
+          ...base,
+          finding: 'not_applicable',
+          article_ids: [],
+          blocks: false,
+        };
+      if (!l.articles.length)
+        return {
+          ...base,
+          finding: 'none_found',
+          article_ids: [],
+          blocks: false,
+        };
+      const finding = await judge.judge(l);
+      const banned = l.articles.filter((a) => a.topic_ban);
+      const cited =
+        finding === 'constrains' && banned.length ? banned : l.articles;
       return {
         ...base,
-        finding: 'not_applicable',
-        article_ids: [],
-        blocks: false,
+        finding,
+        article_ids: cited.map((a) => a.article_id),
+        blocks: finding === 'constrains',
       };
-    const banned = l.articles.filter((a) => a.topic_ban);
-    if (banned.length)
-      return {
-        ...base,
-        finding: 'constrains',
-        article_ids: banned.map((a) => a.article_id),
-        blocks: true,
-      };
-    if (l.articles.length)
-      return {
-        ...base,
-        finding: 'permits',
-        article_ids: l.articles.map((a) => a.article_id),
-        blocks: false,
-      };
-    return { ...base, finding: 'none_found', article_ids: [], blocks: false };
-  });
+    }),
+  );
 }
 
 /**
@@ -64,6 +79,9 @@ export class LegalChoiceGate implements ChoiceGatePort {
     @Inject(CLOCK) private readonly clock: Clock,
     @Inject(LegalRegistry) private readonly legal: LegalRegistry,
     @Inject(PolicyStore) private readonly store: PolicyStore,
+    @Optional()
+    @Inject(LEGAL_JUDGE)
+    private readonly judge: LegalJudgePort = new FailClosedLegalJudge(),
   ) {}
 
   async check(i: Parameters<ChoiceGatePort['check']>[0]) {
@@ -129,7 +147,17 @@ export class LegalChoiceGate implements ChoiceGatePort {
     });
     // Fail closed: no stack, a missing layer or an incomplete retrieval is a hold, never "no law applies".
     if (!got.ok || got.retrieval.escalate) return out('held');
-    const v = decideGate(findingsFrom(got.retrieval));
+    const found = await findingsFrom(got.retrieval, this.judge);
+    // A block stands. Otherwise an unjudged layer holds: retrieved is not permitted (FAIL-CLOSED-AI-1).
+    if (
+      !found.some((f) => f.blocks) &&
+      found.some((f) => f.finding === 'unjudged')
+    ) {
+      new Logger('ChoiceGate').warn('legal_judgement_pending');
+      return out('held');
+    }
+    // Only a blocked record can carry `unjudged`; the stored findings stay honest.
+    const v = decideGate(found as GateFinding[]);
     if (v.outcome === 'hold') return out('held');
     return out(v.outcome === 'clear' ? 'passed' : 'blocked', {
       gate: {
