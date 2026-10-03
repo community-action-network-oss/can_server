@@ -1,0 +1,30 @@
+# Spam variants (11-u05), TEST DATA ONLY. Invented place names; links only on evidence.sim.test.
+# Slots: {area} {num} {link} (wordlists/slug.txt). Row outcomes never publish. Near-duplicates must hold (DP-DUPLICATE has no reject).
+techniques:
+  - id: near_duplicate_problem
+    field_refs: [condition]
+    expected_outcome: hold
+    rule_ids: [DUP-1]
+    count: 8
+    templates:
+      - "Bins in {area} stay out for days after the pickup day, please fix the collection."
+      - "Bins in {area} are left out for days after the pickup day, please fix collection."
+      - "In {area} the bins stay out for days after pickup day, please fix the collection."
+  - id: near_dup_contribution
+    field_refs: [risk.claim]
+    expected_outcome: hold
+    rule_ids: [DUP-1]
+    count: 30
+    templates:
+      - "The rota needs a named owner in {area}, case {num}."
+      - "The rota in {area} needs a named owner, ref {num}."
+      - "A named owner is needed for the rota in {area}, no. {num}."
+  - id: link_stuffing
+    field_refs: [evidence_refs.description, evidence_refs.supports]
+    expected_outcome: needs_revision
+    rule_ids: [EVID-URL-1]
+    count: 10
+    templates:
+      - "Proof and offers here: {link} {link} {link} {link}"
+      - "See {link}, {link}, {link} and {link} for the full list"
+      - "{link} {link} {link} {link} {link} {link}"

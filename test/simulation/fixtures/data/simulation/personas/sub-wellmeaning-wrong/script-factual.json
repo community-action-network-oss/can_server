@@ -1,0 +1,211 @@
+{
+  "steps": [
+    {
+      "id": "prepare",
+      "action": "prepare",
+      "content_type": "problem",
+      "schema_version": "1.0.0",
+      "fields": {
+        "place": {
+          "jurisdiction": "Fiktiva City",
+          "coarse_area": "East Ward"
+        },
+        "since": {
+          "started": "October last year",
+          "trend": "worsening"
+        },
+        "evidence_refs": [],
+        "out_of_scope": [],
+        "existing_efforts": "none_stated",
+        "lawful_options": {
+          "status": "known",
+          "options": [
+            "Ask the Head of Road Works for a repair schedule."
+          ],
+          "lawful_only_acknowledged": true
+        },
+        "condition": "A council admission shows that hundreds of street lights in East Ward are out and the lighting budget was cut in half.",
+        "affected": "Evening commuters and older residents of East Ward, size unknown, who avoid the streets after dark.",
+        "observed_facts": [
+          {
+            "statement": "The council has admitted that 200 street lights are out in East Ward and that the lighting budget was cut in half.",
+            "source_ref": "firsthand",
+            "date": "2026-09"
+          }
+        ],
+        "uncertain_claims": [
+          {
+            "statement": "The outages may share one fault.",
+            "why_uncertain": "The fault list does not link the outages to a cause.",
+            "what_would_settle_it": "The repair log of the lighting team for East Ward."
+          }
+        ],
+        "sources": [
+          {
+            "uri": "https://evidence.sim.test/fiktiva-city/lighting-fault-list-autumn",
+            "category": "official_record",
+            "establishes": "The count of street lights out in East Ward in the autumn report."
+          }
+        ],
+        "causal_hypothesis": {
+          "statement": "Repairs are slow because the repair team is understaffed and the fault list is ignored (hypothesis, untested).",
+          "status": "untested"
+        },
+        "scope": "Street lighting in East Ward since October last year; not other utilities and not other wards.",
+        "responsible_roles": [
+          "Head of Road Works"
+        ],
+        "desired_outcome": "Every street in East Ward is lit at night and anyone can read the repair log.",
+        "final_acceptance_criteria": [
+          {
+            "statement": "Fewer than 5 street lights out in East Ward.",
+            "how_observed": "The public fault list, read at the end of the period.",
+            "deadline": "2027-06-30"
+          }
+        ],
+        "assumptions": [
+          {
+            "statement": "The repair budget is not the limit.",
+            "kind": "factual",
+            "confidence": "low",
+            "how_to_check": "Read the published lighting budget line."
+          }
+        ],
+        "context_profile": {
+          "problem_type": "infrastructure_failure",
+          "category": "public_lighting",
+          "population_scale": "<100k",
+          "geography": {
+            "country": "XN",
+            "region": "Fiktiva region",
+            "settlement_class": "city",
+            "climate_class": "C"
+          },
+          "resource_band": {
+            "people": "<5",
+            "in_kind": "unknown"
+          },
+          "budget_band": {
+            "band": "unknown",
+            "currency_class": "upper_middle"
+          },
+          "institutions": [
+            "lighting_team"
+          ],
+          "legal_stack": [
+            {
+              "layer": "L3",
+              "corpus_version": "fiktiva-2026.1"
+            }
+          ],
+          "language": "en",
+          "constraints": []
+        },
+        "affected_area": {
+          "area_version": 1
+        }
+      },
+      "expect": {
+        "outcome": "draft"
+      }
+    },
+    {
+      "id": "request_review",
+      "action": "request_review",
+      "when": {
+        "after_step": "prepare"
+      },
+      "expect": {
+        "outcome": "in_review"
+      }
+    },
+    {
+      "id": "await_review",
+      "action": "read",
+      "when": {
+        "state": [
+          "in_review"
+        ],
+        "after_step": "request_review"
+      },
+      "expect": {
+        "outcome": "in_review"
+      }
+    },
+    {
+      "id": "resolve_reviews",
+      "action": "resolve_recommendation",
+      "when": {
+        "state": [
+          "in_review"
+        ],
+        "after_step": "await_review"
+      },
+      "fields": {
+        "recommendation_ref": "{{var.recommendation_1}}",
+        "decision": "decline",
+        "reason": "I read the volunteer note. The wording is mine and I keep it for now; I will explain in the reply."
+      },
+      "expect": {
+        "outcome": "in_review"
+      }
+    },
+    {
+      "id": "request_publication",
+      "action": "request_publication",
+      "when": {
+        "state": [
+          "in_review"
+        ],
+        "after_step": "resolve_reviews"
+      },
+      "expect": {
+        "outcome": "needs_revision",
+        "field_ref": "observed_facts"
+      }
+    },
+    {
+      "id": "revise_marked",
+      "action": "revise",
+      "when": {
+        "outcome_was": "needs_revision",
+        "after_step": "request_publication"
+      },
+      "assumption_strategy": "correct",
+      "fields": {
+        "condition": "Many streets in East Ward have no working street lights after dark, and people there avoid walking in the evening.",
+        "observed_facts": [
+          {
+            "statement": "The lighting fault list shows 38 street lights out in East Ward in the autumn report.",
+            "source_ref": "https://evidence.sim.test/fiktiva-city/lighting-fault-list-autumn",
+            "date": "2026-09"
+          }
+        ],
+        "assumptions": [
+          {
+            "statement": "I believe the lighting budget was cut. I have not seen the budget line.",
+            "kind": "factual",
+            "confidence": "low",
+            "how_to_check": "Read the published lighting budget line."
+          }
+        ]
+      },
+      "expect": {
+        "outcome": "draft"
+      }
+    },
+    {
+      "id": "request_publication_again",
+      "action": "request_publication",
+      "when": {
+        "state": [
+          "in_review"
+        ],
+        "after_step": "revise_marked"
+      },
+      "expect": {
+        "outcome": "active"
+      }
+    }
+  ]
+}

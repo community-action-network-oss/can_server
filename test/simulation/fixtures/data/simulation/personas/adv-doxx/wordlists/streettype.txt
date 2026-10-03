@@ -1,0 +1,5 @@
+Street
+Lane
+Road
+Close
+Avenue

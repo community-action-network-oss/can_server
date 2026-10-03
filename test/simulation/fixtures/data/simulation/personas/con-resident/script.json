@@ -1,0 +1,93 @@
+{
+  "steps": [
+    {
+      "id": "post_observation",
+      "action": "contribute",
+      "content_type": "contribution.observation",
+      "fields": {
+        "type": "observation",
+        "target": "{{seed.problem_id}}",
+        "claim": "Several street lights on the East Ward main street were dark on weekday evenings.",
+        "basis": "firsthand",
+        "evidence_refs": [],
+        "uncertainty": "I did not count every light.",
+        "assumptions": [],
+        "what_observed": "A row of lights was dark between the bus stop and the market on three evenings.",
+        "when": "September 2026, after 8 pm",
+        "where_coarse": "East Ward",
+        "how_observed": "Walked the main street on three evenings and noted the dark lights."
+      },
+      "expect": {
+        "outcome": "publish"
+      }
+    },
+    {
+      "id": "post_perspective",
+      "action": "contribute",
+      "when": {
+        "after_step": "post_observation"
+      },
+      "content_type": "contribution.stakeholder_perspective",
+      "fields": {
+        "type": "stakeholder_perspective",
+        "target": "{{seed.problem_id}}",
+        "target_stage": "{{seed.planned_stage_ref}}",
+        "claim": "Shop owners on the main street lose evening customers when the street is dark.",
+        "basis": "firsthand",
+        "evidence_refs": [],
+        "uncertainty": "I only spoke to a few shop owners.",
+        "assumptions": [],
+        "group": "Shop owners on the East Ward main street",
+        "concern": "Customers stop coming after dark when the street is unlit.",
+        "what_would_help": "Lights that work until closing time."
+      },
+      "expect": {
+        "outcome": "publish"
+      }
+    },
+    {
+      "id": "post_pattern_experience",
+      "action": "contribute",
+      "when": {
+        "after_step": "post_perspective"
+      },
+      "content_type": "contribution.personal_experience",
+      "fields": {
+        "type": "personal_experience",
+        "target": "{{seed.problem_id}}",
+        "claim": "Repair requests for street lights get no reply for several weeks.",
+        "basis": "firsthand",
+        "evidence_refs": [],
+        "uncertainty": "I do not know how long other requests take.",
+        "assumptions": [],
+        "pattern_illustrated": "Repair requests take weeks to get any reply.",
+        "period": "Autumn 2026"
+      },
+      "expect": {
+        "outcome": "publish"
+      }
+    },
+    {
+      "id": "post_case_experience",
+      "action": "contribute",
+      "when": {
+        "after_step": "post_pattern_experience"
+      },
+      "content_type": "contribution.personal_experience",
+      "fields": {
+        "type": "personal_experience",
+        "target": "{{seed.problem_id}}",
+        "claim": "My household is owed an apology because nobody ever answered our own repair request.",
+        "basis": "firsthand",
+        "evidence_refs": [],
+        "uncertainty": "I do not know what happened to other requests.",
+        "assumptions": [],
+        "pattern_illustrated": "My household was ignored.",
+        "period": "Autumn 2026"
+      },
+      "expect": {
+        "outcome": "needs_revision"
+      }
+    }
+  ]
+}

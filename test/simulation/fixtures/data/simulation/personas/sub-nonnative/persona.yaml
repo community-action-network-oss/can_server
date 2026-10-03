@@ -1,0 +1,46 @@
+# Synthetic persona (11-u02). Every name, place, body and URL here is invented. No real person or organisation.
+id: "sub-nonnative"
+family: "submitter"
+role: "A resident of Mill Ward in Fiktiva City who writes in short, imperfect English and asks the AI fill-assist to help with three fields."
+goals:
+  - "Report the broken park benches clearly."
+  - "Use fill-assist for the fields that are hardest to write, and confirm each suggestion by hand."
+knowledge: "Knows the park and the six broken benches from their own photos. Does not know which office is responsible, only guesses."
+flaws:
+  - "Articles and verb tenses are sometimes wrong, and word order is sometimes unusual."
+  - "Guesses a cause and says so honestly in the text."
+behaviors:
+  - "Writes private notes first, reads the suggestions, and confirms one field at a time (condition, scope, desired_outcome), never all at once."
+  - "Types the other fields in own words, in plain, varied sentences."
+  - "Understandable at every point; the persona is a test of clear assistance, not of language correction."
+  - "Posts no replies on any problem; editing the own problem is not a reply (D-85)."
+language: "en"
+turn_budget: 14
+seed: 2024
+synthetic: true
+handle: "sim-nonnative"
+location: "inside"
+script: "script.json"
+prompt: "prompt.md"
+expected:
+  - step_id: "assist_notes"
+    outcomes: ["publish"]
+  - step_id: "read_suggestions"
+    outcomes: ["publish"]
+  - step_id: "confirm_condition"
+    outcomes: ["assisted"]
+  - step_id: "confirm_scope"
+    outcomes: ["assisted"]
+  - step_id: "confirm_desired_outcome"
+    outcomes: ["assisted"]
+  - step_id: "prepare"
+    outcomes: ["draft"]
+  - step_id: "request_review"
+    outcomes: ["in_review"]
+  - step_id: "await_review"
+    outcomes: ["in_review"]
+  - step_id: "resolve_reviews"
+    outcomes: ["in_review"]
+  - step_id: "request_publication"
+    outcomes: ["active"]
+    dp: "DP-PUBLISH"

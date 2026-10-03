@@ -1,0 +1,43 @@
+{
+  "steps": [
+    {
+      "id": "brigade_post",
+      "action": "contribute",
+      "content_type": "contribution.risk",
+      "fields": {
+        "type": "risk",
+        "target": "{{seed.problem_id}}",
+        "claim": "{{var.payload}}",
+        "basis": "inferred",
+        "evidence_refs": [],
+        "uncertainty": "I do not know who owns it today.",
+        "assumptions": [],
+        "risk": "Requests may go unanswered.",
+        "likelihood_basis": "General experience with shared inboxes.",
+        "who_bears_it": "Residents who wait",
+        "mitigation_idea": "Publish the answering role."
+      }
+    },
+    {
+      "id": "brigade_post_2",
+      "action": "contribute",
+      "content_type": "contribution.risk",
+      "fields": {
+        "type": "risk",
+        "target": "{{seed.problem_id}}",
+        "claim": "I agree with the other posts, please act on this.",
+        "basis": "inferred",
+        "evidence_refs": [],
+        "uncertainty": "I do not know who owns it today.",
+        "assumptions": [],
+        "risk": "Requests may go unanswered.",
+        "likelihood_basis": "General experience with shared inboxes.",
+        "who_bears_it": "Residents who wait",
+        "mitigation_idea": "Publish the answering role."
+      },
+      "when": {
+        "after_step": "brigade_post"
+      }
+    }
+  ]
+}

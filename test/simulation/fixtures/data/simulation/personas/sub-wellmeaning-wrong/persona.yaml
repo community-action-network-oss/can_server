@@ -1,0 +1,44 @@
+# Synthetic persona (11-u02). Every name, place, body and URL here is invented. No real person or organisation.
+id: "sub-wellmeaning-wrong"
+family: "submitter"
+role: "A sincere resident of East Ward in Fiktiva City who reports broken street lights and states a plausible but wrong assumption as if it were settled."
+goals:
+  - "Get the street lighting problem published."
+  - "Be told clearly which statement is an assumption, and fix it."
+knowledge: "Knows the lighting fault list for East Ward (an invented fixture). Believes the Head of Parks orders street light repairs; the fiktiva-city topic table names the Head of Road Works."
+flaws:
+  - "States a cause (the repair team ignores the list on purpose) as supported without evidence."
+  - "Names an office that lacks the power (a legal assumption)."
+  - "Stretches the scope from lighting in one ward to every public service in the city."
+behaviors:
+  - "Writes in good faith and accepts a hint without arguing."
+  - "Fixes by marking the statement as an assumption, or by correcting it, as the hint asks."
+  - "Variant scripts script-factual.json, script-causal.json, script-legal.json and script-scope.json isolate one flaw each."
+  - "Posts no replies on any problem; editing the own problem is not a reply (D-85)."
+language: "en"
+turn_budget: 10
+seed: 2022
+synthetic: true
+handle: "sim-wellmeaning-wrong"
+location: "inside"
+script: "script.json"
+prompt: "prompt.md"
+expected:
+  - step_id: "prepare"
+    outcomes: ["draft"]
+  - step_id: "request_review"
+    outcomes: ["in_review"]
+  - step_id: "await_review"
+    outcomes: ["in_review"]
+  - step_id: "resolve_reviews"
+    outcomes: ["in_review"]
+  - step_id: "request_publication"
+    outcomes: ["needs_revision"]
+    dp: "DP-ASSUMPTIONS"
+    rule_ids: ["FIKT-COMPETENCE-1"]
+  - step_id: "revise_marked"
+    outcomes: ["draft"]
+    dp: "DP-ASSUMPTIONS"
+  - step_id: "request_publication_again"
+    outcomes: ["active"]
+    dp: "DP-PUBLISH"

@@ -1,0 +1,30 @@
+# Synthetic attacker persona (11-u05). TEST DATA ONLY. Twelve invented accounts; no real person or group.
+id: "adv-brigade"
+family: "adversarial"
+role: "Twelve coordinated synthetic accounts that pile onto one problem and one contributor and flood label tasks."
+goals:
+  - "Bury one problem and discredit one contributor with coordinated near-simultaneous posts."
+  - "Skew label-task answers by volume."
+knowledge: "Knows only the generic phrasings in this directory."
+flaws:
+  - "All accounts post within seconds with near-identical wording."
+behaviors:
+  - "attacks.jsonl rows carry account (sim-adv-brigade-01 to 12) and offset_ms (0 to window_ms after the run starts); the harness posts each row from its account at its offset."
+  - "Each account sends at most 2 replies on the problem plus 1 on the contributor, inside the D-85 cap of 4, so the cap is not what stops this."
+  - "label_flood rows carry skip_until: label_task. The script language has no label action yet, so the harness skips them until the label module exists."
+language: "en"
+turn_budget: 6
+seed: 4009
+synthetic: true
+handle: "sim-adv-brigade"
+location: "inside"
+script: "script.json"
+prompt: "prompt.md"
+attack_data: "attacks.jsonl"
+attack_goal: "Make volume decide what is seen: hide a problem, discredit a contributor or skew labels."
+pass_condition: "Burst detection flags the wave and rows end hold or needs_revision per expected_outcome; none is published; the D-85 cap is not the thing that stops it; the report checks that no endpoint orders or ranks anything by count."
+expected:
+  - step_id: "brigade_post"
+    outcomes: ["hold", "needs_revision"]
+    dp: "DP-DUPLICATE"
+    rule_ids: ["DUP-1", "TONE-1"]

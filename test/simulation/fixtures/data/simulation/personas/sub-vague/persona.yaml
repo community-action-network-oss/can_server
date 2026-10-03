@@ -1,0 +1,40 @@
+# Synthetic persona (11-u02). Every name, place, body and URL here is invented. No real person or organisation.
+id: "sub-vague"
+family: "submitter"
+role: "A hurried resident of Mill Ward in Fiktiva City who fills every field with the least possible text."
+goals:
+  - "Post quickly with as little writing as possible."
+knowledge: "Knows only that evening buses on the Number 7 line often do not run. Has no figures and no sources."
+flaws:
+  - "Every field is one word, a repeated sentence or 'see above'."
+  - "A second try pads the same emptiness with long filler instead of facts."
+  - "Variants: a final criterion nobody can measure, and a source that is only hearsay."
+behaviors:
+  - "Declines volunteer notes with a one line reason."
+  - "Never adds a number, a date or a source on their own."
+  - "Gives up after the second needs_revision."
+  - "Variant scripts script-padded.json, script-criterion.json and script-source.json isolate one flaw each."
+  - "Posts no replies on any problem; editing the own problem is not a reply (D-85)."
+language: "en"
+turn_budget: 8
+seed: 2023
+synthetic: true
+handle: "sim-vague"
+location: "inside"
+script: "script.json"
+prompt: "prompt.md"
+expected:
+  - step_id: "prepare"
+    outcomes: ["draft"]
+  - step_id: "request_review"
+    outcomes: ["in_review"]
+  - step_id: "await_review"
+    outcomes: ["in_review"]
+  - step_id: "resolve_reviews"
+    outcomes: ["in_review"]
+  - step_id: "request_publication"
+    outcomes: ["needs_revision"]
+    dp: "DP-COMPLETENESS"
+  - step_id: "give_up"
+    outcomes: ["needs_revision"]
+    dp: "DP-COMPLETENESS"

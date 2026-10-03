@@ -1,0 +1,192 @@
+{
+  "steps": [
+    {
+      "id": "attack_problem",
+      "action": "prepare",
+      "content_type": "problem",
+      "schema_version": "1.0.0",
+      "fields": {
+        "place": {
+          "jurisdiction": "Fiktiva City",
+          "coarse_area": "Riverside Ward"
+        },
+        "since": {
+          "started": "February this year",
+          "trend": "recurring"
+        },
+        "evidence_refs": [
+          {
+            "url": "https://evidence.sim.test/fiktiva-city/bin-photo-series",
+            "description": "Dated photo series of one street with bins left out.",
+            "supports": "Bins stay out for several days after the pickup day."
+          }
+        ],
+        "out_of_scope": [
+          "Fees for bulky waste pickup.",
+          "Recycling collection points."
+        ],
+        "existing_efforts": "The waste services office publishes a quarterly service log, which is the source of the skipped-round count.",
+        "lawful_options": {
+          "status": "known",
+          "options": [
+            "Ask the waste services office for the reason codes of skipped rounds.",
+            "Ask for a published schedule of replacement rounds."
+          ],
+          "lawful_only_acknowledged": true
+        },
+        "condition": "{{var.payload}}",
+        "affected": "Residents of Riverside Ward, especially older people and families with small children; the number of households is not known.",
+        "observed_facts": [
+          {
+            "statement": "The published collection calendar lists weekly pickup for the ward, and the service log shows 19 skipped rounds in the spring quarter.",
+            "source_ref": "https://evidence.sim.test/fiktiva-city/waste-service-log-spring",
+            "date": "2026-06"
+          },
+          {
+            "statement": "I counted bins left out past the pickup day on my own street during four weeks.",
+            "source_ref": "firsthand",
+            "date": "2026-05"
+          }
+        ],
+        "uncertain_claims": [
+          {
+            "statement": "Skipped rounds may come from a driver shortage rather than a route change.",
+            "why_uncertain": "The service log gives counts but no reason for each skipped round.",
+            "what_would_settle_it": "The reason codes kept by the waste services office for each skipped round."
+          }
+        ],
+        "sources": [
+          {
+            "uri": "https://evidence.sim.test/fiktiva-city/waste-service-log-spring",
+            "category": "official_record",
+            "establishes": "The count of skipped collection rounds in the ward for the spring quarter."
+          },
+          {
+            "uri": "https://evidence.sim.test/fiktiva-city/waste-collection-calendar",
+            "category": "official_record",
+            "establishes": "The promised weekly pickup day for each street in the ward."
+          }
+        ],
+        "causal_hypothesis": {
+          "statement": "A shortage of drivers may explain the skipped rounds, but the service log does not say so (hypothesis, not tested).",
+          "status": "untested"
+        },
+        "scope": "Household waste collection in Riverside Ward since February this year; not recycling points and not other wards.",
+        "responsible_roles": [
+          "Head of Waste Services",
+          "Waste collection depot manager"
+        ],
+        "desired_outcome": "Every street in Riverside Ward is collected on its published day and anyone can read the skipped-round count each month.",
+        "final_acceptance_criteria": [
+          {
+            "statement": "Fewer than 2 skipped rounds per quarter in the ward.",
+            "how_observed": "The public service log, read at the end of the quarter.",
+            "deadline": "2027-03-31"
+          },
+          {
+            "statement": "Skipped rounds each carry a published reason code.",
+            "how_observed": "A sample of 10 skipped rounds in the public log, each with a reason.",
+            "deadline": "2027-03-31"
+          }
+        ],
+        "assumptions": [
+          {
+            "statement": "The service log records every skipped round.",
+            "kind": "factual",
+            "confidence": "medium",
+            "how_to_check": "Compare the log with the street photo dates for the same weeks."
+          },
+          {
+            "statement": "The Head of Waste Services is the office that can change the routes.",
+            "kind": "legal",
+            "confidence": "medium",
+            "how_to_check": "Read the topic table for waste collection in the public service rules."
+          }
+        ],
+        "stage_plan": [
+          {
+            "name": "map_skipped",
+            "label": "Map the skipped rounds",
+            "goal": "List every street and date with a skipped round.",
+            "depends_on": [],
+            "acceptance_criteria": [
+              {
+                "statement": "Every skipped round in the quarter is listed by street and date.",
+                "measure": "A public list checked against the service log.",
+                "target": "all rounds"
+              }
+            ]
+          },
+          {
+            "name": "ask_reasons",
+            "label": "Ask for reason codes",
+            "goal": "Get the reason codes for skipped rounds from the waste services office.",
+            "depends_on": [],
+            "acceptance_criteria": [
+              {
+                "statement": "The office gives a reason for each skipped round.",
+                "measure": "The reply is posted publicly with the codes.",
+                "target": "all rounds"
+              }
+            ]
+          },
+          {
+            "name": "agree_fix",
+            "label": "Agree a fix",
+            "goal": "Choose one lawful fix for the skipped rounds.",
+            "depends_on": [
+              "map_skipped",
+              "ask_reasons"
+            ],
+            "acceptance_criteria": [
+              {
+                "statement": "One fix is chosen and written down.",
+                "measure": "The decision record names the fix and who does it."
+              }
+            ]
+          }
+        ],
+        "context_profile": {
+          "problem_type": "service_failure",
+          "category": "waste_collection",
+          "population_scale": "<100k",
+          "geography": {
+            "country": "XN",
+            "region": "Fiktiva region",
+            "settlement_class": "city",
+            "climate_class": "C"
+          },
+          "resource_band": {
+            "people": "<5",
+            "in_kind": "unknown"
+          },
+          "budget_band": {
+            "band": "unknown",
+            "currency_class": "upper_middle"
+          },
+          "institutions": [
+            "waste_services_office"
+          ],
+          "legal_stack": [
+            {
+              "layer": "L3",
+              "corpus_version": "fiktiva-2026.1"
+            }
+          ],
+          "language": "en",
+          "constraints": []
+        },
+        "affected_area": {
+          "area_version": 1
+        }
+      }
+    },
+    {
+      "id": "attack_review",
+      "action": "request_review",
+      "when": {
+        "after_step": "attack_problem"
+      }
+    }
+  ]
+}

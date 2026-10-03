@@ -1,0 +1,63 @@
+{
+  "steps": [
+    {
+      "id": "off_observation",
+      "action": "contribute",
+      "content_type": "contribution.observation",
+      "fields": {
+        "type": "observation",
+        "target": "{{seed.problem_id}}",
+        "claim": "{{var.payload}}",
+        "basis": "firsthand",
+        "evidence_refs": [],
+        "uncertainty": "I did not count every bin.",
+        "assumptions": [],
+        "what_observed": "Bins stood out past the pickup day on my street.",
+        "when": "September 2026, after 8 pm",
+        "where_coarse": "Riverside Ward",
+        "how_observed": "Walked the street on three evenings and noted the bins."
+      }
+    },
+    {
+      "id": "off_risk",
+      "action": "contribute",
+      "content_type": "contribution.risk",
+      "fields": {
+        "type": "risk",
+        "target": "{{seed.problem_id}}",
+        "claim": "{{var.payload}}",
+        "basis": "inferred",
+        "evidence_refs": [],
+        "uncertainty": "I do not know who owns it today.",
+        "assumptions": [],
+        "risk": "Requests may go unanswered.",
+        "likelihood_basis": "General experience with shared inboxes.",
+        "who_bears_it": "Residents who wait",
+        "mitigation_idea": "Publish the answering role."
+      },
+      "when": {
+        "after_step": "off_observation"
+      }
+    },
+    {
+      "id": "off_question",
+      "action": "contribute",
+      "content_type": "contribution.clarifying_question",
+      "fields": {
+        "type": "clarifying_question",
+        "target": "{{seed.problem_id}}",
+        "claim": "{{var.payload}}",
+        "basis": "inferred",
+        "evidence_refs": [],
+        "uncertainty": "The figure may exist somewhere I cannot see.",
+        "assumptions": [],
+        "missing_information": "The number of skipped rounds this quarter.",
+        "why_it_matters": "The count shows whether the delay is the rule or the exception.",
+        "who_could_answer": "The waste services office"
+      },
+      "when": {
+        "after_step": "off_risk"
+      }
+    }
+  ]
+}

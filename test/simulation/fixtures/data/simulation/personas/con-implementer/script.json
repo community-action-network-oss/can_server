@@ -1,0 +1,118 @@
+{
+  "steps": [
+    {
+      "id": "post_offer",
+      "action": "contribute",
+      "content_type": "contribution.implementation_offer",
+      "fields": {
+        "type": "implementation_offer",
+        "target": "{{seed.problem_id}}",
+        "target_stage": "{{seed.stage_ref}}",
+        "claim": "I can survey the East Ward main street notices on two weekends.",
+        "basis": "firsthand",
+        "evidence_refs": [],
+        "uncertainty": "I cannot say how many notices exist.",
+        "assumptions": [],
+        "offered_work": "I can read the posted works notices on the main street and record the contact field.",
+        "role_capacity": "Volunteer surveyor, about six hours a month.",
+        "limits": "I cannot work with electrical equipment.",
+        "lawful_basis": "Reading public notices from the pavement needs no permit."
+      },
+      "expect": {
+        "outcome": "publish"
+      }
+    },
+    {
+      "id": "find_task",
+      "action": "read",
+      "when": {
+        "after_step": "post_offer"
+      },
+      "expect": {
+        "outcome": "task_open"
+      }
+    },
+    {
+      "id": "post_progress",
+      "action": "contribute",
+      "when": {
+        "after_step": "find_task"
+      },
+      "content_type": "contribution.progress_update",
+      "fields": {
+        "type": "progress_update",
+        "target": "{{seed.problem_id}}",
+        "target_stage": "{{seed.stage_ref}}",
+        "claim": "I surveyed the first half of the main street notices.",
+        "basis": "firsthand",
+        "evidence_refs": [],
+        "uncertainty": "Some notices may have been removed before I came.",
+        "assumptions": [],
+        "task_ref": "{{var.task_ref}}",
+        "done": "Read and recorded the notices on the north half of the street.",
+        "not_done": "The south half is not surveyed.",
+        "blockers": "None so far.",
+        "next_step": "Survey the south half next weekend."
+      },
+      "expect": {
+        "outcome": "publish"
+      }
+    },
+    {
+      "id": "post_verification",
+      "action": "contribute",
+      "when": {
+        "after_step": "post_progress"
+      },
+      "content_type": "contribution.verification_evidence",
+      "fields": {
+        "type": "verification_evidence",
+        "target": "{{seed.problem_id}}",
+        "target_stage": "{{seed.stage_ref}}",
+        "claim": "The survey sheet shows how many notices name a contact point.",
+        "basis": "firsthand",
+        "evidence_refs": [
+          {
+            "url": "https://evidence.sim.test/fiktiva-city/survey-sheet",
+            "supports": "The shared sheet with one row per notice."
+          }
+        ],
+        "uncertainty": "The sheet covers two weekends only.",
+        "assumptions": [],
+        "url": "https://evidence.sim.test/fiktiva-city/survey-sheet",
+        "metric_addressed": "Share of works notices that name a resident contact point.",
+        "observation_date": "2026-10-04",
+        "source_role": "Volunteer surveyor",
+        "what_it_does_not_show": "It does not show whether the contact points were answered."
+      },
+      "expect": {
+        "outcome": "publish"
+      }
+    },
+    {
+      "id": "post_stage_evidence",
+      "action": "stage_evidence",
+      "when": {
+        "after_step": "post_verification"
+      },
+      "content_type": "stage_evidence",
+      "fields": {
+        "stage_ref": "{{seed.stage_ref}}",
+        "criterion_ref": 1,
+        "evidence_refs": [
+          {
+            "url": "https://evidence.sim.test/fiktiva-city/survey-sheet",
+            "description": "The shared sheet with one row per notice and its contact field.",
+            "tier_request": "firsthand"
+          }
+        ],
+        "observation_date": "2026-10-04",
+        "outcome_statement": "The sheet shows how many of the surveyed notices name a contact point.",
+        "what_the_evidence_does_not_show": "It covers one street and two weekends only."
+      },
+      "expect": {
+        "outcome": "publish"
+      }
+    }
+  ]
+}

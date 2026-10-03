@@ -1,0 +1,206 @@
+{
+  "steps": [
+    {
+      "id": "assist_notes",
+      "action": "assist",
+      "content_type": "problem",
+      "schema_version": "1.0.0",
+      "fields": {
+        "notes": "park in Mill Ward, many benches broken since last spring. old people cannot sit when they walk to the shop. I take photo in july, 6 benches broken. I think city have no money for bench. maybe the park office can fix, I am not sure who is the responsible. I want the benches repair and a list who check every month."
+      },
+      "expect": {
+        "outcome": "publish"
+      }
+    },
+    {
+      "id": "read_suggestions",
+      "action": "suggestions",
+      "when": {
+        "after_step": "assist_notes"
+      },
+      "expect": {
+        "outcome": "publish"
+      }
+    },
+    {
+      "id": "confirm_condition",
+      "action": "accept_suggestion",
+      "when": {
+        "after_step": "read_suggestions"
+      },
+      "fields": {
+        "field_ref": "condition"
+      },
+      "expect": {
+        "outcome": "assisted",
+        "field_ref": "condition"
+      }
+    },
+    {
+      "id": "confirm_scope",
+      "action": "accept_suggestion",
+      "when": {
+        "after_step": "confirm_condition"
+      },
+      "fields": {
+        "field_ref": "scope"
+      },
+      "expect": {
+        "outcome": "assisted",
+        "field_ref": "scope"
+      }
+    },
+    {
+      "id": "confirm_desired_outcome",
+      "action": "accept_suggestion",
+      "when": {
+        "after_step": "confirm_scope"
+      },
+      "fields": {
+        "field_ref": "desired_outcome"
+      },
+      "expect": {
+        "outcome": "assisted",
+        "field_ref": "desired_outcome"
+      }
+    },
+    {
+      "id": "prepare",
+      "action": "prepare",
+      "when": {
+        "after_step": "confirm_desired_outcome"
+      },
+      "content_type": "problem",
+      "schema_version": "1.0.0",
+      "fields": {
+        "affected": "Old people and parents with small children in Mill Ward who walk through the park. How many people, I do not know.",
+        "place": {
+          "jurisdiction": "Fiktiva City",
+          "coarse_area": "Mill Ward"
+        },
+        "since": {
+          "started": "Spring of this year",
+          "trend": "stable"
+        },
+        "uncertain_claims": [
+          {
+            "statement": "Maybe the city has no money for new benches.",
+            "why_uncertain": "I did not see any budget paper, it is only my guess.",
+            "what_would_settle_it": "The budget line of the parks office for benches."
+          }
+        ],
+        "responsible_roles": [
+          "Head of Parks"
+        ],
+        "final_acceptance_criteria": [
+          {
+            "statement": "All benches in the park can be used.",
+            "how_observed": "A photo list of every bench, checked by a volunteer each month.",
+            "deadline": "2027-03-31"
+          }
+        ],
+        "assumptions": [
+          {
+            "statement": "The parks office is the one who must repair the benches.",
+            "kind": "legal",
+            "confidence": "medium",
+            "how_to_check": "Read the topic table for public parks in the service rules."
+          }
+        ],
+        "lawful_options": {
+          "status": "known",
+          "options": [
+            "Ask the parks office for a repair plan for the benches."
+          ],
+          "lawful_only_acknowledged": true
+        },
+        "sources": [
+          {
+            "uri": "https://evidence.sim.test/fiktiva-city/park-bench-inventory",
+            "category": "official_record",
+            "establishes": "The number of benches the park should have, and their condition in the last check."
+          }
+        ],
+        "evidence_refs": [
+          {
+            "url": "https://evidence.sim.test/fiktiva-city/bench-photos-july",
+            "description": "My photos of the broken benches in July.",
+            "supports": "Six benches in the park are broken."
+          }
+        ],
+        "out_of_scope": [
+          "Playground equipment."
+        ],
+        "existing_efforts": "none_stated",
+        "observed_facts": [
+          {
+            "statement": "Six benches in the park were broken when I took the photos.",
+            "source_ref": "firsthand",
+            "date": "2026-07"
+          }
+        ],
+        "causal_hypothesis": {
+          "statement": "I think the benches are not repaired because nobody check them often (my guess, not tested).",
+          "status": "untested"
+        }
+      },
+      "expect": {
+        "outcome": "draft"
+      }
+    },
+    {
+      "id": "request_review",
+      "action": "request_review",
+      "when": {
+        "after_step": "prepare"
+      },
+      "expect": {
+        "outcome": "in_review"
+      }
+    },
+    {
+      "id": "await_review",
+      "action": "read",
+      "when": {
+        "state": [
+          "in_review"
+        ],
+        "after_step": "request_review"
+      },
+      "expect": {
+        "outcome": "in_review"
+      }
+    },
+    {
+      "id": "resolve_reviews",
+      "action": "resolve_recommendation",
+      "when": {
+        "state": [
+          "in_review"
+        ],
+        "after_step": "await_review"
+      },
+      "fields": {
+        "recommendation_ref": "{{var.recommendation_1}}",
+        "decision": "decline",
+        "reason": "Thank you for the note. I change nothing, because my text says what I mean."
+      },
+      "expect": {
+        "outcome": "in_review"
+      }
+    },
+    {
+      "id": "request_publication",
+      "action": "request_publication",
+      "when": {
+        "state": [
+          "in_review"
+        ],
+        "after_step": "resolve_reviews"
+      },
+      "expect": {
+        "outcome": "active"
+      }
+    }
+  ]
+}

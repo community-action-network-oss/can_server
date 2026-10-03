@@ -1,0 +1,30 @@
+{
+  "steps": [
+    {
+      "id": "post_constraint",
+      "action": "contribute",
+      "content_type": "contribution.constraint",
+      "fields": {
+        "type": "constraint",
+        "target": "{{seed.problem_id}}",
+        "claim": "Works notices for public roads are issued by the department for public space under a city bylaw.",
+        "basis": "cited",
+        "evidence_refs": [
+          {
+            "url": "https://evidence.sim.test/fiktiva-city/bylaw-works-notices",
+            "supports": "Names the issuing office for works notices."
+          }
+        ],
+        "uncertainty": "The bylaw text may be amended after this date.",
+        "assumptions": [],
+        "constraint": "Any change to works notices must be made by the department for public space.",
+        "source": "law",
+        "source_ref": "Fiktiva City bylaws, article 5 (invented fixture).",
+        "recheck_condition": "If the bylaw is amended."
+      },
+      "expect": {
+        "outcome": "publish"
+      }
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "steps": [
+    {
+      "id": "appeal_with_evidence",
+      "action": "appeal",
+      "when": {
+        "outcome_was": "needs_revision"
+      },
+      "content_type": "appeal",
+      "fields": {
+        "decision_ref": "{{var.decision_to_appeal}}",
+        "rule_ids_disputed": [
+          "SCOPE-1"
+        ],
+        "what_is_wrong": "The post describes a drainage fault on a public road, not a private matter between neighbours.",
+        "outcome_sought": "Look at the decision again and publish the post if it fits.",
+        "new_evidence_refs": [
+          {
+            "url": "https://evidence.sim.test/fiktiva-city/road-register",
+            "description": "Road register entry, shows the road is adopted."
+          }
+        ]
+      },
+      "expect": {
+        "outcome": "publish"
+      }
+    },
+    {
+      "id": "appeal_without_evidence",
+      "action": "appeal",
+      "when": {
+        "outcome_was": "reject",
+        "after_step": "appeal_with_evidence"
+      },
+      "content_type": "appeal",
+      "fields": {
+        "decision_ref": "{{var.decision_to_appeal_2}}",
+        "what_is_wrong": "The decision says the cause is stated as fact. The post says the cause is a guess and marks it as one in the uncertain claims.",
+        "outcome_sought": "Look at the decision again and check the uncertain claims field."
+      },
+      "expect": {
+        "outcome": "needs_revision"
+      }
+    }
+  ]
+}

@@ -1,0 +1,207 @@
+{
+  "steps": [
+    {
+      "id": "prepare",
+      "action": "prepare",
+      "content_type": "problem",
+      "schema_version": "1.0.0",
+      "fields": {
+        "place": {
+          "jurisdiction": "Fiktiva City",
+          "coarse_area": "Mill Ward"
+        },
+        "since": {
+          "started": "A while",
+          "trend": "unknown"
+        },
+        "evidence_refs": [],
+        "out_of_scope": [],
+        "existing_efforts": "none_stated",
+        "lawful_options": {
+          "status": "unknown",
+          "lawful_only_acknowledged": true
+        },
+        "condition": "See above, see above, see above, see above.",
+        "affected": "See above, see above.",
+        "observed_facts": [
+          {
+            "statement": "It is bad, it is bad.",
+            "source_ref": "firsthand",
+            "date": "2026"
+          }
+        ],
+        "uncertain_claims": [
+          {
+            "statement": "Maybe, maybe, maybe.",
+            "why_uncertain": "Not sure at all.",
+            "what_would_settle_it": "Someone should look."
+          }
+        ],
+        "sources": [
+          {
+            "uri": "https://evidence.sim.test/fiktiva-city/misc-page",
+            "category": "other",
+            "establishes": "Things are bad, see above."
+          }
+        ],
+        "causal_hypothesis": {
+          "statement": "They do not do their job, they do not do their job.",
+          "status": "untested"
+        },
+        "scope": "Everything, everything, everything.",
+        "responsible_roles": [
+          "The city"
+        ],
+        "desired_outcome": "Make it better, make it better.",
+        "final_acceptance_criteria": [
+          {
+            "statement": "It is better.",
+            "how_observed": "People see it."
+          }
+        ],
+        "assumptions": [
+          {
+            "statement": "None, none, none.",
+            "kind": "factual",
+            "confidence": "low"
+          }
+        ],
+        "context_profile": {
+          "problem_type": "service_failure",
+          "category": "bus_timetables",
+          "population_scale": "<100k",
+          "geography": {
+            "country": "XN",
+            "region": "Fiktiva region",
+            "settlement_class": "city",
+            "climate_class": "C"
+          },
+          "resource_band": {
+            "people": "<5",
+            "in_kind": "unknown"
+          },
+          "budget_band": {
+            "band": "unknown",
+            "currency_class": "upper_middle"
+          },
+          "institutions": [
+            "transit_office"
+          ],
+          "legal_stack": [
+            {
+              "layer": "L3",
+              "corpus_version": "fiktiva-2026.1"
+            }
+          ],
+          "language": "en",
+          "constraints": []
+        },
+        "affected_area": {
+          "area_version": 1
+        }
+      },
+      "expect": {
+        "outcome": "draft"
+      }
+    },
+    {
+      "id": "request_review",
+      "action": "request_review",
+      "when": {
+        "after_step": "prepare"
+      },
+      "expect": {
+        "outcome": "in_review"
+      }
+    },
+    {
+      "id": "await_review",
+      "action": "read",
+      "when": {
+        "state": [
+          "in_review"
+        ],
+        "after_step": "request_review"
+      },
+      "expect": {
+        "outcome": "in_review"
+      }
+    },
+    {
+      "id": "resolve_reviews",
+      "action": "resolve_recommendation",
+      "when": {
+        "state": [
+          "in_review"
+        ],
+        "after_step": "await_review"
+      },
+      "fields": {
+        "recommendation_ref": "{{var.recommendation_1}}",
+        "decision": "decline",
+        "reason": "I read the note. I think my text is already enough, so I decline it."
+      },
+      "expect": {
+        "outcome": "in_review"
+      }
+    },
+    {
+      "id": "request_publication",
+      "action": "request_publication",
+      "when": {
+        "state": [
+          "in_review"
+        ],
+        "after_step": "resolve_reviews"
+      },
+      "expect": {
+        "outcome": "needs_revision"
+      }
+    },
+    {
+      "id": "revise_padded",
+      "action": "revise",
+      "when": {
+        "outcome_was": "needs_revision",
+        "after_step": "request_publication"
+      },
+      "assumption_strategy": "ignore",
+      "fields": {
+        "condition": "This is a big problem and it matters a lot to a lot of people in many places and it has been going on for a long time and nobody does anything about it and everyone knows it and it is really important that something is done soon because it is really not good at all and people are tired of it.",
+        "affected": "This is a big problem and it matters a lot to a lot of people in many places and it has been going on for a long time and nobody does anything about it and everyone knows it and it is really important that something is done soon because it is really not good at all and people are tired of it.",
+        "scope": "This is a big problem and it matters a lot to a lot of people in many places and it has been going on for a long time and nobody does anything about it and everyone knows it and it is really important that something is done soon because it is really not good at all and people are tired of it.",
+        "desired_outcome": "This is a big problem and it matters a lot to a lot of people in many places and it has been going on for a long time and nobody does anything about it and everyone knows it and it is really important that something is done soon because it is really not good at all and people are tired of it.",
+        "causal_hypothesis": {
+          "statement": "This is a big problem and it matters a lot to a lot of people in many places and it has been going on for a long time and nobody does anything about it and everyone knows it and it is really important that something is done soon because it is really not good at all and people are tired of it.",
+          "status": "untested"
+        }
+      },
+      "expect": {
+        "outcome": "draft"
+      }
+    },
+    {
+      "id": "request_publication_again",
+      "action": "request_publication",
+      "when": {
+        "state": [
+          "in_review"
+        ],
+        "after_step": "revise_padded"
+      },
+      "expect": {
+        "outcome": "needs_revision"
+      }
+    },
+    {
+      "id": "give_up",
+      "action": "stop",
+      "when": {
+        "after_step": "request_publication_again"
+      },
+      "expect": {
+        "outcome": "needs_revision"
+      }
+    }
+  ]
+}

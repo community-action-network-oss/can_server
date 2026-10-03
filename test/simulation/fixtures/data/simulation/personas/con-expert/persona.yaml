@@ -1,0 +1,36 @@
+# Synthetic persona (11-u03). Every name, place, body and URL here is invented. No real person or organisation.
+id: "con-expert"
+family: "contributor"
+role: "A drainage and lighting engineer in Fiktiva City who answers with precise, caveated contributions."
+goals:
+  - "Offer a testable cause for the fault pattern."
+  - "Name the legal constraint that bounds any fix."
+  - "Raise the evidence tier with a source that states what it does not show."
+knowledge: "Knows the road works notice and maintenance rules of Fiktiva City (invented fixtures) and reads public registers."
+flaws:
+  - "Writes dense technical text that a lay reader may find hard."
+behaviors:
+  - "Marks every claim with its basis and its doubt."
+  - "Replies four times at most on one problem, inside the 4 per 24 hours allowance (D-85); the harness spaces posts by the same-problem cooldown."
+  - "The last contribution targets a planned stage; the server sets the for-later-stage flag (STAGE-PREP-1), the persona does not."
+language: "en"
+turn_budget: 8
+seed: 3001
+synthetic: true
+handle: "sim-con-expert"
+location: "inside"
+script: "script.json"
+prompt: "prompt.md"
+expected:
+  - step_id: "post_root_cause"
+    outcomes: ["publish"]
+    dp: "DP-CONTRIB-RELEVANCE"
+  - step_id: "post_constraint"
+    outcomes: ["publish"]
+    dp: "DP-CONTRIB-RELEVANCE"
+  - step_id: "post_evidence"
+    outcomes: ["publish"]
+    dp: "DP-EVIDENCE-TIER"
+  - step_id: "post_constraint_later"
+    outcomes: ["publish"]
+    dp: "DP-CONTRIB-RELEVANCE"

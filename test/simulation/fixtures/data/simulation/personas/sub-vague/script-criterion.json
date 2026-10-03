@@ -1,0 +1,178 @@
+{
+  "steps": [
+    {
+      "id": "prepare",
+      "action": "prepare",
+      "content_type": "problem",
+      "schema_version": "1.0.0",
+      "fields": {
+        "place": {
+          "jurisdiction": "Fiktiva City",
+          "coarse_area": "Mill Ward"
+        },
+        "since": {
+          "started": "January this year",
+          "trend": "recurring"
+        },
+        "evidence_refs": [],
+        "out_of_scope": [],
+        "existing_efforts": "none_stated",
+        "lawful_options": {
+          "status": "unknown",
+          "lawful_only_acknowledged": true
+        },
+        "condition": "Evening buses on the Number 7 line in Mill Ward often do not run, and the timetable does not say why.",
+        "affected": "People in Mill Ward who travel home after work or school clubs; the number of riders is not known.",
+        "observed_facts": [
+          {
+            "statement": "The published timetable promises a bus every 30 minutes until late evening on the Number 7 line.",
+            "source_ref": "https://evidence.sim.test/fiktiva-city/bus-7-timetable",
+            "date": "2026-03"
+          }
+        ],
+        "uncertain_claims": [
+          {
+            "statement": "Cancelled evening runs may be caused by too few drivers.",
+            "why_uncertain": "The transit office publishes no cancellation reasons.",
+            "what_would_settle_it": "The cancellation log of the transit office for the Number 7 line."
+          }
+        ],
+        "sources": [
+          {
+            "uri": "https://evidence.sim.test/fiktiva-city/bus-7-timetable",
+            "category": "official_record",
+            "establishes": "The promised evening frequency of the Number 7 line."
+          }
+        ],
+        "causal_hypothesis": {
+          "statement": "Too few drivers on late shifts may cause the cancelled runs (hypothesis, untested).",
+          "status": "untested"
+        },
+        "scope": "Evening runs of the Number 7 bus line in Mill Ward since January this year; not other lines.",
+        "responsible_roles": [
+          "Head of Transit"
+        ],
+        "desired_outcome": "Evening runs on the Number 7 line run as published, and cancellations are listed with a reason.",
+        "final_acceptance_criteria": [
+          {
+            "statement": "People feel safer and happier.",
+            "how_observed": "They say so, maybe."
+          }
+        ],
+        "assumptions": [
+          {
+            "statement": "The timetable is the promised service level.",
+            "kind": "factual",
+            "confidence": "medium",
+            "how_to_check": "Check the timetable page for the line."
+          }
+        ],
+        "context_profile": {
+          "problem_type": "service_failure",
+          "category": "bus_timetables",
+          "population_scale": "<100k",
+          "geography": {
+            "country": "XN",
+            "region": "Fiktiva region",
+            "settlement_class": "city",
+            "climate_class": "C"
+          },
+          "resource_band": {
+            "people": "<5",
+            "in_kind": "unknown"
+          },
+          "budget_band": {
+            "band": "unknown",
+            "currency_class": "upper_middle"
+          },
+          "institutions": [
+            "transit_office"
+          ],
+          "legal_stack": [
+            {
+              "layer": "L3",
+              "corpus_version": "fiktiva-2026.1"
+            }
+          ],
+          "language": "en",
+          "constraints": []
+        },
+        "affected_area": {
+          "area_version": 1
+        }
+      },
+      "expect": {
+        "outcome": "draft"
+      }
+    },
+    {
+      "id": "request_review",
+      "action": "request_review",
+      "when": {
+        "after_step": "prepare"
+      },
+      "expect": {
+        "outcome": "in_review"
+      }
+    },
+    {
+      "id": "await_review",
+      "action": "read",
+      "when": {
+        "state": [
+          "in_review"
+        ],
+        "after_step": "request_review"
+      },
+      "expect": {
+        "outcome": "in_review"
+      }
+    },
+    {
+      "id": "resolve_reviews",
+      "action": "resolve_recommendation",
+      "when": {
+        "state": [
+          "in_review"
+        ],
+        "after_step": "await_review"
+      },
+      "fields": {
+        "recommendation_ref": "{{var.recommendation_1}}",
+        "decision": "decline",
+        "reason": "I read the note. I think my text is already enough, so I decline it."
+      },
+      "expect": {
+        "outcome": "in_review"
+      }
+    },
+    {
+      "id": "request_publication",
+      "action": "request_publication",
+      "when": {
+        "state": [
+          "in_review"
+        ],
+        "after_step": "resolve_reviews"
+      },
+      "expect": {
+        "outcome": "needs_revision",
+        "rule_ids": [
+          "CRITERIA-1"
+        ],
+        "field_ref": "final_acceptance_criteria"
+      }
+    },
+    {
+      "id": "give_up",
+      "action": "stop",
+      "when": {
+        "outcome_was": "needs_revision",
+        "after_step": "request_publication"
+      },
+      "expect": {
+        "outcome": "needs_revision"
+      }
+    }
+  ]
+}

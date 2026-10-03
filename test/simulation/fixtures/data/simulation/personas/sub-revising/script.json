@@ -1,0 +1,306 @@
+{
+  "steps": [
+    {
+      "id": "prepare_personal",
+      "action": "prepare",
+      "content_type": "problem",
+      "schema_version": "1.0.0",
+      "fields": {
+        "place": {
+          "jurisdiction": "Fiktiva City",
+          "coarse_area": "North Ward"
+        },
+        "since": {
+          "started": "August this year",
+          "trend": "stable"
+        },
+        "evidence_refs": [],
+        "out_of_scope": [],
+        "existing_efforts": "none_stated",
+        "lawful_options": {
+          "status": "unknown",
+          "lawful_only_acknowledged": true
+        },
+        "condition": "The road works on my street left my driveway blocked for three weeks and nobody answered me, so I want the city to pay me back for my lost work days.",
+        "affected": "Me and my family, who could not leave the house by car during the road works.",
+        "observed_facts": [
+          {
+            "statement": "My driveway was blocked by the road works for three weeks in August.",
+            "source_ref": "firsthand",
+            "date": "2026-08"
+          }
+        ],
+        "uncertain_claims": [
+          {
+            "statement": "The works crew may have had a permit.",
+            "why_uncertain": "I never saw a notice for my street.",
+            "what_would_settle_it": "The works permit record for the street."
+          }
+        ],
+        "sources": [
+          {
+            "uri": "https://evidence.sim.test/fiktiva-city/road-works-notice-north",
+            "category": "official_record",
+            "establishes": "That road works took place on my street in August."
+          }
+        ],
+        "causal_hypothesis": {
+          "statement": "The works crew did not care about my household and wanted to finish quickly (hypothesis, untested).",
+          "status": "untested"
+        },
+        "scope": "My own driveway and my own lost wages from the August road works.",
+        "responsible_roles": [
+          "Head of Road Works"
+        ],
+        "desired_outcome": "The city pays my household for the lost work days and apologises to us.",
+        "final_acceptance_criteria": [
+          {
+            "statement": "My household receives payment for the lost work days.",
+            "how_observed": "A payment record for my household.",
+            "deadline": "2027-01-31"
+          }
+        ],
+        "assumptions": [
+          {
+            "statement": "The city owes my household money.",
+            "kind": "legal",
+            "confidence": "medium"
+          }
+        ],
+        "context_profile": {
+          "problem_type": "individual_dispute",
+          "category": "road_works",
+          "population_scale": "<100k",
+          "geography": {
+            "country": "XN",
+            "region": "Fiktiva region",
+            "settlement_class": "city",
+            "climate_class": "C"
+          },
+          "resource_band": {
+            "people": "<5",
+            "in_kind": "unknown"
+          },
+          "budget_band": {
+            "band": "unknown",
+            "currency_class": "upper_middle"
+          },
+          "institutions": [
+            "road_works_office"
+          ],
+          "legal_stack": [
+            {
+              "layer": "L3",
+              "corpus_version": "fiktiva-2026.1"
+            }
+          ],
+          "language": "en",
+          "constraints": []
+        },
+        "affected_area": {
+          "area_version": 1
+        }
+      },
+      "expect": {
+        "outcome": "draft"
+      }
+    },
+    {
+      "id": "request_review",
+      "action": "request_review",
+      "when": {
+        "after_step": "prepare_personal"
+      },
+      "expect": {
+        "outcome": "in_review"
+      }
+    },
+    {
+      "id": "await_review",
+      "action": "read",
+      "when": {
+        "state": [
+          "in_review"
+        ],
+        "after_step": "request_review"
+      },
+      "expect": {
+        "outcome": "in_review"
+      }
+    },
+    {
+      "id": "resolve_reviews",
+      "action": "resolve_recommendation",
+      "when": {
+        "state": [
+          "in_review"
+        ],
+        "after_step": "await_review"
+      },
+      "fields": {
+        "recommendation_ref": "{{var.recommendation_1}}",
+        "decision": "decline",
+        "reason": "I read the note. This is my own household case and I want it handled, so I keep it as it is."
+      },
+      "expect": {
+        "outcome": "in_review"
+      }
+    },
+    {
+      "id": "request_publication_personal",
+      "action": "request_publication",
+      "when": {
+        "state": [
+          "in_review"
+        ],
+        "after_step": "resolve_reviews"
+      },
+      "expect": {
+        "outcome": "reject",
+        "field_ref": "condition"
+      }
+    },
+    {
+      "id": "revise_structural",
+      "action": "revise",
+      "when": {
+        "outcome_was": "reject",
+        "after_step": "request_publication_personal"
+      },
+      "assumption_strategy": "correct",
+      "fields": {
+        "condition": "Road works in North Ward often block residential driveways for weeks, and residents get no notice or contact point.",
+        "affected": "Residents of North Ward streets under road works, including people who need a car for work or care; the number is not known.",
+        "observed_facts": [
+          {
+            "statement": "Road works on one North Ward street blocked driveways for three weeks in August.",
+            "source_ref": "firsthand",
+            "date": "2026-08"
+          },
+          {
+            "statement": "The published works notice for that street names no contact point for residents.",
+            "source_ref": "https://evidence.sim.test/fiktiva-city/road-works-notice-north",
+            "date": "2026-08"
+          }
+        ],
+        "uncertain_claims": [
+          {
+            "statement": "Other streets may have the same problem.",
+            "why_uncertain": "I only know my own street and two neighbours.",
+            "what_would_settle_it": "The works permit record for North Ward for this year."
+          }
+        ],
+        "causal_hypothesis": {
+          "statement": "The works notice template may lack a resident contact point, which could explain the missing answers (hypothesis, untested).",
+          "status": "untested"
+        },
+        "scope": "Notice and driveway access rules for road works in North Ward this year; not any single household claim.",
+        "desired_outcome": "Every road works notice in North Ward names a contact point and a driveway access plan, and anyone can read the notices.",
+        "final_acceptance_criteria": [
+          {
+            "statement": "Every works notice in North Ward names a resident contact point.",
+            "how_observed": "A sample of 10 notices on the public works page, each with a contact point.",
+            "deadline": "2027-03-31"
+          },
+          {
+            "statement": "Notices state how blocked driveways will be handled.",
+            "how_observed": "The same sample of 10 notices, each with an access plan.",
+            "deadline": "2027-03-31"
+          }
+        ],
+        "assumptions": [
+          {
+            "statement": "The Head of Road Works controls the notice template.",
+            "kind": "legal",
+            "confidence": "medium",
+            "how_to_check": "Read the topic table for road repair in the service rules."
+          }
+        ],
+        "lawful_options": {
+          "status": "known",
+          "options": [
+            "Ask the Head of Road Works to add a contact point to the notice template."
+          ],
+          "lawful_only_acknowledged": true
+        },
+        "out_of_scope": [
+          "Payment claims by single households."
+        ],
+        "context_profile": {
+          "problem_type": "process_gap",
+          "category": "road_works",
+          "population_scale": "<100k",
+          "geography": {
+            "country": "XN",
+            "region": "Fiktiva region",
+            "settlement_class": "city",
+            "climate_class": "C"
+          },
+          "resource_band": {
+            "people": "<5",
+            "in_kind": "unknown"
+          },
+          "budget_band": {
+            "band": "unknown",
+            "currency_class": "upper_middle"
+          },
+          "institutions": [
+            "road_works_office"
+          ],
+          "legal_stack": [
+            {
+              "layer": "L3",
+              "corpus_version": "fiktiva-2026.1"
+            }
+          ],
+          "language": "en",
+          "constraints": []
+        },
+        "affected_area": {
+          "area_version": 1
+        }
+      },
+      "expect": {
+        "outcome": "draft"
+      }
+    },
+    {
+      "id": "request_review_again",
+      "action": "request_review",
+      "when": {
+        "after_step": "revise_structural"
+      },
+      "expect": {
+        "outcome": "in_review"
+      }
+    },
+    {
+      "id": "request_publication_structural",
+      "action": "request_publication",
+      "when": {
+        "state": [
+          "in_review"
+        ],
+        "after_step": "request_review_again"
+      },
+      "expect": {
+        "outcome": "active"
+      }
+    },
+    {
+      "id": "appeal_first_outcome",
+      "action": "appeal",
+      "when": {
+        "after_step": "request_publication_structural"
+      },
+      "fields": {
+        "decision_ref": "{{var.decision_request_publication_personal}}",
+        "dispute": "The decision says my text names one household only. The first text also described driveways on two neighbouring streets, and the works notice shows the same gap for all of them.",
+        "new_evidence": "https://evidence.sim.test/fiktiva-city/road-works-notice-north"
+      },
+      "expect": {
+        "outcome": "needs_revision"
+      }
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+# Synthetic attacker persona (11-u05). TEST DATA ONLY. Nothing here works against a real system.
+id: "adv-spam"
+family: "adversarial"
+role: "A synthetic spammer who posts near-identical problems and contributions and stuffs links into evidence fields."
+goals:
+  - "Exceed the per-account problem cap and the per-problem reply cap."
+  - "Flood one problem with near-identical contributions."
+  - "Stuff links into evidence fields."
+knowledge: "Knows only the generic phrasings in this directory."
+flaws:
+  - "Reuses the same wording with a changed number or place."
+behaviors:
+  - "Each row of attacks.jsonl is one submission by a fresh sim-adv-spam account, so the cap steps below do not use up its budget. field_ref names the field (risk.claim is the attack_risk step, evidence_refs.* sits in the attack_problem evidence item)."
+  - "Cap steps run on one account: a 4th problem in 7 days (limits.yaml caps.problems_per_account_per_period is 3) gets status 429."
+  - "Reply steps: an immediate second reply gets 429 cooldown_active with retryAfterSeconds (120 s cooldown); after the harness advances its clock past the cooldown, the 5th reply on one problem in 24 h gets 429 reply_limit_reached (D-85, limit 4)."
+  - "rate_probe stands for the 31st contribution POST of an hour: the harness repeats it until 30 are used, then expects 429 rate_limited."
+  - "The refusal text names the limit and when to retry. It never shows a hidden value (limits with public: false, such as the burst threshold)."
+language: "en"
+turn_budget: 16
+seed: 4007
+synthetic: true
+handle: "sim-adv-spam"
+location: "inside"
+script: "script.json"
+prompt: "prompt.md"
+attack_data: "attacks.jsonl"
+attack_goal: "Get spam, duplicates or stuffed links onto a public surface, or learn an anti-abuse threshold from a refusal."
+pass_condition: "Caps hold (4th problem 429, 2nd quick reply cooldown_active, 5th reply reply_limit_reached, 31st POST rate_limited); every attacks.jsonl row ends hold, needs_revision or reject per its expected_outcome; nothing is public; no refusal text contains a hidden limit value."
+expected:
+  - step_id: "attack_review"
+    outcomes: ["hold", "needs_revision", "reject"]
+    dp: "DP-DUPLICATE"
+    rule_ids: ["DUP-1", "EVID-URL-1"]
+  - step_id: "reply_1b"
+    outcomes: ["cooldown_active"]
+  - step_id: "reply_5"
+    outcomes: ["reply_limit_reached"]
+  - step_id: "rate_probe"
+    outcomes: ["rate_limited"]

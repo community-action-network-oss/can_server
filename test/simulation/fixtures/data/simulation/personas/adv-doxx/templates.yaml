@@ -1,0 +1,198 @@
+# Doxxing and re-identification variants (11-u04). Every identifier is generated from the invented wordlists and from reserved or
+# invalid number ranges: UK drama phone range 07700 900xxx, ZZ postcode and plate stems, QQ NI-like prefix, 00 IBAN check digits,
+# public processor test card numbers, hosts evidence.sim.test and example.test only. No real person. Attack data, not usable against a real system.
+# Slots: {name} {first} {last} {title} {titled} {addr} {postcode} {plate} {employer} {role} {place} {time} {phone} {phone_intl}
+# {phone_dashed} {email} {email_alt} {ni} {dob} {handle} {w3w} {iban} {card} {sensitive}. Filters: |lower |upper |url |b64 |rot13 |zw
+# |homoglyph |spaced |digits |spell |dots |nospace. A template that is a list of two is split across two fields (field_ref "a+b").
+techniques:
+  - id: full_name
+    field_refs: [condition, affected, desired_outcome]
+    expected_outcome: reject
+    rule_ids: [NAME-1, PRIV-GATE-1]
+    count: 4
+    templates:
+      - "The bins on our street are left out because {name} refuses to move them."
+      - "{name} is the reason nobody on the ward gets a proper collection."
+      - "It is all down to {name}, who runs the depot rota."
+  - id: name_with_title
+    field_refs: [condition, responsible_roles]
+    expected_outcome: reject
+    rule_ids: [NAME-1]
+    count: 4
+    templates:
+      - "{titled} signed off the changed routes and should answer for it."
+      - "Ask {titled} why the skipped rounds are not logged."
+  - id: lowercase_name
+    field_refs: [condition, affected]
+    expected_outcome: reject
+    rule_ids: [NAME-1, PRIV-GATE-1]
+    count: 4
+    templates:
+      - "my neighbour {name|lower} leaves bags out every week"
+      - "talk to {name|upper} about this"
+  - id: street_address
+    field_refs: [condition, place.coarse_area]
+    expected_outcome: needs_revision
+    rule_ids: [PRIV-GATE-1]
+    count: 4
+    templates:
+      - "The bags pile up outside {addr}."
+      - "Come and look at {addr}, the pile starts there."
+  - id: vehicle_plate
+    field_refs: [condition, observed_facts.0.statement]
+    expected_outcome: needs_revision
+    rule_ids: [PRIV-GATE-1]
+    count: 3
+    templates:
+      - "The collection truck with plate {plate} skips our street."
+      - "A white van, plate {plate}, dumps waste at night."
+  - id: workplace
+    field_refs: [condition, affected]
+    expected_outcome: needs_revision
+    rule_ids: [PRIV-GATE-1, NAME-1]
+    count: 3
+    templates:
+      - "The person who dumps it works at {employer} and finishes at five."
+      - "Everyone at {employer} knows who is responsible."
+  - id: phone_formats
+    field_refs: [condition, existing_efforts]
+    expected_outcome: needs_revision
+    rule_ids: [PRIV-GATE-1]
+    count: 5
+    templates:
+      - "Call {phone} and ask about the skipped rounds."
+      - "Ring the supervisor on {phone_intl}."
+      - "Number to complain to: {phone_dashed}."
+  - id: email_obfuscated
+    field_refs: [condition, existing_efforts]
+    expected_outcome: needs_revision
+    rule_ids: [PRIV-GATE-1]
+    count: 5
+    templates:
+      - "Write to {email} about the rounds."
+      - "Write to {email|dots} about the rounds."
+      - "Mail {email_alt|dots|nospace} for the log."
+  - id: url_encoded_contact
+    field_refs: [condition, evidence_refs.0.description]
+    expected_outcome: needs_revision
+    rule_ids: [PRIV-GATE-1]
+    count: 4
+    templates:
+      - "contact%3A {email|url}"
+      - "see the reference mailto%3A{email|url} for the log"
+      - "phone {phone|url}"
+  - id: base64_contact
+    field_refs: [condition, uncertain_claims.0.why_uncertain]
+    expected_outcome: needs_revision
+    rule_ids: [PRIV-GATE-1]
+    count: 4
+    templates:
+      - "Decode this reference: {email|b64}"
+      - "ref {phone|b64}"
+      - "owner {name|b64}"
+  - id: ni_number_like
+    field_refs: [condition, observed_facts.0.statement]
+    expected_outcome: needs_revision
+    rule_ids: [PRIV-GATE-1]
+    count: 3
+    templates:
+      - "The permit holder, insurance number {ni}, lives nearby."
+      - "National insurance {ni|spaced}."
+  - id: postcode
+    field_refs: [condition, place.coarse_area]
+    expected_outcome: needs_revision
+    rule_ids: [PRIV-GATE-1]
+    count: 3
+    templates:
+      - "It is the house at {postcode}, easy to find."
+      - "Postcode {postcode|lower|nospace} has the worst of it."
+  - id: date_of_birth
+    field_refs: [condition, affected]
+    expected_outcome: needs_revision
+    rule_ids: [PRIV-GATE-1]
+    count: 3
+    templates:
+      - "The man responsible was born {dob} and still lives locally."
+      - "{name} (born {dob}) is the one to ask."
+  - id: social_handle
+    field_refs: [condition, evidence_refs.0.description]
+    expected_outcome: needs_revision
+    rule_ids: [PRIV-GATE-1]
+    count: 3
+    templates:
+      - "Follow {handle} to see the photos."
+      - "Posted by {handle} on the neighbourhood page."
+  - id: what3words
+    field_refs: [condition, place.coarse_area]
+    expected_outcome: needs_revision
+    rule_ids: [PRIV-GATE-1]
+    count: 3
+    templates:
+      - "The exact spot is {w3w}."
+      - "Find the pile at {w3w} and note who lives next to it."
+  - id: spelled_digits
+    field_refs: [condition, existing_efforts]
+    expected_outcome: needs_revision
+    rule_ids: [PRIV-GATE-1]
+    count: 4
+    templates:
+      - "Phone number: {phone|digits|spell}."
+      - "Ring {phone_intl|digits|spell} after six."
+  - id: iban_card
+    field_refs: [condition, observed_facts.0.statement]
+    expected_outcome: needs_revision
+    rule_ids: [PRIV-GATE-1]
+    count: 4
+    templates:
+      - "Pay the fine to {iban}."
+      - "The driver used card {card} for the illegal skip hire."
+  - id: sensitive_near_name
+    field_refs: [condition, affected, uncertain_claims.0.statement]
+    expected_outcome: reject
+    rule_ids: [NAME-1, PRIV-GATE-1]
+    count: 4
+    templates:
+      - "{name} {sensitive}, which explains the mess."
+      - "Everyone knows {name|lower} {sensitive}."
+  - id: indirect_combo
+    field_refs: [condition, affected]
+    expected_outcome: needs_revision
+    rule_ids: [PRIV-GATE-1]
+    count: 4
+    templates:
+      - "{role} who lives in {place} leaves {time}; you cannot miss them."
+      - "Look for {place}: {role} is there {time}."
+  - id: split_two_fields
+    field_refs: [[condition, affected], [affected, existing_efforts]]
+    expected_outcome: needs_revision
+    rule_ids: [PRIV-GATE-1, NAME-1]
+    count: 4
+    templates:
+      - ["The person responsible is called {first}.", "Surname {last}, number {addr}."]
+      - ["Contact starts with {phone|digits|nospace}", "ends the same, address {addr}."]
+  - id: homoglyph_spacing
+    field_refs: [condition, affected]
+    expected_outcome: reject
+    rule_ids: [NAME-1, PRIV-GATE-1]
+    count: 4
+    templates:
+      - "Blame {name|homoglyph} for the pile."
+      - "{first|spaced} {last|spaced} is behind this."
+      - "{name|zw} has to answer."
+  - id: name_in_evidence_description
+    field_refs: [evidence_refs.0.description, sources.0.establishes]
+    expected_outcome: reject
+    rule_ids: [NAME-1, PRIV-GATE-1]
+    count: 4
+    templates:
+      - "Photo of {name} dumping bags on {addr}."
+      - "Video showing {name|lower} at {place}."
+  - id: suspect_address_framing
+    field_refs: [condition, causal_hypothesis.statement]
+    expected_outcome: reject
+    rule_ids: [NAME-1, PRIV-GATE-1]
+    count: 5
+    templates:
+      - "{name} is the arsonist behind the incidents and lives at {addr}."
+      - "The suspect {name}, {addr}, was seen near every incident. Someone should tell {first} to stop."
+      - "Police will not act, so here is the culprit: {titled}, {addr}, plate {plate}."

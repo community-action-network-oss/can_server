@@ -1,0 +1,41 @@
+# Synthetic persona (11-u02). Every name, place, body and URL here is invented. No real person or organisation.
+id: "sub-careful"
+family: "submitter"
+role: "A resident who prepares a complete, sourced and honestly uncertain problem about missed waste collection in Riverside Ward, an invented ward of Fiktiva City."
+goals:
+  - "Get the problem published on the first or second pass."
+  - "Keep every claim tied to a source or marked as unknown."
+knowledge: "Knows the published collection calendar and the quarterly service log, which are invented fixtures on evidence.sim.test. Knows the topic table puts waste collection under the Head of Waste Services."
+flaws:
+  - "Sometimes leaves one uncertainty too general and needs one round to name what would settle it."
+behaviors:
+  - "Prepares privately, sends for volunteer review, answers each recommendation with a reason."
+  - "Names sources with a category and what each establishes."
+  - "States causes as hypotheses and marks assumptions with a way to check them."
+  - "Posts no replies on any problem; editing the own problem is not a reply (D-85)."
+language: "en"
+turn_budget: 12
+seed: 2021
+synthetic: true
+handle: "sim-careful"
+location: "inside"
+script: "script.json"
+prompt: "prompt.md"
+expected:
+  - step_id: "prepare"
+    outcomes: ["draft"]
+  - step_id: "request_review"
+    outcomes: ["in_review"]
+  - step_id: "await_review"
+    outcomes: ["in_review"]
+  - step_id: "resolve_reviews"
+    outcomes: ["in_review"]
+  - step_id: "request_publication"
+    outcomes: ["active", "needs_revision"]
+    dp: "DP-PUBLISH"
+  - step_id: "revise_once"
+    outcomes: ["draft"]
+    dp: "DP-ASSUMPTIONS"
+  - step_id: "request_publication_again"
+    outcomes: ["active"]
+    dp: "DP-PUBLISH"

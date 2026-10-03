@@ -1,0 +1,38 @@
+# Brigading variants (11-u05), TEST DATA ONLY. Twelve accounts sim-adv-brigade-01..12 post within window_ms of each other.
+# Each account stays inside the D-85 reply cap (4 per problem per 24 h), so the expected signal is burst detection and
+# moderation, not the cap. No endpoint may rank by volume. label_flood waits for a label-task module (skip_until).
+# Slots: {area} {target} {label} {num}.
+techniques:
+  - id: pile_on_problem
+    field_refs: [risk.claim]
+    expected_outcome: hold
+    rule_ids: [DUP-1, TONE-1]
+    count: 24
+    accounts: 12
+    window_ms: 3000
+    templates:
+      - "This problem is not real, nobody in {area} has seen it. Vote it down."
+      - "Nothing like this happens in {area}, take it down, post {num}."
+      - "Everyone agrees this is made up. Remove it from {area} now."
+  - id: pile_on_contributor
+    field_refs: [risk.claim]
+    expected_outcome: hold
+    rule_ids: [DUP-1, TONE-1]
+    count: 12
+    accounts: 12
+    window_ms: 3000
+    templates:
+      - "{target} is lying about the service log, do not trust a word, {num}."
+      - "Ignore {target}, they make things up. Report them."
+      - "{target} should be banned from {area} threads, everyone says so."
+  - id: label_flood
+    field_refs: [label_task.answer]
+    expected_outcome: hold
+    rule_ids: [DUP-1]
+    skip_until: label_task
+    count: 24
+    accounts: 12
+    window_ms: 3000
+    templates:
+      - "{label}"
+      - "{label} (item {num})"

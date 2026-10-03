@@ -1,0 +1,30 @@
+# Off-topic variants (11-u05), TEST DATA ONLY. Ads, unrelated politics and jokes posted as contributions.
+# field_ref names the contribution type and field: <type>.<field>. Expected: DP-CONTRIB-RELEVANCE needs_revision or reject (hidden), never publish.
+# Slots: {area} {product} {party} {joke} {link} (wordlists/slug.txt).
+techniques:
+  - id: advertisement
+    field_refs: [observation.claim, risk.claim, clarifying_question.claim]
+    expected_outcome: reject
+    rule_ids: [RELEVANCE-1]
+    count: 8
+    templates:
+      - "Cheap {product} for {area}, best prices, order today at {link}"
+      - "Buy {product} now, free delivery to {area}: {link}"
+      - "Big sale on {product}! Visit {link} before it ends."
+  - id: unrelated_politics
+    field_refs: [observation.claim, risk.claim, clarifying_question.claim]
+    expected_outcome: needs_revision
+    rule_ids: [RELEVANCE-1]
+    count: 8
+    templates:
+      - "Nothing to do with bins, but {party} must resign and everyone in {area} should say so."
+      - "The real problem is {party}. Vote them out, forget the collection."
+      - "Instead of this, discuss why {party} won the last vote."
+  - id: joke
+    field_refs: [observation.claim, risk.claim, clarifying_question.claim]
+    expected_outcome: needs_revision
+    rule_ids: [RELEVANCE-1]
+    count: 6
+    templates:
+      - "Why did the bin cross the road? {joke}"
+      - "Knock knock, who is there? Not the bin lorry. {joke}"

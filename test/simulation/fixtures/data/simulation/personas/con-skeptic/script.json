@@ -1,0 +1,50 @@
+{
+  "steps": [
+    {
+      "id": "post_risk",
+      "action": "contribute",
+      "content_type": "contribution.risk",
+      "fields": {
+        "type": "risk",
+        "target": "{{seed.problem_id}}",
+        "claim": "A template change alone may not fix delays if nobody owns the contact line.",
+        "basis": "inferred",
+        "evidence_refs": [],
+        "uncertainty": "I do not know who staffs the line today.",
+        "assumptions": [
+          "I assume the line has one shared inbox."
+        ],
+        "risk": "A new contact point could fill with requests nobody is assigned to answer.",
+        "likelihood_basis": "General contact lines often have no owner for one street.",
+        "who_bears_it": "Residents who write to it and wait",
+        "mitigation_idea": "Name the answering role on the notice and publish the answer times."
+      },
+      "expect": {
+        "outcome": "publish"
+      }
+    },
+    {
+      "id": "post_question",
+      "action": "contribute",
+      "when": {
+        "after_step": "post_risk"
+      },
+      "content_type": "contribution.clarifying_question",
+      "fields": {
+        "type": "clarifying_question",
+        "target": "{{seed.problem_id}}",
+        "claim": "The problem says requests are lost but not how many were sent.",
+        "basis": "inferred",
+        "evidence_refs": [],
+        "uncertainty": "The figure may exist somewhere I cannot see.",
+        "assumptions": [],
+        "missing_information": "The number of repair requests sent and the number answered this year.",
+        "why_it_matters": "The ratio shows whether the delay is the rule or the exception.",
+        "who_could_answer": "The works office or the person who posted the problem"
+      },
+      "expect": {
+        "outcome": "publish"
+      }
+    }
+  ]
+}

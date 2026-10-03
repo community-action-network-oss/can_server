@@ -1,0 +1,123 @@
+{
+  "steps": [
+    {
+      "id": "post_root_cause",
+      "action": "contribute",
+      "content_type": "contribution.root_cause",
+      "fields": {
+        "type": "root_cause",
+        "target": "{{seed.problem_id}}",
+        "claim": "The faults cluster on streets where the works notice names no contact point, so repair requests are lost.",
+        "basis": "cited",
+        "evidence_refs": [
+          {
+            "url": "https://evidence.sim.test/fiktiva-city/works-notice-register",
+            "supports": "Shows which notices carry a contact point and which do not."
+          }
+        ],
+        "uncertainty": "The register covers one year only.",
+        "assumptions": [
+          "I assume the register lists every notice issued."
+        ],
+        "hypothesis": "Missing contact points on notices may explain why repair requests are not answered.",
+        "mechanism": "A notice without a contact point sends residents to a general line, where the request is not tied to a street.",
+        "supporting_evidence_refs": [],
+        "test_that_would_disprove_it": "If streets with a contact point show the same delay, the notice is not the cause."
+      },
+      "expect": {
+        "outcome": "publish"
+      }
+    },
+    {
+      "id": "post_constraint",
+      "action": "contribute",
+      "when": {
+        "after_step": "post_root_cause"
+      },
+      "content_type": "contribution.constraint",
+      "fields": {
+        "type": "constraint",
+        "target": "{{seed.problem_id}}",
+        "claim": "A change to the notice template falls under the Head of Road Works and needs no new money.",
+        "basis": "cited",
+        "evidence_refs": [
+          {
+            "url": "https://evidence.sim.test/fiktiva-city/topic-table",
+            "supports": "Maps road repair notices to the Head of Road Works."
+          }
+        ],
+        "uncertainty": "I did not check whether a council vote is also needed.",
+        "assumptions": [
+          "I assume the template is an operational document."
+        ],
+        "constraint": "The notice template is set by the Head of Road Works under the topic table for road repair.",
+        "source": "law",
+        "source_ref": "Fiktiva City topic table, road-repair entry (invented fixture).",
+        "recheck_condition": "If the topic table is amended."
+      },
+      "expect": {
+        "outcome": "publish"
+      }
+    },
+    {
+      "id": "post_evidence",
+      "action": "contribute",
+      "when": {
+        "after_step": "post_constraint"
+      },
+      "content_type": "contribution.evidence",
+      "fields": {
+        "type": "evidence",
+        "target": "{{seed.problem_id}}",
+        "claim": "The works notice register shows which notices name a contact point.",
+        "basis": "cited",
+        "evidence_refs": [
+          {
+            "url": "https://evidence.sim.test/fiktiva-city/works-notice-register",
+            "supports": "Lists every notice and its contact field."
+          }
+        ],
+        "uncertainty": "The register may lag by a few weeks.",
+        "assumptions": [],
+        "url": "https://evidence.sim.test/fiktiva-city/works-notice-register",
+        "source_description": "The Fiktiva City works notice register, published monthly.",
+        "claim_supported": "Of the listed notices, most have an empty contact field.",
+        "what_it_does_not_show": "It does not show whether residents called the general line instead."
+      },
+      "expect": {
+        "outcome": "publish",
+        "rule_ids": []
+      }
+    },
+    {
+      "id": "post_constraint_later",
+      "action": "contribute",
+      "when": {
+        "after_step": "post_evidence"
+      },
+      "content_type": "contribution.constraint",
+      "fields": {
+        "type": "constraint",
+        "target": "{{seed.problem_id}}",
+        "target_stage": "{{seed.planned_stage_ref}}",
+        "claim": "A later measuring stage needs the same register to be public each month.",
+        "basis": "cited",
+        "evidence_refs": [
+          {
+            "url": "https://evidence.sim.test/fiktiva-city/works-notice-register",
+            "supports": "Shows the register is already published monthly."
+          }
+        ],
+        "uncertainty": "The monthly schedule may change.",
+        "assumptions": [],
+        "constraint": "Measuring needs a public register; the Head of Road Works controls its publication.",
+        "source": "institutional",
+        "source_ref": "Fiktiva City works notice register publication practice (invented fixture).",
+        "recheck_condition": "If the register stops being published."
+      },
+      "expect": {
+        "outcome": "publish"
+      }
+    }
+  ]
+}

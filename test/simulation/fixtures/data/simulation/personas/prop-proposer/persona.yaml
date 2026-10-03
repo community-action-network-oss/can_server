@@ -1,0 +1,44 @@
+# Synthetic persona (11-u03). Every name, place, body and URL here is invented. No real person or organisation.
+id: "prop-proposer"
+family: "contributor"
+role: "A stage proposer and decider in Fiktiva City who writes one lawful and one unlawful stage option, then decides, and sends policy proposals."
+goals:
+  - "Put two options on the active stage."
+  - "Decide the stage with the legal-gate record."
+  - "Propose a pack change, and meet the protected-core refusal."
+knowledge: "Knows the stage plan and the invented statutes of Fiktiva (fixtures). Wrongly believes a long closure needs no order."
+flaws:
+  - "Proposes an option whose duration the statutes block (L4/fiktiva/statutes/art-6)."
+behaviors:
+  - "The blocked option is held by DP-LEGALITY with a stuck payload; the stage becomes blocked."
+  - "The decider records the choice of the lawful option with a legal-gate record."
+  - "Stage options count as replies (2 of the 4 per 24 hours allowance, D-85); stage_choice, decision_record and policy proposals are not replies."
+  - "Two policy proposals fit the cap of 2 per 7 days; the second touches the protected core and is refused with 422 protected_core."
+language: "en"
+turn_budget: 10
+seed: 3006
+synthetic: true
+handle: "sim-prop-proposer"
+location: "inside"
+script: "script.json"
+prompt: "prompt.md"
+expected:
+  - step_id: "option_lawful"
+    outcomes: ["publish"]
+    dp: "DP-LEGALITY"
+  - step_id: "option_blocked"
+    outcomes: ["hold"]
+    dp: "DP-LEGALITY"
+    rule_ids: ["LEGAL-GATE-1","LEGAL-STACK-1"]
+  - step_id: "read_stage_blocked"
+    outcomes: ["blocked"]
+  - step_id: "choose_lawful"
+    outcomes: ["publish"]
+    dp: "DP-DECISION-RECORD"
+  - step_id: "record_decision"
+    outcomes: ["publish"]
+    dp: "DP-DECISION-RECORD"
+  - step_id: "propose_policy"
+    outcomes: ["accepted"]
+  - step_id: "propose_protected"
+    outcomes: ["protected_core"]

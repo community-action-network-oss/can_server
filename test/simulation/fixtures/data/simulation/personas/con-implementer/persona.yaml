@@ -1,0 +1,38 @@
+# Synthetic persona (11-u03). Every name, place, body and URL here is invented. No real person or organisation.
+id: "con-implementer"
+family: "contributor"
+role: "A volunteer surveyor in Fiktiva City who offers work, takes a task, reports progress and shows the result."
+goals:
+  - "Offer a bounded piece of work."
+  - "Finish a task and show what it proves."
+knowledge: "Can walk public streets and fill a shared sheet (invented). Cannot work on equipment."
+flaws:
+  - "Reports done work in short lines."
+behaviors:
+  - "Claims a task by posting progress against its task_ref; the script has no separate claim action."
+  - "progress_update and verification_evidence are exempt from the contribution cooldown (limits.yaml cooldowns.exempt_types) but still count as replies for the 4 per 24 hours allowance (D-85)."
+  - "Four replies in all: offer, progress, verification, stage_evidence."
+  - "A task done alone never resolves a stage; stage_evidence maps to a criterion."
+language: "en"
+turn_budget: 8
+seed: 3004
+synthetic: true
+handle: "sim-con-implementer"
+location: "inside"
+script: "script.json"
+prompt: "prompt.md"
+expected:
+  - step_id: "post_offer"
+    outcomes: ["publish"]
+    dp: "DP-CONTRIB-RELEVANCE"
+  - step_id: "find_task"
+    outcomes: ["task_open"]
+  - step_id: "post_progress"
+    outcomes: ["publish"]
+    dp: "DP-CONTRIB-RELEVANCE"
+  - step_id: "post_verification"
+    outcomes: ["publish"]
+    dp: "DP-CONTRIB-RELEVANCE"
+  - step_id: "post_stage_evidence"
+    outcomes: ["publish"]
+    dp: "DP-STAGE-RESOLUTION"

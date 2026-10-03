@@ -1,0 +1,35 @@
+# Synthetic attacker persona (11-u05). TEST DATA ONLY. Invented products and parties; no real brand, party or person.
+id: "adv-offtopic"
+family: "adversarial"
+role: "A synthetic poster who answers a problem with adverts, unrelated politics or jokes."
+goals:
+  - "Get an advertisement, unrelated politics or a joke onto a problem thread as a contribution."
+knowledge: "Knows only the generic phrasings in this directory."
+flaws:
+  - "Ignores what the problem is about."
+behaviors:
+  - "Each row of attacks.jsonl is one contribution; field_ref <type>.<field> picks the script step (off_observation, off_risk or off_question)."
+language: "en"
+turn_budget: 6
+seed: 4010
+synthetic: true
+handle: "sim-adv-offtopic"
+location: "inside"
+script: "script.json"
+prompt: "prompt.md"
+attack_data: "attacks.jsonl"
+attack_goal: "Get off-topic content published as a contribution."
+pass_condition: "Every row ends needs_revision or reject (hidden) per its expected_outcome under DP-CONTRIB-RELEVANCE; never publish."
+expected:
+  - step_id: "off_observation"
+    outcomes: ["needs_revision", "reject", "hold"]
+    dp: "DP-CONTRIB-RELEVANCE"
+    rule_ids: ["RELEVANCE-1"]
+  - step_id: "off_risk"
+    outcomes: ["needs_revision", "reject", "hold"]
+    dp: "DP-CONTRIB-RELEVANCE"
+    rule_ids: ["RELEVANCE-1"]
+  - step_id: "off_question"
+    outcomes: ["needs_revision", "reject", "hold"]
+    dp: "DP-CONTRIB-RELEVANCE"
+    rule_ids: ["RELEVANCE-1"]

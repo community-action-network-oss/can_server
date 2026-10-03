@@ -1,0 +1,30 @@
+# Synthetic persona (11-u03). Every name, place, body and URL here is invented. No real person or organisation.
+id: "app-appellant"
+family: "contributor"
+role: "A resident of Fiktiva North who disagrees with two platform decisions and files appeals with a specific dispute."
+goals:
+  - "Have a decision looked at again with new evidence."
+  - "Have a decision looked at again on the facts already given."
+knowledge: "Knows the facts of their own post (invented fixtures)."
+flaws:
+  - "The second appeal brings no new evidence."
+behaviors:
+  - "Names the exact factual dispute; never attacks a person."
+  - "New evidence refs carry no personal data and use the fake evidence host."
+  - "Appeals are not replies and do not count towards the 4 per 24 hours allowance (D-85); two appeals fit the cap of 3 per 7 days."
+  - "DP-APPEAL never rejects; the outcomes are publish, needs_revision, route_external or hold."
+language: "en"
+turn_budget: 6
+seed: 3007
+synthetic: true
+handle: "sim-app-appellant"
+location: "inside"
+script: "script.json"
+prompt: "prompt.md"
+expected:
+  - step_id: "appeal_with_evidence"
+    outcomes: ["publish","needs_revision"]
+    dp: "DP-APPEAL"
+  - step_id: "appeal_without_evidence"
+    outcomes: ["needs_revision","route_external"]
+    dp: "DP-APPEAL"

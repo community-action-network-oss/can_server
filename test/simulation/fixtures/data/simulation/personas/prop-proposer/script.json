@@ -1,0 +1,224 @@
+{
+  "steps": [
+    {
+      "id": "option_lawful",
+      "action": "stage_option",
+      "content_type": "stage_option",
+      "fields": {
+        "stage_ref": "{{seed.stage_ref}}",
+        "option_statement": "Close the inner lane of Dock Road for 25 days to build a bike lane.",
+        "mechanism": "The road works office closes one lane in phases and keeps a lane open for traffic.",
+        "responsible_role": "Head of Road Works",
+        "authority_and_legal_basis": "A closure under thirty days needs no ministerial order under the invented statutes of Fiktiva.",
+        "cost_estimate": {
+          "band": "<10k",
+          "amount": 6000
+        },
+        "how_it_meets_stage_criteria": [
+          {
+            "criterion_ref": 1,
+            "how": "The bike lane is open and counted on the public sheet after 25 days."
+          }
+        ],
+        "risks_and_rights_impact": "Traffic slows on two days. A lane stays open for emergency vehicles.",
+        "lawful_alternatives": [
+          "Paint a shared lane without a closure."
+        ],
+        "assumptions": [
+          "I assume the closure can be phased."
+        ]
+      },
+      "expect": {
+        "outcome": "publish"
+      }
+    },
+    {
+      "id": "option_blocked",
+      "action": "stage_option",
+      "when": {
+        "after_step": "option_lawful"
+      },
+      "content_type": "stage_option",
+      "fields": {
+        "stage_ref": "{{seed.stage_ref}}",
+        "option_statement": "Close the inner lane of Dock Road for 60 days to build a bike lane.",
+        "mechanism": "The road works office closes the inner lane for the whole build.",
+        "responsible_role": "Head of Road Works",
+        "authority_and_legal_basis": "I believe the Head of Road Works may close any lane (assumption, not checked against the statutes).",
+        "cost_estimate": {
+          "band": "<10k",
+          "amount": 6000
+        },
+        "how_it_meets_stage_criteria": [
+          {
+            "criterion_ref": 1,
+            "how": "The bike lane is open and counted on the public sheet after 25 days."
+          }
+        ],
+        "risks_and_rights_impact": "Traffic slows on two days. A lane stays open for emergency vehicles.",
+        "lawful_alternatives": [
+          "Close the lane for 25 days in phases."
+        ],
+        "assumptions": [
+          "I assume a long closure needs no further order."
+        ]
+      },
+      "expect": {
+        "outcome": "hold",
+        "rule_ids": [
+          "LEGAL-GATE-1",
+          "LEGAL-STACK-1"
+        ]
+      }
+    },
+    {
+      "id": "read_stage_blocked",
+      "action": "read",
+      "when": {
+        "after_step": "option_blocked",
+        "outcome_was": "hold"
+      },
+      "expect": {
+        "outcome": "blocked"
+      }
+    },
+    {
+      "id": "choose_lawful",
+      "action": "choose",
+      "when": {
+        "after_step": "read_stage_blocked"
+      },
+      "content_type": "stage_choice",
+      "fields": {
+        "stage_ref": "{{seed.stage_ref}}",
+        "chosen_option_ids": [
+          "{{var.option_lawful_id}}"
+        ],
+        "decision_method": "poster_after_input",
+        "decider_role": "Problem poster",
+        "authority": "The stage plan names the poster as decider after community input.",
+        "rationale": "The lawful option meets the criterion and stays under the thirty day limit.",
+        "dissent_notes": [],
+        "legal_gate_record": {
+          "constraint_checked": "Lane closures under thirty days against the invented statutes of Fiktiva.",
+          "source_ref": "https://evidence.sim.test/fiktiva-city/statutes-art-6",
+          "layer": "both",
+          "result": "passed"
+        },
+        "steps": [
+          {
+            "step": "Close the inner lane in phases for 25 days.",
+            "owner_role": "Head of Road Works",
+            "done_criterion": "The closure notice and the bike lane count are posted to the stage."
+          }
+        ]
+      },
+      "expect": {
+        "outcome": "publish"
+      }
+    },
+    {
+      "id": "record_decision",
+      "action": "choose",
+      "when": {
+        "after_step": "choose_lawful"
+      },
+      "content_type": "decision_record",
+      "fields": {
+        "stage_choice_ref": "{{var.stage_choice_id}}",
+        "stage_ref": "{{seed.stage_ref}}",
+        "chosen_option_ids": [
+          "{{var.option_lawful_id}}"
+        ],
+        "decision_method": "poster_after_input",
+        "decider_role": "Problem poster",
+        "authority": "The stage plan names the poster as decider after community input.",
+        "rationale": "The lawful option meets the criterion and stays under the thirty day limit.",
+        "dissent_notes": [],
+        "legal_gate_record": {
+          "constraint_checked": "Lane closures under thirty days against the invented statutes of Fiktiva.",
+          "source_ref": "https://evidence.sim.test/fiktiva-city/statutes-art-6",
+          "layer": "both",
+          "result": "passed"
+        },
+        "steps": [
+          {
+            "step": "Close the inner lane in phases for 25 days.",
+            "owner_role": "Head of Road Works",
+            "done_criterion": "The closure notice and the bike lane count are posted to the stage."
+          }
+        ],
+        "assumptions": [
+          "Traffic counts stay near the current level."
+        ],
+        "review_date": "2027-01-31"
+      },
+      "expect": {
+        "outcome": "publish"
+      }
+    },
+    {
+      "id": "propose_policy",
+      "action": "submit",
+      "when": {
+        "after_step": "record_decision"
+      },
+      "content_type": "policy_proposal",
+      "fields": {
+        "rule_ids_and_dps_touched": [
+          "DP-FRAMING"
+        ],
+        "change_summary": "Ask posters for the place at ward level, not street level.",
+        "reason": "Three audit findings in the simulation show street names let people be identified.",
+        "motivating_examples": [
+          "audit:a_2041",
+          "appeal:p_117"
+        ],
+        "expected_flips": "Posts naming a street would be held, not published.",
+        "protected_core_check": {
+          "acknowledged": true,
+          "touches_protected_core": false
+        },
+        "rollback_plan": "Revert to the previous pack version.",
+        "who_is_affected": "Everyone posting a first problem in one region.",
+        "lawful_basis": "The pack privacy rule PRIV-GATE-1; unverified beyond that.",
+        "risks": "Some real problems may be held back at first."
+      },
+      "expect": {
+        "outcome": "accepted"
+      }
+    },
+    {
+      "id": "propose_protected",
+      "action": "submit",
+      "when": {
+        "after_step": "propose_policy"
+      },
+      "content_type": "policy_proposal",
+      "fields": {
+        "rule_ids_and_dps_touched": [
+          "SCOPE-1"
+        ],
+        "change_summary": "Narrow the scope rule so single households are never routed away.",
+        "reason": "The simulation shows single household cases being routed out.",
+        "motivating_examples": [
+          "audit:a_2041",
+          "appeal:p_117"
+        ],
+        "expected_flips": "Posts naming a street would be held, not published.",
+        "protected_core_check": {
+          "acknowledged": true,
+          "touches_protected_core": true
+        },
+        "rollback_plan": "Revert to the previous pack version.",
+        "who_is_affected": "Everyone posting a first problem in one region.",
+        "lawful_basis": "The pack privacy rule PRIV-GATE-1; unverified beyond that.",
+        "risks": "Some real problems may be held back at first."
+      },
+      "expect": {
+        "status": 422,
+        "outcome": "protected_core"
+      }
+    }
+  ]
+}

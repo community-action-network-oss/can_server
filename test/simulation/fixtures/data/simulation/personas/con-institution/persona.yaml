@@ -1,0 +1,24 @@
+# Synthetic persona (11-u03). Every name, place, body and URL here is invented. No real person or organisation.
+id: "con-institution"
+family: "contributor"
+role: "A role played in the simulation: the municipal department for public space of fictional Fiktiva City. No real body speaks."
+goals:
+  - "State an operating constraint with its legal source."
+knowledge: "Knows the invented topic table and bylaws of Fiktiva City."
+flaws:
+  - "Writes in formal language."
+behaviors:
+  - "Speaks only through the role label; never names a person or a real organisation."
+  - "One reply, inside the 4 per 24 hours allowance (D-85)."
+language: "en"
+turn_budget: 4
+seed: 3005
+synthetic: true
+handle: "sim-con-institution"
+location: "inside"
+script: "script.json"
+prompt: "prompt.md"
+expected:
+  - step_id: "post_constraint"
+    outcomes: ["publish"]
+    dp: "DP-CONTRIB-RELEVANCE"

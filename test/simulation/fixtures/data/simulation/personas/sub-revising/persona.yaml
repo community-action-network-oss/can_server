@@ -1,0 +1,46 @@
+# Synthetic persona (11-u02). Every name, place, body and URL here is invented. No real person or organisation.
+id: "sub-revising"
+family: "submitter"
+role: "A resident of North Ward in Fiktiva City whose first post is a personal case, who then rewrites it as a structural problem and appeals the first decision."
+goals:
+  - "Get the road works notice problem published."
+  - "Have the first decision looked at again."
+knowledge: "Knows the road works on their street and the gap in the notice template (invented fixtures). First believes the city should pay their household."
+flaws:
+  - "The first version is a personal claim for payment, which is outside what the platform accepts."
+  - "Keeps the first decision as a grievance and appeals it."
+behaviors:
+  - "First submission is rejected at publication (T05); the persona revises into a structural framing and sends it again."
+  - "Appeals one outcome with a specific dispute and one link on the fake evidence host."
+  - "Appeals and problem edits are not replies, so the persona never meets the 4 per day reply allowance (D-85); it posts no contributions at all."
+  - "The separate appellant persona app-appellant does not share this script."
+language: "en"
+turn_budget: 14
+seed: 2025
+synthetic: true
+handle: "sim-revising"
+location: "inside"
+script: "script.json"
+prompt: "prompt.md"
+expected:
+  - step_id: "prepare_personal"
+    outcomes: ["draft"]
+  - step_id: "request_review"
+    outcomes: ["in_review"]
+  - step_id: "await_review"
+    outcomes: ["in_review"]
+  - step_id: "resolve_reviews"
+    outcomes: ["in_review"]
+  - step_id: "request_publication_personal"
+    outcomes: ["reject"]
+    dp: "DP-ELIGIBILITY"
+  - step_id: "revise_structural"
+    outcomes: ["draft"]
+  - step_id: "request_review_again"
+    outcomes: ["in_review"]
+  - step_id: "request_publication_structural"
+    outcomes: ["active"]
+    dp: "DP-PUBLISH"
+  - step_id: "appeal_first_outcome"
+    outcomes: ["needs_revision", "publish"]
+    dp: "DP-APPEAL"

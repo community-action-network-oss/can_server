@@ -1,0 +1,29 @@
+# Synthetic persona (11-u03). Every name, place, body and URL here is invented. No real person or organisation.
+id: "con-skeptic"
+family: "contributor"
+role: "A sceptical resident of Fiktiva City who challenges claims politely with risks and questions."
+goals:
+  - "Point out a risk in the proposed direction."
+  - "Ask for the missing figure behind a claim."
+knowledge: "Reads the problem text closely (invented). Has no inside information."
+flaws:
+  - "Sounds blunt."
+behaviors:
+  - "Dissent is not penalized: the report checks that no false reject is recorded for these contributions."
+  - "Keeps the tone factual; no attack on any person."
+  - "Two replies, inside the 4 per 24 hours allowance (D-85)."
+language: "en"
+turn_budget: 6
+seed: 3003
+synthetic: true
+handle: "sim-con-skeptic"
+location: "inside"
+script: "script.json"
+prompt: "prompt.md"
+expected:
+  - step_id: "post_risk"
+    outcomes: ["publish"]
+    dp: "DP-CONTRIB-RELEVANCE"
+  - step_id: "post_question"
+    outcomes: ["publish"]
+    dp: "DP-CONTRIB-RELEVANCE"
