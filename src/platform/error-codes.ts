@@ -7,6 +7,7 @@ export const ERROR_CODES = [
   'invalid_transition',
   'rate_limited',
   'cooldown_active',
+  'reply_limit_reached',
   'conflict',
   'internal',
 ] as const;

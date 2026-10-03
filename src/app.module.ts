@@ -9,6 +9,7 @@ import { ProblemsModule } from './problems/problems.module.js';
 import { PolicyModule } from './policy/policy.module.js';
 import { PolicyProposalsModule } from './policy-proposals/policy-proposals.module.js';
 import { StagesModule } from './stages/stages.module.js';
+import { ContributionsModule } from './contributions/contributions.module.js';
 import { EventRelay } from './moderation/app/event-relay.js';
 import { RelayCursor } from './moderation/infra/relay-cursor.js';
 import { PrivacyGatewayModule } from './ai-gateway/app/redaction/privacy-gateway.module.js';
@@ -27,6 +28,7 @@ import { ReviewCoreModule, ReviewModule } from './review/review.module.js';
     AccountsModule,
     ProblemsModule,
     StagesModule,
+    ContributionsModule,
     ModerationModule,
     PrivacyGatewayModule,
     JurisdictionsModule,

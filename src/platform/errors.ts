@@ -18,6 +18,8 @@ export class ApiException extends HttpException {
     readonly code: ErrorCode | (string & {}),
     message: string,
     readonly fieldErrors?: Record<string, string>,
+    /** Additive envelope fields (for example limit, remaining, resetsAt); never personal data. */
+    readonly extra?: Record<string, unknown>,
   ) {
     super(message, status);
   }
@@ -31,6 +33,18 @@ export class ErrorBodyDto {
     additionalProperties: { type: 'string' },
   })
   fieldErrors?: Record<string, string>;
+  @ApiPropertyOptional({ description: 'Reply limit (reply_limit_reached)' })
+  limit?: number;
+  @ApiPropertyOptional({ description: 'Replies left (reply_limit_reached)' })
+  remaining?: number;
+  @ApiPropertyOptional({
+    description: 'ISO time the next slot frees (reply_limit_reached)',
+  })
+  resetsAt?: string;
+  @ApiPropertyOptional({
+    description: 'Seconds until retry is allowed (cooldown_active)',
+  })
+  retryAfterSeconds?: number;
 }
 
 export class ErrorResponseDto {
@@ -97,6 +111,7 @@ export class ErrorFilter implements ExceptionFilter {
           code: e.code,
           message: e.message,
           ...(e.fieldErrors && { fieldErrors: e.fieldErrors }),
+          ...e.extra,
         },
       };
     } else if (e instanceof HttpException) {

@@ -2187,6 +2187,27 @@
         ],
         "type": "object"
       },
+      "ReplyAllowanceDto": {
+        "properties": {
+          "limit": {
+            "type": "number"
+          },
+          "remaining": {
+            "type": "number"
+          },
+          "resetsAt": {
+            "description": "ISO time the next slot frees",
+            "nullable": true,
+            "type": "string"
+          }
+        },
+        "required": [
+          "limit",
+          "remaining",
+          "resetsAt"
+        ],
+        "type": "object"
+      },
       "RequestCodeDto": {
         "properties": {
           "email": {
@@ -5439,6 +5460,67 @@
         "summary": "Recommendations on your problem; volunteers are numbered, never named",
         "tags": [
           "review"
+        ]
+      }
+    },
+    "/v1/me/problems/{id}/reply-allowance": {
+      "get": {
+        "operationId": "getMyReplyAllowance",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReplyAllowanceDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "summary": "How many replies you have left on this problem in the rolling window (for \"2 of 4 replies left today\")",
+        "tags": [
+          "contributions"
         ]
       }
     },

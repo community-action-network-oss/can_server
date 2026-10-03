@@ -5,6 +5,7 @@ import { STATES } from '../../domain/lifecycle/vocabulary.js';
 import { STAGE_STATES } from '../../stages/domain/types.js';
 import { allowedTypes, isAllowed, isForLaterStage } from './allowed.js';
 import { COOLDOWN, nextAllowedAt } from './cooldown.js';
+import { replyAllowance, replyCapFrom } from './reply-cap.js';
 import { CONTRIBUTION_TYPES, USER_TYPES } from './types.js';
 
 const root = resolve(__dirname, '../../../..');
@@ -154,5 +155,47 @@ describe('cooldown', () => {
           type,
         }),
       ).toBeNull();
+  });
+});
+
+describe('reply cap (D-85)', () => {
+  const at = (h: number) => new Date(Date.UTC(2026, 0, 1, h));
+  it('defaults to 4 per 1 day and reads the pack key defensively', () => {
+    expect(replyCapFrom(undefined)).toEqual({ count: 4, days: 1 });
+    expect(
+      replyCapFrom({
+        caps: {
+          replies_per_account_per_problem_per_day: { count: 'x', days: -1 },
+        },
+      }),
+    ).toEqual({ count: 4, days: 1 });
+    expect(
+      replyCapFrom({
+        caps: {
+          replies_per_account_per_problem_per_day: { count: 6, days: 2 },
+        },
+      }),
+    ).toEqual({ count: 6, days: 2 });
+  });
+  it('counts remaining and resets when the oldest leaves', () => {
+    const cap = replyCapFrom(undefined);
+    expect(replyAllowance(cap, [])).toEqual({
+      limit: 4,
+      remaining: 4,
+      resetsAt: null,
+    });
+    expect(replyAllowance(cap, [at(3), at(1)])).toMatchObject({
+      remaining: 2,
+      resetsAt: at(1 + 24).toISOString(),
+    });
+    expect(replyAllowance(cap, [at(1), at(2), at(3), at(4)])).toMatchObject({
+      remaining: 0,
+      resetsAt: at(25).toISOString(),
+    });
+  });
+  it('after a lowered cap, resets when enough replies have left', () => {
+    expect(
+      replyAllowance({ count: 2, days: 1 }, [at(1), at(2), at(3)]),
+    ).toMatchObject({ remaining: 0, resetsAt: at(26).toISOString() });
   });
 });
