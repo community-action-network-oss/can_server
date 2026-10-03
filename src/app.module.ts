@@ -16,6 +16,7 @@ import { StagesModule } from './stages/stages.module.js';
 import { ContributionsModule } from './contributions/contributions.module.js';
 import { EventRelay } from './moderation/app/event-relay.js';
 import { RelayCursor } from './moderation/infra/relay-cursor.js';
+import { BudgetModule } from './ai-gateway/app/budget/budget.module.js';
 import { PrivacyGatewayModule } from './ai-gateway/app/redaction/privacy-gateway.module.js';
 import { ModerationModule } from './moderation/moderation.module.js';
 import { RetentionModule } from './retention/retention.module.js';
@@ -40,6 +41,7 @@ import { ReviewCoreModule, ReviewModule } from './review/review.module.js';
     ContributionsModule,
     ModerationModule,
     PrivacyGatewayModule,
+    BudgetModule,
     JurisdictionsModule,
     ReviewCoreModule,
     ReviewModule,

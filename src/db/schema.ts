@@ -4,6 +4,7 @@ import {
   boolean,
   check,
   customType,
+  date,
   bigint,
   index,
   integer,
@@ -818,7 +819,9 @@ export const task = pgTable(
       .references(() => stage.id),
     stageChoiceId: uuid('stage_choice_id').references(() => stageChoice.id),
     title: text('title').notNull(),
-    description: jsonb('description').$type<Record<string, unknown>>().notNull(),
+    description: jsonb('description')
+      .$type<Record<string, unknown>>()
+      .notNull(),
     ...pinColumns(),
     ownerId: uuid('owner_id').references(() => account.id),
     status: text('status').notNull().default('open'),
@@ -1287,4 +1290,42 @@ export const consentRecord = pgTable(
     revokedAt: tz('revoked_at'),
   },
   (t) => [index('consent_record_account_idx').on(t.accountId, t.purpose)],
+);
+
+/**
+ * AI spend ledger (09-u14). Insert-only (REVOKE plus trigger): ids, counts and micro-USD amounts only,
+ * never prompts or data. Free-model calls are rows at cost 0 so they still count toward call caps.
+ */
+export const spendLedger = pgTable(
+  'spend_ledger',
+  {
+    id: uuid('id').primaryKey(),
+    day: date('day', { mode: 'string' }).notNull(),
+    jurisdictionId: uuid('jurisdiction_id'),
+    dpId: text('dp_id').notNull(),
+    eventId: text('event_id'),
+    runId: uuid('run_id').notNull(),
+    costMicroUsd: bigint('cost_micro_usd', { mode: 'number' }).notNull(),
+    createdAt: tz('created_at').notNull().defaultNow(),
+  },
+  (t) => [
+    index('spend_ledger_day_idx').on(t.day),
+    index('spend_ledger_run_idx').on(t.runId),
+    check('spend_ledger_cost_chk', sql`${t.costMicroUsd} >= 0`),
+  ],
+);
+
+/** One row per (cap, level, day): the idempotency key for alerts, and the in-app record of them. Insert-only. */
+export const spendAlert = pgTable(
+  'spend_alert',
+  {
+    capKey: text('cap_key').notNull(),
+    level: smallint('level').notNull(),
+    day: date('day', { mode: 'string' }).notNull(),
+    createdAt: tz('created_at').notNull().defaultNow(),
+  },
+  (t) => [
+    primaryKey({ name: 'spend_alert_pk', columns: [t.capKey, t.level, t.day] }),
+    check('spend_alert_level_chk', sql`${t.level} in (50, 80, 100)`),
+  ],
 );
