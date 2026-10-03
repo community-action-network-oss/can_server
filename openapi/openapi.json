@@ -1882,6 +1882,13 @@
             "nullable": true,
             "type": "string"
           },
+          "allowedContributionTypes": {
+            "description": "Contribution types the signed-in caller may submit on the whole problem now; empty for guests.",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
           "authorHandle": {
             "nullable": true,
             "type": "string"
@@ -2030,7 +2037,8 @@
           "isSeed",
           "syntheticEvidence",
           "help_needed",
-          "tombstone"
+          "tombstone",
+          "allowedContributionTypes"
         ],
         "type": "object"
       },

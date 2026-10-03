@@ -25,6 +25,16 @@ export class ApiException extends HttpException {
   }
 }
 
+export class ErrorFlagDto {
+  @ApiProperty() id!: string;
+  @ApiProperty({ description: 'JSON pointer of the flagged field' })
+  field!: string;
+  @ApiProperty() kind!: string;
+  @ApiProperty() ruleId!: string;
+  @ApiProperty({ description: "'hard' rejects; 'review' can be kept" })
+  severity!: string;
+}
+
 export class ErrorBodyDto {
   @ApiProperty() code!: string;
   @ApiProperty() message!: string;
@@ -45,6 +55,12 @@ export class ErrorBodyDto {
     description: 'Seconds until retry is allowed (cooldown_active)',
   })
   retryAfterSeconds?: number;
+  @ApiPropertyOptional({
+    type: [ErrorFlagDto],
+    description:
+      'Deterministic check flags (validation_failed on contributions)',
+  })
+  flags?: ErrorFlagDto[];
 }
 
 export class ErrorResponseDto {
