@@ -1,0 +1,8 @@
+{
+  "default": { "outcome": "publish", "confidence": 0.95 },
+  "entries": [
+    { "keyword": "ward clerk office", "outcome": "publish", "rule_ids": ["NAMING-1"], "confidence": 0.88 },
+    { "keyword": "full name of the officer", "outcome": "needs_revision", "rule_ids": ["NAMING-1"], "confidence": 0.93 },
+    { "keyword": "burn it down", "outcome": "reject", "rule_ids": ["SAFETY-1"], "confidence": 0.97 }
+  ]
+}
