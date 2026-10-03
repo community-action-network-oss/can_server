@@ -25,7 +25,7 @@ export class SchemaVersionRepo {
       })
       .onConflictDoUpdate({
         target: [t.type, t.schemaHash],
-        set: { retiredAt: null },
+        set: { retiredAt: null, packVersion: r.packVersion }, // a pack bump that keeps the schema bytes must point validate at the pack now loaded
       });
     await tx
       .update(t)
