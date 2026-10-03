@@ -1,5 +1,6 @@
 import { sql } from 'drizzle-orm';
 import {
+  type AnyPgColumn,
   boolean,
   check,
   customType,
@@ -10,12 +11,17 @@ import {
   numeric,
   pgTable,
   primaryKey,
+  smallint,
   text,
   timestamp,
   unique,
   uniqueIndex,
   uuid,
 } from 'drizzle-orm/pg-core';
+import {
+  CONTRIBUTION_STATUSES,
+  CONTRIBUTION_TYPES,
+} from '../contributions/domain/types.js';
 import { HOLD_REASONS } from '../moderation/domain/hold-reasons.js';
 import { DP_IDS, OUTCOMES } from '../moderation/domain/outcome.js';
 
@@ -998,4 +1004,83 @@ export const problemVersion = pgTable(
     createdAt: tz('created_at').notNull(),
   },
   (t) => [primaryKey({ columns: [t.problemId, t.version] })],
+);
+
+const inList = (xs: readonly string[]) =>
+  sql.raw(`(${xs.map((x) => `'${x}'`).join(',')})`);
+
+/**
+ * A typed contribution aimed at a stage (stage_id) or the whole problem (null).
+ * body is the structured answers (pinned content schema); there is no free-form text column.
+ * Exactly one of author_id / system_actor is set (a system actor such as news_watch carries a label, D-79).
+ */
+export const contribution = pgTable(
+  'contribution',
+  {
+    id: uuid('id').primaryKey(),
+    problemId: uuid('problem_id')
+      .notNull()
+      .references(() => problem.id),
+    stageId: uuid('stage_id').references(() => stage.id),
+    forLaterStage: boolean('for_later_stage').notNull().default(false),
+    authorId: uuid('author_id').references(() => account.id),
+    systemActor: text('system_actor'),
+    type: text('type').notNull(),
+    body: jsonb('body').$type<Record<string, unknown>>().notNull(),
+    ...pinColumns(),
+    status: text('status').notNull().default('pending_review'),
+    lastRunId: uuid('last_run_id'),
+    answersContributionId: uuid('answers_contribution_id').references(
+      (): AnyPgColumn => contribution.id,
+    ),
+    createdAt: tz('created_at').notNull(),
+    reviewedAt: tz('reviewed_at'),
+    tombstonedAt: tz('tombstoned_at'),
+    originNodeId: text('origin_node_id').notNull(),
+    protocolVersion: text('protocol_version').notNull(),
+  },
+  (t) => [
+    index('contribution_problem_idx').on(
+      t.problemId,
+      t.status,
+      t.type,
+      t.createdAt,
+    ),
+    index('contribution_stage_idx').on(
+      t.stageId,
+      t.status,
+      t.type,
+      t.createdAt,
+    ),
+    check(
+      'contribution_type_chk',
+      sql`${t.type} in ${inList(CONTRIBUTION_TYPES)}`,
+    ),
+    check(
+      'contribution_status_chk',
+      sql`${t.status} in ${inList(CONTRIBUTION_STATUSES)}`,
+    ),
+    check(
+      'contribution_actor_chk',
+      sql`(${t.authorId} is null) <> (${t.systemActor} is null)`,
+    ),
+  ],
+);
+
+/** One cited URL per row. URLs only, never files (EVID-URL-1). */
+export const evidenceRef = pgTable(
+  'evidence_ref',
+  {
+    id: uuid('id').primaryKey(),
+    contributionId: uuid('contribution_id')
+      .notNull()
+      .references(() => contribution.id),
+    url: text('url').notNull(),
+    note: text('note'),
+    kind: text('kind').notNull().default('url'),
+    tier: smallint('tier'),
+    attestation: text('attestation'),
+    addedAt: tz('added_at').notNull(),
+  },
+  (t) => [index('evidence_ref_contribution_idx').on(t.contributionId)],
 );

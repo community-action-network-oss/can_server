@@ -6,6 +6,7 @@ export const ERROR_CODES = [
   'not_found',
   'invalid_transition',
   'rate_limited',
+  'cooldown_active',
   'conflict',
   'internal',
 ] as const;
