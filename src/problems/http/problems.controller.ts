@@ -10,7 +10,19 @@ import {
 } from '@nestjs/common';
 import { inArray } from 'drizzle-orm';
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { and, asc, desc, eq, gt, isNotNull, lt, or, sql } from 'drizzle-orm';
+import {
+  and,
+  asc,
+  desc,
+  eq,
+  gt,
+  isNotNull,
+  isNull,
+  lt,
+  ne,
+  or,
+  sql,
+} from 'drizzle-orm';
 import { DB, type Db } from '../../db/db.module.js';
 import {
   acceptanceCriterion,
@@ -36,6 +48,7 @@ import {
 } from '../../platform/pagination.js';
 import type { AuthedRequest } from '../../platform/security/auth.guard.js';
 import type { AuthContext } from '../../platform/security/decorators.js';
+import { linkable } from '../app/duplicate-link.js';
 import { STAGE_CHIP, type StageChipPort } from '../app/stage-chip.port.js';
 import {
   EventsQueryDto,
@@ -250,6 +263,31 @@ export class ProblemsController {
           .where(eq(acceptanceCriterion.problemId, p.id))
           .orderBy(asc(acceptanceCriterion.ordinal))
       : [];
+    const [tgt] =
+      !tomb && p.duplicateOf
+        ? await this.db
+            .select()
+            .from(problem)
+            .where(eq(problem.id, p.duplicateOf))
+        : [];
+    const dupRows = tomb
+      ? []
+      : await this.db
+          .select({ p: problem, j: jurisdiction.name })
+          .from(problem)
+          .leftJoin(jurisdiction, eq(jurisdiction.id, problem.jurisdictionId))
+          .where(
+            and(
+              eq(problem.duplicateOf, p.id),
+              isNotNull(problem.publishedAt),
+              isNull(problem.tombstonedAt),
+              isNull(problem.deletedAt),
+              ne(problem.state, 'withdrawn'),
+              inArray(problem.state, PUBLIC_STATES),
+            ),
+          )
+          .orderBy(desc(problem.publishedAt), desc(problem.id))
+          .limit(50);
     return {
       id: p.id,
       state: p.state,
@@ -275,6 +313,8 @@ export class ProblemsController {
       pauseReason: text(p.pauseReason),
       resumeCondition: text(p.resumeCondition),
       duplicateOf: p.duplicateOf,
+      duplicateOfTitle: tgt && linkable(tgt) ? tgt.title : null,
+      duplicates: await this.shape(dupRows),
       // ponytail: no review table yet (12-u03); the count is always 0 until it lands.
       reviewCount: 0,
       sources: sources.map((x) => ({

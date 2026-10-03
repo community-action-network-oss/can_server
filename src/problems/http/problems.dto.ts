@@ -122,6 +122,16 @@ export class ProblemDetailDto {
   @ApiProperty(NS) pauseReason!: string | null;
   @ApiProperty(NS) resumeCondition!: string | null;
   @ApiProperty(NS) duplicateOf!: string | null;
+  @ApiProperty({
+    ...NS,
+    description: 'Title of the target, only while the target is public.',
+  })
+  duplicateOfTitle!: string | null;
+  @ApiProperty({
+    type: [PublicProblemDto],
+    description: 'Public problems linked as duplicates of this one.',
+  })
+  duplicates!: PublicProblemDto[];
   @ApiProperty({ description: 'A count only; review content is never public.' })
   reviewCount!: number;
   @ApiProperty({

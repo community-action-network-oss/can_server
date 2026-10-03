@@ -13,6 +13,7 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { STATES, type State } from '../../domain/lifecycle/vocabulary.js';
+import { DUPLICATE_REASONS } from '../app/duplicate-link.js';
 
 // Length limits (code points) are enforced in DraftsService with fieldErrors; MaxLength here is only a cheap body cap.
 const CAP = 2000;
@@ -502,4 +503,24 @@ export class PreparationDto {
   @ApiProperty({ type: PrepPartDto }) sources!: PrepPartDto;
   @ApiProperty({ type: PrepPartDto }) criteria!: PrepPartDto;
   @ApiProperty({ type: PrepPartDto }) stages!: PrepPartDto;
+}
+
+export class DuplicateLinkDto {
+  @ApiProperty({
+    description: 'A published, public problem. Nothing is merged or hidden.',
+  })
+  @IsUUID()
+  duplicateOfId!: string;
+
+  @ApiProperty({
+    enum: DUPLICATE_REASONS,
+    description: 'A fixed code, never free text.',
+  })
+  @IsIn(DUPLICATE_REASONS)
+  reason!: (typeof DUPLICATE_REASONS)[number];
+}
+
+export class DuplicateLinkResultDto {
+  @ApiProperty() id!: string;
+  @ApiProperty({ type: String, nullable: true }) duplicateOf!: string | null;
 }

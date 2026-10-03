@@ -768,6 +768,45 @@
         ],
         "type": "object"
       },
+      "DuplicateLinkDto": {
+        "properties": {
+          "duplicateOfId": {
+            "description": "A published, public problem. Nothing is merged or hidden.",
+            "type": "string"
+          },
+          "reason": {
+            "description": "A fixed code, never free text.",
+            "enum": [
+              "same_problem",
+              "same_cause",
+              "already_handled_there",
+              "other"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "duplicateOfId",
+          "reason"
+        ],
+        "type": "object"
+      },
+      "DuplicateLinkResultDto": {
+        "properties": {
+          "duplicateOf": {
+            "nullable": true,
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "duplicateOf"
+        ],
+        "type": "object"
+      },
       "ErrorBodyDto": {
         "properties": {
           "code": {
@@ -2238,6 +2277,18 @@
             "nullable": true,
             "type": "string"
           },
+          "duplicateOfTitle": {
+            "description": "Title of the target, only while the target is public.",
+            "nullable": true,
+            "type": "string"
+          },
+          "duplicates": {
+            "description": "Public problems linked as duplicates of this one.",
+            "items": {
+              "$ref": "#/components/schemas/PublicProblemDto"
+            },
+            "type": "array"
+          },
           "explanation": {
             "type": "string"
           },
@@ -2359,6 +2410,8 @@
           "pauseReason",
           "resumeCondition",
           "duplicateOf",
+          "duplicateOfTitle",
+          "duplicates",
           "reviewCount",
           "sources",
           "finalCriteria",
@@ -5230,6 +5283,179 @@
           }
         },
         "summary": "Keep review flags as they are; the review later sees that you kept them, the public never does",
+        "tags": [
+          "drafts"
+        ]
+      }
+    },
+    "/v1/drafts/{id}/duplicate": {
+      "delete": {
+        "operationId": "unlinkDuplicate",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "summary": "Remove the duplicate link from your problem",
+        "tags": [
+          "drafts"
+        ]
+      },
+      "post": {
+        "operationId": "linkDuplicate",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DuplicateLinkDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DuplicateLinkResultDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "summary": "Mark your problem as a duplicate of a public one. Only records a link with a reason; nothing is merged or hidden",
         "tags": [
           "drafts"
         ]

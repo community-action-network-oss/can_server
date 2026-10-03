@@ -45,6 +45,7 @@ import {
 import { STAGE_CHIP, type StageChipPort } from '../app/stage-chip.port.js';
 import { SubmitChecks, checkInputOf } from '../app/submit-checks.service.js';
 import { DraftMigrationService } from '../app/draft-migration.service.js';
+import { setDuplicateLink } from '../app/duplicate-link.js';
 import { DraftsService, EDITABLE } from '../app/drafts.service.js';
 import {
   AllowedActionsDto,
@@ -55,6 +56,8 @@ import {
   TransitionResultDto,
   ConfirmMigrationDto,
   CreateDraftDto,
+  DuplicateLinkDto,
+  DuplicateLinkResultDto,
   DraftDto,
   MyProblemPageDto,
   MigrationPlanDto,
@@ -496,6 +499,50 @@ export class DraftsController {
       body.expectedVersion,
       body.mappings,
     );
+  }
+
+  @Post(':id/duplicate')
+  @Authenticated()
+  @HttpCode(200)
+  @ApiOperation({
+    operationId: 'linkDuplicate',
+    summary:
+      'Mark your problem as a duplicate of a public one. Only records a link with a reason; nothing is merged or hidden',
+  })
+  @ApiOkResponse({ type: DuplicateLinkResultDto })
+  @ApiErrors(400, 401, 404, 409, 429, 500)
+  async linkDuplicate(
+    @Param('id') id: string,
+    @Body() body: DuplicateLinkDto,
+    @Req() req: AuthedRequest,
+  ): Promise<DuplicateLinkResultDto> {
+    const to = await setDuplicateLink(this.db, {
+      problemId: uid(id),
+      accountId: req.auth!.accountId,
+      targetId: body.duplicateOfId,
+      reason: body.reason,
+    });
+    return { id, duplicateOf: to };
+  }
+
+  @Delete(':id/duplicate')
+  @Authenticated()
+  @HttpCode(204)
+  @ApiOperation({
+    operationId: 'unlinkDuplicate',
+    summary: 'Remove the duplicate link from your problem',
+  })
+  @ApiNoContentResponse()
+  @ApiErrors(401, 404, 409, 429, 500)
+  async unlinkDuplicate(
+    @Param('id') id: string,
+    @Req() req: AuthedRequest,
+  ): Promise<void> {
+    await setDuplicateLink(this.db, {
+      problemId: uid(id),
+      accountId: req.auth!.accountId,
+      targetId: null,
+    });
   }
 
   @Delete(':id')

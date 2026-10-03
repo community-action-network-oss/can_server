@@ -143,6 +143,8 @@ describe('GET /v1/problems/:id visibility (02-u11)', () => {
         'coarseArea',
         'desiredOutcome',
         'duplicateOf',
+        'duplicateOfTitle',
+        'duplicates',
         'explanation',
         'finalCriteria',
         'help_needed',
