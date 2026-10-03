@@ -111,6 +111,103 @@
         ],
         "type": "object"
       },
+      "AssistQuestionDto": {
+        "properties": {
+          "field_ref": {
+            "type": "string"
+          },
+          "text": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "field_ref",
+          "text"
+        ],
+        "type": "object"
+      },
+      "AssistRequestDto": {
+        "properties": {
+          "fields": {
+            "description": "Subset of form fields to help with",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "notes": {
+            "description": "Private notes. Never stored; the length limit is a pack value.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "notes"
+        ],
+        "type": "object"
+      },
+      "AssistResponseDto": {
+        "properties": {
+          "assist_run_id": {
+            "type": "string"
+          },
+          "model_id": {
+            "type": "string"
+          },
+          "policy_version": {
+            "type": "string"
+          },
+          "prompt_hash": {
+            "type": "string"
+          },
+          "questions": {
+            "items": {
+              "$ref": "#/components/schemas/AssistQuestionDto"
+            },
+            "type": "array"
+          },
+          "suggestions": {
+            "description": "Proposals only. The poster accepts each field; nothing is applied.",
+            "items": {
+              "$ref": "#/components/schemas/AssistSuggestionDto"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "suggestions",
+          "questions",
+          "assist_run_id",
+          "policy_version",
+          "prompt_hash",
+          "model_id"
+        ],
+        "type": "object"
+      },
+      "AssistSuggestionDto": {
+        "properties": {
+          "basis": {
+            "description": "Quote from the notes this rests on",
+            "type": "string"
+          },
+          "confidence": {
+            "type": "number"
+          },
+          "field_ref": {
+            "description": "Content key of the form field (snake_case)",
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "field_ref",
+          "value",
+          "basis",
+          "confidence"
+        ],
+        "type": "object"
+      },
       "AttachContributionBodyDto": {
         "properties": {
           "contributionId": {
@@ -5421,6 +5518,107 @@
           }
         },
         "summary": "Which moves you may try on this problem right now",
+        "tags": [
+          "drafts"
+        ]
+      }
+    },
+    "/v1/drafts/{id}/assist": {
+      "post": {
+        "operationId": "assistDraftFill",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AssistRequestDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssistResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "summary": "Suggest values for fields from your private notes. Proposals only; you accept each one. 503 assist_unavailable when no assistant is configured",
         "tags": [
           "drafts"
         ]

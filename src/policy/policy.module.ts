@@ -85,6 +85,7 @@ import {
     DecisionCache,
     StructuredContentService,
     LegalRegistry,
+    SchemaVersionRepo,
   ],
 })
 export class PolicyModule implements OnModuleInit {

@@ -7,6 +7,7 @@ import { JurisdictionsModule } from './jurisdictions/jurisdictions.module.js';
 import { PlatformModule } from './platform/platform.module.js';
 import { QueueModule } from './platform/queue/queue.module.js';
 import { ProblemsModule } from './problems/problems.module.js';
+import { AssistModule } from './policy/assist/assist.module.js';
 import { PolicyModule } from './policy/policy.module.js';
 import { PolicyProposalsModule } from './policy-proposals/policy-proposals.module.js';
 import { StageOptionsModule } from './stages/app/options/stage-options.module.js';
@@ -28,6 +29,7 @@ import { ReviewCoreModule, ReviewModule } from './review/review.module.js';
     DbModule,
     HealthModule,
     PolicyModule,
+    AssistModule,
     PolicyProposalsModule,
     AccountsModule,
     ProblemsModule,
