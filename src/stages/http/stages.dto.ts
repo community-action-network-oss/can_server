@@ -1,3 +1,4 @@
+import { TaskDto } from '../../tasks/http/tasks.dto.js';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
   ArrayMaxSize,
@@ -152,12 +153,7 @@ export class StageDto {
   @ApiProperty({ type: [StageOptionDto] }) options!: StageOptionDto[];
   @ApiProperty({ type: StageChoiceDto, nullable: true })
   choice!: StageChoiceDto | null;
-  @ApiProperty({
-    type: 'array',
-    items: OBJ,
-    description: 'Placeholder until tasks land.',
-  })
-  tasks!: unknown[];
+  @ApiProperty({ type: [TaskDto] }) tasks!: TaskDto[];
   @ApiProperty({ type: [StageEvidenceDto] }) evidence!: StageEvidenceDto[];
   @ApiProperty({ type: [String] }) allowedContributionTypes!: string[];
   @ApiProperty({

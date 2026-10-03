@@ -19,6 +19,16 @@ describe('notification mapping', () => {
     expect(p('contribution.submitted', null)).toBeNull();
     expect(p('transition_proposed', null, { transitionId: 'T04' })).toBeNull();
   });
+  it('maps task claimed and done to task_updated, other task events to nothing', () => {
+    expect(mapStageEvent({ type: 'task_claimed', toState: null })).toEqual({
+      kind: 'task_updated',
+      label: 'A task was claimed',
+    });
+    expect(mapStageEvent({ type: 'task_done', toState: null })?.label).toBe(
+      'A task was completed',
+    );
+    expect(mapStageEvent({ type: 'task_progress', toState: null })).toBeNull();
+  });
   it('maps only ready and done stage changes and recorded choices', () => {
     expect(
       mapStageEvent({ type: 'state_changed', toState: 'ready' })?.label,

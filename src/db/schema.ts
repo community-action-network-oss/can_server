@@ -805,6 +805,66 @@ export const stageEvent = pgTable('stage_event', {
   occurredAt: tz('occurred_at').notNull(),
 });
 
+/** A step of a stage (05-u01). Public with the problem. `stage_choice_id` is null when the stage needs no choice. */
+export const task = pgTable(
+  'task',
+  {
+    id: uuid('id').primaryKey(),
+    problemId: uuid('problem_id')
+      .notNull()
+      .references(() => problem.id),
+    stageId: uuid('stage_id')
+      .notNull()
+      .references(() => stage.id),
+    stageChoiceId: uuid('stage_choice_id').references(() => stageChoice.id),
+    title: text('title').notNull(),
+    description: jsonb('description').$type<Record<string, unknown>>().notNull(),
+    ...pinColumns(),
+    ownerId: uuid('owner_id').references(() => account.id),
+    status: text('status').notNull().default('open'),
+    required: boolean('required').notNull().default(true),
+    droppedReason: text('dropped_reason'),
+    verificationNote: text('verification_note'),
+    verifiedBy: uuid('verified_by').references(() => account.id),
+    createdBy: uuid('created_by')
+      .notNull()
+      .references(() => account.id),
+    createdAt: tz('created_at').notNull(),
+    updatedAt: tz('updated_at').notNull(),
+    originNodeId: text('origin_node_id').notNull(),
+    protocolVersion: text('protocol_version').notNull(),
+  },
+  (t) => [
+    index('task_stage_idx').on(t.stageId, t.status),
+    check(
+      'task_status_chk',
+      sql`${t.status} in ('open','claimed','in_progress','done','dropped')`,
+    ),
+    check(
+      'task_dropped_reason_chk',
+      sql`${t.status} <> 'dropped' or ${t.droppedReason} is not null`,
+    ),
+  ],
+);
+
+export const taskBlocker = pgTable(
+  'task_blocker',
+  {
+    id: uuid('id').primaryKey(),
+    taskId: uuid('task_id')
+      .notNull()
+      .references(() => task.id),
+    text: text('text').notNull(),
+    clearedAt: tz('cleared_at'),
+    clearedNote: text('cleared_note'),
+    createdBy: uuid('created_by')
+      .notNull()
+      .references(() => account.id),
+    createdAt: tz('created_at').notNull(),
+  },
+  (t) => [index('task_blocker_task_idx').on(t.taskId)],
+);
+
 /** A member's policy amendment proposal (10-u32). Stage moves also write `events` and `audit_event`; reports are the latest CI JSON. */
 export const policyProposal = pgTable(
   'policy_proposal',

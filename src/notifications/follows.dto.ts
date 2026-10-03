@@ -49,6 +49,7 @@ export class NotificationDto {
       'stage_changed',
       'plan_changed',
       'decision_recorded',
+      'task_updated',
       'reopened',
     ],
   })

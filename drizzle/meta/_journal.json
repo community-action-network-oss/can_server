@@ -183,6 +183,13 @@
       "when": 1790989936296,
       "tag": "0025_chubby_eternals",
       "breakpoints": true
+    },
+    {
+      "idx": 26,
+      "version": "7",
+      "when": 1790990893951,
+      "tag": "0026_condemned_inertia",
+      "breakpoints": true
     }
   ]
 }

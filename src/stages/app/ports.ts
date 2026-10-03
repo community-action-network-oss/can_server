@@ -11,7 +11,7 @@ export interface ContributionPort {
       problemId: string;
       stageId: string;
       authorId: string;
-      type: 'proposed_solution' | 'evidence';
+      type: 'proposed_solution' | 'evidence' | 'progress_update';
       content: Record<string, unknown>;
     },
     tx?: Tx,
@@ -49,17 +49,14 @@ export class PassingChoiceGate implements ChoiceGatePort {
   }
 }
 
-/** Required tasks of a stage (05-u01). The fake says done, so ST04 does not wait on tasks that cannot exist yet. */
+/** Required tasks of a stage that are not done or dropped (05-u01). ST04 needs the list empty. */
 export interface TaskPort {
-  requiredDone(tx: Tx, stageId: string): Promise<boolean>;
+  openRequired(
+    tx: Tx,
+    stageId: string,
+  ): Promise<{ id: string; status: string }[]>;
 }
 export const TASK_PORT = Symbol('TaskPort');
-@Injectable()
-export class FakeTasks implements TaskPort {
-  async requiredDone() {
-    return true;
-  }
-}
 
 /** The BLOCKER-1 record of ST07 (05-u03 stores it in `stage_blocker`). Returns what the `stage_event` payload keeps. */
 export interface BlockerRecordPort {

@@ -37,7 +37,13 @@ export function checkBody(
       });
   });
   // Id refs (schema-patterned) are not prose: a uuid's digit runs would trip the phone check at random.
-  const { improves: _i, target: _t, target_stage: _s, ...prose } = body;
+  const {
+    improves: _i,
+    target: _t,
+    target_stage: _s,
+    task_ref: _r,
+    ...prose
+  } = body;
   const res = runChecks({ fields: {}, content: prose });
   const shown = [];
   for (const f of res.flags) {

@@ -12,6 +12,7 @@ export type NotificationKind =
   | 'stage_changed'
   | 'plan_changed'
   | 'decision_recorded'
+  | 'task_updated'
   | 'reopened';
 
 export interface Mapped {
@@ -62,6 +63,10 @@ export function mapStageEvent(e: {
 }): Mapped | null {
   if (e.type === 'choice_recorded')
     return { kind: 'decision_recorded', label: 'A decision was recorded' };
+  if (e.type === 'task_claimed')
+    return { kind: 'task_updated', label: 'A task was claimed' };
+  if (e.type === 'task_done')
+    return { kind: 'task_updated', label: 'A task was completed' };
   if (
     e.type === 'state_changed' &&
     (e.toState === 'ready' || e.toState === 'resolved')
@@ -78,5 +83,6 @@ export const EXPLANATION: Record<NotificationKind, string> = {
   stage_changed: 'A stage of its plan changed.',
   plan_changed: 'The plan was changed. The page shows what changed and why.',
   decision_recorded: 'A choice was recorded. The page shows how it was made.',
+  task_updated: 'A step of a stage was taken up or finished.',
   reopened: 'It was reopened after a rule change. The page explains why.',
 };

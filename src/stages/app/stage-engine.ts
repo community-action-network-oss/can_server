@@ -566,7 +566,8 @@ export class StageEngine {
         : [];
       guard.choiceRecorded =
         !s.needsChoice || choice.some((c) => c.g?.result === 'passed');
-      guard.tasksDone = await this.tasks.requiredDone(tx, s.id);
+      const openTasks = await this.tasks.openRequired(tx, s.id);
+      guard.tasksDone = openTasks.length === 0;
       const crit = new Set(
         (
           await tx
@@ -581,7 +582,12 @@ export class StageEngine {
         .where(eq(stageEvidence.stageId, s.id));
       guard.evidenceMapped = ev.some((e) => e.c.some((c) => crit.has(c)));
       if (!guard.choiceRecorded) unmet.choice = 'required';
-      if (!guard.tasksDone) unmet.tasks = 'required';
+      if (!guard.tasksDone) {
+        unmet.tasks = 'required';
+        for (const t of openTasks.slice(0, 20))
+          unmet[`/tasks/${t.id}`] =
+            `Still ${t.status.replace('_', ' ')}: finish it, or drop it with a reason.`;
+      }
       if (!guard.evidenceMapped) unmet.evidence = 'required';
     }
     return { guard, unmet };

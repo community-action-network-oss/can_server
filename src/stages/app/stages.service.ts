@@ -13,7 +13,9 @@ import {
   stageEvent,
   stageEvidence,
   stageOption,
+  task,
 } from '../../db/schema.js';
+import { loadTasks } from '../../tasks/app/task-view.js';
 import { withTransaction, type Tx } from '../../db/tx.js';
 import { PROTOCOL_VERSION } from '../../domain/protocol.js';
 import { activeLabel } from '../../domain/lifecycle/vocabulary.js';
@@ -212,7 +214,7 @@ export class StagesService {
         .filter((r) => r.o.status === 'public' || r.o.authorId === viewerId)
         .map((r) => optionDto(r.o, r.handle)),
       choice: choice ? choiceDto(choice) : null,
-      tasks: [] as unknown[], // ponytail: tasks belong to a later unit
+      tasks: await loadTasks(this.db, eq(task.stageId, s.id)),
       evidence: ev.map((r) => ({
         id: r.e.id,
         url: r.e.url,
