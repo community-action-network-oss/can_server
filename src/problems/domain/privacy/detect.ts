@@ -40,14 +40,32 @@ interface Normalised {
   to: number[];
 }
 
-const ZERO_WIDTH = /[​-‍⁠﻿­]/;
+// Zero-width, soft hyphen, and bidi controls: invisible, so they must not split a name or number.
+const ZERO_WIDTH = /[\u200b-\u200f\u202a-\u202e\u2060-\u2069\ufeff\u00ad\u061c\u180e]/;
 
 function foldDigit(ch: string): string {
   const cp = ch.codePointAt(0)!;
-  if (cp >= 0x660 && cp <= 0x669) return String(cp - 0x660); // Arabic-Indic
-  if (cp >= 0x6f0 && cp <= 0x6f9) return String(cp - 0x6f0); // Extended Arabic-Indic
-  return ch;
+  if (!/^\p{Nd}$/u.test(ch) || ch.length > 1) return ch;
+  // Every Nd block is a run of ten ascending digits, so the offset in the run is the value.
+  let zero = cp;
+  while (/^\p{Nd}$/u.test(String.fromCodePoint(zero - 1))) zero--;
+  return String((cp - zero) % 10);
 }
+
+// Same-length Cyrillic/Greek look-alikes for Latin letters; used only inside tokens that already
+// hold a Latin letter or digit, so genuinely Cyrillic or Greek words are left alone.
+const CONFUSABLE: Record<string, string> = {
+  'а': 'a', 'е': 'e', 'о': 'o', 'р': 'p', 'с': 'c', 'х': 'x', 'у': 'y', 'і': 'i', 'ј': 'j', 'ѕ': 's', 'һ': 'h',
+  'А': 'A', 'В': 'B', 'Е': 'E', 'К': 'K', 'М': 'M', 'Н': 'H', 'О': 'O', 'Р': 'P', 'С': 'C', 'Т': 'T', 'Х': 'X',
+  'ο': 'o', 'α': 'a', 'ν': 'v', 'ρ': 'p', 'ι': 'i', 'κ': 'k', 'τ': 't', 'υ': 'u',
+  'Α': 'A', 'Β': 'B', 'Ε': 'E', 'Ζ': 'Z', 'Η': 'H', 'Ι': 'I', 'Κ': 'K', 'Μ': 'M', 'Ν': 'N', 'Ο': 'O', 'Ρ': 'P', 'Τ': 'T', 'Υ': 'Y', 'Χ': 'X',
+};
+const RE_CONFUSABLE = new RegExp(`[${Object.keys(CONFUSABLE).join('')}]`, 'u');
+const foldConfusables = (text: string) =>
+  text.replace(/[\p{L}\p{N}]+/gu, (tok) =>
+    /[A-Za-z0-9]/.test(tok) && RE_CONFUSABLE.test(tok)
+      ? tok.replace(new RegExp(RE_CONFUSABLE.source, 'gu'), (c) => CONFUSABLE[c]!)
+      : tok);
 
 /** NFKC per grapheme-ish cluster, zero-width stripped, digits folded, with an index map. */
 export function normalise(original: string): Normalised {
@@ -76,6 +94,7 @@ export function normalise(original: string): Normalised {
     }
   }
   // Same-length look-alike folding so the index map stays valid.
+  text = foldConfusables(text);
   for (let prev = ''; prev !== text; ) {
     prev = text;
     text = text
@@ -88,11 +107,14 @@ export function normalise(original: string): Normalised {
 const B = '(?<![\\p{L}\\p{N}_])'; // unicode-aware word start
 const E = '(?![\\p{L}\\p{N}_])'; // unicode-aware word end
 
+// Email local parts may only start where a local-part run starts, else "a.a.a." is quadratic.
+const BL = '(?<![\\p{L}\\p{N}_.%+-])';
+
 const SPELLED = 'zero|one|two|three|four|five|six|seven|eight|nine';
 const RE_EMAIL = new RegExp(
-  `${B}[a-z0-9._%+-]+@[a-z0-9-]+(?:\\.[a-z0-9-]+)+${E}`, 'giu');
+  `${BL}[a-z0-9._%+-]+@[a-z0-9-]+(?:\\.[a-z0-9-]+)+${E}`, 'giu');
 const RE_EMAIL_OBF = new RegExp(
-  `${B}[a-z0-9._+-]+(?:\\s+at\\s+|\\s*[\\[(]at[\\])]\\s*)[a-z0-9-]+(?:(?:\\s+dot\\s+|\\s*[\\[(]dot[\\])]\\s*)[a-z]{2,})+${E}`, 'giu');
+  `${BL}[a-z0-9._+-]+(?:\\s+at\\s+|\\s*[\\[(]at[\\])]\\s*)[a-z0-9-]+(?:(?:\\s+dot\\s+|\\s*[\\[(]dot[\\])]\\s*)[a-z]{2,})+${E}`, 'giu');
 const RE_GOV_SHAPE = new RegExp(`${B}[A-Z]{3}-\\d{6}${E}`, 'gu');
 const RE_GOV_LABELLED = new RegExp(
   `${B}(?:id|ssn|passport|national id)(?:\\s*(?:no\\.?|number|#))?\\s*[:#]?\\s*(\\d{9,12})(?!\\d)`, 'giu');
@@ -108,7 +130,8 @@ const ROLES: Record<string, string> = {
   Senator: 'Senator', Governor: 'Governor', Director: 'Director', Commissioner: 'Commissioner',
   Sheriff: 'Sheriff', Chief: 'Chief',
 };
-const NAME_WORD = `\\p{Lu}[\\p{Ll}'\\u2019-]+`;
+// Capital + lower-case run, joined parts allowed (Anne-Marie, O'Neil, McDonald-smith style hyphen).
+const NAME_WORD = `\\p{Lu}(?:\\p{Ll}+|['\\u2019]\\p{Lu}\\p{Ll}+)(?:['\\u2019-]\\p{Lu}?\\p{Ll}+)*`;
 const RE_TITLED = new RegExp(
   `${B}(Mr|Ms|Mrs|Miss|Mx|Dr|Prof|Cllr|Councillor|Mayor|Minister|Senator|Governor|Director|Commissioner|Sheriff|Chief)\\.?\\s+${NAME_WORD}(?:\\s+${NAME_WORD})?${E}`, 'gu');
 const RE_CAP_RUN = new RegExp(`${B}${NAME_WORD}(?:\\s+${NAME_WORD})+${E}`, 'gu');
@@ -128,9 +151,11 @@ export function detectPrivacyFlags(original: string): Flag[] {
   const n = normalise(original);
   const t = n.text;
   const spans: Span[] = [];
-  const taken = (s: number, e: number) => spans.some((x) => s < x.end && e > x.start);
+  const used = new Uint8Array(t.length); // occupancy map: overlap check is O(span), not O(spans)
   const add = (kind: FlagKind, s: number, e: number, suggestion?: string) => {
-    if (e > s && !taken(s, e)) spans.push({ kind, start: s, end: e, suggestion });
+    if (e <= s || used.subarray(s, e).some(Boolean)) return;
+    used.fill(1, s, e);
+    spans.push({ kind, start: s, end: e, suggestion });
   };
 
   for (const m of matches(RE_EMAIL, t)) add('email', m.index, m.index + m[0].length);

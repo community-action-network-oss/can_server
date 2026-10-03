@@ -18,7 +18,7 @@ export type Classification =
 const RULES: { code: IneligibilityCode; re: RegExp; hint: string }[] = [
   {
     code: 'emergency',
-    re: /\b(?:help me|i need help|in danger|bleeding|being attacked|under attack|suicid\w*|kill myself|overdos\w*|fire (?:now|right now)|on fire|can'?t breathe)\b/,
+    re: /\b(?:help me|i need help|in danger|bleeding|being attacked|under attack|suicid\w*|kill myself|overdos\w*|fire (?:now|right now)|on fire|can'?t breathe|do(?:n'?t| not) want to (?:be here|live|go on|be alive)|end(?:ing)? it all|(?:hurt|harm)(?:ing)? myself|self[- ]?harm|no reason to live|want to die|took (?:his|her|their|my) own life)\b/,
     hint: 'If someone is in danger, contact local emergency services now. Your draft is kept; nothing is rejected.',
   },
   {

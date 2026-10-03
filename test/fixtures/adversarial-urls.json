@@ -1,0 +1,446 @@
+{
+ "version": 1,
+ "rows": [
+  {
+   "id": "adv-ur-001",
+   "url": "https://evidence.sim.test@evil.example.test/x",
+   "expected": {
+    "ok": false,
+    "reason": "credentials"
+   },
+   "ruleId": "EVID-URL-1",
+   "category": "userinfo",
+   "note": "userinfo that looks like a trusted host"
+  },
+  {
+   "id": "adv-ur-002",
+   "url": "https://user:pw@evidence.sim.test/x",
+   "expected": {
+    "ok": false,
+    "reason": "credentials"
+   },
+   "ruleId": "EVID-URL-1",
+   "category": "userinfo",
+   "note": "user and password"
+  },
+  {
+   "id": "adv-ur-003",
+   "url": "https://evidence.sim.test%2f@evil.example.test/",
+   "expected": {
+    "ok": false,
+    "reason": "credentials"
+   },
+   "ruleId": "EVID-URL-1",
+   "category": "userinfo",
+   "note": "encoded slash in userinfo"
+  },
+  {
+   "id": "adv-ur-004",
+   "url": "https://evidence.sim.test\\@evil.example.test/",
+   "expected": {
+    "ok": true,
+    "normalized": "https://evidence.sim.test/@evil.example.test/",
+    "category": "other"
+   },
+   "ruleId": "EVID-URL-1",
+   "category": "userinfo",
+   "note": "backslash ends the host under the URL standard, so the real host is the trusted one"
+  },
+  {
+   "id": "adv-ur-005",
+   "url": "https://ex\u0430mple.test/x",
+   "expected": {
+    "ok": false,
+    "reason": "punycode"
+   },
+   "ruleId": "EVID-URL-1",
+   "category": "idn",
+   "note": "Cyrillic a look-alike host"
+  },
+  {
+   "id": "adv-ur-006",
+   "url": "https://\u0435vidence.sim.test/x",
+   "expected": {
+    "ok": false,
+    "reason": "punycode"
+   },
+   "ruleId": "EVID-URL-1",
+   "category": "idn",
+   "note": "Cyrillic e look-alike host"
+  },
+  {
+   "id": "adv-ur-007",
+   "url": "https://xn--exmple-cua.test/x",
+   "expected": {
+    "ok": false,
+    "reason": "punycode"
+   },
+   "ruleId": "EVID-URL-1",
+   "category": "idn",
+   "note": "already punycode"
+  },
+  {
+   "id": "adv-ur-008",
+   "url": "HTTPS://Evidence.Sim.Test/Path",
+   "expected": {
+    "ok": true,
+    "normalized": "https://evidence.sim.test/Path",
+    "category": "other"
+   },
+   "ruleId": "EVID-URL-1",
+   "category": "scheme",
+   "note": "upper case scheme and host"
+  },
+  {
+   "id": "adv-ur-009",
+   "url": "javascript:alert(1)",
+   "expected": {
+    "ok": false,
+    "reason": "scheme"
+   },
+   "ruleId": "EVID-URL-1",
+   "category": "scheme",
+   "note": "javascript scheme"
+  },
+  {
+   "id": "adv-ur-010",
+   "url": "java\nscript:alert(1)",
+   "expected": {
+    "ok": false,
+    "reason": "scheme"
+   },
+   "ruleId": "EVID-URL-1",
+   "category": "scheme",
+   "note": "newline inside the scheme is stripped by the parser"
+  },
+  {
+   "id": "adv-ur-011",
+   "url": "jav&#x61;script:alert(1)",
+   "expected": {
+    "ok": false,
+    "reason": "unparseable"
+   },
+   "ruleId": "EVID-URL-1",
+   "category": "scheme",
+   "note": "html entity in the scheme"
+  },
+  {
+   "id": "adv-ur-012",
+   "url": "\uff48\uff54\uff54\uff50\uff53://evidence.sim.test/",
+   "expected": {
+    "ok": false,
+    "reason": "unparseable"
+   },
+   "ruleId": "EVID-URL-1",
+   "category": "scheme",
+   "note": "fullwidth scheme"
+  },
+  {
+   "id": "adv-ur-013",
+   "url": "data:text/html,<script>1</script>",
+   "expected": {
+    "ok": false,
+    "reason": "scheme"
+   },
+   "ruleId": "EVID-URL-1",
+   "category": "scheme",
+   "note": "data URL"
+  },
+  {
+   "id": "adv-ur-014",
+   "url": "file:///etc/passwd",
+   "expected": {
+    "ok": false,
+    "reason": "scheme"
+   },
+   "ruleId": "EVID-URL-1",
+   "category": "scheme",
+   "note": "file URL"
+  },
+  {
+   "id": "adv-ur-015",
+   "url": "ftp://evidence.sim.test/a",
+   "expected": {
+    "ok": false,
+    "reason": "scheme"
+   },
+   "ruleId": "EVID-URL-1",
+   "category": "scheme",
+   "note": "ftp"
+  },
+  {
+   "id": "adv-ur-016",
+   "url": "http://evidence.sim.test/a",
+   "expected": {
+    "ok": false,
+    "reason": "scheme"
+   },
+   "ruleId": "EVID-URL-1",
+   "category": "scheme",
+   "note": "http refused by default"
+  },
+  {
+   "id": "adv-ur-017",
+   "url": "//evidence.sim.test/a",
+   "expected": {
+    "ok": false,
+    "reason": "unparseable"
+   },
+   "ruleId": "EVID-URL-1",
+   "category": "scheme",
+   "note": "scheme-relative"
+  },
+  {
+   "id": "adv-ur-018",
+   "url": "https://2130706433/x",
+   "expected": {
+    "ok": false,
+    "reason": "ip_literal"
+   },
+   "ruleId": "EVID-URL-1",
+   "category": "hosts",
+   "note": "decimal IPv4 is normalised to dotted by the parser"
+  },
+  {
+   "id": "adv-ur-019",
+   "url": "https://0x7f.1/x",
+   "expected": {
+    "ok": false,
+    "reason": "ip_literal"
+   },
+   "ruleId": "EVID-URL-1",
+   "category": "hosts",
+   "note": "hex IPv4"
+  },
+  {
+   "id": "adv-ur-020",
+   "url": "https://[::1]/x",
+   "expected": {
+    "ok": false,
+    "reason": "ip_literal"
+   },
+   "ruleId": "EVID-URL-1",
+   "category": "hosts",
+   "note": "IPv6 loopback"
+  },
+  {
+   "id": "adv-ur-021",
+   "url": "https://localhost./x",
+   "expected": {
+    "ok": false,
+    "reason": "host"
+   },
+   "ruleId": "EVID-URL-1",
+   "category": "hosts",
+   "note": "localhost with a trailing dot"
+  },
+  {
+   "id": "adv-ur-022",
+   "url": "https://app.localhost/x",
+   "expected": {
+    "ok": false,
+    "reason": "local_host"
+   },
+   "ruleId": "EVID-URL-1",
+   "category": "hosts",
+   "note": "localhost subdomain"
+  },
+  {
+   "id": "adv-ur-023",
+   "url": "https://evidence\u3002sim\u3002test/x",
+   "expected": {
+    "ok": true,
+    "normalized": "https://evidence.sim.test/x",
+    "category": "other"
+   },
+   "ruleId": "EVID-URL-1",
+   "category": "hosts",
+   "note": "ideographic full stops are mapped to dots by the parser"
+  },
+  {
+   "id": "adv-ur-024",
+   "url": "https://%65vidence.sim.test/x",
+   "expected": {
+    "ok": true,
+    "normalized": "https://evidence.sim.test/x",
+    "category": "other"
+   },
+   "ruleId": "EVID-URL-1",
+   "category": "hosts",
+   "note": "percent-encoded host letter is decoded"
+  },
+  {
+   "id": "adv-ur-025",
+   "url": "https://bbc.com.evil.example.test/x",
+   "expected": {
+    "ok": true,
+    "category": "other"
+   },
+   "ruleId": "EVID-URL-1",
+   "category": "categories",
+   "note": "news name used as a subdomain prefix does not earn the news category"
+  },
+  {
+   "id": "adv-ur-026",
+   "url": "https://evilbbc.com/x",
+   "expected": {
+    "ok": true,
+    "category": "other"
+   },
+   "ruleId": "EVID-URL-1",
+   "category": "categories",
+   "note": "suffix without a dot boundary"
+  },
+  {
+   "id": "adv-ur-027",
+   "url": "https://www.bbc.com/x",
+   "expected": {
+    "ok": true,
+    "category": "news"
+   },
+   "ruleId": "EVID-URL-1",
+   "category": "categories",
+   "note": "real news subdomain"
+  },
+  {
+   "id": "adv-ur-028",
+   "url": "https://gov.evil.example.test/x",
+   "expected": {
+    "ok": true,
+    "category": "other"
+   },
+   "ruleId": "EVID-URL-1",
+   "category": "categories",
+   "note": "gov as a label does not earn official"
+  },
+  {
+   "id": "adv-ur-029",
+   "url": "https://council.example.gov/x",
+   "expected": {
+    "ok": true,
+    "category": "official_page"
+   },
+   "ruleId": "EVID-URL-1",
+   "category": "categories",
+   "note": "official suffix"
+  },
+  {
+   "id": "adv-ur-030",
+   "url": "https://evidence.sim.test/r?u=https://evil.example.test/landing",
+   "expected": {
+    "ok": true,
+    "category": "other"
+   },
+   "ruleId": "EVID-URL-1",
+   "category": "redirect",
+   "note": "nested redirect parameter is stored as text and never followed by the server"
+  },
+  {
+   "id": "adv-ur-031",
+   "url": "https://evidence.sim.test/a?UTM_Source=x&FBCLID=y&id=7",
+   "expected": {
+    "ok": true,
+    "normalized": "https://evidence.sim.test/a?id=7",
+    "category": "other"
+   },
+   "ruleId": "EVID-URL-1",
+   "category": "redirect",
+   "note": "tracking parameters in upper case"
+  },
+  {
+   "id": "adv-ur-032",
+   "url": "https://evidence.sim.test/a\tb",
+   "expected": {
+    "ok": true,
+    "normalized": "https://evidence.sim.test/ab",
+    "category": "other"
+   },
+   "ruleId": "EVID-URL-1",
+   "category": "control",
+   "note": "tab inside the URL is dropped by the parser"
+  },
+  {
+   "id": "adv-ur-033",
+   "url": "  https://evidence.sim.test/a  ",
+   "expected": {
+    "ok": true,
+    "normalized": "https://evidence.sim.test/a",
+    "category": "other"
+   },
+   "ruleId": "EVID-URL-1",
+   "category": "control",
+   "note": "surrounding whitespace"
+  },
+  {
+   "id": "adv-ur-034",
+   "url": "https://evidence.sim.test/a b",
+   "expected": {
+    "ok": true,
+    "normalized": "https://evidence.sim.test/a%20b",
+    "category": "other"
+   },
+   "ruleId": "EVID-URL-1",
+   "category": "control",
+   "note": "space inside the path is encoded"
+  },
+  {
+   "id": "adv-ur-035",
+   "url": "https://evidence.sim.test/a\u0000b",
+   "expected": {
+    "ok": true,
+    "normalized": "https://evidence.sim.test/a%00b",
+    "category": "other"
+   },
+   "ruleId": "EVID-URL-1",
+   "category": "control",
+   "note": "NUL inside the path is percent-encoded"
+  },
+  {
+   "id": "adv-ur-036",
+   "url": "https://evidence.sim.test/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+   "expected": {
+    "ok": false,
+    "reason": "length"
+   },
+   "ruleId": "EVID-URL-1",
+   "category": "length",
+   "note": "over 2048 characters"
+  },
+  {
+   "id": "adv-ur-037",
+   "url": "",
+   "expected": {
+    "ok": false,
+    "reason": "length"
+   },
+   "ruleId": "EVID-URL-1",
+   "category": "length",
+   "note": "empty"
+  },
+  {
+   "id": "adv-ur-038",
+   "url": "https://127.0.0.1.nip.io/x",
+   "expected": {
+    "ok": true,
+    "category": "other"
+   },
+   "ruleId": "EVID-URL-1",
+   "category": "known_gap",
+   "note": "DNS name that resolves to loopback; no DNS is done here, so the fetch layer must resolve and check addresses",
+   "knownGap": true
+  },
+  {
+   "id": "adv-ur-039",
+   "url": "https://evidence.sim.test:8443/x",
+   "expected": {
+    "ok": true,
+    "normalized": "https://evidence.sim.test:8443/x",
+    "category": "other"
+   },
+   "ruleId": "EVID-URL-1",
+   "category": "known_gap",
+   "note": "non-standard port is accepted; the URL is only stored and linked, never fetched",
+   "knownGap": true
+  }
+ ]
+}
