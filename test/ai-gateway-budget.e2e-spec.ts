@@ -21,10 +21,14 @@ let db: ReturnType<typeof drizzle<typeof schema>>;
 const alerts: SpendAlert[] = [];
 const port: AlertPort = { emit: (a) => alerts.push(a) };
 
-// The ledger is insert-only, so each run anchors in a random far-past month it owns.
-const year = 1200 + Math.floor(Math.random() * 600);
+// The ledger is insert-only and never cleaned, and the guard's daily and monthly
+// caps sum every row of a calendar day or month whatever the scope. So each run
+// owns a block of 12 consecutive months at a random spot in years 1000..9999
+// (about 9000 blocks of months); a block that two runs share would add their
+// spend together and break the cap assertions.
+const baseMonth = Math.floor(Math.random() * (9000 * 12 - 12));
 const at = (month: number, day: number) =>
-  new Date(Date.UTC(year, month, day, 12));
+  new Date(Date.UTC(1000, baseMonth + month, day, 12));
 const clock = new FixedClock(at(0, 1));
 
 const caps: Caps = {
