@@ -100,6 +100,26 @@
         ],
         "type": "object"
       },
+      "AttachContributionBodyDto": {
+        "properties": {
+          "contributionId": {
+            "format": "uuid",
+            "type": "string"
+          },
+          "criterionRefs": {
+            "description": "1-based criterion numbers of this stage the links support.",
+            "items": {
+              "type": "number"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "contributionId",
+          "criterionRefs"
+        ],
+        "type": "object"
+      },
       "AttachReportsDto": {
         "properties": {
           "eval": {
@@ -3155,6 +3175,53 @@
         ],
         "type": "object"
       },
+      "StageTemplateDto": {
+        "properties": {
+          "finalCriteria": {
+            "items": {
+              "$ref": "#/components/schemas/TemplateCriterionDto"
+            },
+            "type": "array"
+          },
+          "id": {
+            "enum": [
+              "classic-5",
+              "one-stage"
+            ],
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "stages": {
+            "items": {
+              "$ref": "#/components/schemas/TemplateStageDto"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "stages",
+          "finalCriteria"
+        ],
+        "type": "object"
+      },
+      "StageTemplateListDto": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/StageTemplateDto"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "type": "object"
+      },
       "SubmitPolicyProposalDto": {
         "properties": {
           "content": {
@@ -3171,6 +3238,67 @@
         },
         "required": [
           "content"
+        ],
+        "type": "object"
+      },
+      "TemplateCriterionDto": {
+        "properties": {
+          "measure": {
+            "type": "string"
+          },
+          "statement": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "statement",
+          "measure"
+        ],
+        "type": "object"
+      },
+      "TemplateStageDto": {
+        "properties": {
+          "criteria": {
+            "items": {
+              "$ref": "#/components/schemas/TemplateCriterionDto"
+            },
+            "type": "array"
+          },
+          "decisionMethod": {
+            "type": "string"
+          },
+          "dependsOn": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "goal": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "name": {
+            "description": "Plan slug.",
+            "type": "string"
+          },
+          "needsChoice": {
+            "type": "boolean"
+          },
+          "required": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "name",
+          "label",
+          "goal",
+          "decisionMethod",
+          "dependsOn",
+          "needsChoice",
+          "required",
+          "criteria"
         ],
         "type": "object"
       },
@@ -7937,6 +8065,38 @@
         ]
       }
     },
+    "/v1/stage-templates": {
+      "get": {
+        "operationId": "listStageTemplates",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StageTemplateListDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "summary": "The default stage plan templates, with starting wording",
+        "tags": [
+          "stages"
+        ]
+      }
+    },
     "/v1/stages/by-problem/{problemId}": {
       "get": {
         "operationId": "listProblemStages",
@@ -8034,6 +8194,107 @@
           }
         },
         "summary": "A stage workspace: options, choice, evidence and criteria",
+        "tags": [
+          "stages"
+        ]
+      }
+    },
+    "/v1/stages/{id}/attach-contribution": {
+      "post": {
+        "operationId": "attachStageContribution",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AttachContributionBodyDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StageEvidenceListDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "summary": "Steward: attach an accepted evidence contribution (made ahead or at problem level) to an active or blocked stage as stage evidence",
         "tags": [
           "stages"
         ]

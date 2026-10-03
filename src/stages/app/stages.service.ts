@@ -1,10 +1,12 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { and, asc, eq, inArray, isNull } from 'drizzle-orm';
+import { and, asc, eq, inArray, isNull, sql } from 'drizzle-orm';
 import { config } from '../../config.js';
 import { DB, type Db } from '../../db/db.module.js';
 import {
   account,
   acceptanceCriterion,
+  contribution,
+  evidenceRef,
   problem,
   stage,
   stageChoice,
@@ -535,6 +537,142 @@ export class StagesService {
         url: e.url,
         description: e.claimText,
         criterionRefs: [c.criterion_ref],
+        authorHandle: handle,
+        tier: e.tier,
+        createdAt: e.createdAt.toISOString(),
+      }));
+    });
+  }
+
+  /**
+   * STAGE-PREP-1: the steward turns an accepted evidence contribution (made ahead or at problem level) into stage evidence.
+   * It re-links the existing contribution row: no new reply, so the D-85 cap is not called and no contribution is created.
+   * Link and time are kept in the stage_evidence content (contribution_id, attached_at); no column is needed.
+   */
+  async attachContribution(
+    stageId: string,
+    a: Viewer,
+    b: { contributionId: string; criterionRefs: number[] },
+  ) {
+    return withTransaction(this.db, async (tx) => {
+      const { s, p } = await this.lock(tx, stageId, a.accountId);
+      if (p.initiatorId !== a.accountId)
+        throw new ApiException(
+          403,
+          'not_permitted',
+          'Only the steward can attach contributions.',
+        );
+      if (s.state === 'planned' || s.state === 'ready')
+        throw new ApiException(409, 'not_ready', 'This stage has not started.');
+      if (s.state !== 'active' && s.state !== 'blocked')
+        throw new ApiException(
+          409,
+          'stage_closed',
+          'This stage is not taking evidence now.',
+        );
+      if (!allowedForProblemLevel(p.state as State).includes('evidence'))
+        throw new ApiException(
+          409,
+          'problem_not_open',
+          'This problem is not taking evidence now.',
+        );
+      const [c] = await tx
+        .select()
+        .from(contribution)
+        .where(eq(contribution.id, uid(b.contributionId)))
+        .for('update');
+      if (!c || c.problemId !== p.id) throw nf();
+      if (c.type !== 'evidence' && c.type !== 'verification_evidence')
+        throw new ApiException(
+          409,
+          'not_attachable',
+          'Only evidence can be attached to a stage.',
+        );
+      if (!allowedContributionTypes(s.state as StageState).includes(c.type))
+        throw new ApiException(
+          409,
+          'not_allowed_in_state',
+          'This kind of evidence is not open on this stage now.',
+        );
+      if (c.status !== 'accepted')
+        throw new ApiException(
+          409,
+          'contribution_not_accepted',
+          'Only an accepted contribution can be attached.',
+        );
+      if (c.stageId && c.stageId !== s.id)
+        throw new ApiException(
+          409,
+          'not_attachable',
+          'This contribution was made for another stage.',
+        );
+      const [dup] = await tx
+        .select({ id: stageEvidence.id })
+        .from(stageEvidence)
+        .where(sql`${stageEvidence.content}->>'contribution_id' = ${c.id}`)
+        .limit(1);
+      if (dup)
+        throw new ApiException(
+          409,
+          'already_attached',
+          'This contribution is already attached.',
+        );
+      const crits = await this.criteria(tx, s.id);
+      const mapped = b.criterionRefs.map((r) => crits[r - 1]);
+      const at = mapped.findIndex((x) => !x);
+      if (!mapped.length || at >= 0)
+        throw bad(
+          `/criterionRefs/${Math.max(at, 0)}`,
+          'Pick criteria of this stage by their number.',
+        );
+      const refs = await tx
+        .select()
+        .from(evidenceRef)
+        .where(eq(evidenceRef.contributionId, c.id))
+        .orderBy(asc(evidenceRef.addedAt), asc(evidenceRef.id));
+      if (!refs.length)
+        throw new ApiException(
+          409,
+          'not_attachable',
+          'This contribution has no link to attach.',
+        );
+      const now = this.clock.now();
+      const authorId = c.authorId ?? a.accountId;
+      const rows = await tx
+        .insert(stageEvidence)
+        .values(
+          refs.map((r) => ({
+            id: this.ids.next(),
+            stageId: s.id,
+            url: r.url,
+            claimText: r.note ?? String(c.body.claim ?? ''),
+            criteriaIds: [...new Set(mapped.map((x) => x.id))],
+            submittedBy: authorId,
+            content: {
+              ...c.body,
+              evidence_refs: [{ url: r.url }],
+              contribution_id: c.id,
+              attached_at: now.toISOString(),
+            },
+            ...pin(null),
+            createdAt: now,
+          })),
+        )
+        .returning();
+      await tx
+        .update(contribution)
+        .set({ stageId: s.id })
+        .where(eq(contribution.id, c.id));
+      await this.event(tx, s, 'evidence_attached', a.accountId, {
+        contributionId: c.id,
+        count: rows.length,
+      });
+      const handle = await this.handle(tx, authorId);
+      return rows.map((e) => ({
+        id: e.id,
+        url: e.url,
+        description: e.claimText,
+        criterionRefs: [...new Set(b.criterionRefs)],
         authorHandle: handle,
         tier: e.tier,
         createdAt: e.createdAt.toISOString(),

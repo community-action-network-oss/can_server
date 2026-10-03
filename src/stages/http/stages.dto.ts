@@ -3,10 +3,13 @@ import {
   ArrayMaxSize,
   ArrayMinSize,
   IsArray,
+  IsInt,
   IsNotEmpty,
   IsObject,
   IsOptional,
   IsString,
+  IsUUID,
+  Min,
   MaxLength,
 } from 'class-validator';
 
@@ -220,4 +223,44 @@ export class StageStateChangeDto {
   @ApiProperty() id!: string;
   @ApiProperty() state!: string;
   @ApiProperty({ description: 'Chip text for the new state.' }) chip!: string;
+}
+
+export class AttachContributionBodyDto {
+  @ApiProperty({ format: 'uuid' }) @IsUUID() contributionId!: string;
+  @ApiProperty({
+    type: [Number],
+    description: '1-based criterion numbers of this stage the links support.',
+  })
+  @IsArray()
+  @ArrayMinSize(1)
+  @ArrayMaxSize(20)
+  @IsInt({ each: true })
+  @Min(1, { each: true })
+  criterionRefs!: number[];
+}
+
+export class TemplateCriterionDto {
+  @ApiProperty() statement!: string;
+  @ApiProperty() measure!: string;
+}
+export class TemplateStageDto {
+  @ApiProperty({ description: 'Plan slug.' }) name!: string;
+  @ApiProperty() label!: string;
+  @ApiProperty() goal!: string;
+  @ApiProperty() decisionMethod!: string;
+  @ApiProperty({ type: [String] }) dependsOn!: string[];
+  @ApiProperty() needsChoice!: boolean;
+  @ApiProperty() required!: boolean;
+  @ApiProperty({ type: [TemplateCriterionDto] })
+  criteria!: TemplateCriterionDto[];
+}
+export class StageTemplateDto {
+  @ApiProperty({ enum: ['classic-5', 'one-stage'] }) id!: string;
+  @ApiProperty() name!: string;
+  @ApiProperty({ type: [TemplateStageDto] }) stages!: TemplateStageDto[];
+  @ApiProperty({ type: [TemplateCriterionDto] })
+  finalCriteria!: TemplateCriterionDto[];
+}
+export class StageTemplateListDto {
+  @ApiProperty({ type: [StageTemplateDto] }) items!: StageTemplateDto[];
 }

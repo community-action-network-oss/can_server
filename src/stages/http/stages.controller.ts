@@ -20,10 +20,13 @@ import {
 import { ApiErrors } from '../../platform/errors.js';
 import type { AuthedRequest } from '../../platform/security/auth.guard.js';
 import { StageEngine } from '../app/stage-engine.js';
+import { StageTemplatesService } from '../app/stage-templates.service.js';
 import { StagesService } from '../app/stages.service.js';
 import { STAGE_CHIP } from '../domain/types.js';
 import {
+  AttachContributionBodyDto,
   BlockStageBodyDto,
+  StageTemplateListDto,
   StageStateChangeDto,
   UnblockStageBodyDto,
   StageChoiceDto,
@@ -42,6 +45,8 @@ export class StagesController {
   constructor(
     @Inject(StagesService) private readonly svc: StagesService,
     @Inject(StageEngine) private readonly engine: StageEngine,
+    @Inject(StageTemplatesService)
+    private readonly templates: StageTemplatesService,
   ) {}
 
   private async move(
@@ -57,6 +62,17 @@ export class StagesController {
       fields,
     });
     return { id: r.stageId, state: r.state, chip: STAGE_CHIP[r.state] };
+  }
+
+  @Get('stage-templates')
+  @ApiOperation({
+    operationId: 'listStageTemplates',
+    summary: 'The default stage plan templates, with starting wording',
+  })
+  @ApiOkResponse({ type: StageTemplateListDto })
+  @ApiErrors(500)
+  listTemplates() {
+    return this.templates.list();
   }
 
   @Get('stages/by-problem/:problemId')
@@ -163,6 +179,22 @@ export class StagesController {
     @Req() req: AuthedRequest,
   ) {
     return { items: await this.svc.addEvidence(id, req.auth!, b) };
+  }
+
+  @Post('stages/:id/attach-contribution')
+  @ApiOperation({
+    operationId: 'attachStageContribution',
+    summary:
+      'Steward: attach an accepted evidence contribution (made ahead or at problem level) to an active or blocked stage as stage evidence',
+  })
+  @ApiCreatedResponse({ type: StageEvidenceListDto })
+  @ApiErrors(400, 401, 403, 404, 409, 500)
+  async attach(
+    @Param('id') id: string,
+    @Body() b: AttachContributionBodyDto,
+    @Req() req: AuthedRequest,
+  ) {
+    return { items: await this.svc.attachContribution(id, req.auth!, b) };
   }
 
   @Post('stages/:id/start')

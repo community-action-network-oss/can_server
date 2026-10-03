@@ -15,6 +15,7 @@ import {
 } from './app/ports.js';
 import { StageEngine } from './app/stage-engine.js';
 import { STAGE_PLAN_REPO } from './app/stage-plan.repository.js';
+import { StageTemplatesService } from './app/stage-templates.service.js';
 import { StagesService } from './app/stages.service.js';
 import { StagesController } from './http/stages.controller.js';
 import { DbStageChips } from './infra/stage-chips.js';
@@ -31,6 +32,7 @@ import { DrizzleStagePlanRepo } from './infra/stage-plan.repo.js';
     { provide: BLOCKER_RECORD_PORT, useClass: EventBlockerRecords },
     StageEngine,
     StagesService,
+    StageTemplatesService,
     DbStageChips,
   ],
   exports: [STAGE_PLAN_REPO, StagesService, StageEngine, DbStageChips],
