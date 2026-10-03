@@ -236,7 +236,20 @@ afterAll(async () => {
   await db
     .delete(s.acceptanceCriterion)
     .where(inArray(s.acceptanceCriterion.problemId, all));
-  if (st.length) await db.delete(s.stage).where(inArray(s.stage.id, st));
+  if (st.length) {
+    const cs = await db
+      .select({ id: s.contribution.id })
+      .from(s.contribution)
+      .where(inArray(s.contribution.stageId, st));
+    if (cs.length) {
+      const ids = cs.map((c) => c.id);
+      await db
+        .delete(s.evidenceRef)
+        .where(inArray(s.evidenceRef.contributionId, ids));
+      await db.delete(s.contribution).where(inArray(s.contribution.id, ids));
+    }
+    await db.delete(s.stage).where(inArray(s.stage.id, st));
+  }
   await pool.query('delete from session where account_id = any($1)', [
     fx.accounts,
   ]);
@@ -342,6 +355,9 @@ describe('stage map and visibility', () => {
     ]);
     expect(r.body.allowedContributionTypes).toContain('proposed_solution');
     expect(r.body.allowedContributionTypes).not.toContain('progress_update');
+    expect(r.body.allowedContributionTypes).not.toContain(
+      'moderation_feedback',
+    );
     expect(r.body.criteria[0]).toMatchObject({ ref: 1, hasEvidence: false });
   });
 

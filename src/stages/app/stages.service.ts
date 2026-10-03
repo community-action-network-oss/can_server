@@ -29,6 +29,7 @@ import {
   StructuredContentService,
   type SchemaStamp,
 } from '../../policy/app/structured-content.service.js';
+import { allowedTypes } from '../../contributions/domain/allowed.js';
 import {
   allowedContributionTypes,
   allowedForProblemLevel,
@@ -213,7 +214,9 @@ export class StagesService {
         tier: r.e.tier,
         createdAt: r.e.createdAt.toISOString(),
       })),
-      allowedContributionTypes: [...allowedContributionTypes(state)],
+      allowedContributionTypes: [
+        ...allowedTypes({ problemState: p.state as State, stageState: state }),
+      ],
       allowedStageTransitions: allowedStageTransitions(
         state,
         s.resumeState,
@@ -494,6 +497,17 @@ export class StagesService {
             'Use a link that starts with https://',
           );
       });
+      // One submission is one reply (D-85), whatever its number of links; counts through the contribution row.
+      await this.contributions.create(
+        {
+          problemId: p.id,
+          stageId: s.id,
+          authorId: a.accountId,
+          type: 'evidence',
+          content: b.content,
+        },
+        tx,
+      );
       const now = this.clock.now();
       const rows = await tx
         .insert(stageEvidence)

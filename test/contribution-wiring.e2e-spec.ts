@@ -62,6 +62,26 @@ const viaContribution = (
     .post(`/v1/contributions/by-problem/${pid}`)
     .set(p.h)
     .send({ type, body: valid(type) });
+const viaEvidence = (p: { h: Record<string, string> }) =>
+  http()
+    .post(`/v1/stages/${stageId}/evidence`)
+    .set(p.h)
+    .send({
+      content: {
+        stage_ref: 'map_faults',
+        criterion_ref: 1,
+        evidence_refs: [
+          {
+            url: 'https://example.org/lowmere/repair-log',
+            description: 'Council repair log entry for the ring road feed.',
+          },
+        ],
+        observation_date: '2026-03-31',
+        outcome_statement:
+          'The log shows no outage report on the ring road for 31 days after the repair.',
+        what_the_evidence_does_not_show: 'It covers the ring road only.',
+      },
+    });
 const viaOption = (p: { h: Record<string, string> }, type = 'observation') =>
   http()
     .post(`/v1/stages/${stageId}/options`)
@@ -159,6 +179,7 @@ afterAll(async () => {
   const all = fx.problems;
   await db.delete(s.stageEvent).where(eq(s.stageEvent.stageId, stageId));
   await db.delete(s.stageOption).where(eq(s.stageOption.stageId, stageId));
+  await db.delete(s.stageEvidence).where(eq(s.stageEvidence.stageId, stageId));
   const cs = await db
     .select({ id: s.contribution.id })
     .from(s.contribution)
@@ -202,6 +223,35 @@ describe('contribution wiring (D-85)', () => {
         remaining: 0,
       });
     }
+  });
+
+  it('counts stage evidence too: a mix of all three paths hits one cap, other problems are unaffected', async () => {
+    const a = await person();
+    await viaContribution(a, 'progress_update').expect(201);
+    await viaOption(a).expect(201);
+    await viaEvidence(a).expect(201);
+    await viaEvidence(a).expect(201);
+    for (const send of [
+      () => viaEvidence(a),
+      () => viaOption(a),
+      () => viaContribution(a, 'progress_update'),
+    ]) {
+      const r = await send().expect(429);
+      expect(r.body.error).toMatchObject({
+        code: 'reply_limit_reached',
+        limit: 4,
+        remaining: 0,
+      });
+    }
+    const other = await fx.problem('active', {
+      initiatorId: owner,
+      publishedAt: new Date(),
+    });
+    await http()
+      .post(`/v1/contributions/by-problem/${other}`)
+      .set(a.h)
+      .send({ type: 'observation', body: valid('observation') })
+      .expect(201);
   });
 });
 

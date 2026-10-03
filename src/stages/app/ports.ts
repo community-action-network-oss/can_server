@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import type { Tx } from '../../db/tx.js';
 import { newId } from '../../domain/ids.js';
 
-/** Creates the contribution behind a stage option. 04-u02 implements it; the fake keeps options pending. */
+/** Creates the contribution behind a stage option or evidence submission (both are D-85 replies). 04-u02 implements it; the fake keeps options pending. */
 export interface ContributionPort {
   /** Pass the caller's `tx`: the stage row is locked there, so a second connection would wait on it forever. */
   create(
@@ -10,7 +10,7 @@ export interface ContributionPort {
       problemId: string;
       stageId: string;
       authorId: string;
-      type: 'proposed_solution';
+      type: 'proposed_solution' | 'evidence';
       content: Record<string, unknown>;
     },
     tx?: Tx,
