@@ -46,6 +46,8 @@ type Pe = {
   payload: Record<string, unknown> | null;
   target_id: string;
   target_version: number;
+  /** Contribution events only: 1 for the submit, +1 per edit, so each edit gets its own run key. */
+  cv?: number;
   state: string;
   jurisdiction_id: string | null;
 };
@@ -152,7 +154,11 @@ export class EventRelay
       return (
         await tx.execute<Pe>(sql`
           select e.id, e.type, e.payload, p.id as target_id, p.version as target_version, p.state,
-                 p.jurisdiction_id
+                 p.jurisdiction_id,
+                 (select count(*)::int from problem_event x
+                  where x.problem_id = e.problem_id and x.id <= e.id
+                    and x.type in ('contribution.submitted', 'contribution.edited')
+                    and x.payload->>'contributionId' = e.payload->>'contributionId') as cv
           from problem_event e join problem p on p.id = e.problem_id
           where e.id > ${after} and e.occurred_at <= ${cutoff} order by e.id limit ${BATCH}`)
       ).rows;
@@ -180,8 +186,20 @@ export class EventRelay
       r.ignored++;
       return 0;
     }
-    const targetKind: ContentType =
-      source === 'problem_event' ? 'problem' : 'stage';
+    const cid =
+      typeof e.payload?.contributionId === 'string'
+        ? e.payload.contributionId
+        : null;
+    if (m.target === 'contribution' && !cid) {
+      r.ignored++;
+      return 0;
+    }
+    const onContribution = m.target === 'contribution';
+    const targetKind: ContentType = onContribution
+      ? 'contribution'
+      : source === 'problem_event'
+        ? 'problem'
+        : 'stage';
     const packDps = await this.packDps(e.jurisdiction_id);
     const stageIds = Array.isArray(e.payload?.stageIds)
       ? (e.payload.stageIds as unknown[]).filter(
@@ -209,8 +227,8 @@ export class EventRelay
         fields: d.fields,
         reusePrior: d.reusePrior,
         targetKind,
-        targetId: e.target_id,
-        targetVersion: e.target_version,
+        targetId: onContribution ? cid! : e.target_id,
+        targetVersion: onContribution ? (e.cv ?? 1) : e.target_version,
         jurisdictionId: e.jurisdiction_id,
         ...(d.missing && { holdReason: 'pack_missing' as const }),
         ...(stageIds && { stageIds }),

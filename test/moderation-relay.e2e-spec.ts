@@ -197,6 +197,50 @@ describe('EventRelay', () => {
     expect(without.length).toBeLessThan(withTitle.length);
   });
 
+  it('contribution events target the contribution, each edit gets its own version, ids only', async () => {
+    const p = await fx.problem('active');
+    const c = await cursor();
+    const cid = newId();
+    const a = await pe(p, 'contribution.submitted', {
+      contributionId: cid,
+      type: 'observation',
+    });
+    const b = await pe(p, 'contribution.edited', { contributionId: cid });
+    const none = await pe(p, 'contribution.submitted', {});
+    await relay.tick({ cursor: c, now: later() });
+    const sub = await jobs(a);
+    expect(dpIds(sub)).toContain('DP-CONTRIB-RELEVANCE');
+    expect(sub[0]!.payload).toMatchObject({
+      eventKind: 'contribution_submitted',
+      targetKind: 'contribution',
+      targetId: cid,
+      targetVersion: 1,
+    });
+    const ed = await jobs(b);
+    expect(ed.length).toBeGreaterThan(0);
+    expect(ed[0]!.payload).toMatchObject({
+      eventKind: 'edited',
+      targetKind: 'contribution',
+      targetId: cid,
+      targetVersion: 2,
+    });
+    expect(await jobs(none)).toHaveLength(0);
+  });
+
+  it('a publication_requested event queues DP-PUBLISH on the problem', async () => {
+    const p = await fx.problem('in_review');
+    const c = await cursor();
+    const e = await pe(p, 'publication_requested', {});
+    await relay.tick({ cursor: c, now: later() });
+    const js = await jobs(e);
+    expect(dpIds(js)).toContain('DP-PUBLISH');
+    expect(js[0]!.payload).toMatchObject({
+      eventKind: 'publication_requested',
+      targetKind: 'problem',
+      targetId: p,
+    });
+  });
+
   it('a stuck candidate queues DP-BLOCKER with the stage ids', async () => {
     const p = await fx.problem('active');
     const c = await cursor();

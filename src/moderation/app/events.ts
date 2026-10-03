@@ -64,6 +64,8 @@ export const TRIGGER_BY_EVENT: Record<EventKind, Trigger> = {
 export interface Mapped {
   kind: EventKind;
   changedFields?: string[];
+  /** The job targets the contribution named in the payload (`contributionId`), not the problem. */
+  target?: 'contribution';
 }
 
 const FIELD = /^[a-z][a-zA-Z0-9_]{0,63}$/;
@@ -81,6 +83,12 @@ export function mapProblemEvent(
         : null;
     case 'transition_proposed':
       return tid === 'T04' ? { kind: 'publication_requested' } : null;
+    case 'publication_requested':
+      return { kind: 'publication_requested' };
+    case 'contribution.submitted':
+      return { kind: 'contribution_submitted', target: 'contribution' };
+    case 'contribution.edited':
+      return { kind: 'edited', target: 'contribution' };
     case 'problem.stuck_candidate':
       return { kind: 'stuck_proposed' };
     case 'problem.edited': {
