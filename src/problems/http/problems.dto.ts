@@ -145,6 +145,12 @@ export class ProblemDetailDto {
   @ApiProperty({ type: HelpNeededDto }) help_needed!: HelpNeededDto;
   @ApiProperty({ type: TombstoneDto, nullable: true })
   tombstone!: TombstoneDto | null;
+  @ApiProperty({
+    type: [String],
+    description:
+      'Contribution types the signed-in caller may submit on the whole problem now; empty for guests.',
+  })
+  allowedContributionTypes!: string[];
 }
 
 export class ProblemEventDto {

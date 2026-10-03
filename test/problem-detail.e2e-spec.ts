@@ -138,6 +138,7 @@ describe('GET /v1/problems/:id visibility (02-u11)', () => {
     expect(Object.keys(res.body).sort()).toEqual(
       [
         'affected',
+        'allowedContributionTypes',
         'condition',
         'coarseArea',
         'desiredOutcome',

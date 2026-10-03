@@ -1,3 +1,4 @@
+import { allowedTypes } from '../../contributions/domain/allowed.js';
 import {
   Controller,
   Get,
@@ -292,6 +293,10 @@ export class ProblemsController {
       isSeed: p.isSeed,
       syntheticEvidence: p.syntheticEvidence,
       help_needed: p.helpNeeded,
+      allowedContributionTypes:
+        req.auth && !tomb
+          ? [...allowedTypes({ problemState: state, stageState: null })]
+          : [],
       tombstone: tomb
         ? {
             tombstone: true,
