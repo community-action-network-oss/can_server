@@ -49,7 +49,11 @@ const mk = async (acct: string, body: object = { title: 'Broken light' }) => {
 const row = async (id: string) =>
   (await db.select().from(s.problem).where(eq(s.problem.id, id)))[0]!;
 const events = (id: string) =>
-  db.select().from(s.problemEvent).where(eq(s.problemEvent.problemId, id));
+  db
+    .select()
+    .from(s.problemEvent)
+    .where(eq(s.problemEvent.problemId, id))
+    .orderBy(s.problemEvent.id); // v7 ids are time-ordered; heap order is not stable once rows were deleted
 
 beforeAll(async () => {
   pool = new pg.Pool({ connectionString: config.databaseUrl });
@@ -221,8 +225,13 @@ describe('drafts', () => {
     const a = await fx.problem('rejected', {
       initiatorId: carol,
       purgeAfter: when,
+      updatedAt: new Date('2030-01-01T00:00:00Z'),
     });
-    await fx.problem('draft', { initiatorId: carol });
+    // Explicit ms-aligned updatedAt: the cursor carries ms, so two rows inserted in one ms tie-break wrongly.
+    await fx.problem('draft', {
+      initiatorId: carol,
+      updatedAt: new Date('2030-01-02T00:00:00Z'),
+    });
     const p1 = await http()
       .get('/v1/me/problems?limit=1')
       .set(as(carol))

@@ -25,8 +25,9 @@ const port: AlertPort = { emit: (a) => alerts.push(a) };
 // caps sum every row of a calendar day or month whatever the scope. So each run
 // owns a block of 12 consecutive months at a random spot in years 1000..9999
 // (about 9000 blocks of months); a block that two runs share would add their
-// spend together and break the cap assertions.
-const baseMonth = Math.floor(Math.random() * (9000 * 12 - 12));
+// spend together and break the cap assertions. The block starts on a January so
+// that day 30 of month 1 (February) never spills into the next month.
+const baseMonth = Math.floor(Math.random() * (9000 - 1)) * 12;
 const at = (month: number, day: number) =>
   new Date(Date.UTC(1000, baseMonth + month, day, 12));
 const clock = new FixedClock(at(0, 1));

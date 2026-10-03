@@ -1,4 +1,4 @@
-import { and, eq, inArray } from 'drizzle-orm';
+import { and, eq, inArray, sql } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/node-postgres';
 import pg from 'pg';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
@@ -27,6 +27,7 @@ import { FingerprintRepo } from '../src/problems/infra/fingerprint.repo.js';
 import {
   RETENTION_JOBS,
   RetentionJobs,
+  TICK_MS,
 } from '../src/retention/retention.jobs.js';
 import { ProblemFixtures } from './support/problems.js';
 
@@ -309,6 +310,10 @@ describe('retention jobs', () => {
         and(
           inArray(s.job.queue, [...RETENTION_JOBS]),
           eq(s.job.status, 'queued'),
+          // Only this clock's window: queued rows of other windows (job is global) are not ours.
+          sql`${s.job.payload}->>'window' = ${String(
+            Math.floor(clock.now().getTime() / TICK_MS),
+          )}`,
         ),
       );
     expect(rows).toHaveLength(RETENTION_JOBS.length);

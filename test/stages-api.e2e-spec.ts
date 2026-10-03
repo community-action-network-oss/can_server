@@ -728,7 +728,7 @@ describe('stage_event', () => {
   it('wrote one event per write, in the same transaction as the write', async () => {
     const types = (
       await pool.query(
-        'select type from stage_event where stage_id=$1 order by occurred_at',
+        'select type from stage_event where stage_id=$1 order by occurred_at, id',
         [ids.map_faults],
       )
     ).rows.map((r) => r.type);
