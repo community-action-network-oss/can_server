@@ -19,7 +19,7 @@ import { CHOICE_GATE, PassingChoiceGate } from '../src/stages/app/ports.js';
 import { STAGE_PLAN_REPO } from '../src/stages/app/stage-plan.repository.js';
 import { DbStageChips } from '../src/stages/infra/stage-chips.js';
 import { writeFixture } from './policy/build-fixture.ts';
-import { FIXTURE_DIR } from './policy/helpers.js';
+import { FIXTURE_DIR, FIXTURE_V1_DIR } from './policy/helpers.js';
 import { ProblemFixtures } from './support/problems.js';
 
 let app: INestApplication;
@@ -122,13 +122,6 @@ const choice = (ref: string, optionIds: string[], over: object = {}) => ({
     'The stage plan names the poster as decider after community input.',
   rationale:
     'This option meets both criteria and costs less than the other ways.',
-  legal_gate_record: {
-    constraint_checked:
-      'The works fit the municipal roads act and the district mandate.',
-    source_ref: 'https://example.org/roads-act',
-    layer: 'both',
-    result: 'passed',
-  },
   ...over,
 });
 const evidence = (ref: string, over: object = {}) => ({
@@ -148,13 +141,13 @@ const evidence = (ref: string, over: object = {}) => ({
 });
 
 beforeAll(async () => {
-  // A fixture pack that also carries the three stage content schemas from can_policy.
+  // A fixture pack that also carries the three stage content schemas from the committed policy-v1 fixture.
   const tmp = mkdtempSync(join(tmpdir(), 'stages-fixture-'));
   cpSync(FIXTURE_DIR, tmp, { recursive: true });
   // can_policy schemas carry id/version/pack, which the server's strict Ajv rejects; fixture copies use $id like the problem fixture.
   for (const t of ['stage_option', 'stage_choice', 'stage_evidence']) {
     const dir = join(tmp, 'base@0.0.1/content-schemas', t);
-    cpSync(join(process.cwd(), '../can_policy/content-schemas', t), dir, {
+    cpSync(join(FIXTURE_V1_DIR, 'base@1.0.0/content-schemas', t), dir, {
       recursive: true,
     });
     const f = join(dir, 'schema.json');
@@ -526,7 +519,17 @@ describe('choice', () => {
     const held = await http()
       .post(`/v1/stages/${ids.map_faults}/choice`)
       .set(as(poster))
-      .send({ content: choice('map_faults', [ids.option]) })
+      .send({
+        // stage_choice 2.0.0: the server sets the record; a client "passed" must not outvote the held gate.
+        content: choice('map_faults', [ids.option], {
+          legal_gate_record: {
+            constraint_checked: 'The works fit the municipal roads act.',
+            source_ref: 'https://example.org/roads-act',
+            layer: 'both',
+            result: 'passed',
+          },
+        }),
+      })
       .expect(409);
     gate.check = real;
     expect(held.body.error.code).toBe('gate_held');

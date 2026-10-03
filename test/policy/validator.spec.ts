@@ -85,33 +85,6 @@ describe('validator code names no content field', () => {
   });
 });
 
-describe('StructuredContentValidator against real can_policy schemas', () => {
-  const dir = join(import.meta.dirname, '../../../can_policy/content-schemas');
-  const present = (() => {
-    try {
-      return statSync(dir).isDirectory();
-    } catch {
-      return false;
-    }
-  })();
-  const maybe = present ? it : it.skip; // skipped: ../can_policy not checked out
-  maybe('compiles every real content schema under strict mode', () => {
-    const bad: string[] = [];
-    for (const name of readdirSync(dir)) {
-      try {
-        const schema = JSON.parse(
-          readFileSync(join(dir, name, 'schema.json'), 'utf8'),
-        );
-        new StructuredContentValidator().validate('real-' + name, schema, {});
-      } catch (e) {
-        if (!/ENOENT|ENOTDIR/.test((e as Error).message))
-          bad.push(`${name}: ${(e as Error).message}`);
-      }
-    }
-    expect(bad).toEqual([]);
-  });
-});
-
 describe('StructuredContentValidator on the can_policy v1 export', () => {
   it('compiles every content schema under strict + strictTypes', () => {
     const dir = join(FIXTURE_V1_DIR, 'base@1.0.0/content-schemas');
