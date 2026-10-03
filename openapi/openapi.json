@@ -335,6 +335,151 @@
         ],
         "type": "object"
       },
+      "ContributionDto": {
+        "properties": {
+          "answersContributionId": {
+            "nullable": true,
+            "type": "string"
+          },
+          "authorHandle": {
+            "description": "Handle, or the label of a system actor.",
+            "type": "string"
+          },
+          "body": {
+            "additionalProperties": true,
+            "description": "null once withdrawn.",
+            "nullable": true,
+            "type": "object"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "evidenceRefs": {
+            "items": {
+              "$ref": "#/components/schemas/EvidenceRefDto"
+            },
+            "type": "array"
+          },
+          "forLaterStage": {
+            "type": "boolean"
+          },
+          "id": {
+            "type": "string"
+          },
+          "stageId": {
+            "nullable": true,
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "pending_review",
+              "accepted",
+              "hidden",
+              "tombstoned"
+            ],
+            "type": "string"
+          },
+          "tombstonedAt": {
+            "nullable": true,
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "type",
+          "stageId",
+          "forLaterStage",
+          "body",
+          "authorHandle",
+          "createdAt",
+          "status",
+          "answersContributionId",
+          "tombstonedAt",
+          "evidenceRefs"
+        ],
+        "type": "object"
+      },
+      "ContributionListDto": {
+        "properties": {
+          "criteria": {
+            "$ref": "#/components/schemas/ListCriteriaDto"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/ContributionDto"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "items",
+          "criteria"
+        ],
+        "type": "object"
+      },
+      "CreateContributionDto": {
+        "properties": {
+          "answersContributionId": {
+            "description": "A clarifying question of the same problem this answers.",
+            "type": "string"
+          },
+          "attestation": {
+            "additionalProperties": true,
+            "description": "Optional location attestation; failure means guest.",
+            "type": "object"
+          },
+          "body": {
+            "additionalProperties": true,
+            "description": "Answers, validated against the pinned content schema.",
+            "type": "object"
+          },
+          "keptFlagIds": {
+            "description": "Ids of review flags the author keeps as they are.",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "schemaHash": {
+            "type": "string"
+          },
+          "schemaVersion": {
+            "type": "string"
+          },
+          "stageId": {
+            "description": "The stage this is for; leave out to address the problem.",
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "clarifying_question",
+              "observation",
+              "personal_experience",
+              "factual_claim",
+              "evidence",
+              "interpretation",
+              "root_cause",
+              "constraint",
+              "stakeholder_perspective",
+              "proposed_solution",
+              "proposal_improvement",
+              "risk",
+              "implementation_offer",
+              "progress_update",
+              "verification_evidence"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "type",
+          "body"
+        ],
+        "type": "object"
+      },
       "CreateDraftDto": {
         "properties": {
           "affected": {
@@ -551,6 +696,31 @@
         "required": [
           "name",
           "status"
+        ],
+        "type": "object"
+      },
+      "EvidenceRefDto": {
+        "properties": {
+          "category": {
+            "enum": [
+              "official_page",
+              "news",
+              "other"
+            ],
+            "type": "string"
+          },
+          "note": {
+            "nullable": true,
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "url",
+          "note",
+          "category"
         ],
         "type": "object"
       },
@@ -3104,6 +3274,26 @@
         ],
         "type": "object"
       },
+      "UpdateContributionDto": {
+        "properties": {
+          "body": {
+            "additionalProperties": true,
+            "description": "New answers; only while the item is awaiting review.",
+            "type": "object"
+          },
+          "keptFlagIds": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "withdraw": {
+            "description": "true withdraws (tombstones) it.",
+            "type": "boolean"
+          }
+        },
+        "type": "object"
+      },
       "UpdateDraftDto": {
         "properties": {
           "affected": {
@@ -3705,6 +3895,274 @@
         "summary": "Active content schema for a type",
         "tags": [
           "policy"
+        ]
+      }
+    },
+    "/v1/contributions/by-problem/{problemId}": {
+      "get": {
+        "operationId": "listContributions",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "problemId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "stageId",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "true: only contributions to the whole problem.",
+            "in": "query",
+            "name": "problemLevel",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContributionListDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "summary": "Published contributions of a problem in the order they were made, plus your own awaiting review",
+        "tags": [
+          "contributions"
+        ]
+      },
+      "post": {
+        "operationId": "createContribution",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "problemId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateContributionDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContributionDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "summary": "Reply to a problem or one of its stages with structured answers; it waits for review",
+        "tags": [
+          "contributions"
+        ]
+      }
+    },
+    "/v1/contributions/{id}": {
+      "patch": {
+        "operationId": "updateContribution",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateContributionDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContributionDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "summary": "Withdraw your reply, or edit it while it awaits review",
+        "tags": [
+          "contributions"
         ]
       }
     },
