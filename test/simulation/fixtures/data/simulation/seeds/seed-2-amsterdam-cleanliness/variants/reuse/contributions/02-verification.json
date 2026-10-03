@@ -1,0 +1,22 @@
+{
+  "type": "verification_evidence",
+  "basis": "cited",
+  "target": "seed-2-problem",
+  "claim": "The same index after the pilot is higher than the baseline of 58 (synthetic).",
+  "evidence_refs": [
+    {
+      "url": "https://evidence.sim.test/seed-2/cleanliness-index-table",
+      "supports": "Supports the claim above (synthetic evidence)."
+    }
+  ],
+  "uncertainty": "The figures are invented and the sampling method is unknown.",
+  "assumptions": [
+    "I assume the index method did not change between the two readings."
+  ],
+  "target_stage": "measure_result",
+  "url": "https://evidence.sim.test/seed-2/stage-measure-result-met",
+  "metric_addressed": "Cleanliness index in the pilot area, before 58 and after 69 (invented).",
+  "observation_date": "2027-01-15",
+  "source_role": "Contributor role (invented), synthetic",
+  "what_it_does_not_show": "Anything outside the pilot area and whether the result lasts."
+}

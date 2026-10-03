@@ -1,7 +1,7 @@
 [
   {
     "id": "ex-LGTY-01",
-    "input": "stage_option: Replace the failed lamp drivers on the Birch Quarter ring road with a standard LED set.\ntopic: street-lighting\nstated_office: Head of Road Works\ncheck_date: 2026-09-20",
+    "input": "stage_option: Replace the failed lamp drivers on the Birch Quarter ring road with a standard LED set.\ntopic: street-lighting\nstated_office: Head of Road Works\ncheck_date: 2026-09-20\nlegal_stack: not_applicable",
     "expected_outcome": "publish",
     "rule_ids": [
       "LEGAL-GATE-1",
@@ -17,7 +17,7 @@
   },
   {
     "id": "ex-LGTY-02",
-    "input": "stage_option: Ask the Head of Parks to add two benches near the east gate of Quarry Park.\ntopic: public-parks\nstated_office: Head of Parks\ncheck_date: 2026-09-15",
+    "input": "stage_option: Ask the Head of Parks to add two benches near the east gate of Quarry Park.\ntopic: public-parks\nstated_office: Head of Parks\ncheck_date: 2026-09-15\nlegal_stack: not_applicable",
     "expected_outcome": "publish",
     "rule_ids": [
       "LEGAL-GATE-1"
@@ -31,7 +31,7 @@
   },
   {
     "id": "ex-LGTY-03",
-    "input": "stage_option: Ask the council to review the opening hours set by the bin collection bylaw.\ntopic: waste-collection\nstated_office: Head of Waste Services\ncheck_date: 2026-09-28",
+    "input": "stage_option: Ask the council to review the opening hours set by the bin collection bylaw.\ntopic: waste-collection\nstated_office: Head of Waste Services\ncheck_date: 2026-09-28\nlegal_stack: not_applicable",
     "expected_outcome": "publish",
     "rule_ids": [
       "LEGAL-GATE-1",
@@ -46,7 +46,7 @@
   },
   {
     "id": "ex-LGTY-04",
-    "input": "stage_option: Move the Line 12 night service stop to the Mill Street corner.\ntopic: bus-timetables\nstated_office: Head of Parks\ncheck_date: 2026-09-22",
+    "input": "stage_option: Move the Line 12 night service stop to the Mill Street corner.\ntopic: bus-timetables\nstated_office: Head of Parks\ncheck_date: 2026-09-22\nlegal_stack: not_applicable",
     "expected_outcome": "needs_revision",
     "rule_ids": [
       "LEGAL-GATE-1",
@@ -62,7 +62,7 @@
   },
   {
     "id": "ex-LGTY-05",
-    "input": "stage_option: Fit a new crossing signal at the school gate.\ntopic: road-repair\nstated_office: none stated\ncheck_date: 2026-09-25",
+    "input": "stage_option: Fit a new crossing signal at the school gate.\ntopic: road-repair\nstated_office: none stated\ncheck_date: 2026-09-25\nlegal_stack: not_applicable",
     "expected_outcome": "needs_revision",
     "rule_ids": [
       "LEGAL-GATE-1",
@@ -78,7 +78,7 @@
   },
   {
     "id": "ex-LGTY-06",
-    "input": "stage_option: Publish the home addresses of residents who filed complaints so neighbours can contact them.\ntopic: public-parks\nstated_office: Head of Parks\ncheck_date: 2026-09-21",
+    "input": "stage_option: Publish the home addresses of residents who filed complaints so neighbours can contact them.\ntopic: public-parks\nstated_office: Head of Parks\ncheck_date: 2026-09-21\nlegal_stack: not_applicable",
     "expected_outcome": "reject",
     "rule_ids": [
       "LEGAL-GATE-1"
@@ -93,7 +93,7 @@
   },
   {
     "id": "ex-LGTY-07",
-    "input": "stage_option: Serve the school meal programme only to children of one named faith.\ntopic: school-meals\nstated_office: Head of Education Services\ncheck_date: 2026-09-23",
+    "input": "stage_option: Serve the school meal programme only to children of one named faith.\ntopic: school-meals\nstated_office: Head of Education Services\ncheck_date: 2026-09-23\nlegal_stack: not_applicable",
     "expected_outcome": "reject",
     "rule_ids": [
       "LEGAL-GATE-1"
@@ -107,7 +107,7 @@
   },
   {
     "id": "ex-LGTY-08",
-    "input": "stage_option: Close the inner lane of Harbour Road for a bike lane starting next week.\ntopic: road-repair\nstated_office: Head of Road Works\ncheck_date: 2026-09-24\nlegal_note: the council order for lane closures has not been issued yet",
+    "input": "stage_option: Close the inner lane of Harbour Road for a bike lane starting next week.\ntopic: road-repair\nstated_office: Head of Road Works\ncheck_date: 2026-09-24\nlegal_note: the council order for lane closures has not been issued yet\nlegal_stack: not_applicable",
     "expected_outcome": "hold",
     "rule_ids": [
       "LEGAL-GATE-1"
@@ -125,7 +125,7 @@
   },
   {
     "id": "ex-LGTY-09",
-    "input": "stage_option: Do the thing as discussed last time.\ntopic: unknown\nstated_office: unknown\ncheck_date: 2026-09-26",
+    "input": "stage_option: Do the thing as discussed last time.\ntopic: unknown\nstated_office: unknown\ncheck_date: 2026-09-26\nlegal_stack: not_applicable",
     "expected_outcome": "hold",
     "rule_ids": [
       "LEGAL-GATE-1"
@@ -135,6 +135,636 @@
     "jurisdiction": "fiktiva-city",
     "field_ref": {
       "field": "stage_option"
+    }
+  },
+  {
+    "id": "ex-LGTY-10",
+    "input": "stage_option: Hold a lantern drone show over the Canal Market on the first Saturday of November.\ntopic: public-parks\nstated_office: Head of Parks\ncheck_date: 2026-10-05\nlegal_L1: fiktiva-rights@0.1.0+dbc8851045a7 | no applicable article found\nlegal_L2: fiktiva-union@0.1.0+254d205f7f55 | L2/fiktiva/union/art-4 | topic_ban: no | INVENTED TEXT. No public body may fly lantern drones over an open market.\nlegal_L3: fiktiva-constitution@0.1.0+aefd9bacd67b | no applicable article found\nlegal_L4: fiktiva-statutes@0.1.0+e858abcd9128 | no applicable article found\nlegal_L5: fiktiva-region@0.1.0+996b73b37cf9 | no applicable article found\nlegal_L6: fiktiva-bylaws@0.1.0+6803ee8410e7 | no applicable article found",
+    "expected_outcome": "hold",
+    "rule_ids": [
+      "LEGAL-GATE-1",
+      "LEGAL-STACK-1",
+      "LEGAL-CITE-1"
+    ],
+    "note": "blocked only at L2 (union); every other layer is silent; the solution is illegal, the problem is lawful: stuck payload with layer and article",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "stage_option"
+    },
+    "shot": true,
+    "expected": {
+      "legal_findings": [
+        {
+          "layer": "L1",
+          "corpus_version": "fiktiva-rights@0.1.0+dbc8851045a7",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L2",
+          "article_id": "L2/fiktiva/union/art-4",
+          "corpus_version": "fiktiva-union@0.1.0+254d205f7f55",
+          "finding": "constrains"
+        },
+        {
+          "layer": "L3",
+          "corpus_version": "fiktiva-constitution@0.1.0+aefd9bacd67b",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L4",
+          "corpus_version": "fiktiva-statutes@0.1.0+e858abcd9128",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L5",
+          "corpus_version": "fiktiva-region@0.1.0+996b73b37cf9",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L6",
+          "corpus_version": "fiktiva-bylaws@0.1.0+6803ee8410e7",
+          "finding": "none_found"
+        }
+      ],
+      "stuck_payload": {
+        "blocking_constraint": "Use restriction at L2 (article L2/fiktiva/union/art-4).",
+        "source_ref": "LEGAL-STACK-1, fiktiva-union@0.1.0+254d205f7f55",
+        "blocked_actions": [
+          "fly lantern drones over the Canal Market"
+        ],
+        "recheck_condition": "Recheck when article L2/fiktiva/union/art-4 is amended, an exemption is issued, or the option changes.",
+        "layer": "L2",
+        "article_id": "L2/fiktiva/union/art-4",
+        "corpus_version": "fiktiva-union@0.1.0+254d205f7f55"
+      },
+      "stuck_payload_required": true
+    }
+  },
+  {
+    "id": "ex-LGTY-11",
+    "input": "stage_option: Close the inner lane of Dock Road for 60 days to build a bike lane.\ntopic: road-repair\nstated_office: Head of Road Works\ncheck_date: 2026-10-05\nlegal_L1: fiktiva-rights@0.1.0+dbc8851045a7 | no applicable article found\nlegal_L2: fiktiva-union@0.1.0+254d205f7f55 | no applicable article found\nlegal_L3: fiktiva-constitution@0.1.0+aefd9bacd67b | no applicable article found\nlegal_L4: fiktiva-statutes@0.1.0+e858abcd9128 | L4/fiktiva/statutes/art-6 | topic_ban: no | INVENTED TEXT. A through road may be closed for more than thirty days only by a ministerial road order.\nlegal_L5: fiktiva-region@0.1.0+996b73b37cf9 | no applicable article found\nlegal_L6: fiktiva-bylaws@0.1.0+6803ee8410e7 | no applicable article found",
+    "expected_outcome": "hold",
+    "rule_ids": [
+      "LEGAL-GATE-1",
+      "LEGAL-STACK-1",
+      "LEGAL-CITE-1"
+    ],
+    "note": "blocked only at L4 (statutes): a long closure needs a ministerial road order; stuck payload",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "stage_option"
+    },
+    "shot": true,
+    "expected": {
+      "legal_findings": [
+        {
+          "layer": "L1",
+          "corpus_version": "fiktiva-rights@0.1.0+dbc8851045a7",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L2",
+          "corpus_version": "fiktiva-union@0.1.0+254d205f7f55",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L3",
+          "corpus_version": "fiktiva-constitution@0.1.0+aefd9bacd67b",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L4",
+          "article_id": "L4/fiktiva/statutes/art-6",
+          "corpus_version": "fiktiva-statutes@0.1.0+e858abcd9128",
+          "finding": "constrains"
+        },
+        {
+          "layer": "L5",
+          "corpus_version": "fiktiva-region@0.1.0+996b73b37cf9",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L6",
+          "corpus_version": "fiktiva-bylaws@0.1.0+6803ee8410e7",
+          "finding": "none_found"
+        }
+      ],
+      "stuck_payload": {
+        "blocking_constraint": "Use restriction at L4 (article L4/fiktiva/statutes/art-6).",
+        "source_ref": "LEGAL-STACK-1, fiktiva-statutes@0.1.0+e858abcd9128",
+        "blocked_actions": [
+          "close the Dock Road lane for 60 days"
+        ],
+        "recheck_condition": "Recheck when article L4/fiktiva/statutes/art-6 is amended, an exemption is issued, or the option changes.",
+        "layer": "L4",
+        "article_id": "L4/fiktiva/statutes/art-6",
+        "corpus_version": "fiktiva-statutes@0.1.0+e858abcd9128"
+      },
+      "stuck_payload_required": true
+    }
+  },
+  {
+    "id": "ex-LGTY-12",
+    "input": "stage_option: Let residents sell goods from stalls on the Quarry Park paths without any permit.\ntopic: public-parks\nstated_office: Head of Parks\ncheck_date: 2026-10-06\nlegal_L1: fiktiva-rights@0.1.0+dbc8851045a7 | no applicable article found\nlegal_L2: fiktiva-union@0.1.0+254d205f7f55 | no applicable article found\nlegal_L3: fiktiva-constitution@0.1.0+aefd9bacd67b | no applicable article found\nlegal_L4: fiktiva-statutes@0.1.0+e858abcd9128 | no applicable article found\nlegal_L5: fiktiva-region@0.1.0+996b73b37cf9 | no applicable article found\nlegal_L6: fiktiva-bylaws@0.1.0+6803ee8410e7 | L6/fiktiva/bylaws/art-3 | topic_ban: no | INVENTED TEXT. A street stall needs a stall permit from the Head of Markets.",
+    "expected_outcome": "hold",
+    "rule_ids": [
+      "LEGAL-GATE-1",
+      "LEGAL-STACK-1",
+      "LEGAL-CITE-1"
+    ],
+    "note": "blocked only at L6 (city bylaws): a stall needs a permit; stuck payload",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "stage_option"
+    },
+    "expected": {
+      "legal_findings": [
+        {
+          "layer": "L1",
+          "corpus_version": "fiktiva-rights@0.1.0+dbc8851045a7",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L2",
+          "corpus_version": "fiktiva-union@0.1.0+254d205f7f55",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L3",
+          "corpus_version": "fiktiva-constitution@0.1.0+aefd9bacd67b",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L4",
+          "corpus_version": "fiktiva-statutes@0.1.0+e858abcd9128",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L5",
+          "corpus_version": "fiktiva-region@0.1.0+996b73b37cf9",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L6",
+          "article_id": "L6/fiktiva/bylaws/art-3",
+          "corpus_version": "fiktiva-bylaws@0.1.0+6803ee8410e7",
+          "finding": "constrains"
+        }
+      ],
+      "stuck_payload": {
+        "blocking_constraint": "Use restriction at L6 (article L6/fiktiva/bylaws/art-3).",
+        "source_ref": "LEGAL-STACK-1, fiktiva-bylaws@0.1.0+6803ee8410e7",
+        "blocked_actions": [
+          "run permit-free stalls in Quarry Park"
+        ],
+        "recheck_condition": "Recheck when article L6/fiktiva/bylaws/art-3 is amended, an exemption is issued, or the option changes.",
+        "layer": "L6",
+        "article_id": "L6/fiktiva/bylaws/art-3",
+        "corpus_version": "fiktiva-bylaws@0.1.0+6803ee8410e7"
+      },
+      "stuck_payload_required": true
+    }
+  },
+  {
+    "id": "ex-LGTY-13",
+    "input": "stage_option: Pay for the new Reed Landing ferry steps from the road works budget.\ntopic: road-repair\nstated_office: Head of Road Works\ncheck_date: 2026-10-06\nlegal_L1: fiktiva-rights@0.1.0+dbc8851045a7 | no applicable article found\nlegal_L2: fiktiva-union@0.1.0+254d205f7f55 | no applicable article found\nlegal_L3: fiktiva-constitution@0.1.0+aefd9bacd67b | L3/fiktiva/constitution/art-12 | topic_ban: no | INVENTED TEXT. Money set aside for roads may not be spent on waterways.\nlegal_L4: fiktiva-statutes@0.1.0+e858abcd9128 | no applicable article found\nlegal_L5: fiktiva-region@0.1.0+996b73b37cf9 | no applicable article found\nlegal_L6: fiktiva-bylaws@0.1.0+6803ee8410e7 | no applicable article found",
+    "expected_outcome": "hold",
+    "rule_ids": [
+      "LEGAL-GATE-1",
+      "LEGAL-STACK-1",
+      "LEGAL-CITE-1"
+    ],
+    "note": "illegal-only: the only solution is blocked at L3 (constitution); the problem stays lawful and moves to stuck",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "stage_option"
+    },
+    "expected": {
+      "legal_findings": [
+        {
+          "layer": "L1",
+          "corpus_version": "fiktiva-rights@0.1.0+dbc8851045a7",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L2",
+          "corpus_version": "fiktiva-union@0.1.0+254d205f7f55",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L3",
+          "article_id": "L3/fiktiva/constitution/art-12",
+          "corpus_version": "fiktiva-constitution@0.1.0+aefd9bacd67b",
+          "finding": "constrains"
+        },
+        {
+          "layer": "L4",
+          "corpus_version": "fiktiva-statutes@0.1.0+e858abcd9128",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L5",
+          "corpus_version": "fiktiva-region@0.1.0+996b73b37cf9",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L6",
+          "corpus_version": "fiktiva-bylaws@0.1.0+6803ee8410e7",
+          "finding": "none_found"
+        }
+      ],
+      "stuck_payload": {
+        "blocking_constraint": "Use restriction at L3 (article L3/fiktiva/constitution/art-12).",
+        "source_ref": "LEGAL-STACK-1, fiktiva-constitution@0.1.0+aefd9bacd67b",
+        "blocked_actions": [
+          "fund the Reed Landing steps from the road budget"
+        ],
+        "recheck_condition": "Recheck when article L3/fiktiva/constitution/art-12 is amended, an exemption is issued, or the option changes.",
+        "layer": "L3",
+        "article_id": "L3/fiktiva/constitution/art-12",
+        "corpus_version": "fiktiva-constitution@0.1.0+aefd9bacd67b"
+      },
+      "stuck_payload_required": true
+    }
+  },
+  {
+    "id": "ex-LGTY-14",
+    "input": "stage_option: Run the lantern drone show over the Canal Market on the festival day, as the festival rule says it is allowed.\ntopic: public-parks\nstated_office: Head of Parks\ncheck_date: 2026-10-07\nlegal_L1: fiktiva-rights@0.1.0+dbc8851045a7 | no applicable article found\nlegal_L2: fiktiva-union@0.1.0+254d205f7f55 | L2/fiktiva/union/art-4 | topic_ban: no | INVENTED TEXT. No public body may fly lantern drones over an open market.\nlegal_L3: fiktiva-constitution@0.1.0+aefd9bacd67b | no applicable article found\nlegal_L4: fiktiva-statutes@0.1.0+e858abcd9128 | no applicable article found\nlegal_L5: fiktiva-region@0.1.0+996b73b37cf9 | no applicable article found\nlegal_L6: fiktiva-bylaws@0.1.0+6803ee8410e7 | L6/fiktiva/bylaws/art-5 | topic_ban: no | INVENTED TEXT. On festival days lantern drones are allowed over the Canal Market.",
+    "expected_outcome": "hold",
+    "rule_ids": [
+      "LEGAL-GATE-1",
+      "LEGAL-STACK-1",
+      "LEGAL-CITE-1"
+    ],
+    "note": "a lower layer (L6) tries to relax a higher one (L2): still blocked, cumulative not first-match",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "stage_option"
+    },
+    "expected": {
+      "legal_findings": [
+        {
+          "layer": "L1",
+          "corpus_version": "fiktiva-rights@0.1.0+dbc8851045a7",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L2",
+          "article_id": "L2/fiktiva/union/art-4",
+          "corpus_version": "fiktiva-union@0.1.0+254d205f7f55",
+          "finding": "constrains"
+        },
+        {
+          "layer": "L3",
+          "corpus_version": "fiktiva-constitution@0.1.0+aefd9bacd67b",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L4",
+          "corpus_version": "fiktiva-statutes@0.1.0+e858abcd9128",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L5",
+          "corpus_version": "fiktiva-region@0.1.0+996b73b37cf9",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L6",
+          "article_id": "L6/fiktiva/bylaws/art-5",
+          "corpus_version": "fiktiva-bylaws@0.1.0+6803ee8410e7",
+          "finding": "permits"
+        }
+      ],
+      "stuck_payload": {
+        "blocking_constraint": "Use restriction at L2 (article L2/fiktiva/union/art-4).",
+        "source_ref": "LEGAL-STACK-1, fiktiva-union@0.1.0+254d205f7f55",
+        "blocked_actions": [
+          "fly lantern drones over the Canal Market, even on a festival day"
+        ],
+        "recheck_condition": "Recheck when article L2/fiktiva/union/art-4 is amended, an exemption is issued, or the option changes.",
+        "layer": "L2",
+        "article_id": "L2/fiktiva/union/art-4",
+        "corpus_version": "fiktiva-union@0.1.0+254d205f7f55"
+      },
+      "stuck_payload_required": true
+    }
+  },
+  {
+    "id": "ex-LGTY-15",
+    "input": "stage_option: Ask the council to publish the Mill Quarter moth census on the council site.\ntopic: public-parks\nstated_office: Head of Parks\ncheck_date: 2026-10-07\nlegal_L1: fiktiva-rights@0.1.0+dbc8851045a7 | no applicable article found\nlegal_L2: fiktiva-union@0.1.0+254d205f7f55 | no applicable article found\nlegal_L3: fiktiva-constitution@0.1.0+aefd9bacd67b | no applicable article found\nlegal_L4: fiktiva-statutes@0.1.0+e858abcd9128 | no applicable article found\nlegal_L5: fiktiva-region@0.1.0+996b73b37cf9 | no applicable article found\nlegal_L6: fiktiva-bylaws@0.1.0+6803ee8410e7 | L6/fiktiva/bylaws/art-8 | topic_ban: yes | INVENTED TEXT. No problem may be published about the moth census of the Mill Quarter.",
+    "expected_outcome": "reject",
+    "rule_ids": [
+      "LEGAL-GATE-1",
+      "LEGAL-STACK-1",
+      "LEGAL-CITE-1",
+      "TOPIC-FORBIDDEN-1"
+    ],
+    "note": "forbidden topic in this jurisdiction: refused with its basis (layer, article, version); the topic_ban flag in the input is illustrative, as the invented corpus has no reviewer",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "stage_option"
+    },
+    "shot": true,
+    "expected": {
+      "legal_findings": [
+        {
+          "layer": "L1",
+          "corpus_version": "fiktiva-rights@0.1.0+dbc8851045a7",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L2",
+          "corpus_version": "fiktiva-union@0.1.0+254d205f7f55",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L3",
+          "corpus_version": "fiktiva-constitution@0.1.0+aefd9bacd67b",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L4",
+          "corpus_version": "fiktiva-statutes@0.1.0+e858abcd9128",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L5",
+          "corpus_version": "fiktiva-region@0.1.0+996b73b37cf9",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L6",
+          "article_id": "L6/fiktiva/bylaws/art-8",
+          "corpus_version": "fiktiva-bylaws@0.1.0+6803ee8410e7",
+          "finding": "constrains",
+          "topic_ban_ref": "L6/fiktiva/bylaws/art-8"
+        }
+      ]
+    }
+  },
+  {
+    "id": "ex-LGTY-16",
+    "input": "stage_option: Ask the Harbor council to publish the Harbor Quarter moth census on the Harbor council site.\ntopic: public-parks\nstated_office: Head of Parks\ncheck_date: 2026-10-07\njurisdiction: fiktiva-harbor\nlegal_L1: fiktiva-rights@0.1.0+dbc8851045a7 | no applicable article found\nlegal_L2: fiktiva-union@0.1.0+254d205f7f55 | no applicable article found\nlegal_L3: fiktiva-constitution@0.1.0+aefd9bacd67b | no applicable article found\nlegal_L4: fiktiva-statutes@0.1.0+e858abcd9128 | no applicable article found\nlegal_L5: fiktiva-region@0.1.0+996b73b37cf9 | no applicable article found\nlegal_L6: fiktiva-harbor-bylaws@0.1.0+b212437b6ab2 | L6/fiktiva/harbor-bylaws/art-1 | topic_ban: no | INVENTED TEXT. A resident may raise the moth census of the Harbor Quarter in public.",
+    "expected_outcome": "publish",
+    "rule_ids": [
+      "LEGAL-GATE-1",
+      "LEGAL-STACK-1",
+      "LEGAL-CITE-1",
+      "FIKT-LAW-UPDATE-1"
+    ],
+    "note": "the same kind of topic is lawful in another jurisdiction: the decision is per jurisdiction, never global",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-harbor",
+    "field_ref": {
+      "field": "stage_option"
+    },
+    "expected": {
+      "legal_findings": [
+        {
+          "layer": "L1",
+          "corpus_version": "fiktiva-rights@0.1.0+dbc8851045a7",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L2",
+          "corpus_version": "fiktiva-union@0.1.0+254d205f7f55",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L3",
+          "corpus_version": "fiktiva-constitution@0.1.0+aefd9bacd67b",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L4",
+          "corpus_version": "fiktiva-statutes@0.1.0+e858abcd9128",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L5",
+          "corpus_version": "fiktiva-region@0.1.0+996b73b37cf9",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L6",
+          "article_id": "L6/fiktiva/harbor-bylaws/art-1",
+          "corpus_version": "fiktiva-harbor-bylaws@0.1.0+b212437b6ab2",
+          "finding": "permits"
+        }
+      ]
+    }
+  },
+  {
+    "id": "ex-LGTY-17",
+    "input": "stage_option: Hold a standing Friday evening vigil in the Old Square.\ntopic: public-parks\nstated_office: Head of Parks\ncheck_date: 2026-10-08\nlegal_L1: fiktiva-rights@0.1.0+dbc8851045a7 | L1/fiktiva/rights/art-3 | topic_ban: no | INVENTED TEXT. Peaceful assembly may be limited only as far as needed, and never by a general ban.\nlegal_L2: fiktiva-union@0.1.0+254d205f7f55 | no applicable article found\nlegal_L3: fiktiva-constitution@0.1.0+aefd9bacd67b | L3/fiktiva/constitution/art-7 | topic_ban: no | INVENTED TEXT. No assembly may take place in the Old Square without a permit. Permits are granted at the discretion of the Square Warden.\nlegal_L4: fiktiva-statutes@0.1.0+e858abcd9128 | no applicable article found\nlegal_L5: fiktiva-region@0.1.0+996b73b37cf9 | no applicable article found\nlegal_L6: fiktiva-bylaws@0.1.0+6803ee8410e7 | no applicable article found",
+    "expected_outcome": "hold",
+    "rule_ids": [
+      "LEGAL-GATE-1",
+      "LEGAL-STACK-1",
+      "LEGAL-CITE-1"
+    ],
+    "note": "L1 and L3 read differently (no general ban versus permit at the warden's discretion): hold with a conflict note, never silently resolved",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "stage_option"
+    },
+    "shot": true,
+    "expected": {
+      "legal_findings": [
+        {
+          "layer": "L1",
+          "article_id": "L1/fiktiva/rights/art-3",
+          "corpus_version": "fiktiva-rights@0.1.0+dbc8851045a7",
+          "finding": "conflict"
+        },
+        {
+          "layer": "L2",
+          "corpus_version": "fiktiva-union@0.1.0+254d205f7f55",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L3",
+          "article_id": "L3/fiktiva/constitution/art-7",
+          "corpus_version": "fiktiva-constitution@0.1.0+aefd9bacd67b",
+          "finding": "conflict"
+        },
+        {
+          "layer": "L4",
+          "corpus_version": "fiktiva-statutes@0.1.0+e858abcd9128",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L5",
+          "corpus_version": "fiktiva-region@0.1.0+996b73b37cf9",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L6",
+          "corpus_version": "fiktiva-bylaws@0.1.0+6803ee8410e7",
+          "finding": "none_found"
+        }
+      ],
+      "conflict_note": "Layer L1 article L1/fiktiva/rights/art-3 and layer L3 article L3/fiktiva/constitution/art-7 read differently for this item. Held and queued as a policy question (OQ-legal-layer-conflicts)."
+    }
+  },
+  {
+    "id": "ex-LGTY-18",
+    "input": "stage_option: Fit a covered waiting area at the Mill Street stop.\ntopic: bus-timetables\nstated_office: Head of Transit\ncheck_date: 2026-10-08\nlegal_L1: fiktiva-rights@0.1.0+dbc8851045a7 | no applicable article found\nlegal_L2: fiktiva-union@0.1.0+254d205f7f55 | no applicable article found\nlegal_L3: fiktiva-constitution@0.1.0+aefd9bacd67b | no applicable article found\nlegal_L4: fiktiva-statutes@0.1.0+e858abcd9128 | no applicable article found\nlegal_L5: fiktiva-region@0.1.0+996b73b37cf9 | no applicable article found\nlegal_L6: fiktiva-bylaws@0.1.0+6803ee8410e7 | no applicable article found",
+    "expected_outcome": "hold",
+    "rule_ids": [
+      "LEGAL-GATE-1",
+      "LEGAL-STACK-1",
+      "LEGAL-CITE-1"
+    ],
+    "note": "retrieval found no article on any layer: recorded none_found on each layer, never a pass",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "stage_option"
+    },
+    "expected": {
+      "legal_findings": [
+        {
+          "layer": "L1",
+          "corpus_version": "fiktiva-rights@0.1.0+dbc8851045a7",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L2",
+          "corpus_version": "fiktiva-union@0.1.0+254d205f7f55",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L3",
+          "corpus_version": "fiktiva-constitution@0.1.0+aefd9bacd67b",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L4",
+          "corpus_version": "fiktiva-statutes@0.1.0+e858abcd9128",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L5",
+          "corpus_version": "fiktiva-region@0.1.0+996b73b37cf9",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L6",
+          "corpus_version": "fiktiva-bylaws@0.1.0+6803ee8410e7",
+          "finding": "none_found"
+        }
+      ]
+    }
+  },
+  {
+    "id": "ex-LGTY-19",
+    "input": "stage_option: Ask the region in writing to move the Pier ferry departure ten minutes earlier.\ntopic: bus-timetables\nstated_office: Head of Transit\ncheck_date: 2026-10-09\nlegal_L1: fiktiva-rights@0.1.0+dbc8851045a7 | no applicable article found\nlegal_L2: fiktiva-union@0.1.0+254d205f7f55 | no applicable article found\nlegal_L3: fiktiva-constitution@0.1.0+aefd9bacd67b | no applicable article found\nlegal_L4: fiktiva-statutes@0.1.0+e858abcd9128 | no applicable article found\nlegal_L5: fiktiva-region@0.1.0+996b73b37cf9 | L5/fiktiva/region/art-2 | topic_ban: no | INVENTED TEXT. The region sets ferry timetables. A city may ask the region in writing to change one.\nlegal_L6: fiktiva-bylaws@0.1.0+6803ee8410e7 | no applicable article found",
+    "expected_outcome": "publish",
+    "rule_ids": [
+      "LEGAL-GATE-1",
+      "LEGAL-STACK-1",
+      "LEGAL-CITE-1",
+      "FIKT-LAW-UPDATE-1"
+    ],
+    "note": "L5 permits a written request; other layers record none_found; no layer blocks",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "stage_option"
+    },
+    "expected": {
+      "legal_findings": [
+        {
+          "layer": "L1",
+          "corpus_version": "fiktiva-rights@0.1.0+dbc8851045a7",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L2",
+          "corpus_version": "fiktiva-union@0.1.0+254d205f7f55",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L3",
+          "corpus_version": "fiktiva-constitution@0.1.0+aefd9bacd67b",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L4",
+          "corpus_version": "fiktiva-statutes@0.1.0+e858abcd9128",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L5",
+          "article_id": "L5/fiktiva/region/art-2",
+          "corpus_version": "fiktiva-region@0.1.0+996b73b37cf9",
+          "finding": "permits"
+        },
+        {
+          "layer": "L6",
+          "corpus_version": "fiktiva-bylaws@0.1.0+6803ee8410e7",
+          "finding": "none_found"
+        }
+      ]
+    }
+  },
+  {
+    "id": "ex-LGTY-20",
+    "input": "stage_option: Ask the Head of Parks to publish the count of moths seen in Mill Quarter gardens.\ntopic: public-parks\nstated_office: Head of Parks\ncheck_date: 2026-10-09\nlegal_note: a clerk thinks this topic may be restricted but could not name a rule\nlegal_L1: fiktiva-rights@0.1.0+dbc8851045a7 | no applicable article found\nlegal_L2: fiktiva-union@0.1.0+254d205f7f55 | no applicable article found\nlegal_L3: fiktiva-constitution@0.1.0+aefd9bacd67b | no applicable article found\nlegal_L4: fiktiva-statutes@0.1.0+e858abcd9128 | no applicable article found\nlegal_L5: fiktiva-region@0.1.0+996b73b37cf9 | no applicable article found\nlegal_L6: fiktiva-bylaws@0.1.0+6803ee8410e7 | no applicable article found",
+    "expected_outcome": "hold",
+    "rule_ids": [
+      "LEGAL-GATE-1",
+      "LEGAL-STACK-1",
+      "LEGAL-CITE-1"
+    ],
+    "note": "a clerk suspects a ban but no indexed topic_ban article exists: hold, never reject on an inferred ban",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "stage_option"
+    },
+    "expected": {
+      "legal_findings": [
+        {
+          "layer": "L1",
+          "corpus_version": "fiktiva-rights@0.1.0+dbc8851045a7",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L2",
+          "corpus_version": "fiktiva-union@0.1.0+254d205f7f55",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L3",
+          "corpus_version": "fiktiva-constitution@0.1.0+aefd9bacd67b",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L4",
+          "corpus_version": "fiktiva-statutes@0.1.0+e858abcd9128",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L5",
+          "corpus_version": "fiktiva-region@0.1.0+996b73b37cf9",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L6",
+          "corpus_version": "fiktiva-bylaws@0.1.0+6803ee8410e7",
+          "finding": "none_found"
+        }
+      ]
     }
   }
 ]

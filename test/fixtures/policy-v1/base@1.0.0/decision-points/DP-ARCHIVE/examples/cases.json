@@ -1,0 +1,215 @@
+[
+  {
+    "id": "ex-AR-01",
+    "input": "jurisdiction: fiktiva-city\ntrigger: terminal_build\nterminal_state: solved\nprivacy_restrip: done\ncompleteness_check: passed\nfinding_count: 0\nstage_count: 2\nstage s-1 meta: outcome=resolved duration_band=1-4w cost_band=none challenge=yes\nstage s-1 goal: \"Get the fault in the pump station reported and logged by the water board.\"\nstage s-2 meta: outcome=resolved duration_band=1-3m cost_band=<1k challenge=no\nstage s-2 goal: \"Get the repaired pump station back in service and logged.\"\nchallenge_count: 1\nchallenge c-1 meta: stage=s-1 kind=institutional resolution=resolved\nchallenge c-1 tried: \"A written report was sent to the district office.\"\nchallenge c-1 why: \"The district office had no repair duty and forwarded nothing; the report went to the water board only after a second letter.\"\nevidence_count: 2\nevidence e-1 meta: tier=official_record mapped_to=f-1\nevidence e-1 ref: \"records.example.org/service-log\"\nevidence e-2 meta: tier=firsthand mapped_to=f-1\nevidence e-2 ref: \"records.example.org/photo-set\"\noutcome_claim: \"All final criteria were met.\"",
+    "expected_outcome": "publish",
+    "rule_ids": [
+      "ARCHIVE-1"
+    ],
+    "note": "solved with a failed first attempt explained",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "archive_record"
+    },
+    "expected": {
+      "residual_personal_data": false,
+      "failures_explained": true,
+      "blocked_explained": true
+    },
+    "shot": true
+  },
+  {
+    "id": "ex-AR-02",
+    "input": "jurisdiction: fiktiva-city\ntrigger: terminal_build\nterminal_state: stuck\nprivacy_restrip: done\ncompleteness_check: passed\nfinding_count: 0\nstage_count: 1\nstage s-1 meta: outcome=blocked duration_band=1-4w cost_band=none challenge=yes\nstage s-1 goal: \"Obtain a written decision on a lit crossing from the roads department.\"\nchallenge_count: 1\nchallenge c-1 meta: stage=s-1 kind=institutional resolution=unresolved\nchallenge c-1 tried: \"Three written requests and one public meeting question.\"\nchallenge c-1 why: \"The roads department says the budget line is closed until next year and gave no date for a new decision.\"\nevidence_count: 1\nevidence e-1 meta: tier=official_record mapped_to=f-1\nevidence e-1 ref: \"records.example.org/reply-1\"\noutcome_claim: \"Not achieved: the crossing is still unlit.\"",
+    "expected_outcome": "publish",
+    "rule_ids": [
+      "ARCHIVE-1"
+    ],
+    "note": "stuck record, unresolved challenge explained",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-harbor",
+    "field_ref": {
+      "field": "archive_record"
+    },
+    "expected": {
+      "residual_personal_data": false,
+      "failures_explained": true,
+      "blocked_explained": true
+    },
+    "shot": true
+  },
+  {
+    "id": "ex-AR-03",
+    "input": "jurisdiction: fiktiva-city\ntrigger: terminal_build\nterminal_state: closed\nprivacy_restrip: done\ncompleteness_check: passed\nfinding_count: 0\nstage_count: 2\nstage s-1 meta: outcome=abandoned duration_band=1-4w cost_band=none challenge=yes\nstage s-1 goal: \"Ask the landlord association to repaint the stairwell.\"\nstage s-2 meta: outcome=resolved duration_band=1-4w cost_band=<1k challenge=no\nstage s-2 goal: \"Agree a shared repaint with the residents.\"\nchallenge_count: 1\nchallenge c-1 meta: stage=s-1 kind=social resolution=resolved\nchallenge c-1 tried: \"A request to the landlord association.\"\nchallenge c-1 why: \"The association replied that stairwells are the owners' duty and declined; the residents then paid together.\"\nevidence_count: 1\nevidence e-1 meta: tier=firsthand mapped_to=f-1\nevidence e-1 ref: \"records.example.org/receipt-1\"\noutcome_claim: \"Closed: the neighbours chose a different fix.\"",
+    "expected_outcome": "publish",
+    "rule_ids": [
+      "ARCHIVE-1"
+    ],
+    "note": "closed record keeps the failed path",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-harbor",
+    "field_ref": {
+      "field": "archive_record"
+    },
+    "expected": {
+      "residual_personal_data": false,
+      "failures_explained": true,
+      "blocked_explained": true
+    },
+    "shot": false
+  },
+  {
+    "id": "ex-AR-04",
+    "input": "jurisdiction: fiktiva-city\ntrigger: terminal_build\nterminal_state: stuck\nprivacy_restrip: done\ncompleteness_check: failed\nfinding_count: 1\nfinding f-1 meta: field=challenges\nstage_count: 1\nstage s-1 meta: outcome=blocked duration_band=1-4w cost_band=none challenge=no\nstage s-1 goal: \"Get the permit for the market stall.\"\nchallenge_count: 0\nevidence_count: 1\nevidence e-1 meta: tier=official_record mapped_to=f-1\nevidence e-1 ref: \"records.example.org/log-1\"\noutcome_claim: \"Not achieved.\"",
+    "expected_outcome": "needs_revision",
+    "rule_ids": [
+      "ARCHIVE-1"
+    ],
+    "note": "server finding: a blocked stage has no challenge",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "archive_record"
+    },
+    "revision_hint": "Add a challenge for s-1 that says what was tried and why the stage is blocked.",
+    "expected": {
+      "residual_personal_data": false,
+      "missing": [
+        {
+          "field": "challenges",
+          "ref": "f-1",
+          "hint": "The server found no challenge for the blocked stage s-1."
+        }
+      ]
+    },
+    "shot": true
+  },
+  {
+    "id": "ex-AR-05",
+    "input": "jurisdiction: fiktiva-city\ntrigger: terminal_build\nterminal_state: solved\nprivacy_restrip: done\ncompleteness_check: passed\nfinding_count: 0\nstage_count: 1\nstage s-1 meta: outcome=resolved duration_band=1-4w cost_band=none challenge=yes\nstage s-1 goal: \"Get the bin collection day moved to match the market.\"\nchallenge_count: 1\nchallenge c-1 meta: stage=s-1 kind=institutional resolution=resolved\nchallenge c-1 tried: \"We asked the contractor.\"\nchallenge c-1 why: \"It worked well.\"\nevidence_count: 1\nevidence e-1 meta: tier=official_record mapped_to=f-1\nevidence e-1 ref: \"records.example.org/log-1\"\noutcome_claim: \"All final criteria were met.\"",
+    "expected_outcome": "needs_revision",
+    "rule_ids": [
+      "ARCHIVE-1"
+    ],
+    "note": "challenges describe only successes",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-harbor",
+    "field_ref": {
+      "field": "archive_record"
+    },
+    "revision_hint": "Explain in c-1 what failed or was refused before the change worked.",
+    "expected": {
+      "residual_personal_data": false,
+      "missing": [
+        {
+          "field": "failure_reasons",
+          "ref": "c-1",
+          "hint": "c-1 gives no reason for any failure."
+        }
+      ],
+      "failures_explained": false
+    },
+    "shot": false
+  },
+  {
+    "id": "ex-AR-06",
+    "input": "jurisdiction: fiktiva-city\ntrigger: terminal_build\nterminal_state: solved\nprivacy_restrip: done\ncompleteness_check: passed\nfinding_count: 0\nstage_count: 1\nstage s-1 meta: outcome=resolved duration_band=1-4w cost_band=none challenge=no\nstage s-1 goal: \"Reach the repair crew on [phone-2] and book a visit.\"\nchallenge_count: 0\nevidence_count: 1\nevidence e-1 meta: tier=official_record mapped_to=f-1\nevidence e-1 ref: \"records.example.org/log-1\"\noutcome_claim: \"All final criteria were met.\"",
+    "expected_outcome": "hold",
+    "rule_ids": [
+      "ARCHIVE-1"
+    ],
+    "note": "a phone token left after the re-strip",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "archive_record"
+    },
+    "expected": {
+      "hold_reason": "residual_personal_data",
+      "residual_personal_data": true
+    },
+    "shot": false
+  },
+  {
+    "id": "ex-AR-07",
+    "input": "jurisdiction: fiktiva-city\ntrigger: terminal_build\nterminal_state: solved\ncompleteness_check: passed\nfinding_count: 0\nstage_count: 1\nstage s-1 meta: outcome=resolved duration_band=1-4w cost_band=none challenge=no\nstage s-1 goal: \"Get the fault logged.\"\nchallenge_count: 0\nevidence_count: 1\nevidence e-1 meta: tier=official_record mapped_to=f-1\nevidence e-1 ref: \"records.example.org/log-1\"\noutcome_claim: \"All final criteria were met.\"",
+    "expected_outcome": "hold",
+    "rule_ids": [],
+    "note": "no privacy_restrip line",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "archive_record"
+    },
+    "expected": {
+      "hold_reason": "missing_input",
+      "missing_inputs": [
+        "privacy_restrip"
+      ]
+    },
+    "shot": false
+  },
+  {
+    "id": "ex-AR-08",
+    "input": "jurisdiction: fiktiva-city\ntrigger: terminal_build\nterminal_state: rejected\nprivacy_restrip: done\ncompleteness_check: passed\nfinding_count: 0\nstage_count: 1\nstage s-1 meta: outcome=resolved duration_band=1-4w cost_band=none challenge=no\nstage s-1 goal: \"Get the fault logged.\"\nchallenge_count: 0\nevidence_count: 1\nevidence e-1 meta: tier=official_record mapped_to=f-1\nevidence e-1 ref: \"records.example.org/log-1\"\noutcome_claim: \"All final criteria were met.\"",
+    "expected_outcome": "hold",
+    "rule_ids": [],
+    "note": "a rejected problem is never archived",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "archive_record"
+    },
+    "expected": {
+      "hold_reason": "ambiguous_input"
+    },
+    "shot": false
+  },
+  {
+    "id": "ex-AR-09",
+    "input": "jurisdiction: fiktiva-city\ntrigger: terminal_build\nterminal_state: solved\nprivacy_restrip: done\ncompleteness_check: passed\nfinding_count: 0\nstage_count: 1\nstage s-1 meta: outcome=resolved duration_band=1-4w cost_band=none challenge=no\nstage s-1 goal: \"Get the broken bench replaced in the park.\"\nchallenge_count: 0\nevidence_count: 1\nevidence e-1 meta: tier=self_reported mapped_to=f-1\nevidence e-1 ref: \"records.example.org/note-1\"\noutcome_claim: \"All final criteria were met.\"",
+    "expected_outcome": "needs_revision",
+    "rule_ids": [
+      "ARCHIVE-1"
+    ],
+    "note": "solved claim with only self-reported evidence",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-harbor",
+    "field_ref": {
+      "field": "archive_record"
+    },
+    "revision_hint": "A claim of success needs an official record or a firsthand item in e-1 or a new e-N.",
+    "expected": {
+      "residual_personal_data": false,
+      "missing": [
+        {
+          "field": "evidence_strength",
+          "ref": "e-1",
+          "hint": "Only self-reported evidence backs the success claim."
+        }
+      ]
+    },
+    "shot": false
+  },
+  {
+    "id": "ex-AR-10",
+    "input": "jurisdiction: fiktiva-city\ntrigger: terminal_build\nterminal_state: redirected\nprivacy_restrip: done\ncompleteness_check: passed\nfinding_count: 0\nstage_count: 1\nstage s-1 meta: outcome=resolved duration_band=1-4w cost_band=none challenge=no\nstage s-1 goal: \"Find which body owns the culvert and pass the case on.\"\nchallenge_count: 0\nevidence_count: 1\nevidence e-1 meta: tier=official_record mapped_to=f-1\nevidence e-1 ref: \"records.example.org/log-1\"\noutcome_claim: \"Redirected to the regional water body.\"",
+    "expected_outcome": "publish",
+    "rule_ids": [
+      "ARCHIVE-1"
+    ],
+    "note": "redirected record, one stage, no failures",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-harbor",
+    "field_ref": {
+      "field": "archive_record"
+    },
+    "expected": {
+      "residual_personal_data": false,
+      "failures_explained": true,
+      "blocked_explained": true
+    },
+    "shot": false
+  }
+]

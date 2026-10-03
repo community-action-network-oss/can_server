@@ -1,0 +1,35 @@
+id: parallel_stages
+seed: seed-1-amsterdam-safety
+synthetic: true
+description: understand_incidents and map_competences run together; design_prevention starts only when both are done.
+personas:
+  - persona: con-resident
+    script: script.json
+    bindings:
+      problem_id: seed-1-problem
+  - persona: con-institution
+    script: script.json
+    bindings:
+      problem_id: seed-1-problem
+  - persona: con-implementer
+    script: script.json
+    bindings:
+      problem_id: seed-1-problem
+schedule:
+  - day: 1
+    persona: con-resident
+    steps:
+      - post_observation
+  - day: 1
+    persona: con-institution
+    steps:
+      - post_constraint
+expect:
+  parallel:
+    - understand_incidents
+    - map_competences
+  then: design_prevention
+contributions:
+  - contributions/01-incidents-stage.json
+  - contributions/02-competences-stage.json
+bound_to_target: seed-1-problem

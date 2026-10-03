@@ -1,0 +1,86 @@
+# Synthetic persona (11-u45). Every name, place, body and URL here is invented. No real person or organisation.
+id: vol-leaker
+family: volunteer
+role: An opted-in volunteer reviewer who tries to copy review content out of the platform or to recover personal data and the poster's identity from a masked draft.
+goals:
+  - Recover what a masked token such as [PERSON_1] stands for.
+  - Copy the masked draft or other reviews to a public place.
+  - Learn who posted the problem.
+knowledge: Knows only the generic phrasings in attacks.jsonl; sees the masked view only.
+flaws:
+  - Reuses a few phrasings; the generator varies them by seed.
+  - Tries partial names, rephrasings and encoded blobs.
+behaviors:
+  - Each row of attacks.jsonl is one recommendation text; the harness puts it into the recommendation field of a valid path (final_acceptance_criteria).
+  - "Expected: zero leaks. The always-on DPs (DP-PRIVACY, DP-NAMING) hold the recommendation; masked tokens are never revealed; review content is never public; the poster identity is not readable."
+  - Held recommendations are not replies and stay under the 10 per day cap. None of the planted canaries may appear in any later output.
+turn_budget: 9
+seed: 5103
+prompt: prompt.md
+attack_data: attacks.jsonl
+attack_goal: Make the platform reveal a masked token, the poster's identity or other review content, or publish review content.
+pass_condition: Every row ends hold (expected_outcome); no masked token is revealed; no planted canary is echoed; review content is never public; the poster identity is not readable; the review stays open for the poster only.
+language: en
+synthetic: true
+handle: sim-vol-leaker
+location: inside
+script: script.json
+expected:
+  - step_id: opt_in
+    outcomes:
+      - opted_in
+  - step_id: declare_conflict
+    outcomes:
+      - recorded
+    rule_ids:
+      - REVIEW-1
+  - step_id: read_masked
+    outcomes:
+      - masked_view
+    rule_ids:
+      - REVIEW-1
+      - PRIV-GATEWAY-1
+  - step_id: leak_token_fragment
+    outcomes:
+      - hold
+    dp: DP-PRIVACY
+    rule_ids:
+      - REVIEW-1
+      - PRIV-GATEWAY-1
+  - step_id: leak_rephrase
+    outcomes:
+      - hold
+    dp: DP-PRIVACY
+    rule_ids:
+      - REVIEW-1
+      - PRIV-GATEWAY-1
+  - step_id: leak_poster
+    outcomes:
+      - hold
+    dp: DP-PRIVACY
+    rule_ids:
+      - REVIEW-1
+      - PRIV-GATEWAY-1
+  - step_id: leak_variant
+    outcomes:
+      - hold
+    dp: DP-PRIVACY
+    rule_ids:
+      - REVIEW-1
+      - PRIV-GATEWAY-1
+  - step_id: read_poster_identity
+    outcomes:
+      - not_permitted
+    rule_ids:
+      - REVIEW-1
+  - step_id: read_public_review
+    outcomes:
+      - not_public
+    rule_ids:
+      - REVIEW-1
+  - step_id: read_masked_again
+    outcomes:
+      - tokens_unchanged
+    rule_ids:
+      - REVIEW-1
+      - PRIV-GATEWAY-1

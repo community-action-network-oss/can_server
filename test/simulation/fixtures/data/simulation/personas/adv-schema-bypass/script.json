@@ -1,0 +1,411 @@
+{
+  "steps": [
+    {
+      "id": "attack_raw",
+      "action": "raw_http",
+      "raw_http": {
+        "method": "POST",
+        "path": "/v1/contributions/by-problem/{{seed.problem_id}}",
+        "body": "{{var.payload}}"
+      },
+      "expect": {
+        "status": 400,
+        "outcome": "validation_failed"
+      }
+    },
+    {
+      "id": "retired_schema",
+      "action": "raw_http",
+      "when": {
+        "after_step": "attack_raw"
+      },
+      "raw_http": {
+        "method": "POST",
+        "path": "/v1/contributions/by-problem/{{seed.problem_id}}",
+        "body": {
+          "type": "risk",
+          "schemaVersion": "0.0.1",
+          "body": {
+            "type": "risk",
+            "target": "{{seed.problem_id}}",
+            "claim": "Reply 1: the rota needs a named owner.",
+            "basis": "inferred",
+            "evidence_refs": [],
+            "uncertainty": "I do not know who owns it today.",
+            "assumptions": [],
+            "risk": "Requests may go unanswered.",
+            "likelihood_basis": "General experience with shared inboxes.",
+            "who_bears_it": "Residents who wait",
+            "mitigation_idea": "Publish the answering role."
+          }
+        }
+      },
+      "expect": {
+        "status": 400,
+        "outcome": "validation_failed"
+      }
+    },
+    {
+      "id": "hash_mismatch",
+      "action": "raw_http",
+      "when": {
+        "after_step": "retired_schema"
+      },
+      "raw_http": {
+        "method": "POST",
+        "path": "/v1/contributions/by-problem/{{seed.problem_id}}",
+        "body": {
+          "type": "risk",
+          "schemaVersion": "1.0.0",
+          "schemaHash": "sha256-deadbeefdeadbeef",
+          "body": {
+            "type": "risk",
+            "target": "{{seed.problem_id}}",
+            "claim": "Reply 1: the rota needs a named owner.",
+            "basis": "inferred",
+            "evidence_refs": [],
+            "uncertainty": "I do not know who owns it today.",
+            "assumptions": [],
+            "risk": "Requests may go unanswered.",
+            "likelihood_basis": "General experience with shared inboxes.",
+            "who_bears_it": "Residents who wait",
+            "mitigation_idea": "Publish the answering role."
+          }
+        }
+      },
+      "expect": {
+        "status": 400,
+        "outcome": "validation_failed"
+      }
+    },
+    {
+      "id": "missing_required",
+      "action": "raw_http",
+      "when": {
+        "after_step": "hash_mismatch"
+      },
+      "raw_http": {
+        "method": "POST",
+        "path": "/v1/contributions/by-problem/{{seed.problem_id}}",
+        "body": {
+          "type": "risk",
+          "body": {
+            "type": "risk",
+            "target": "{{seed.problem_id}}"
+          }
+        }
+      },
+      "expect": {
+        "status": 400,
+        "outcome": "validation_failed"
+      }
+    },
+    {
+      "id": "reply_1",
+      "action": "raw_http",
+      "when": {
+        "after_step": "missing_required"
+      },
+      "raw_http": {
+        "method": "POST",
+        "path": "/v1/contributions/by-problem/{{seed.problem_id}}",
+        "body": {
+          "type": "risk",
+          "body": {
+            "type": "risk",
+            "target": "{{seed.problem_id}}",
+            "claim": "Reply 1: the rota needs a named owner.",
+            "basis": "inferred",
+            "evidence_refs": [],
+            "uncertainty": "I do not know who owns it today.",
+            "assumptions": [],
+            "risk": "Requests may go unanswered.",
+            "likelihood_basis": "General experience with shared inboxes.",
+            "who_bears_it": "Residents who wait",
+            "mitigation_idea": "Publish the answering role."
+          }
+        }
+      },
+      "expect": {
+        "status": 201
+      }
+    },
+    {
+      "id": "reply_2",
+      "action": "raw_http",
+      "when": {
+        "after_step": "reply_1"
+      },
+      "raw_http": {
+        "method": "POST",
+        "path": "/v1/contributions/by-problem/{{seed.problem_id}}",
+        "body": {
+          "type": "risk",
+          "body": {
+            "type": "risk",
+            "target": "{{seed.problem_id}}",
+            "claim": "Reply 2: the rota needs a named owner.",
+            "basis": "inferred",
+            "evidence_refs": [],
+            "uncertainty": "I do not know who owns it today.",
+            "assumptions": [],
+            "risk": "Requests may go unanswered.",
+            "likelihood_basis": "General experience with shared inboxes.",
+            "who_bears_it": "Residents who wait",
+            "mitigation_idea": "Publish the answering role."
+          }
+        }
+      },
+      "expect": {
+        "status": 201
+      }
+    },
+    {
+      "id": "reply_3",
+      "action": "raw_http",
+      "when": {
+        "after_step": "reply_2"
+      },
+      "raw_http": {
+        "method": "POST",
+        "path": "/v1/contributions/by-problem/{{seed.problem_id}}",
+        "body": {
+          "type": "risk",
+          "body": {
+            "type": "risk",
+            "target": "{{seed.problem_id}}",
+            "claim": "Reply 3: the rota needs a named owner.",
+            "basis": "inferred",
+            "evidence_refs": [],
+            "uncertainty": "I do not know who owns it today.",
+            "assumptions": [],
+            "risk": "Requests may go unanswered.",
+            "likelihood_basis": "General experience with shared inboxes.",
+            "who_bears_it": "Residents who wait",
+            "mitigation_idea": "Publish the answering role."
+          }
+        }
+      },
+      "expect": {
+        "status": 201
+      }
+    },
+    {
+      "id": "reply_4",
+      "action": "raw_http",
+      "when": {
+        "after_step": "reply_3"
+      },
+      "raw_http": {
+        "method": "POST",
+        "path": "/v1/contributions/by-problem/{{seed.problem_id}}",
+        "body": {
+          "type": "risk",
+          "body": {
+            "type": "risk",
+            "target": "{{seed.problem_id}}",
+            "claim": "Reply 4: the rota needs a named owner.",
+            "basis": "inferred",
+            "evidence_refs": [],
+            "uncertainty": "I do not know who owns it today.",
+            "assumptions": [],
+            "risk": "Requests may go unanswered.",
+            "likelihood_basis": "General experience with shared inboxes.",
+            "who_bears_it": "Residents who wait",
+            "mitigation_idea": "Publish the answering role."
+          }
+        }
+      },
+      "expect": {
+        "status": 201
+      }
+    },
+    {
+      "id": "reply_5",
+      "action": "raw_http",
+      "when": {
+        "after_step": "reply_4"
+      },
+      "raw_http": {
+        "method": "POST",
+        "path": "/v1/contributions/by-problem/{{seed.problem_id}}",
+        "body": {
+          "type": "risk",
+          "body": {
+            "type": "risk",
+            "target": "{{seed.problem_id}}",
+            "claim": "Reply 5: the rota needs a named owner.",
+            "basis": "inferred",
+            "evidence_refs": [],
+            "uncertainty": "I do not know who owns it today.",
+            "assumptions": [],
+            "risk": "Requests may go unanswered.",
+            "likelihood_basis": "General experience with shared inboxes.",
+            "who_bears_it": "Residents who wait",
+            "mitigation_idea": "Publish the answering role."
+          }
+        }
+      },
+      "expect": {
+        "status": 429,
+        "outcome": "reply_limit_reached"
+      }
+    },
+    {
+      "id": "option_5",
+      "action": "raw_http",
+      "when": {
+        "after_step": "reply_5"
+      },
+      "raw_http": {
+        "method": "POST",
+        "path": "/v1/stages/{{seed.stage_ref}}/options",
+        "body": {
+          "content": {
+            "stage_ref": "{{seed.stage_ref}}",
+            "option_statement": "Close the inner lane of Dock Road for 25 days to build a bike lane.",
+            "mechanism": "The road works office closes one lane in phases and keeps a lane open for traffic.",
+            "responsible_role": "Head of Road Works",
+            "authority_and_legal_basis": "A closure under thirty days needs no ministerial order under the invented statutes of Fiktiva.",
+            "cost_estimate": {
+              "band": "<10k",
+              "amount": 6000
+            },
+            "how_it_meets_stage_criteria": [
+              {
+                "criterion_ref": 1,
+                "how": "The bike lane is open and counted on the public sheet after 25 days."
+              }
+            ],
+            "risks_and_rights_impact": "Traffic slows on two days. A lane stays open for emergency vehicles.",
+            "lawful_alternatives": [
+              "Paint a shared lane without a closure."
+            ],
+            "assumptions": [
+              "I assume the closure can be phased."
+            ]
+          }
+        }
+      },
+      "expect": {
+        "status": 429,
+        "outcome": "reply_limit_reached"
+      }
+    },
+    {
+      "id": "evidence_5",
+      "action": "raw_http",
+      "when": {
+        "after_step": "option_5"
+      },
+      "raw_http": {
+        "method": "POST",
+        "path": "/v1/stages/{{seed.stage_ref}}/evidence",
+        "body": {
+          "content": {
+            "stage_ref": "{{seed.stage_ref}}",
+            "criterion_ref": 1,
+            "evidence_refs": [
+              {
+                "url": "https://evidence.sim.test/fiktiva-city/survey-sheet",
+                "description": "The shared sheet with one row per notice and its contact field.",
+                "tier_request": "firsthand"
+              }
+            ],
+            "observation_date": "2026-10-04",
+            "outcome_statement": "The sheet shows how many of the surveyed notices name a contact point.",
+            "what_the_evidence_does_not_show": "It covers one street and two weekends only."
+          }
+        }
+      },
+      "expect": {
+        "status": 429,
+        "outcome": "reply_limit_reached"
+      }
+    },
+    {
+      "id": "forged_later_stage",
+      "action": "raw_http",
+      "when": {
+        "after_step": "evidence_5"
+      },
+      "raw_http": {
+        "method": "POST",
+        "path": "/v1/stages/{{seed.stage_ref}}/options",
+        "body": {
+          "content": {
+            "stage_ref": "{{seed.stage_ref}}",
+            "option_statement": "Close the inner lane of Dock Road for 25 days to build a bike lane.",
+            "mechanism": "The road works office closes one lane in phases and keeps a lane open for traffic.",
+            "responsible_role": "Head of Road Works",
+            "authority_and_legal_basis": "A closure under thirty days needs no ministerial order under the invented statutes of Fiktiva.",
+            "cost_estimate": {
+              "band": "<10k",
+              "amount": 6000
+            },
+            "how_it_meets_stage_criteria": [
+              {
+                "criterion_ref": 1,
+                "how": "The bike lane is open and counted on the public sheet after 25 days."
+              }
+            ],
+            "risks_and_rights_impact": "Traffic slows on two days. A lane stays open for emergency vehicles.",
+            "lawful_alternatives": [
+              "Paint a shared lane without a closure."
+            ],
+            "assumptions": [
+              "I assume the closure can be phased."
+            ],
+            "for_later_stage": true
+          }
+        }
+      },
+      "expect": {
+        "status": 400,
+        "outcome": "validation_failed"
+      }
+    },
+    {
+      "id": "forged_protected_core",
+      "action": "raw_http",
+      "when": {
+        "after_step": "forged_later_stage"
+      },
+      "raw_http": {
+        "method": "POST",
+        "path": "/v1/stages/{{seed.stage_ref}}/options",
+        "body": {
+          "content": {
+            "stage_ref": "{{seed.stage_ref}}",
+            "option_statement": "Close the inner lane of Dock Road for 25 days to build a bike lane.",
+            "mechanism": "The road works office closes one lane in phases and keeps a lane open for traffic.",
+            "responsible_role": "Head of Road Works",
+            "authority_and_legal_basis": "A closure under thirty days needs no ministerial order under the invented statutes of Fiktiva.",
+            "cost_estimate": {
+              "band": "<10k",
+              "amount": 6000
+            },
+            "how_it_meets_stage_criteria": [
+              {
+                "criterion_ref": 1,
+                "how": "The bike lane is open and counted on the public sheet after 25 days."
+              }
+            ],
+            "risks_and_rights_impact": "Traffic slows on two days. A lane stays open for emergency vehicles.",
+            "lawful_alternatives": [
+              "Paint a shared lane without a closure."
+            ],
+            "assumptions": [
+              "I assume the closure can be phased."
+            ],
+            "protected_core_check": "passed"
+          }
+        }
+      },
+      "expect": {
+        "status": 400,
+        "outcome": "validation_failed"
+      }
+    }
+  ]
+}

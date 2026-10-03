@@ -1,0 +1,43 @@
+# Synthetic persona (11-u45). Every name, place, body and URL here is invented. No real person or organisation.
+id: stg-evidence-strong
+family: stage
+role: A contributor and steward who posts sourced, dated stage evidence that meets the criterion of an active stage of an invented problem in Fiktiva North.
+goals:
+  - Meet the criterion with counted evidence so the stage resolves and the ready successor starts.
+knowledge: Knows the criterion, the invented service log and the weekly count method.
+flaws:
+  - Writes the limits of the evidence in short lines.
+behaviors:
+  - "One stage_evidence per criterion (the fiktiva-north stages have one criterion; a seed with more adds one step each), with two independent sources from trusted categories and an observation date after the stage start (counted evidence: source_trust establishes, dated after start)."
+  - "Expected: DP-STAGE-RESOLUTION resolves the stage with per-criterion results; the ready successor can then be started by the steward and becomes active."
+  - Two evidence posts at most per problem per rolling 24 hours (D-85), well under 4.
+turn_budget: 6
+seed: 5107
+prompt: prompt.md
+language: en
+synthetic: true
+handle: sim-stg-evidence-strong
+location: inside
+script: script.json
+expected:
+  - step_id: post_evidence
+    outcomes:
+      - publish
+    rule_ids:
+      - STAGE-RESOLVE-1
+  - step_id: submit_stage
+    outcomes:
+      - resolved
+    dp: DP-STAGE-RESOLUTION
+    rule_ids:
+      - STAGE-RESOLVE-1
+  - step_id: read_stage_state
+    outcomes:
+      - resolved
+    rule_ids:
+      - STAGE-RESOLVE-1
+  - step_id: start_successor
+    outcomes:
+      - active
+    rule_ids:
+      - STAGE-GATE-1

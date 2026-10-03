@@ -1,0 +1,53 @@
+{
+  "pack": "fiktiva-north",
+  "version": "1.0.0",
+  "layer": "jurisdiction",
+  "parent": {
+    "name": "constitution",
+    "version": "1.0.0",
+    "pack_hash": "f79b98771dbfa6484fb9c6dc812a14a0cc0da39fdf914631ff993e411695df65"
+  },
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "d310620f78d7f1d005a9fa6703f641e1a42ee140dbdbb63593f81327aef43f66",
+      "bytes": 1599
+    },
+    {
+      "path": "competence.yaml",
+      "sha256": "4788b3584c5f9b3725b4f5a51412c1a40beea3362e0c1fba4016dd399a905530",
+      "bytes": 376
+    },
+    {
+      "path": "context-fixtures.yaml",
+      "sha256": "f28a38154af79eb7bf6e0b0d550596f4a7c690f7414a3a1b75b1362fe1ec12d8",
+      "bytes": 485
+    },
+    {
+      "path": "pack.yaml",
+      "sha256": "894544f29a8a55ca4c422f41564a9d90490110b3e7a909f73ab57fa4abb9b6d2",
+      "bytes": 1245
+    },
+    {
+      "path": "reviewer.yaml",
+      "sha256": "cf2bdf83deff6f1b82df6dea735868fd3d92b39e67d712bcd2945ceb7f70fe01",
+      "bytes": 31
+    },
+    {
+      "path": "routes.yaml",
+      "sha256": "ba3dffd2122a86c2481f695b93c20b69d92c76f3d7ba3f6e74e0bee740aa1cc7",
+      "bytes": 305
+    },
+    {
+      "path": "rules.yaml",
+      "sha256": "75f213a712aaff7b5801f9253f9b7c9ea24c93f68446e4ca4b35164585bf99c7",
+      "bytes": 1775
+    },
+    {
+      "path": "sources.md",
+      "sha256": "eac660628a32f59fa4827aad848f65426dec97ee4df81b46d8501779da914768",
+      "bytes": 411
+    }
+  ],
+  "pack_hash": "404730aaeff95b857227fa861227c69d0fd868b92c73909d3afd85e2f68fcf8d"
+}

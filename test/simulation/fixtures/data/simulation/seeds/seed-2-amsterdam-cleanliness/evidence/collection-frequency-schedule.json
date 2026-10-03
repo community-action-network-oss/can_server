@@ -1,0 +1,42 @@
+{
+  "id": "collection-frequency-schedule",
+  "url": "https://evidence.sim.test/seed-2/collection-frequency-schedule",
+  "description": "Collection-frequency schedule (synthetic): invented collections per week and bin fill level at collection, by invented zone type.",
+  "synthetic": true,
+  "tier_cap": 2,
+  "metadata": {
+    "publisher_role": "waste services role (invented)",
+    "date": "2026-04",
+    "kind": "schedule"
+  },
+  "synthetic_note": "Synthetic: invented for simulation, not real data.",
+  "data": {
+    "columns": [
+      "zone",
+      "collections_per_week",
+      "median_fill_at_collection_percent",
+      "bins_per_100m"
+    ],
+    "rows": [
+      [
+        "busy_zone",
+        7,
+        95,
+        2
+      ],
+      [
+        "residential_zone",
+        3,
+        70,
+        3
+      ],
+      [
+        "waterside_zone",
+        5,
+        88,
+        2
+      ]
+    ],
+    "note": "All values invented. Collection times fall in the early morning in every zone."
+  }
+}

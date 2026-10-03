@@ -1,0 +1,5 @@
+legal_L4: lawful | legal_stack: not_applicable
+legal_L4: no conflict found | not_applicable
+credit=absent | confidence_ceiling: 1.0
+analogue a-1 meta: fit=exact | credit=absent
+legal_L6: cleared | confidence_ceiling: 1.0 | credit=absent

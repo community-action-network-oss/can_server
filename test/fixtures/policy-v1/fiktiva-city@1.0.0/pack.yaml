@@ -5,3 +5,39 @@ parent: constitution@1.0.0
 effective_from: 2026-10-01
 jurisdiction: fiktiva-city
 status: draft
+legal_stack:
+  - layer: L1
+    corpus: fiktiva-rights
+    version: 0.1.0
+    pack_hash: dbc8851045a75427240169bfa60e9021ae870df2809d05e96e208346295d1b63
+    mode: reference
+  - layer: L2
+    corpus: fiktiva-union
+    version: 0.1.0
+    pack_hash: 254d205f7f55c1b7442dc7675002ecd6e2fbc3145ecaeac5234284dc7e9e54e8
+    mode: binding
+    acknowledged_index_only: true
+  - layer: L3
+    corpus: fiktiva-constitution
+    version: 0.1.0
+    pack_hash: aefd9bacd67bdaf7597a89738a6a4a7dd31b8786735e51d8f9dd8e570d0fdc7b
+    mode: binding
+    acknowledged_index_only: true
+  - layer: L4
+    corpus: fiktiva-statutes
+    version: 0.1.0
+    pack_hash: e858abcd9128eddfeed3f295058300e9028ca47e389afd41a6d97bfca3078073
+    mode: binding
+    acknowledged_index_only: true
+  - layer: L5
+    corpus: fiktiva-region
+    version: 0.1.0
+    pack_hash: 996b73b37cf91f89e14533bc4fd34788e87814c5b1a4c3c0d1df98183f734292
+    mode: binding
+    acknowledged_index_only: true
+  - layer: L6
+    corpus: fiktiva-bylaws
+    version: 0.1.0
+    pack_hash: 6803ee8410e7ea4401e3fd17fa3fb4e19590fa94636326a483222774999120e4
+    mode: binding
+    acknowledged_index_only: true

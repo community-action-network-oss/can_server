@@ -1,0 +1,1096 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "can_policy/decision-points/DP-PUBLISH/schema.json",
+  "$comment": "Extends schemas/dp-output.schema.json: the shared keys are unchanged except outcome, which is narrowed. The 12 aggregated decision points are the blocking DPs that run on a problem at the review to publish run (docs/design/ai/decision-points.md catalog and content-type matrix; can_server selector table): COMPLETENESS, ASSUMPTIONS, PRIVACY, FRAMING, DUPLICATE, NAMING, TONE, SOURCE-TRUST, CRITERIA, STAGE-PLAN, LEGAL, CRISIS. Publish needs all 12 at publish; needs_revision needs a prior needs_revision or no final criteria; reject needs one prior reject and no hold or escalate_human; route_external needs one prior route_external, no reject, no hold, no escalate_human; any prior hold or escalate_human forces hold (DP-CRISIS and DP-LEGAL emit escalate_human; this DP never does). Publish also needs a completed volunteer review (reviews_completed 1 or more, checks.review_complete true), final criteria present, and every open recommendation weighed and cited. A recommendation still open is never counted as accepted, and archive evidence is never a review (archive_used_as_review is const false). Zero or incomplete review is a hold. No auto-pass: publish at 0.92 or more. JSON Schema cannot compare the echoes to the input or enforce uniqueness by key (each dp once in prior_outcomes, each ref once in open_recommendations_cited): the handler checks them (see eval/README.md).",
+  "title": "DP-PUBLISH output",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "outcome",
+    "rule_ids",
+    "confidence",
+    "reasons"
+  ],
+  "properties": {
+    "outcome": {
+      "enum": [
+        "publish",
+        "needs_revision",
+        "reject",
+        "route_external",
+        "hold"
+      ]
+    },
+    "rule_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "field_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "field"
+      ],
+      "properties": {
+        "field": {
+          "type": "string"
+        },
+        "span": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "minItems": 2,
+          "maxItems": 2
+        }
+      }
+    },
+    "revision_hint": {
+      "type": "string"
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "reasons": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "prior_outcomes": {
+      "type": "array",
+      "maxItems": 12,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "dp",
+          "outcome"
+        ],
+        "properties": {
+          "dp": {
+            "enum": [
+              "DP-COMPLETENESS",
+              "DP-ASSUMPTIONS",
+              "DP-PRIVACY",
+              "DP-FRAMING",
+              "DP-DUPLICATE",
+              "DP-NAMING",
+              "DP-TONE",
+              "DP-SOURCE-TRUST",
+              "DP-CRITERIA",
+              "DP-STAGE-PLAN",
+              "DP-LEGAL",
+              "DP-CRISIS"
+            ]
+          },
+          "outcome": {
+            "enum": [
+              "publish",
+              "needs_revision",
+              "reject",
+              "route_external",
+              "hold",
+              "escalate_human"
+            ]
+          }
+        }
+      }
+    },
+    "checks": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "review_complete",
+        "final_criteria_present",
+        "archive_used_as_review",
+        "protected_core_clear"
+      ],
+      "properties": {
+        "review_complete": {
+          "type": "boolean"
+        },
+        "final_criteria_present": {
+          "type": "boolean"
+        },
+        "archive_used_as_review": {
+          "const": false
+        },
+        "protected_core_clear": {
+          "type": "boolean"
+        }
+      }
+    },
+    "reviews_completed": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 10000
+    },
+    "open_count": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 1000
+    },
+    "open_recommendations_cited": {
+      "type": "array",
+      "maxItems": 100,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "ref",
+          "path",
+          "weight_reason"
+        ],
+        "properties": {
+          "ref": {
+            "type": "string",
+            "pattern": "^[od]-[0-9]{1,3}$"
+          },
+          "path": {
+            "type": "string",
+            "pattern": "^(condition|affected|place|since|observed_facts|uncertain_claims|sources|evidence_refs|causal_hypothesis|scope|responsible_roles|desired_outcome|final_acceptance_criteria|assumptions|out_of_scope|lawful_options|existing_efforts|stage_plan|context_profile|affected_area|stage_plan\\.[a-z][a-z0-9_]{1,39}(\\.criteria)?)$",
+            "maxLength": 80
+          },
+          "weight_reason": {
+            "type": "string",
+            "maxLength": 300
+          }
+        }
+      }
+    },
+    "speedup_cited": {
+      "type": "boolean"
+    },
+    "hold_reason": {
+      "enum": [
+        "missing_input",
+        "ambiguous_input",
+        "not_requested",
+        "protected_core_refused",
+        "review_incomplete",
+        "prior_held",
+        "cannot_decide"
+      ]
+    },
+    "missing_inputs": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 15,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "jurisdiction",
+          "poster_request",
+          "protected_core",
+          "guidelines",
+          "review_complete",
+          "reviews_completed",
+          "review_quorum_met",
+          "review_days_open",
+          "recommendations_open",
+          "recommendations_accepted",
+          "recommendations_declined",
+          "final_criteria_count",
+          "archive_suggestions",
+          "dp_outcomes",
+          "recommendation_items"
+        ]
+      }
+    }
+  },
+  "allOf": [
+    {
+      "type": "object",
+      "properties": {
+        "reasons": {
+          "type": "array",
+          "maxItems": 6,
+          "items": {
+            "type": "string",
+            "maxLength": 600
+          }
+        },
+        "revision_hint": {
+          "type": "string",
+          "maxLength": 600
+        },
+        "rule_ids": {
+          "type": "array",
+          "maxItems": 2,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "REVIEW-1",
+              "RECO-1"
+            ]
+          }
+        }
+      },
+      "$comment": "Echo limits and the rules this DP may cite, set here because the shared property shapes must match schemas/dp-output.schema.json."
+    },
+    {
+      "if": {
+        "type": "object",
+        "required": [
+          "outcome"
+        ],
+        "properties": {
+          "outcome": {
+            "const": "publish"
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "required": [
+          "rule_ids",
+          "confidence",
+          "prior_outcomes",
+          "checks",
+          "reviews_completed",
+          "open_count",
+          "open_recommendations_cited"
+        ],
+        "properties": {
+          "rule_ids": {
+            "type": "array",
+            "allOf": [
+              {
+                "type": "array",
+                "minItems": 1,
+                "contains": {
+                  "const": "REVIEW-1"
+                }
+              },
+              {
+                "type": "array",
+                "minItems": 1,
+                "contains": {
+                  "const": "RECO-1"
+                }
+              }
+            ]
+          },
+          "confidence": {
+            "type": "number",
+            "minimum": 0.92
+          },
+          "prior_outcomes": {
+            "type": "array",
+            "minItems": 12,
+            "allOf": [
+              {
+                "type": "array",
+                "contains": {
+                  "type": "object",
+                  "required": [
+                    "dp",
+                    "outcome"
+                  ],
+                  "properties": {
+                    "dp": {
+                      "const": "DP-COMPLETENESS"
+                    },
+                    "outcome": {
+                      "const": "publish"
+                    }
+                  }
+                }
+              },
+              {
+                "type": "array",
+                "contains": {
+                  "type": "object",
+                  "required": [
+                    "dp",
+                    "outcome"
+                  ],
+                  "properties": {
+                    "dp": {
+                      "const": "DP-ASSUMPTIONS"
+                    },
+                    "outcome": {
+                      "const": "publish"
+                    }
+                  }
+                }
+              },
+              {
+                "type": "array",
+                "contains": {
+                  "type": "object",
+                  "required": [
+                    "dp",
+                    "outcome"
+                  ],
+                  "properties": {
+                    "dp": {
+                      "const": "DP-PRIVACY"
+                    },
+                    "outcome": {
+                      "const": "publish"
+                    }
+                  }
+                }
+              },
+              {
+                "type": "array",
+                "contains": {
+                  "type": "object",
+                  "required": [
+                    "dp",
+                    "outcome"
+                  ],
+                  "properties": {
+                    "dp": {
+                      "const": "DP-FRAMING"
+                    },
+                    "outcome": {
+                      "const": "publish"
+                    }
+                  }
+                }
+              },
+              {
+                "type": "array",
+                "contains": {
+                  "type": "object",
+                  "required": [
+                    "dp",
+                    "outcome"
+                  ],
+                  "properties": {
+                    "dp": {
+                      "const": "DP-DUPLICATE"
+                    },
+                    "outcome": {
+                      "const": "publish"
+                    }
+                  }
+                }
+              },
+              {
+                "type": "array",
+                "contains": {
+                  "type": "object",
+                  "required": [
+                    "dp",
+                    "outcome"
+                  ],
+                  "properties": {
+                    "dp": {
+                      "const": "DP-NAMING"
+                    },
+                    "outcome": {
+                      "const": "publish"
+                    }
+                  }
+                }
+              },
+              {
+                "type": "array",
+                "contains": {
+                  "type": "object",
+                  "required": [
+                    "dp",
+                    "outcome"
+                  ],
+                  "properties": {
+                    "dp": {
+                      "const": "DP-TONE"
+                    },
+                    "outcome": {
+                      "const": "publish"
+                    }
+                  }
+                }
+              },
+              {
+                "type": "array",
+                "contains": {
+                  "type": "object",
+                  "required": [
+                    "dp",
+                    "outcome"
+                  ],
+                  "properties": {
+                    "dp": {
+                      "const": "DP-SOURCE-TRUST"
+                    },
+                    "outcome": {
+                      "const": "publish"
+                    }
+                  }
+                }
+              },
+              {
+                "type": "array",
+                "contains": {
+                  "type": "object",
+                  "required": [
+                    "dp",
+                    "outcome"
+                  ],
+                  "properties": {
+                    "dp": {
+                      "const": "DP-CRITERIA"
+                    },
+                    "outcome": {
+                      "const": "publish"
+                    }
+                  }
+                }
+              },
+              {
+                "type": "array",
+                "contains": {
+                  "type": "object",
+                  "required": [
+                    "dp",
+                    "outcome"
+                  ],
+                  "properties": {
+                    "dp": {
+                      "const": "DP-STAGE-PLAN"
+                    },
+                    "outcome": {
+                      "const": "publish"
+                    }
+                  }
+                }
+              },
+              {
+                "type": "array",
+                "contains": {
+                  "type": "object",
+                  "required": [
+                    "dp",
+                    "outcome"
+                  ],
+                  "properties": {
+                    "dp": {
+                      "const": "DP-LEGAL"
+                    },
+                    "outcome": {
+                      "const": "publish"
+                    }
+                  }
+                }
+              },
+              {
+                "type": "array",
+                "contains": {
+                  "type": "object",
+                  "required": [
+                    "dp",
+                    "outcome"
+                  ],
+                  "properties": {
+                    "dp": {
+                      "const": "DP-CRISIS"
+                    },
+                    "outcome": {
+                      "const": "publish"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          "checks": {
+            "type": "object",
+            "required": [
+              "review_complete",
+              "final_criteria_present",
+              "protected_core_clear"
+            ],
+            "properties": {
+              "review_complete": {
+                "const": true
+              },
+              "final_criteria_present": {
+                "const": true
+              },
+              "protected_core_clear": {
+                "const": true
+              }
+            }
+          },
+          "reviews_completed": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "open_count": true,
+          "open_recommendations_cited": true,
+          "revision_hint": false,
+          "hold_reason": false,
+          "missing_inputs": false,
+          "speedup_cited": false
+        }
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "required": [
+          "outcome"
+        ],
+        "properties": {
+          "outcome": {
+            "const": "needs_revision"
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "required": [
+          "rule_ids",
+          "revision_hint",
+          "confidence",
+          "prior_outcomes",
+          "checks",
+          "reviews_completed",
+          "open_count",
+          "open_recommendations_cited"
+        ],
+        "properties": {
+          "rule_ids": {
+            "type": "array",
+            "minItems": 1
+          },
+          "revision_hint": {
+            "type": "string",
+            "minLength": 1
+          },
+          "confidence": {
+            "type": "number",
+            "minimum": 0.75
+          },
+          "prior_outcomes": {
+            "type": "array",
+            "minItems": 12,
+            "maxItems": 12,
+            "items": {
+              "type": "object",
+              "required": [
+                "outcome"
+              ],
+              "properties": {
+                "outcome": {
+                  "enum": [
+                    "publish",
+                    "needs_revision"
+                  ]
+                }
+              }
+            }
+          },
+          "checks": {
+            "type": "object",
+            "required": [
+              "review_complete",
+              "protected_core_clear"
+            ],
+            "properties": {
+              "review_complete": {
+                "const": true
+              },
+              "protected_core_clear": {
+                "const": true
+              },
+              "final_criteria_present": {
+                "type": "boolean"
+              }
+            }
+          },
+          "reviews_completed": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "open_count": true,
+          "open_recommendations_cited": true,
+          "hold_reason": false,
+          "missing_inputs": false
+        },
+        "anyOf": [
+          {
+            "properties": {
+              "prior_outcomes": {
+                "type": "array",
+                "contains": {
+                  "type": "object",
+                  "required": [
+                    "outcome"
+                  ],
+                  "properties": {
+                    "outcome": {
+                      "const": "needs_revision"
+                    }
+                  }
+                }
+              }
+            },
+            "required": [
+              "prior_outcomes"
+            ]
+          },
+          {
+            "properties": {
+              "checks": {
+                "type": "object",
+                "required": [
+                  "final_criteria_present"
+                ],
+                "properties": {
+                  "final_criteria_present": {
+                    "const": false
+                  }
+                }
+              }
+            },
+            "required": [
+              "checks"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "required": [
+          "outcome"
+        ],
+        "properties": {
+          "outcome": {
+            "const": "reject"
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "required": [
+          "rule_ids",
+          "confidence",
+          "prior_outcomes",
+          "checks"
+        ],
+        "properties": {
+          "checks": {
+            "type": "object",
+            "required": [
+              "protected_core_clear"
+            ],
+            "properties": {
+              "protected_core_clear": {
+                "const": true
+              }
+            }
+          },
+          "rule_ids": {
+            "type": "array",
+            "minItems": 1
+          },
+          "confidence": {
+            "type": "number",
+            "minimum": 0.92
+          },
+          "prior_outcomes": {
+            "type": "array",
+            "minItems": 12,
+            "maxItems": 12,
+            "items": {
+              "type": "object",
+              "required": [
+                "outcome"
+              ],
+              "properties": {
+                "outcome": {
+                  "enum": [
+                    "publish",
+                    "needs_revision",
+                    "reject",
+                    "route_external"
+                  ]
+                }
+              }
+            },
+            "contains": {
+              "type": "object",
+              "required": [
+                "outcome"
+              ],
+              "properties": {
+                "outcome": {
+                  "const": "reject"
+                }
+              }
+            }
+          },
+          "hold_reason": false,
+          "missing_inputs": false
+        }
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "required": [
+          "outcome"
+        ],
+        "properties": {
+          "outcome": {
+            "const": "route_external"
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "required": [
+          "rule_ids",
+          "confidence",
+          "prior_outcomes",
+          "checks"
+        ],
+        "properties": {
+          "checks": {
+            "type": "object",
+            "required": [
+              "protected_core_clear"
+            ],
+            "properties": {
+              "protected_core_clear": {
+                "const": true
+              }
+            }
+          },
+          "rule_ids": {
+            "type": "array",
+            "minItems": 1
+          },
+          "confidence": {
+            "type": "number",
+            "minimum": 0.9
+          },
+          "prior_outcomes": {
+            "type": "array",
+            "minItems": 12,
+            "maxItems": 12,
+            "items": {
+              "type": "object",
+              "required": [
+                "outcome"
+              ],
+              "properties": {
+                "outcome": {
+                  "enum": [
+                    "publish",
+                    "needs_revision",
+                    "route_external"
+                  ]
+                }
+              }
+            },
+            "contains": {
+              "type": "object",
+              "required": [
+                "outcome"
+              ],
+              "properties": {
+                "outcome": {
+                  "const": "route_external"
+                }
+              }
+            }
+          },
+          "revision_hint": false,
+          "hold_reason": false,
+          "missing_inputs": false
+        }
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "required": [
+          "outcome"
+        ],
+        "properties": {
+          "outcome": {
+            "const": "hold"
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "required": [
+          "hold_reason"
+        ],
+        "properties": {
+          "hold_reason": true
+        }
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "required": [
+          "hold_reason"
+        ],
+        "properties": {
+          "hold_reason": {
+            "const": "missing_input"
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "required": [
+          "missing_inputs",
+          "outcome"
+        ],
+        "properties": {
+          "outcome": {
+            "const": "hold"
+          },
+          "missing_inputs": true
+        }
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "required": [
+          "hold_reason"
+        ],
+        "properties": {
+          "hold_reason": {
+            "enum": [
+              "ambiguous_input",
+              "not_requested",
+              "protected_core_refused",
+              "review_incomplete",
+              "prior_held",
+              "cannot_decide"
+            ]
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "properties": {
+          "outcome": {
+            "const": "hold"
+          },
+          "missing_inputs": false
+        }
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "required": [
+          "hold_reason"
+        ],
+        "properties": {
+          "hold_reason": {
+            "const": "protected_core_refused"
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "required": [
+          "checks"
+        ],
+        "properties": {
+          "checks": {
+            "type": "object",
+            "required": [
+              "protected_core_clear"
+            ],
+            "properties": {
+              "protected_core_clear": {
+                "const": false
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "required": [
+          "checks"
+        ],
+        "properties": {
+          "checks": {
+            "type": "object",
+            "required": [
+              "protected_core_clear"
+            ],
+            "properties": {
+              "protected_core_clear": {
+                "const": false
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "required": [
+          "outcome"
+        ],
+        "properties": {
+          "outcome": {
+            "const": "hold"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "required": [
+          "hold_reason"
+        ],
+        "properties": {
+          "hold_reason": {
+            "const": "review_incomplete"
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "required": [
+          "checks"
+        ],
+        "properties": {
+          "checks": {
+            "type": "object",
+            "required": [
+              "review_complete"
+            ],
+            "properties": {
+              "review_complete": {
+                "const": false
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "required": [
+          "hold_reason"
+        ],
+        "properties": {
+          "hold_reason": {
+            "const": "prior_held"
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "required": [
+          "prior_outcomes"
+        ],
+        "properties": {
+          "prior_outcomes": {
+            "type": "array",
+            "contains": {
+              "type": "object",
+              "required": [
+                "outcome"
+              ],
+              "properties": {
+                "outcome": {
+                  "enum": [
+                    "hold",
+                    "escalate_human"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "required": [
+          "prior_outcomes"
+        ],
+        "properties": {
+          "prior_outcomes": {
+            "type": "array",
+            "contains": {
+              "type": "object",
+              "required": [
+                "outcome"
+              ],
+              "properties": {
+                "outcome": {
+                  "enum": [
+                    "hold",
+                    "escalate_human"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "required": [
+          "outcome"
+        ],
+        "properties": {
+          "outcome": {
+            "const": "hold"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "required": [
+          "open_count"
+        ],
+        "properties": {
+          "open_count": {
+            "type": "integer",
+            "minimum": 1
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "required": [
+          "open_recommendations_cited"
+        ],
+        "properties": {
+          "open_recommendations_cited": {
+            "type": "array",
+            "minItems": 1
+          }
+        }
+      }
+    }
+  ]
+}

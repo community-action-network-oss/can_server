@@ -1,0 +1,357 @@
+[
+  {
+    "id": "ex-SP-01",
+    "input": "jurisdiction: fiktiva-city\ntrigger: submit\ndag_check: passed\nfinal_count: 1\nfinal f-1: \"By 30 June the Reed Street pump station is in service and the Water Board log shows no cellar flood call-out on that street for 90 days.\"\nstage_count: 4\nstage s-1 meta: required=true method=poster_after_input depends_on=none change=none\nstage s-1 name: \"Find the cause\"\nstage s-1 goal: \"Establish why the pump station fails in heavy rain.\"\nstage s-1 criteria: \"A written fault report from the Water Board is attached and names the failed part.\"\nstage s-2 meta: required=true method=poster_after_input depends_on=s-1 change=none\nstage s-2 name: \"Decide the fix\"\nstage s-2 goal: \"Choose the repair and who pays.\"\nstage s-2 criteria: \"A repair order with a date and a budget line is on file.\"\nstage s-3 meta: required=true method=poster_after_input depends_on=s-2 change=none\nstage s-3 name: \"Do the work\"\nstage s-3 goal: \"Repair the pump station.\"\nstage s-3 criteria: \"The Water Board log shows the pump station in service after the repair date.\"\nstage s-4 meta: required=true method=poster_after_input depends_on=s-3 change=none\nstage s-4 name: \"Check the result\"\nstage s-4 goal: \"Confirm the street stays dry.\"\nstage s-4 criteria: \"The Water Board log shows no cellar flood call-out on the street for 90 days.\"",
+    "expected_outcome": "publish",
+    "rule_ids": [
+      "STAGE-GATE-1"
+    ],
+    "note": "serial plan, every final criterion served",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "stage_plan"
+    },
+    "shot": true,
+    "expected": {
+      "trigger": "submit",
+      "uncovered_final_criteria": [],
+      "per_stage": [
+        {
+          "ref": "s-1",
+          "verdict": "ok"
+        },
+        {
+          "ref": "s-2",
+          "verdict": "ok"
+        },
+        {
+          "ref": "s-3",
+          "verdict": "ok"
+        },
+        {
+          "ref": "s-4",
+          "verdict": "ok"
+        }
+      ]
+    }
+  },
+  {
+    "id": "ex-SP-02",
+    "input": "jurisdiction: fiktiva-city\ntrigger: submit\ndag_check: passed\nfinal_count: 1\nfinal f-1: \"Every lift at Central Platform Station is in service on 28 of 30 days in each of three consecutive months, shown by the operator status page.\"\nstage_count: 5\nstage s-1 meta: required=true method=poster_after_input depends_on=none change=none\nstage s-1 name: \"Gather the facts\"\nstage s-1 goal: \"List which lifts fail and how often.\"\nstage s-1 criteria: \"A fault list for every lift over the last 12 months from the operator is attached.\"\nstage s-2 meta: required=true method=poster_after_input depends_on=none change=none\nstage s-2 name: \"Ask residents\"\nstage s-2 goal: \"Learn what residents need and what they will accept for this problem.\"\nstage s-2 criteria: \"A summary of at least 30 resident answers is attached.\"\nstage s-3 meta: required=true method=community_vote depends_on=s-1,s-2 change=none\nstage s-3 name: \"Decide the fix\"\nstage s-3 goal: \"Agree a maintenance plan with the operator.\"\nstage s-3 criteria: \"A signed maintenance plan with a repair time limit per lift is on file.\"\nstage s-4 meta: required=true method=poster_after_input depends_on=s-3 change=none\nstage s-4 name: \"Do the work\"\nstage s-4 goal: \"Carry out the maintenance plan.\"\nstage s-4 criteria: \"The operator status page shows each lift passing its first monthly check.\"\nstage s-5 meta: required=true method=poster_after_input depends_on=s-4 change=none\nstage s-5 name: \"Check the result\"\nstage s-5 goal: \"Measure reliability.\"\nstage s-5 criteria: \"The operator status page shows every lift in service on 28 of 30 days in each of three consecutive months.\"",
+    "expected_outcome": "publish",
+    "rule_ids": [
+      "STAGE-GATE-1"
+    ],
+    "note": "two parallel fact stages feeding the decision, truly independent",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "stage_plan"
+    },
+    "expected": {
+      "trigger": "submit",
+      "uncovered_final_criteria": [],
+      "per_stage": [
+        {
+          "ref": "s-1",
+          "verdict": "ok"
+        },
+        {
+          "ref": "s-2",
+          "verdict": "ok"
+        },
+        {
+          "ref": "s-3",
+          "verdict": "ok"
+        },
+        {
+          "ref": "s-4",
+          "verdict": "ok"
+        },
+        {
+          "ref": "s-5",
+          "verdict": "ok"
+        }
+      ]
+    }
+  },
+  {
+    "id": "ex-SP-03",
+    "input": "jurisdiction: fiktiva-city\ntrigger: submit\ndag_check: passed\nfinal_count: 1\nfinal f-1: \"The pharmacy in the south end is open until 19:00 on at least five weekdays, shown by the health district register, by the end of the year.\"\nstage_count: 0",
+    "expected_outcome": "publish",
+    "rule_ids": [
+      "STAGE-GATE-1"
+    ],
+    "note": "boundary: absent optional plan passes on submit",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "stage_plan"
+    },
+    "expected": {
+      "trigger": "submit",
+      "uncovered_final_criteria": [],
+      "plan_absent": true
+    }
+  },
+  {
+    "id": "ex-SP-04",
+    "input": "jurisdiction: fiktiva-city\ntrigger: submit\ndag_check: passed\nfinal_count: 1\nfinal f-1: \"Bins on Mill Lane are emptied on the published day in 9 of 10 consecutive weeks, shown by the collection log.\"\nstage_count: 2\nstage s-1 meta: required=true method=poster_after_input depends_on=none change=none\nstage s-1 name: \"Other\"\nstage s-1 goal: \"Everything else that needs doing.\"\nstage s-1 criteria: \"Things are done.\"\nstage s-2 meta: required=true method=poster_after_input depends_on=none change=none\nstage s-2 name: \"Find why collections are missed\"\nstage s-2 goal: \"Find why collections are missed.\"\nstage s-2 criteria: \"The collection contractor's missed-pickup report for the last 6 months is attached.\"",
+    "expected_outcome": "needs_revision",
+    "rule_ids": [
+      "STAGE-GATE-1"
+    ],
+    "note": "a catch-all stage hides the real work",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "stage_plan"
+    },
+    "revision_hint": "Replace s-1 with named stages that each have their own work and a criterion, and show which stage serves f-1.",
+    "shot": true,
+    "expected": {
+      "trigger": "submit",
+      "uncovered_final_criteria": [
+        "f-1"
+      ],
+      "per_stage": [
+        {
+          "ref": "s-1",
+          "verdict": "vague_catch_all",
+          "hint": "Name the real work of s-1 and give it a measurable criterion."
+        },
+        {
+          "ref": "s-2",
+          "verdict": "ok"
+        }
+      ]
+    }
+  },
+  {
+    "id": "ex-SP-05",
+    "input": "jurisdiction: fiktiva-city\ntrigger: submit\ndag_check: passed\nfinal_count: 2\nfinal f-1: \"A signalled school crossing operates on Orchard Road before the autumn term, shown by the city roads office record.\"\nfinal f-2: \"The crossing is used by at least 80 percent of school-run crossings in a two-week count.\"\nstage_count: 2\nstage s-1 meta: required=true method=poster_after_input depends_on=none change=none\nstage s-1 name: \"Count crossings\"\nstage s-1 goal: \"Count crossings and near misses.\"\nstage s-1 criteria: \"A one-week count of children crossing and near misses is attached.\"\nstage s-2 meta: required=true method=poster_after_input depends_on=s-1 change=none\nstage s-2 name: \"Build the crossing\"\nstage s-2 goal: \"Build the crossing.\"\nstage s-2 criteria: \"The roads office record shows the crossing commissioned.\"",
+    "expected_outcome": "needs_revision",
+    "rule_ids": [
+      "STAGE-GATE-1"
+    ],
+    "note": "second final criterion has no stage",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "stage_plan"
+    },
+    "revision_hint": "No stage serves f-2. Add a stage that counts use of the crossing, or say why f-2 needs none.",
+    "expected": {
+      "trigger": "submit",
+      "uncovered_final_criteria": [
+        "f-2"
+      ],
+      "per_stage": [
+        {
+          "ref": "s-1",
+          "verdict": "ok"
+        },
+        {
+          "ref": "s-2",
+          "verdict": "ok"
+        }
+      ]
+    }
+  },
+  {
+    "id": "ex-SP-06",
+    "input": "jurisdiction: fiktiva-city\ntrigger: submit\ndag_check: passed\nfinal_count: 1\nfinal f-1: \"The community garden on Kiln Row has a working water supply with a metered tap, shown by a utility reading, by 1 May.\"\nstage_count: 3\nstage s-1 meta: required=true method=poster_after_input depends_on=none change=none\nstage s-1 name: \"Get consent\"\nstage s-1 goal: \"Get the owner's consent.\"\nstage s-1 criteria: \"A signed consent from the plot owner is on file.\"\nstage s-2 meta: required=true method=poster_after_input depends_on=none change=none\nstage s-2 name: \"Get owner consent\"\nstage s-2 goal: \"Get the plot owner to agree to the tap.\"\nstage s-2 criteria: \"A signed consent from the plot owner is on file.\"\nstage s-3 meta: required=true method=poster_after_input depends_on=s-1,s-2 change=none\nstage s-3 name: \"Install the tap\"\nstage s-3 goal: \"Install the tap and meter.\"\nstage s-3 criteria: \"A utility reading from the new meter is attached.\"",
+    "expected_outcome": "needs_revision",
+    "rule_ids": [
+      "STAGE-GATE-1"
+    ],
+    "note": "duplicate stages",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "stage_plan"
+    },
+    "revision_hint": "Merge s-1 and s-2 into one stage, or give each a different goal.",
+    "expected": {
+      "trigger": "submit",
+      "uncovered_final_criteria": [],
+      "per_stage": [
+        {
+          "ref": "s-1",
+          "verdict": "duplicate",
+          "hint": "s-1 and s-2 do the same work; keep one."
+        },
+        {
+          "ref": "s-2",
+          "verdict": "duplicate",
+          "hint": "s-2 repeats s-1; merge them."
+        },
+        {
+          "ref": "s-3",
+          "verdict": "ok"
+        }
+      ]
+    }
+  },
+  {
+    "id": "ex-SP-07",
+    "input": "jurisdiction: fiktiva-city\ntrigger: submit\ndag_check: passed\nfinal_count: 1\nfinal f-1: \"The bus stop on Harbor Road has a shelter with a bench, shown by a council inspection photo, within 6 months.\"\nstage_count: 2\nstage s-1 meta: required=true method=poster_after_input depends_on=none change=none\nstage s-1 name: \"Write the shelter order\"\nstage s-1 goal: \"Prepare the order using the result of s-2.\"\nstage s-1 criteria: \"The order is signed.\"\nstage s-2 meta: required=true method=poster_after_input depends_on=none change=none\nstage s-2 name: \"Choose the stop position\"\nstage s-2 goal: \"Choose the stop position.\"\nstage s-2 criteria: \"A site sketch signed by the bus operator is attached.\"",
+    "expected_outcome": "needs_revision",
+    "rule_ids": [
+      "STAGE-GATE-1"
+    ],
+    "note": "stage needs another stage's result with no edge",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "stage_plan"
+    },
+    "revision_hint": "Make s-1 depend on s-2, or change its goal so it does not use that result.",
+    "expected": {
+      "trigger": "submit",
+      "uncovered_final_criteria": [],
+      "per_stage": [
+        {
+          "ref": "s-1",
+          "verdict": "not_independent",
+          "hint": "s-1 needs the result of s-2 but does not depend on it."
+        },
+        {
+          "ref": "s-2",
+          "verdict": "ok"
+        }
+      ]
+    }
+  },
+  {
+    "id": "ex-SP-08",
+    "input": "jurisdiction: fiktiva-city\ntrigger: plan_change\ndag_check: passed\nfinal_count: 1\nfinal f-1: \"By 30 June the Reed Street pump station is in service and the Water Board log shows no cellar flood call-out on that street for 90 days.\"\nstage_count: 2\nstage s-1 meta: required=true method=poster_after_input depends_on=none change=none\nstage s-1 name: \"Repair\"\nstage s-1 goal: \"Repair the pump station.\"\nstage s-1 criteria: \"The Water Board log shows the pump station in service after the repair date.\"\nstage s-2 meta: required=true method=poster_after_input depends_on=s-1 change=none\nstage s-2 name: \"Check\"\nstage s-2 goal: \"Confirm the street stays dry.\"\nstage s-2 criteria: \"The Water Board log shows no cellar flood call-out on the street for 90 days.\"\nchange_reason: \"Simplify the plan.\"\nremoved_count: 1\nremoved r-1 meta: state=active evidence=yes\nremoved r-1 name: \"Agree funding\"\nremoved r-1 reason: \"\"",
+    "expected_outcome": "needs_revision",
+    "rule_ids": [
+      "STAGE-GATE-1",
+      "PLAN-CHANGE-1"
+    ],
+    "note": "plan change drops a stage that has evidence",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "stage_plan"
+    },
+    "revision_hint": "Give a reason for removing r-1 and say where its evidence goes, or keep the stage.",
+    "shot": true,
+    "expected": {
+      "trigger": "plan_change",
+      "uncovered_final_criteria": [],
+      "per_stage": [
+        {
+          "ref": "s-1",
+          "verdict": "ok"
+        },
+        {
+          "ref": "s-2",
+          "verdict": "ok"
+        },
+        {
+          "ref": "r-1",
+          "verdict": "unjustified_removal",
+          "hint": "r-1 holds evidence and has no reason of its own."
+        }
+      ],
+      "change_checks": {
+        "reason_given": false,
+        "removals_justified": false,
+        "criteria_reachable": true
+      }
+    }
+  },
+  {
+    "id": "ex-SP-09",
+    "input": "jurisdiction: fiktiva-city\ntrigger: plan_change\ndag_check: passed\nfinal_count: 1\nfinal f-1: \"Every lift at Central Platform Station is in service on 28 of 30 days in each of three consecutive months, shown by the operator status page.\"\nstage_count: 2\nstage s-1 meta: required=true method=poster_after_input depends_on=none change=none\nstage s-1 name: \"Maintain\"\nstage s-1 goal: \"Carry out the maintenance plan.\"\nstage s-1 criteria: \"The operator status page shows each lift passing its first monthly check.\"\nstage s-2 meta: required=true method=poster_after_input depends_on=s-1 change=none\nstage s-2 name: \"Measure\"\nstage s-2 goal: \"Measure reliability.\"\nstage s-2 criteria: \"The operator status page shows every lift in service on 28 of 30 days in each of three consecutive months.\"\nchange_reason: \"The operator now maintains every lift under contract, so a separate planning stage adds nothing and its work is done.\"\nremoved_count: 1\nremoved r-1 meta: state=planned evidence=no\nremoved r-1 name: \"Agree a plan\"\nremoved r-1 reason: \"Covered by the new operator contract; no evidence was attached.\"",
+    "expected_outcome": "publish",
+    "rule_ids": [
+      "STAGE-GATE-1",
+      "PLAN-CHANGE-1"
+    ],
+    "note": "boundary: plan change publishes only because the reason, the removal and the reachability all hold",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "stage_plan"
+    },
+    "expected": {
+      "trigger": "plan_change",
+      "uncovered_final_criteria": [],
+      "per_stage": [
+        {
+          "ref": "s-1",
+          "verdict": "ok"
+        },
+        {
+          "ref": "s-2",
+          "verdict": "ok"
+        },
+        {
+          "ref": "r-1",
+          "verdict": "ok"
+        }
+      ],
+      "change_checks": {
+        "reason_given": true,
+        "removals_justified": true,
+        "criteria_reachable": true
+      }
+    }
+  },
+  {
+    "id": "ex-SP-10",
+    "input": "jurisdiction: fiktiva-city\ntrigger: submit\nfinal_count: 1\nfinal f-1: \"The pharmacy in the south end is open until 19:00 on at least five weekdays, shown by the health district register, by the end of the year.\"\nstage_count: 4\nstage s-1 meta: required=true method=poster_after_input depends_on=none change=none\nstage s-1 name: \"Find the cause\"\nstage s-1 goal: \"Learn what hours residents need.\"\nstage s-1 criteria: \"A resident survey with at least 100 answers is attached.\"\nstage s-2 meta: required=true method=poster_after_input depends_on=s-1 change=none\nstage s-2 name: \"Decide the fix\"\nstage s-2 goal: \"Agree opening hours with the pharmacy.\"\nstage s-2 criteria: \"A written agreement on closing time for five weekdays is on file.\"\nstage s-3 meta: required=true method=poster_after_input depends_on=s-2 change=none\nstage s-3 name: \"Do the work\"\nstage s-3 goal: \"Open the longer hours.\"\nstage s-3 criteria: \"The health district register lists the longer hours.\"\nstage s-4 meta: required=true method=poster_after_input depends_on=s-3 change=none\nstage s-4 name: \"Check the result\"\nstage s-4 goal: \"Confirm hours are kept.\"\nstage s-4 criteria: \"The register shows 19:00 closing on five weekdays for 8 weeks.\"",
+    "expected_outcome": "hold",
+    "rule_ids": [],
+    "note": "server dag_check line absent: fail closed",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "stage_plan"
+    },
+    "expected": {
+      "hold_reason": "missing_input",
+      "missing_inputs": [
+        "dag_check"
+      ]
+    }
+  },
+  {
+    "id": "ex-SP-11",
+    "input": "jurisdiction: fiktiva-city\ntrigger: submit\ndag_check: passed\nfinal_count: 1\nfinal f-1: \"A signalled school crossing operates on Orchard Road before the autumn term, shown by the city roads office record.\"\nstage_count: 3\nstage s-1 meta: required=true method=poster_after_input depends_on=none change=none\nstage s-1 name: \"Find the cause\"\nstage s-1 goal: \"Count crossings and near misses.\"\nstage s-1 criteria: \"A one-week count of children crossing and near misses is attached.\"\nstage s-2 meta: required=true method=poster_after_input depends_on=s-1 change=none\nstage s-2 name: \"Decide the fix\"\nstage s-2 goal: \"Approve the design.\"\nstage s-2 criteria: \"The roads office design approval with a date is on file.\"\nstage s-3 meta: required=true method=poster_after_input depends_on=s-2 change=none\nstage s-3 name: \"Do the work\"\nstage s-3 goal: \"Build the crossing.\"\nstage s-3 criteria: \"The roads office record shows the crossing commissioned.\"\nstage s-4 meta: required=true method=poster_after_input depends_on=s-3 change=none\nstage s-4 name: \"Check the result\"\nstage s-4 goal: \"Check it works.\"\nstage s-4 criteria: \"A two-week check shows signals working at every school start and end.\"",
+    "expected_outcome": "hold",
+    "rule_ids": [],
+    "note": "stage_count differs from the number of stage lines",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "stage_plan"
+    },
+    "expected": {
+      "hold_reason": "ambiguous_input"
+    }
+  },
+  {
+    "id": "ex-SP-12",
+    "input": "jurisdiction: fiktiva-city\ntrigger: submit\ndag_check: passed\nfinal_count: 1\nfinal f-1: \"The river footbridge at Salt Wharf is reopened with a safety certificate, shown by the engineer's certificate, by 1 September.\"\nstage_count: 2\nstage s-1 meta: required=true method=poster_after_input depends_on=none change=none\nstage s-1 name: \"Inspect\"\nstage s-1 goal: \"Inspect the damage.\"\nstage s-2 meta: required=true method=poster_after_input depends_on=s-1 change=none\nstage s-2 name: \"Repair\"\nstage s-2 goal: \"Repair the bridge.\"\nstage s-2 criteria: \"The engineer signs off the repair works.\"",
+    "expected_outcome": "hold",
+    "rule_ids": [],
+    "note": "a stage criteria line is absent",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "stage_plan"
+    },
+    "expected": {
+      "hold_reason": "missing_input",
+      "missing_inputs": [
+        "stage_lines"
+      ]
+    }
+  }
+]

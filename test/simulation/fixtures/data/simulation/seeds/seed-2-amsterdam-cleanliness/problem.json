@@ -1,0 +1,300 @@
+{
+  "condition": "Amsterdam city centre remains dirty despite substantial government cleaning activity and expenditure (simulation seed, synthetic evidence).",
+  "affected": "Residents, businesses and visitors in the city centre, as groups; the size of each group is not known in this seed.",
+  "place": {
+    "jurisdiction": "Amsterdam",
+    "coarse_area": "Amsterdam city centre, areas not named in this seed"
+  },
+  "since": {
+    "started": "Synthetic series starts in the first quarter of the invented data",
+    "trend": "recurring"
+  },
+  "observed_facts": [
+    {
+      "statement": "The invented cleanliness-index table shows a city centre index of 58 on a 0 to 100 scale in the first quarter and 58 in the fourth (synthetic).",
+      "source_ref": "https://evidence.sim.test/seed-2/cleanliness-index-table",
+      "date": "2026-03"
+    },
+    {
+      "statement": "The invented expenditure table shows 41 million (invented units) per year on cleaning and collection, a level held steady over four years (synthetic).",
+      "source_ref": "https://evidence.sim.test/seed-2/expenditure-table",
+      "date": "2026-02"
+    },
+    {
+      "statement": "The invented collection schedule shows bins in the busiest invented zone reach 95 percent full before the next collection on most days (synthetic).",
+      "source_ref": "https://evidence.sim.test/seed-2/collection-frequency-schedule",
+      "date": "2026-04"
+    },
+    {
+      "statement": "The invented complaint pattern shows 310 complaints per month about waste outside bins, peaking early in the week (synthetic).",
+      "source_ref": "https://evidence.sim.test/seed-2/complaint-volume-pattern",
+      "date": "2026-05"
+    }
+  ],
+  "uncertain_claims": [
+    {
+      "statement": "The centre may be getting cleaner overall (synthetic items disagree).",
+      "why_uncertain": "The cleanliness-index table is flat while the contradicting audit shows a rise.",
+      "what_would_settle_it": "One measurement method applied to both periods."
+    },
+    {
+      "statement": "More enforcement notices may lead to less waste outside bins (hypothesis).",
+      "why_uncertain": "The enforcement statistics and the index cover different weeks.",
+      "what_would_settle_it": "Notices and index for the same weeks in a pilot area."
+    }
+  ],
+  "sources": [
+    {
+      "uri": "https://evidence.sim.test/seed-2/cleanliness-index-table",
+      "category": "statistics_body",
+      "establishes": "Invented quarterly cleanliness index by invented zone type.",
+      "authenticity_note": "Synthetic: invented for simulation, not real data."
+    },
+    {
+      "uri": "https://evidence.sim.test/seed-2/expenditure-table",
+      "category": "official_record",
+      "establishes": "Invented annual spend by cleaning budget line.",
+      "authenticity_note": "Synthetic: invented for simulation, not real data."
+    },
+    {
+      "uri": "https://evidence.sim.test/seed-2/collection-frequency-schedule",
+      "category": "official_record",
+      "establishes": "Invented collections per week and bin fill level at collection.",
+      "authenticity_note": "Synthetic: invented for simulation, not real data."
+    },
+    {
+      "uri": "https://evidence.sim.test/seed-2/enforcement-statistics",
+      "category": "official_record",
+      "establishes": "Invented quarterly counts of notices and fines by invented category.",
+      "authenticity_note": "Synthetic: invented for simulation, not real data."
+    },
+    {
+      "uri": "https://evidence.sim.test/seed-2/contradicting-cleanliness-audit",
+      "category": "research",
+      "establishes": "An invented audit that disagrees with the cleanliness-index table.",
+      "authenticity_note": "Synthetic: invented for simulation, not real data."
+    }
+  ],
+  "evidence_refs": [
+    {
+      "url": "https://evidence.sim.test/seed-2/cleanliness-index-table",
+      "description": "Invented quarterly cleanliness index (synthetic).",
+      "supports": "That cleanliness can be measured as one index."
+    },
+    {
+      "url": "https://evidence.sim.test/seed-2/expenditure-table",
+      "description": "Invented annual spend lines (synthetic).",
+      "supports": "That substantial spend exists alongside a flat index."
+    },
+    {
+      "url": "https://evidence.sim.test/seed-2/contradicting-cleanliness-audit",
+      "description": "Invented audit that disagrees with the table (synthetic).",
+      "supports": "That the trend is contested and needs one method."
+    }
+  ],
+  "causal_hypothesis": {
+    "statement": "Bin capacity that fills before the next collection, collection times that do not match when waste is placed, and unclear signage may leave waste outside bins whatever the total spend is (hypothesis, untested).",
+    "status": "untested"
+  },
+  "scope": "Structural measures such as bin capacity, collection timing and signage, in the synthetic Amsterdam city centre setting; no individual cases and no blame on any group of people.",
+  "responsible_roles": [
+    "The municipality (waste services)",
+    "The municipality (public space department)",
+    "Enforcement officers (municipal)",
+    "Neighbourhood resident groups",
+    "Business associations"
+  ],
+  "desired_outcome": "A cleaner city centre, measured by the same cleanliness index before and after a pilot of a structural change.",
+  "final_acceptance_criteria": [
+    {
+      "statement": "The cleanliness index in the pilot area rises from the baseline of 58 by at least ten points.",
+      "how_observed": "The same index method, run before and after the pilot, compared by method and sample.",
+      "deadline": "2027-12"
+    },
+    {
+      "statement": "The report states what the index does not show.",
+      "how_observed": "A second contributor checks the report for a limits section."
+    }
+  ],
+  "assumptions": [
+    {
+      "statement": "The invented tables use one measurement method.",
+      "kind": "factual",
+      "confidence": "low",
+      "how_to_check": "Compare the notes of the cleanliness-index table and the contradicting audit."
+    },
+    {
+      "statement": "The cleaning budget has not been cut over the invented series.",
+      "kind": "factual",
+      "confidence": "medium",
+      "how_to_check": "Read the expenditure table for the four years."
+    },
+    {
+      "statement": "Waste outside bins responds to bin capacity, collection timing and signage.",
+      "kind": "causal",
+      "confidence": "low",
+      "how_to_check": "Pilot a change and measure the index before and after."
+    },
+    {
+      "statement": "No legal judgement is made here; the Amsterdam legal layers are unreviewed stubs and are not judged.",
+      "kind": "legal",
+      "confidence": "high"
+    },
+    {
+      "statement": "Rules on waste placement and fines sit with other bodies than this problem can change.",
+      "kind": "scope",
+      "confidence": "medium",
+      "how_to_check": "Read the role notes from the baseline stage."
+    }
+  ],
+  "out_of_scope": [
+    "Naming or investigating any person, household or business.",
+    "Individual cases, addresses or complaints about neighbours.",
+    "Changing national rules or the level of fines.",
+    "Any claim about a real contractor, office or its performance."
+  ],
+  "lawful_options": {
+    "status": "known",
+    "options": [
+      "Add bin capacity in a bounded pilot area.",
+      "Move collection times to match when waste is placed.",
+      "Improve signage so the rules are clear to everyone."
+    ],
+    "lawful_only_acknowledged": true
+  },
+  "existing_efforts": "The invented expenditure table lists collection, street sweeping, enforcement and communication lines; the municipality (waste services) collects daily in the centre in this synthetic setting, and an invented enforcement team issues notices. All amounts are invented.",
+  "stage_plan": [
+    {
+      "name": "measure_baseline",
+      "label": "Measure the baseline",
+      "goal": "Record the cleanliness index in the city centre before any change, with the method written down, and say where the invented series disagree.",
+      "decision_method": "poster_after_input",
+      "depends_on": [],
+      "needs_choice": false,
+      "acceptance_criteria": [
+        {
+          "statement": "A baseline cleanliness index is recorded with its method and its limits.",
+          "measure": "Baseline checked against the cleanliness-index table and the contradicting audit.",
+          "target": "one baseline value"
+        }
+      ]
+    },
+    {
+      "name": "collection_design",
+      "label": "Design the collection change",
+      "goal": "Choose one structural change to bin capacity, collection timing or signage that fits the baseline and the operational limits.",
+      "decision_method": "poster_after_input",
+      "depends_on": [
+        "measure_baseline"
+      ],
+      "needs_choice": true,
+      "acceptance_criteria": [
+        {
+          "statement": "One collection option is chosen with its cost band, owner role and operational check.",
+          "measure": "Decision record lists the option and the checks.",
+          "target": "one option"
+        }
+      ]
+    },
+    {
+      "name": "enforcement_and_comms",
+      "label": "Plan enforcement and communication",
+      "goal": "Plan how existing rules are explained and applied to waste placement, through clear signage and plain notices, with no group singled out.",
+      "decision_method": "poster_after_input",
+      "depends_on": [
+        "measure_baseline"
+      ],
+      "needs_choice": false,
+      "acceptance_criteria": [
+        {
+          "statement": "A plain-language notice and a rule-application note are drafted and checked for fairness.",
+          "measure": "Second contributor reads both against the fairness check.",
+          "target": "two documents"
+        }
+      ]
+    },
+    {
+      "name": "pilot",
+      "label": "Run a small pilot",
+      "goal": "Run the chosen collection change with the notices in a bounded part of the city centre for a fixed period and record what was done.",
+      "decision_method": "poster_after_input",
+      "depends_on": [
+        "collection_design",
+        "enforcement_and_comms"
+      ],
+      "needs_choice": false,
+      "acceptance_criteria": [
+        {
+          "statement": "The pilot ran for the planned period in the planned area.",
+          "measure": "Implementer log and a verification note.",
+          "target": "one period"
+        }
+      ]
+    },
+    {
+      "name": "measure_result",
+      "label": "Measure the result",
+      "goal": "Measure the cleanliness index again with the baseline method and report the result with its limits.",
+      "decision_method": "poster_after_input",
+      "depends_on": [
+        "pilot"
+      ],
+      "needs_choice": false,
+      "acceptance_criteria": [
+        {
+          "statement": "The cleanliness index is measured before and after with the same method.",
+          "measure": "Index in the pilot area, compared before and after.",
+          "target": "ten points higher"
+        },
+        {
+          "statement": "The report states what the measurement does not show.",
+          "measure": "Report section reviewed by a second contributor.",
+          "target": "section present"
+        }
+      ]
+    }
+  ],
+  "context_profile": {
+    "problem_type": "unknown",
+    "category": "unknown",
+    "population_scale": "unknown",
+    "geography": {
+      "country": "NL",
+      "region": "Amsterdam region",
+      "settlement_class": "city",
+      "climate_class": "C"
+    },
+    "resource_band": {
+      "people": "<20",
+      "in_kind": "unknown"
+    },
+    "budget_band": {
+      "band": ">=100k",
+      "currency_class": "high_income"
+    },
+    "institutions": [
+      "municipal_waste_services",
+      "municipal_enforcement"
+    ],
+    "legal_stack": [
+      {
+        "layer": "L3",
+        "corpus_version": "nl-amsterdam-stub-unreviewed-not-judged"
+      }
+    ],
+    "language": "en",
+    "constraints": [
+      {
+        "type": "legal",
+        "statement": "Legal layers are unreviewed stubs; nothing is judged lawful or unlawful."
+      },
+      {
+        "type": "political",
+        "statement": "Rules on waste placement and fines lie with other bodies."
+      }
+    ]
+  },
+  "affected_area": {
+    "area_version": 1
+  }
+}

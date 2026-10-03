@@ -1,0 +1,43 @@
+{
+  "id": "contradicting-incident-trend",
+  "url": "https://evidence.sim.test/seed-1/contradicting-incident-trend",
+  "description": "Contradicting item (synthetic): an invented series in which explosive-device incidents are flat while violent incidents fall, so it disagrees with the incident-pattern table.",
+  "synthetic": true,
+  "tier_cap": 2,
+  "metadata": {
+    "publisher_role": "independent research role (invented)",
+    "date": "2026-07",
+    "kind": "table"
+  },
+  "synthetic_note": "Synthetic: invented for simulation, not real data.",
+  "data": {
+    "columns": [
+      "quarter",
+      "explosive_device_incidents",
+      "violent_incidents"
+    ],
+    "rows": [
+      [
+        "Q1",
+        10,
+        36
+      ],
+      [
+        "Q2",
+        10,
+        33
+      ],
+      [
+        "Q3",
+        9,
+        30
+      ],
+      [
+        "Q4",
+        10,
+        27
+      ]
+    ],
+    "note": "Invented; deliberately disagrees with incident-pattern-table."
+  }
+}

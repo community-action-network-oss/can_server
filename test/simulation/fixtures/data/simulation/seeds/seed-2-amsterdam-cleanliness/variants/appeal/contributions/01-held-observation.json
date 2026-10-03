@@ -1,0 +1,15 @@
+{
+  "type": "observation",
+  "basis": "inferred",
+  "target": "seed-2-problem",
+  "claim": "The centre is much dirtier than the index shows.",
+  "evidence_refs": [],
+  "uncertainty": "No source; this is why it may be held.",
+  "assumptions": [
+    "I assume both tables measure the same streets."
+  ],
+  "what_observed": "A judgement that the table does not support (synthetic).",
+  "when": "Four invented quarters",
+  "where_coarse": "Amsterdam city centre, areas not named",
+  "how_observed": "Read the invented tables side by side."
+}

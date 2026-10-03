@@ -1,0 +1,28 @@
+id: appeal
+seed: seed-2-amsterdam-cleanliness
+synthetic: true
+description: A contribution is held; the appellant appeals with evidence, then a stage resolution is appealed.
+personas:
+  - persona: con-resident
+    script: script.json
+    bindings:
+      problem_id: seed-2-problem
+  - persona: app-appellant
+    script: script.json
+    bindings:
+      problem_id: seed-2-problem
+      stage_ref: collection_design
+schedule:
+  - day: 1
+    persona: con-resident
+    steps:
+      - post_observation
+  - day: 2
+    persona: app-appellant
+    steps:
+      - appeal_with_evidence
+      - appeal_without_evidence
+contributions:
+  - contributions/01-held-observation.json
+  - contributions/02-appeal-evidence.json
+bound_to_target: seed-2-problem

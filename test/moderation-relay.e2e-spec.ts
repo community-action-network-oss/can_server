@@ -47,6 +47,17 @@ class FlakyQueue extends QueuePort {
   fail = (...a: Parameters<PgQueue['fail']>) => this.inner.fail(...a);
 }
 
+/** The committed pack now carries every DP; this registry hides two so the hold-on-missing path stays covered. */
+const GONE = ['DP-RERESOLUTION', 'DP-TONE'];
+class GappedRegistry extends DpRegistry {
+  override async forJurisdiction(j: string) {
+    const v = await super.forJurisdiction(j);
+    const dps = new Map(v.dps);
+    GONE.forEach((g) => dps.delete(g));
+    return { ...v, dps, missing: [...v.missing, ...GONE] };
+  }
+}
+
 beforeAll(async () => {
   pool = new pg.Pool({ connectionString: config.databaseUrl });
   const db = drizzle(pool, { schema });
@@ -74,7 +85,7 @@ beforeAll(async () => {
     ids,
     new FlakyQueue(pq),
     new RelayCursor(db),
-    new DpRegistry(store, src),
+    new GappedRegistry(store, src),
   );
 });
 afterAll(async () => {

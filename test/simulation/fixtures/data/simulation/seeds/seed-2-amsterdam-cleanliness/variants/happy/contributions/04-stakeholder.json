@@ -1,0 +1,14 @@
+{
+  "type": "stakeholder_perspective",
+  "basis": "inferred",
+  "target": "seed-2-problem",
+  "claim": "Business owners need collection times that avoid delivery hours; residents want bins that are not full in the evening.",
+  "evidence_refs": [],
+  "uncertainty": "One perspective, written for the simulation, not a survey result.",
+  "assumptions": [
+    "I assume this concern is shared by others in the group."
+  ],
+  "group": "Business owners and residents",
+  "concern": "Collection at the wrong hour blocks deliveries, and full bins in the evening leave waste beside them.",
+  "what_would_help": "A pilot that moves collection times and reports the evening fill level."
+}

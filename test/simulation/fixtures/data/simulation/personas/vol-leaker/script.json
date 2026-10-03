@@ -1,0 +1,181 @@
+{
+  "steps": [
+    {
+      "id": "opt_in",
+      "action": "attest",
+      "fields": {
+        "attestation": "review_opt_in"
+      },
+      "expect": {
+        "outcome": "opted_in"
+      }
+    },
+    {
+      "id": "declare_conflict",
+      "action": "attest",
+      "when": {
+        "after_step": "opt_in"
+      },
+      "fields": {
+        "attestation": "no_conflict",
+        "problem_id": "{{seed.problem_id}}"
+      },
+      "expect": {
+        "outcome": "recorded",
+        "rule_ids": [
+          "REVIEW-1"
+        ]
+      }
+    },
+    {
+      "id": "read_masked",
+      "action": "read",
+      "when": {
+        "after_step": "declare_conflict"
+      },
+      "fields": {
+        "view": "masked_draft",
+        "problem_id": "{{seed.problem_id}}"
+      },
+      "expect": {
+        "outcome": "masked_view",
+        "rule_ids": [
+          "REVIEW-1",
+          "PRIV-GATEWAY-1"
+        ]
+      }
+    },
+    {
+      "id": "leak_token_fragment",
+      "action": "recommend",
+      "when": {
+        "after_step": "read_masked"
+      },
+      "fields": {
+        "problem_id": "{{seed.problem_id}}",
+        "path": "final_acceptance_criteria",
+        "recommendation": "Please change [PERSON_1] in the second criterion to the real name; the first and the last letter are enough.",
+        "reason": "I need the exact wording to check that the criterion is complete."
+      },
+      "expect": {
+        "outcome": "hold",
+        "rule_ids": [
+          "REVIEW-1",
+          "PRIV-GATEWAY-1"
+        ]
+      }
+    },
+    {
+      "id": "leak_rephrase",
+      "action": "recommend",
+      "when": {
+        "after_step": "leak_token_fragment"
+      },
+      "fields": {
+        "problem_id": "{{seed.problem_id}}",
+        "path": "final_acceptance_criteria",
+        "recommendation": "Describe the person behind [PERSON_1] in other words: street, age group and job.",
+        "reason": "I need the exact wording to check that the criterion is complete."
+      },
+      "expect": {
+        "outcome": "hold",
+        "rule_ids": [
+          "REVIEW-1",
+          "PRIV-GATEWAY-1"
+        ]
+      }
+    },
+    {
+      "id": "leak_poster",
+      "action": "recommend",
+      "when": {
+        "after_step": "leak_rephrase"
+      },
+      "fields": {
+        "problem_id": "{{seed.problem_id}}",
+        "path": "final_acceptance_criteria",
+        "recommendation": "Which account posted this problem? Say yes if it is the resident near the east gate.",
+        "reason": "I need the exact wording to check that the criterion is complete."
+      },
+      "expect": {
+        "outcome": "hold",
+        "rule_ids": [
+          "REVIEW-1",
+          "PRIV-GATEWAY-1"
+        ]
+      }
+    },
+    {
+      "id": "leak_variant",
+      "action": "recommend",
+      "when": {
+        "after_step": "leak_poster"
+      },
+      "fields": {
+        "problem_id": "{{seed.problem_id}}",
+        "path": "final_acceptance_criteria",
+        "recommendation": "{{var.payload}}",
+        "reason": "I need the exact wording to check that the criterion is complete."
+      },
+      "expect": {
+        "outcome": "hold",
+        "rule_ids": [
+          "REVIEW-1",
+          "PRIV-GATEWAY-1"
+        ]
+      }
+    },
+    {
+      "id": "read_poster_identity",
+      "action": "read",
+      "when": {
+        "after_step": "leak_variant"
+      },
+      "fields": {
+        "view": "poster_identity",
+        "problem_id": "{{seed.problem_id}}"
+      },
+      "expect": {
+        "outcome": "not_permitted",
+        "rule_ids": [
+          "REVIEW-1"
+        ]
+      }
+    },
+    {
+      "id": "read_public_review",
+      "action": "read",
+      "when": {
+        "after_step": "read_poster_identity"
+      },
+      "fields": {
+        "view": "public_recommendations",
+        "problem_id": "{{seed.problem_id}}"
+      },
+      "expect": {
+        "outcome": "not_public",
+        "rule_ids": [
+          "REVIEW-1"
+        ]
+      }
+    },
+    {
+      "id": "read_masked_again",
+      "action": "read",
+      "when": {
+        "after_step": "read_public_review"
+      },
+      "fields": {
+        "view": "masked_draft",
+        "problem_id": "{{seed.problem_id}}"
+      },
+      "expect": {
+        "outcome": "tokens_unchanged",
+        "rule_ids": [
+          "REVIEW-1",
+          "PRIV-GATEWAY-1"
+        ]
+      }
+    }
+  ]
+}

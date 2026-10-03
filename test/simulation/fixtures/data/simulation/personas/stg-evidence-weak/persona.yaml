@@ -1,0 +1,58 @@
+# Synthetic persona (11-u45). Every name, place, body and URL here is invented. No real person or organisation.
+id: stg-evidence-weak
+family: stage
+role: A contributor who posts stage evidence that does not meet the criterion of an active stage of an invented problem in Fiktiva North.
+goals:
+  - Get the stage resolved with evidence that restates the criterion, links to something unrelated or is only a self-statement.
+knowledge: Knows the criterion text. Does not know what counts as evidence.
+flaws:
+  - Restates the criterion as proof.
+  - Links a record about another topic.
+  - Relies on 'I saw it myself'.
+  - Revises into a promise instead of a result.
+behaviors:
+  - Four stage_evidence submissions on one problem (D-85 allows 4 per rolling 24 hours, so the 5th would be refused with 429 reply_limit_reached; this persona stays at 4).
+  - "Expected: DP-STAGE-RESOLUTION needs_revision naming the criterion (counted evidence needs source_trust establishes and a date after the stage start); the stage stays active; nothing resolves."
+  - attacks.jsonl rows carry weak outcome statements; the harness puts the row into outcome_statement for the last step.
+turn_budget: 8
+seed: 5106
+prompt: prompt.md
+attack_data: attacks.jsonl
+language: en
+synthetic: true
+handle: sim-stg-evidence-weak
+location: inside
+script: script.json
+expected:
+  - step_id: weak_restate
+    outcomes:
+      - needs_revision
+    dp: DP-STAGE-RESOLUTION
+    rule_ids:
+      - STAGE-RESOLVE-1
+  - step_id: weak_unrelated
+    outcomes:
+      - needs_revision
+    dp: DP-STAGE-RESOLUTION
+    rule_ids:
+      - STAGE-RESOLVE-1
+      - SOURCE-1
+  - step_id: weak_self_statement
+    outcomes:
+      - needs_revision
+    dp: DP-STAGE-RESOLUTION
+    rule_ids:
+      - STAGE-RESOLVE-1
+      - SOURCE-1
+  - step_id: weak_variant
+    outcomes:
+      - needs_revision
+    dp: DP-STAGE-RESOLUTION
+    rule_ids:
+      - STAGE-RESOLVE-1
+  - step_id: read_stage_state
+    outcomes:
+      - active
+    dp: DP-STAGE-RESOLUTION
+    rule_ids:
+      - STAGE-RESOLVE-1

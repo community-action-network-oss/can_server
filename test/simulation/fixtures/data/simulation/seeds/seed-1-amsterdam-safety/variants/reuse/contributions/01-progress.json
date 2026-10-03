@@ -1,0 +1,29 @@
+{
+  "type": "proposed_solution",
+  "basis": "inferred",
+  "target": "seed-1-problem",
+  "claim": "Pilot better lighting and one added safe crossing in a bounded area, and run the same survey before and after.",
+  "evidence_refs": [
+    {
+      "url": "https://evidence.sim.test/seed-1/prevention-programme-budget",
+      "supports": "Supports the claim above (synthetic evidence)."
+    }
+  ],
+  "uncertainty": "Cost and effect are invented placeholders until a pilot runs.",
+  "assumptions": [
+    "I assume the pilot area can be chosen without targeting any group."
+  ],
+  "mechanism": "Install lighting and a crossing in the pilot area, then repeat the perceived-safety survey with the same method.",
+  "responsible_role": "The municipality (public safety department)",
+  "authority": "Within the municipality's own street and lighting duties (stub, not judged).",
+  "cost": "Band under 100k, invented",
+  "success_metric": "Share who feel unsafe after dark falls by five points",
+  "risks": [
+    "The effect may be small or not last.",
+    "A pilot area may be chosen unfairly."
+  ],
+  "lawful_alternatives": [
+    "Publish waiting times in a plain table.",
+    "Add street-level mediation hours."
+  ]
+}

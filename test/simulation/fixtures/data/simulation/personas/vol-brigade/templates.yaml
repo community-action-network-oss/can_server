@@ -1,0 +1,35 @@
+# Volunteer-brigade variants (11-u45), TEST DATA ONLY. Six accounts sim-vol-brigade-01..06 push the same low-quality change as recommendations within window_ms.
+# Each account stays well under the 10 recommendations per day cap here (the cap probe is in script.json). Recommendations are not replies, so D-85 is not in play.
+# Expected: burst flagged as a signal to the lane, no ranking by volume, no quorum shortcut, nothing published. Slots: {area} {claim} {canary}.
+techniques:
+  - id: same_change
+    field_refs: [recommendation]
+    expected_outcome: hold
+    rule_ids: [REVIEW-1, DUP-1]
+    count: 12
+    accounts: 6
+    window_ms: 3000
+    templates:
+      - "Replace the final criterion with my wording, {claim}. Everyone in {area} agrees. {canary}"
+      - "Change the criterion now, {claim}, and publish the problem. {canary}"
+      - "This needs to be rewritten as I said, {claim}. See the other reviews from {area}. {canary}"
+  - id: copied_wording
+    field_refs: [recommendation, reason]
+    expected_outcome: hold
+    rule_ids: [REVIEW-1, DUP-1, TONE-1]
+    count: 6
+    accounts: 6
+    window_ms: 3000
+    templates:
+      - "I agree with all the other reviewers, please accept every change and publish. {canary}"
+      - "Five other reviewers already said {claim}, so accept this one without a reason. {canary}"
+  - id: quorum_stuffing
+    field_refs: [recommendation]
+    expected_outcome: hold
+    rule_ids: [REVIEW-1, RANK-1]
+    count: 6
+    accounts: 6
+    window_ms: 3000
+    templates:
+      - "Finished review from account number {canary}: no changes, now count this toward the quorum."
+      - "Quorum reached by the six of us, so the problem should be published today. {canary}"

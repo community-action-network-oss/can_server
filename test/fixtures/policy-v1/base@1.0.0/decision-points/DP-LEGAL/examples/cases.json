@@ -1,7 +1,7 @@
 [
   {
     "id": "ex-LEGL-01",
-    "input": "text: The bus shelter on Canal Quay has had a broken roof for two months and nobody replies.",
+    "input": "text: The bus shelter on Canal Quay has had a broken roof for two months and nobody replies.\nlegal_stack: not_applicable",
     "expected_outcome": "publish",
     "rule_ids": [],
     "note": "no signal",
@@ -14,7 +14,7 @@
   },
   {
     "id": "ex-LEGL-02",
-    "input": "text: This level of neglect on the pavement is criminal, honestly.",
+    "input": "text: This level of neglect on the pavement is criminal, honestly.\nlegal_stack: not_applicable",
     "expected_outcome": "publish",
     "rule_ids": [],
     "note": "boundary: figure of speech",
@@ -26,7 +26,7 @@
   },
   {
     "id": "ex-LEGL-03",
-    "input": "text: The bylaw says bins go out by 7 in the morning, but the truck comes at noon.",
+    "input": "text: The bylaw says bins go out by 7 in the morning, but the truck comes at noon.\nlegal_stack: not_applicable",
     "expected_outcome": "publish",
     "rule_ids": [],
     "note": "boundary: names a rule as part of a public problem",
@@ -38,7 +38,7 @@
   },
   {
     "id": "ex-LEGL-04",
-    "input": "text: I have received a court notice asking me to hand over the records of this platform about [PERSON_1]. It is dated this week.",
+    "input": "text: I have received a court notice asking me to hand over the records of this platform about [PERSON_1]. It is dated this week.\nlegal_stack: not_applicable",
     "expected_outcome": "escalate_human",
     "rule_ids": [
       "LEGAL-LANE-1"
@@ -53,7 +53,7 @@
   },
   {
     "id": "ex-LEGL-05",
-    "input": "text: A police officer asked me to give them the names of the people who commented on the Harbour Road problem.",
+    "input": "text: A police officer asked me to give them the names of the people who commented on the Harbour Road problem.\nlegal_stack: not_applicable",
     "expected_outcome": "escalate_human",
     "rule_ids": [
       "LEGAL-LANE-1"
@@ -67,7 +67,7 @@
   },
   {
     "id": "ex-LEGL-06",
-    "input": "text: I want the platform to tell me who [PERSON_1] really is so my lawyer can send them a letter.",
+    "input": "text: I want the platform to tell me who [PERSON_1] really is so my lawyer can send them a letter.\nlegal_stack: not_applicable",
     "expected_outcome": "escalate_human",
     "rule_ids": [
       "LEGAL-LANE-1"
@@ -81,7 +81,7 @@
   },
   {
     "id": "ex-LEGL-07",
-    "input": "text: My solicitor says this post is defamation and I must send it to your legal office.",
+    "input": "text: My solicitor says this post is defamation and I must send it to your legal office.\nlegal_stack: not_applicable",
     "expected_outcome": "escalate_human",
     "rule_ids": [
       "LEGAL-LANE-1"
@@ -95,7 +95,7 @@
   },
   {
     "id": "ex-LEGL-08",
-    "input": "text: Can I sue the council for the damage the pothole did to my wheel?",
+    "input": "text: Can I sue the council for the damage the pothole did to my wheel?\nlegal_stack: not_applicable",
     "expected_outcome": "hold",
     "rule_ids": [],
     "note": "individual legal advice request: not the legal lane; the intake check offers fiktiva-ombudsman or fiktiva-help-line",
@@ -108,7 +108,7 @@
   },
   {
     "id": "ex-LEGL-09",
-    "input": "text: My lawyer told me to put this here but I do not know why.",
+    "input": "text: My lawyer told me to put this here but I do not know why.\nlegal_stack: not_applicable",
     "expected_outcome": "hold",
     "rule_ids": [
       "LEGAL-LANE-1"
@@ -118,6 +118,465 @@
     "jurisdiction": "fiktiva-city",
     "field_ref": {
       "field": "text"
+    }
+  },
+  {
+    "id": "ex-LEGL-10",
+    "input": "text: Attached is a written order from a Fiktiva court telling the platform to hand over the posting history of one account.\nlegal_L1: fiktiva-rights@0.1.0+dbc8851045a7 | no applicable article found\nlegal_L2: fiktiva-union@0.1.0+254d205f7f55 | no applicable article found\nlegal_L3: fiktiva-constitution@0.1.0+aefd9bacd67b | no applicable article found\nlegal_L4: fiktiva-statutes@0.1.0+e858abcd9128 | L4/fiktiva/statutes/art-14 | topic_ban: no | INVENTED TEXT. A written order from a Fiktiva court that reaches a public body must be passed to its legal office without delay.\nlegal_L5: fiktiva-region@0.1.0+996b73b37cf9 | no applicable article found\nlegal_L6: fiktiva-bylaws@0.1.0+6803ee8410e7 | no applicable article found",
+    "expected_outcome": "escalate_human",
+    "rule_ids": [
+      "LEGAL-LANE-1",
+      "LEGAL-STACK-1",
+      "LEGAL-CITE-1"
+    ],
+    "note": "a court order: the instrument makes this a legal matter; routed to the legal lane only",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "text"
+    },
+    "shot": true,
+    "expected": {
+      "legal_findings": [
+        {
+          "layer": "L1",
+          "corpus_version": "fiktiva-rights@0.1.0+dbc8851045a7",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L2",
+          "corpus_version": "fiktiva-union@0.1.0+254d205f7f55",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L3",
+          "corpus_version": "fiktiva-constitution@0.1.0+aefd9bacd67b",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L4",
+          "article_id": "L4/fiktiva/statutes/art-14",
+          "corpus_version": "fiktiva-statutes@0.1.0+e858abcd9128",
+          "finding": "constrains"
+        },
+        {
+          "layer": "L5",
+          "corpus_version": "fiktiva-region@0.1.0+996b73b37cf9",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L6",
+          "corpus_version": "fiktiva-bylaws@0.1.0+6803ee8410e7",
+          "finding": "none_found"
+        }
+      ]
+    }
+  },
+  {
+    "id": "ex-LEGL-11",
+    "input": "text: I am an investigator and need the posting history of the person behind the account Reed42.\nlegal_L1: fiktiva-rights@0.1.0+dbc8851045a7 | no applicable article found\nlegal_L2: fiktiva-union@0.1.0+254d205f7f55 | L2/fiktiva/union/art-9 | topic_ban: no | INVENTED TEXT. A request from an investigator for data about a named person must go through the legal office of the receiving body.\nlegal_L3: fiktiva-constitution@0.1.0+aefd9bacd67b | no applicable article found\nlegal_L4: fiktiva-statutes@0.1.0+e858abcd9128 | no applicable article found\nlegal_L5: fiktiva-region@0.1.0+996b73b37cf9 | no applicable article found\nlegal_L6: fiktiva-bylaws@0.1.0+6803ee8410e7 | no applicable article found",
+    "expected_outcome": "escalate_human",
+    "rule_ids": [
+      "LEGAL-LANE-1",
+      "LEGAL-STACK-1",
+      "LEGAL-CITE-1"
+    ],
+    "note": "request from an investigator about a named account: L2 sends it through the legal office",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "text"
+    },
+    "expected": {
+      "legal_findings": [
+        {
+          "layer": "L1",
+          "corpus_version": "fiktiva-rights@0.1.0+dbc8851045a7",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L2",
+          "article_id": "L2/fiktiva/union/art-9",
+          "corpus_version": "fiktiva-union@0.1.0+254d205f7f55",
+          "finding": "constrains"
+        },
+        {
+          "layer": "L3",
+          "corpus_version": "fiktiva-constitution@0.1.0+aefd9bacd67b",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L4",
+          "corpus_version": "fiktiva-statutes@0.1.0+e858abcd9128",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L5",
+          "corpus_version": "fiktiva-region@0.1.0+996b73b37cf9",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L6",
+          "corpus_version": "fiktiva-bylaws@0.1.0+6803ee8410e7",
+          "finding": "none_found"
+        }
+      ]
+    }
+  },
+  {
+    "id": "ex-LEGL-12",
+    "input": "text: The stall permit rule makes the Elm Row queue worse because the Head of Markets is slow.\nlegal_L1: fiktiva-rights@0.1.0+dbc8851045a7 | no applicable article found\nlegal_L2: fiktiva-union@0.1.0+254d205f7f55 | no applicable article found\nlegal_L3: fiktiva-constitution@0.1.0+aefd9bacd67b | no applicable article found\nlegal_L4: fiktiva-statutes@0.1.0+e858abcd9128 | no applicable article found\nlegal_L5: fiktiva-region@0.1.0+996b73b37cf9 | no applicable article found\nlegal_L6: fiktiva-bylaws@0.1.0+6803ee8410e7 | no applicable article found",
+    "expected_outcome": "publish",
+    "rule_ids": [
+      "LEGAL-LANE-1",
+      "LEGAL-STACK-1",
+      "LEGAL-CITE-1"
+    ],
+    "note": "plain mention of a bylaw inside a public problem: no signal; nothing retrieved, recorded as none_found on each layer",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "text"
+    },
+    "expected": {
+      "legal_findings": [
+        {
+          "layer": "L1",
+          "corpus_version": "fiktiva-rights@0.1.0+dbc8851045a7",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L2",
+          "corpus_version": "fiktiva-union@0.1.0+254d205f7f55",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L3",
+          "corpus_version": "fiktiva-constitution@0.1.0+aefd9bacd67b",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L4",
+          "corpus_version": "fiktiva-statutes@0.1.0+e858abcd9128",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L5",
+          "corpus_version": "fiktiva-region@0.1.0+996b73b37cf9",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L6",
+          "corpus_version": "fiktiva-bylaws@0.1.0+6803ee8410e7",
+          "finding": "none_found"
+        }
+      ]
+    }
+  },
+  {
+    "id": "ex-LEGL-13",
+    "input": "text: Can I withhold my rent from the city housing office? Tell me what the law says.\nlegal_L1: fiktiva-rights@0.1.0+dbc8851045a7 | no applicable article found\nlegal_L2: fiktiva-union@0.1.0+254d205f7f55 | no applicable article found\nlegal_L3: fiktiva-constitution@0.1.0+aefd9bacd67b | no applicable article found\nlegal_L4: fiktiva-statutes@0.1.0+e858abcd9128 | no applicable article found\nlegal_L5: fiktiva-region@0.1.0+996b73b37cf9 | no applicable article found\nlegal_L6: fiktiva-bylaws@0.1.0+6803ee8410e7 | no applicable article found",
+    "expected_outcome": "hold",
+    "rule_ids": [
+      "LEGAL-LANE-1",
+      "LEGAL-STACK-1",
+      "LEGAL-CITE-1"
+    ],
+    "note": "an individual asking for legal advice: hold; nothing retrieved is a pass",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "text"
+    },
+    "shot": true,
+    "expected": {
+      "legal_findings": [
+        {
+          "layer": "L1",
+          "corpus_version": "fiktiva-rights@0.1.0+dbc8851045a7",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L2",
+          "corpus_version": "fiktiva-union@0.1.0+254d205f7f55",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L3",
+          "corpus_version": "fiktiva-constitution@0.1.0+aefd9bacd67b",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L4",
+          "corpus_version": "fiktiva-statutes@0.1.0+e858abcd9128",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L5",
+          "corpus_version": "fiktiva-region@0.1.0+996b73b37cf9",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L6",
+          "corpus_version": "fiktiva-bylaws@0.1.0+6803ee8410e7",
+          "finding": "none_found"
+        }
+      ]
+    }
+  },
+  {
+    "id": "ex-LEGL-14",
+    "input": "text: The warden refused our vigil permit. That breaks our right to assemble. We need a lawyer on this.\nlegal_L1: fiktiva-rights@0.1.0+dbc8851045a7 | L1/fiktiva/rights/art-3 | topic_ban: no | INVENTED TEXT. Peaceful assembly may be limited only as far as needed, and never by a general ban.\nlegal_L2: fiktiva-union@0.1.0+254d205f7f55 | no applicable article found\nlegal_L3: fiktiva-constitution@0.1.0+aefd9bacd67b | L3/fiktiva/constitution/art-7 | topic_ban: no | INVENTED TEXT. No assembly may take place in the Old Square without a permit. Permits are granted at the discretion of the Square Warden.\nlegal_L4: fiktiva-statutes@0.1.0+e858abcd9128 | no applicable article found\nlegal_L5: fiktiva-region@0.1.0+996b73b37cf9 | no applicable article found\nlegal_L6: fiktiva-bylaws@0.1.0+6803ee8410e7 | no applicable article found",
+    "expected_outcome": "hold",
+    "rule_ids": [
+      "LEGAL-LANE-1",
+      "LEGAL-STACK-1",
+      "LEGAL-CITE-1"
+    ],
+    "note": "L1 versus L3 conflict on the claim: hold with a conflict note",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "text"
+    },
+    "expected": {
+      "legal_findings": [
+        {
+          "layer": "L1",
+          "article_id": "L1/fiktiva/rights/art-3",
+          "corpus_version": "fiktiva-rights@0.1.0+dbc8851045a7",
+          "finding": "conflict"
+        },
+        {
+          "layer": "L2",
+          "corpus_version": "fiktiva-union@0.1.0+254d205f7f55",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L3",
+          "article_id": "L3/fiktiva/constitution/art-7",
+          "corpus_version": "fiktiva-constitution@0.1.0+aefd9bacd67b",
+          "finding": "conflict"
+        },
+        {
+          "layer": "L4",
+          "corpus_version": "fiktiva-statutes@0.1.0+e858abcd9128",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L5",
+          "corpus_version": "fiktiva-region@0.1.0+996b73b37cf9",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L6",
+          "corpus_version": "fiktiva-bylaws@0.1.0+6803ee8410e7",
+          "finding": "none_found"
+        }
+      ],
+      "conflict_note": "Layer L1 article L1/fiktiva/rights/art-3 and layer L3 article L3/fiktiva/constitution/art-7 read differently for this item. Held and queued as a policy question (OQ-legal-layer-conflicts)."
+    }
+  },
+  {
+    "id": "ex-LEGL-15",
+    "input": "text: The ferry plan is against the law and everyone knows it.\nlegal_L1: fiktiva-rights@0.1.0+dbc8851045a7 | no applicable article found\nlegal_L2: fiktiva-union@0.1.0+254d205f7f55 | no applicable article found\nlegal_L3: fiktiva-constitution@0.1.0+aefd9bacd67b | no applicable article found\nlegal_L4: fiktiva-statutes@0.1.0+e858abcd9128 | no applicable article found\nlegal_L5: fiktiva-region@0.1.0+996b73b37cf9 | no applicable article found\nlegal_L6: fiktiva-bylaws@0.1.0+6803ee8410e7 | no applicable article found",
+    "expected_outcome": "hold",
+    "rule_ids": [
+      "LEGAL-LANE-1",
+      "LEGAL-STACK-1",
+      "LEGAL-CITE-1"
+    ],
+    "note": "an unsupported claim of illegality and no article found on any layer: hold, never publish on silence",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "text"
+    },
+    "expected": {
+      "legal_findings": [
+        {
+          "layer": "L1",
+          "corpus_version": "fiktiva-rights@0.1.0+dbc8851045a7",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L2",
+          "corpus_version": "fiktiva-union@0.1.0+254d205f7f55",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L3",
+          "corpus_version": "fiktiva-constitution@0.1.0+aefd9bacd67b",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L4",
+          "corpus_version": "fiktiva-statutes@0.1.0+e858abcd9128",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L5",
+          "corpus_version": "fiktiva-region@0.1.0+996b73b37cf9",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L6",
+          "corpus_version": "fiktiva-bylaws@0.1.0+6803ee8410e7",
+          "finding": "none_found"
+        }
+      ]
+    }
+  },
+  {
+    "id": "ex-LEGL-16",
+    "input": "text: Residents of the Harbor Quarter want their moth census discussed in public.\nlegal_L1: fiktiva-rights@0.1.0+dbc8851045a7 | no applicable article found\nlegal_L2: fiktiva-union@0.1.0+254d205f7f55 | no applicable article found\nlegal_L3: fiktiva-constitution@0.1.0+aefd9bacd67b | no applicable article found\nlegal_L4: fiktiva-statutes@0.1.0+e858abcd9128 | no applicable article found\nlegal_L5: fiktiva-region@0.1.0+996b73b37cf9 | no applicable article found\nlegal_L6: fiktiva-harbor-bylaws@0.1.0+b212437b6ab2 | L6/fiktiva/harbor-bylaws/art-1 | topic_ban: no | INVENTED TEXT. A resident may raise the moth census of the Harbor Quarter in public.",
+    "expected_outcome": "publish",
+    "rule_ids": [
+      "LEGAL-LANE-1",
+      "LEGAL-STACK-1",
+      "LEGAL-CITE-1"
+    ],
+    "note": "no legal-process signal; the city article permits the topic",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-harbor",
+    "field_ref": {
+      "field": "text"
+    },
+    "expected": {
+      "legal_findings": [
+        {
+          "layer": "L1",
+          "corpus_version": "fiktiva-rights@0.1.0+dbc8851045a7",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L2",
+          "corpus_version": "fiktiva-union@0.1.0+254d205f7f55",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L3",
+          "corpus_version": "fiktiva-constitution@0.1.0+aefd9bacd67b",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L4",
+          "corpus_version": "fiktiva-statutes@0.1.0+e858abcd9128",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L5",
+          "corpus_version": "fiktiva-region@0.1.0+996b73b37cf9",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L6",
+          "article_id": "L6/fiktiva/harbor-bylaws/art-1",
+          "corpus_version": "fiktiva-harbor-bylaws@0.1.0+b212437b6ab2",
+          "finding": "permits"
+        }
+      ]
+    }
+  },
+  {
+    "id": "ex-LEGL-17",
+    "input": "text: My lawyer says nobody may discuss the Mill Quarter moth census.\nlegal_L1: fiktiva-rights@0.1.0+dbc8851045a7 | no applicable article found\nlegal_L2: fiktiva-union@0.1.0+254d205f7f55 | no applicable article found\nlegal_L3: fiktiva-constitution@0.1.0+aefd9bacd67b | no applicable article found\nlegal_L4: fiktiva-statutes@0.1.0+e858abcd9128 | no applicable article found\nlegal_L5: fiktiva-region@0.1.0+996b73b37cf9 | no applicable article found\nlegal_L6: fiktiva-bylaws@0.1.0+6803ee8410e7 | no applicable article found",
+    "expected_outcome": "hold",
+    "rule_ids": [
+      "LEGAL-LANE-1",
+      "LEGAL-STACK-1",
+      "LEGAL-CITE-1"
+    ],
+    "note": "an inferred ban with no indexed topic_ban article: ambiguous, hold",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "text"
+    },
+    "expected": {
+      "legal_findings": [
+        {
+          "layer": "L1",
+          "corpus_version": "fiktiva-rights@0.1.0+dbc8851045a7",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L2",
+          "corpus_version": "fiktiva-union@0.1.0+254d205f7f55",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L3",
+          "corpus_version": "fiktiva-constitution@0.1.0+aefd9bacd67b",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L4",
+          "corpus_version": "fiktiva-statutes@0.1.0+e858abcd9128",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L5",
+          "corpus_version": "fiktiva-region@0.1.0+996b73b37cf9",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L6",
+          "corpus_version": "fiktiva-bylaws@0.1.0+6803ee8410e7",
+          "finding": "none_found"
+        }
+      ]
+    }
+  },
+  {
+    "id": "ex-LEGL-18",
+    "input": "text: You will be ordered by a court to remove these posts, the order is on its way.\nlegal_L1: fiktiva-rights@0.1.0+dbc8851045a7 | no applicable article found\nlegal_L2: fiktiva-union@0.1.0+254d205f7f55 | no applicable article found\nlegal_L3: fiktiva-constitution@0.1.0+aefd9bacd67b | no applicable article found\nlegal_L4: fiktiva-statutes@0.1.0+e858abcd9128 | L4/fiktiva/statutes/art-14 | topic_ban: no | INVENTED TEXT. A written order from a Fiktiva court that reaches a public body must be passed to its legal office without delay.\nlegal_L5: fiktiva-region@0.1.0+996b73b37cf9 | no applicable article found\nlegal_L6: fiktiva-bylaws@0.1.0+6803ee8410e7 | no applicable article found",
+    "expected_outcome": "escalate_human",
+    "rule_ids": [
+      "LEGAL-LANE-1",
+      "LEGAL-STACK-1",
+      "LEGAL-CITE-1"
+    ],
+    "note": "a legal threat against the platform that names a court order: legal lane",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "text"
+    },
+    "expected": {
+      "legal_findings": [
+        {
+          "layer": "L1",
+          "corpus_version": "fiktiva-rights@0.1.0+dbc8851045a7",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L2",
+          "corpus_version": "fiktiva-union@0.1.0+254d205f7f55",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L3",
+          "corpus_version": "fiktiva-constitution@0.1.0+aefd9bacd67b",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L4",
+          "article_id": "L4/fiktiva/statutes/art-14",
+          "corpus_version": "fiktiva-statutes@0.1.0+e858abcd9128",
+          "finding": "constrains"
+        },
+        {
+          "layer": "L5",
+          "corpus_version": "fiktiva-region@0.1.0+996b73b37cf9",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L6",
+          "corpus_version": "fiktiva-bylaws@0.1.0+6803ee8410e7",
+          "finding": "none_found"
+        }
+      ]
     }
   }
 ]

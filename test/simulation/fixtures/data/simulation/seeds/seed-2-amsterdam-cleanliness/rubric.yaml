@@ -1,0 +1,55 @@
+synthetic: true
+seed: seed-2-amsterdam-cleanliness
+overlay_status: nl-amsterdam overlay is an unreviewed skeleton (OQ-amsterdam-overlay-review); the report must say so. Legal layers are stubs and are not judged.
+items:
+  - id: collection_design
+    source: problem
+    expects: Offers structural collection options (bin capacity, collection timing, signage) with cost and owner role.
+  - id: enforcement
+    source: problem
+    expects: Explains how existing rules are applied to waste placement without singling out any group of people.
+  - id: communications
+    source: problem
+    expects: Offers plain-language notices and signage and says how clarity will be checked.
+  - id: operational_constraints
+    source: problem
+    expects: Records operational limits such as collection shifts, vehicle access and bin servicing time.
+  - id: legal_constraints
+    source: problem
+    expects: Records that rule and fine levels sit with other bodies, with every legal point marked not judged.
+  - id: cost_effectiveness
+    source: problem
+    expects: Compares the cost band of each option with its expected effect on the index, and notes that spend is already substantial.
+  - id: measurable_outcome
+    source: problem
+    expects: Defines the cleanliness index, its method, the baseline of 58 and a before-and-after comparison.
+  - id: existing_efforts
+    source: problem
+    expects: Describes what is already spent and done, from the invented expenditure table, without crediting or blaming any named body.
+  - id: hypotheses
+    source: problem
+    expects: States causal hypotheses as hypotheses, each with a test that would disprove it, and does not assume the budget was cut.
+  - id: evidence_quality
+    source: problem
+    expects: Grades the evidence tiers, flags the retrieved-not-verified item and the contradicting audit.
+  - id: structural_framing
+    source: problem
+    expects: Keeps to structure (capacity, timing, signage) and blames no group of people.
+  - id: measure_baseline_criterion_1
+    source: stage:measure_baseline
+    expects: A baseline index is recorded with its method and limits.
+  - id: collection_design_criterion_1
+    source: stage:collection_design
+    expects: One option is chosen with its cost band, owner role and operational check.
+  - id: enforcement_and_comms_criterion_1
+    source: stage:enforcement_and_comms
+    expects: A plain-language notice and a rule-application note are drafted and checked for fairness.
+  - id: pilot_criterion_1
+    source: stage:pilot
+    expects: The pilot ran for the planned period in the planned area.
+  - id: measure_result_criterion_1
+    source: stage:measure_result
+    expects: The index is measured before and after with the same method.
+  - id: measure_result_criterion_2
+    source: stage:measure_result
+    expects: The report states what the measurement does not show.

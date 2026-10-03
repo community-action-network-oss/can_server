@@ -1,0 +1,20 @@
+{
+  "type": "root_cause",
+  "basis": "cited",
+  "target": "seed-1-problem",
+  "claim": "Poor lighting and long waiting times may add to feeling unsafe after dark, whatever the counts.",
+  "evidence_refs": [
+    {
+      "url": "https://evidence.sim.test/seed-1/perceived-safety-survey",
+      "supports": "Supports the claim above (synthetic evidence)."
+    }
+  ],
+  "uncertainty": "This is a hypothesis; no test has been run in the synthetic data.",
+  "assumptions": [
+    "I assume the survey sample is comparable across quarters."
+  ],
+  "hypothesis": "Perceived safety after dark depends partly on lighting and expected waiting time (hypothesis).",
+  "mechanism": "People who expect a slow response or poor visibility avoid going out, which the survey would show as feeling unsafe.",
+  "supporting_evidence_refs": [],
+  "test_that_would_disprove_it": "If areas with good lighting and short waits show the same unsafe share, the hypothesis fails."
+}

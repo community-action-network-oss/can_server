@@ -86,9 +86,492 @@
         },
         "recheck_condition": {
           "type": "string"
+        },
+        "layer": {
+          "enum": [
+            "L1",
+            "L2",
+            "L3",
+            "L4",
+            "L5",
+            "L6"
+          ]
+        },
+        "article_id": {
+          "type": "string"
+        },
+        "corpus_version": {
+          "type": "string",
+          "maxLength": 64
+        }
+      }
+    },
+    "legal_findings": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "layer",
+          "finding"
+        ],
+        "properties": {
+          "layer": {
+            "enum": [
+              "L0",
+              "L1",
+              "L2",
+              "L3",
+              "L4",
+              "L5",
+              "L6"
+            ]
+          },
+          "article_id": {
+            "type": "string"
+          },
+          "corpus_version": {
+            "type": "string",
+            "maxLength": 64
+          },
+          "finding": {
+            "enum": [
+              "constrains",
+              "permits",
+              "none_found",
+              "conflict"
+            ]
+          },
+          "topic_ban_ref": {
+            "type": "string",
+            "$comment": "Set only when a retrieved article marked topic_ban yes forbids the topic: that article's id. Never inferred."
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "type": "object",
+              "required": [
+                "layer"
+              ],
+              "properties": {
+                "layer": {
+                  "enum": [
+                    "L1",
+                    "L2",
+                    "L3",
+                    "L4",
+                    "L5",
+                    "L6"
+                  ]
+                }
+              }
+            },
+            "then": {
+              "type": "object",
+              "required": [
+                "corpus_version"
+              ],
+              "properties": {
+                "corpus_version": true
+              }
+            }
+          },
+          {
+            "if": {
+              "type": "object",
+              "required": [
+                "layer",
+                "finding"
+              ],
+              "properties": {
+                "layer": {
+                  "enum": [
+                    "L1",
+                    "L2",
+                    "L3",
+                    "L4",
+                    "L5",
+                    "L6"
+                  ]
+                },
+                "finding": {
+                  "enum": [
+                    "constrains",
+                    "permits",
+                    "conflict"
+                  ]
+                }
+              }
+            },
+            "then": {
+              "type": "object",
+              "required": [
+                "article_id"
+              ],
+              "properties": {
+                "article_id": true
+              }
+            }
+          },
+          {
+            "if": {
+              "type": "object",
+              "required": [
+                "topic_ban_ref"
+              ],
+              "properties": {
+                "topic_ban_ref": {
+                  "type": "string"
+                }
+              }
+            },
+            "then": {
+              "type": "object",
+              "required": [
+                "finding",
+                "article_id"
+              ],
+              "properties": {
+                "finding": {
+                  "const": "constrains"
+                },
+                "article_id": true
+              }
+            }
+          }
+        ]
+      },
+      "$comment": "LEGAL-CITE-1: one item per layer of the stack given in the data block, citing {layer, article_id, corpus_version}. none_found has no article_id. An L0 finding carries no article_id."
+    },
+    "conflict_note": {
+      "type": "string",
+      "$comment": "Required on a hold caused by two layers reading differently for this item. A conflict is never resolved silently."
+    }
+  },
+  "$comment": "Extends schemas/dp-output.schema.json: keep its required keys and properties unchanged except outcome, which is narrowed to this DP's outcomes. Add DP-specific optional properties at the end of properties. tools/lint-dp.mjs checks this.",
+  "allOf": [
+    {
+      "if": {
+        "type": "object",
+        "required": [
+          "rule_ids"
+        ],
+        "properties": {
+          "rule_ids": {
+            "type": "array",
+            "contains": {
+              "enum": [
+                "LEGAL-CITE-1",
+                "LEGAL-STACK-1"
+              ]
+            }
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "required": [
+          "legal_findings"
+        ],
+        "properties": {
+          "legal_findings": {}
+        }
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "required": [
+          "outcome",
+          "rule_ids"
+        ],
+        "properties": {
+          "outcome": {
+            "const": "reject"
+          },
+          "rule_ids": {
+            "type": "array",
+            "contains": {
+              "const": "TOPIC-FORBIDDEN-1"
+            }
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "required": [
+          "legal_findings"
+        ],
+        "properties": {
+          "legal_findings": {
+            "type": "array",
+            "contains": {
+              "type": "object",
+              "required": [
+                "topic_ban_ref",
+                "article_id",
+                "finding"
+              ],
+              "properties": {
+                "topic_ban_ref": {
+                  "type": "string"
+                },
+                "article_id": {
+                  "type": "string"
+                },
+                "finding": {
+                  "const": "constrains"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "required": [
+          "outcome",
+          "legal_findings"
+        ],
+        "properties": {
+          "outcome": {
+            "const": "hold"
+          },
+          "legal_findings": {
+            "type": "array",
+            "contains": {
+              "type": "object",
+              "required": [
+                "finding"
+              ],
+              "properties": {
+                "finding": {
+                  "const": "conflict"
+                }
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "required": [
+          "conflict_note"
+        ],
+        "properties": {
+          "conflict_note": {}
+        }
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "required": [
+          "outcome",
+          "legal_findings"
+        ],
+        "properties": {
+          "outcome": {
+            "const": "hold"
+          },
+          "legal_findings": {
+            "type": "array",
+            "contains": {
+              "type": "object",
+              "required": [
+                "finding"
+              ],
+              "properties": {
+                "finding": {
+                  "const": "constrains"
+                }
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "required": [
+          "stuck_payload"
+        ],
+        "properties": {
+          "stuck_payload": {}
+        }
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "required": [
+          "stuck_payload",
+          "rule_ids"
+        ],
+        "properties": {
+          "rule_ids": {
+            "type": "array",
+            "contains": {
+              "enum": [
+                "LEGAL-CITE-1",
+                "LEGAL-STACK-1"
+              ]
+            }
+          },
+          "stuck_payload": true
+        }
+      },
+      "then": {
+        "type": "object",
+        "properties": {
+          "stuck_payload": {
+            "type": "object",
+            "required": [
+              "layer",
+              "article_id",
+              "corpus_version"
+            ],
+            "properties": {
+              "layer": true,
+              "article_id": true,
+              "corpus_version": true
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "required": [
+          "outcome"
+        ],
+        "properties": {
+          "outcome": {
+            "const": "reject"
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "properties": {
+          "rule_ids": {
+            "type": "array",
+            "minItems": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "required": [
+          "outcome"
+        ],
+        "properties": {
+          "outcome": {
+            "enum": [
+              "publish",
+              "needs_revision",
+              "reject"
+            ]
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "properties": {
+          "legal_findings": {
+            "not": {
+              "type": "array",
+              "contains": {
+                "type": "object",
+                "required": [
+                  "finding"
+                ],
+                "properties": {
+                  "finding": {
+                    "const": "conflict"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "required": [
+          "outcome"
+        ],
+        "properties": {
+          "outcome": {
+            "const": "publish"
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "properties": {
+          "legal_findings": {
+            "not": {
+              "type": "array",
+              "contains": {
+                "type": "object",
+                "required": [
+                  "finding"
+                ],
+                "properties": {
+                  "finding": {
+                    "const": "constrains"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "required": [
+          "legal_findings"
+        ],
+        "properties": {
+          "legal_findings": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "layer",
+                "finding"
+              ],
+              "properties": {
+                "layer": {
+                  "const": "L0"
+                },
+                "finding": {
+                  "const": "none_found"
+                }
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "properties": {
+          "outcome": {
+            "const": "hold"
+          }
         }
       }
     }
-  },
-  "$comment": "Extends schemas/dp-output.schema.json: keep its required keys and properties unchanged except outcome, which is narrowed to this DP's outcomes. Add DP-specific optional properties at the end of properties. tools/lint-dp.mjs checks this."
+  ]
 }

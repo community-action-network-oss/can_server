@@ -1,0 +1,17 @@
+id: revise
+seed: seed-2-amsterdam-cleanliness
+synthetic: true
+description: Well-meaning submitter states a supported cause (the cleaning budget was cut) without evidence; DP-ASSUMPTIONS asks for a mark; the revised body marks it.
+personas:
+  - persona: sub-wellmeaning-wrong
+    script: script-causal.json
+    bindings:
+      problem_id: seed-2-problem
+      problem_body: variants/revise/submission.json
+      revised_body: problem.json
+schedule: []
+submission: submission.json
+contributions:
+  - contributions/01-observation.json
+  - contributions/02-root-cause-marked.json
+bound_to_target: seed-2-problem

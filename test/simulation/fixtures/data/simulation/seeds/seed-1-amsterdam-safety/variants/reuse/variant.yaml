@@ -1,0 +1,27 @@
+id: reuse
+seed: seed-1-amsterdam-safety
+synthetic: true
+description: The run ends solved in simulation and writes an archive record that 11-u48 and the reuse scenario consume.
+personas:
+  - persona: con-implementer
+    script: script.json
+    bindings:
+      problem_id: seed-1-problem
+  - persona: sub-careful
+    script: script.json
+    bindings:
+      problem_id: seed-1-problem
+schedule:
+  - day: 5
+    persona: con-implementer
+    steps:
+      - post_progress
+      - post_verification
+      - post_stage_evidence
+archive:
+  outcome: solved_in_simulation
+  license_note: Synthetic record, simulation only.
+contributions:
+  - contributions/01-progress.json
+  - contributions/02-verification.json
+bound_to_target: seed-1-problem

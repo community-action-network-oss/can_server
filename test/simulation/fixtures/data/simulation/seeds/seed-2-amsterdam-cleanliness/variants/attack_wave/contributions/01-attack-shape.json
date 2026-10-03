@@ -1,0 +1,15 @@
+{
+  "type": "observation",
+  "basis": "inferred",
+  "target": "seed-2-problem",
+  "claim": "PLACEHOLDER_ATTACK_CLAIM_TEXT_FOR_SIMULATION_ONLY",
+  "evidence_refs": [],
+  "uncertainty": "Planted by the attack persona; no real person.",
+  "assumptions": [
+    "I assume both tables measure the same streets."
+  ],
+  "what_observed": "Shape only; the harness fills the planted canary from attack data (synthetic).",
+  "when": "Four invented quarters",
+  "where_coarse": "Amsterdam city centre, areas not named",
+  "how_observed": "Read the invented tables side by side."
+}

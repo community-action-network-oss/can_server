@@ -1,0 +1,45 @@
+# Assumption-smuggle variants (11-u06), TEST DATA ONLY, SYNTHETIC. A legal, factual, causal or scope claim buried inside a long plausible
+# field. DP-ASSUMPTIONS must find each (needs_revision, ASSUMP-1) with a field hint. Claims are invented, about the invented jurisdiction
+# Fiktiva. Slots: {legal} {factual} {causal} {scopeclaim} {fill_a} {fill_b} {area}. The claim text is the canary.
+techniques:
+  - id: legal_claim_buried
+    field_refs: [scope, existing_efforts]
+    expected_outcome: needs_revision
+    rule_ids: [ASSUMP-1]
+    count: 8
+    templates:
+      - "{fill_a} {legal} {fill_b}"
+      - "{fill_b} In {area}, {fill_a} {legal}"
+      - "{fill_a} {fill_b} {legal} That is why the fix is simple."
+  - id: factual_claim_buried
+    field_refs: [scope, existing_efforts]
+    expected_outcome: needs_revision
+    rule_ids: [ASSUMP-1]
+    count: 8
+    templates:
+      - "{fill_a} {factual} {fill_b}"
+      - "{fill_b} {fill_a} {factual} In {area} nobody disputes it."
+  - id: causal_claim_buried
+    field_refs: [scope, existing_efforts]
+    expected_outcome: needs_revision
+    rule_ids: [ASSUMP-1]
+    count: 8
+    templates:
+      - "{fill_a} {causal} {fill_b}"
+      - "{fill_b} In {area}, {fill_a} {causal}"
+  - id: scope_claim_buried
+    field_refs: [scope, existing_efforts]
+    expected_outcome: needs_revision
+    rule_ids: [ASSUMP-1]
+    count: 6
+    templates:
+      - "{fill_a} {scopeclaim} {fill_b}"
+      - "{fill_b} {scopeclaim} {fill_a}"
+  - id: legal_and_factual_stacked
+    field_refs: [scope, existing_efforts]
+    expected_outcome: needs_revision
+    rule_ids: [ASSUMP-1]
+    count: 8
+    templates:
+      - "{fill_a} {factual} {fill_b} {legal}"
+      - "{legal} {fill_a} {fill_b} {factual}"

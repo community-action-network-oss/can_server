@@ -1,0 +1,271 @@
+{
+  "steps": [
+    {
+      "id": "opt_in",
+      "action": "attest",
+      "fields": {
+        "attestation": "review_opt_in"
+      },
+      "expect": {
+        "outcome": "opted_in"
+      }
+    },
+    {
+      "id": "declare_conflict",
+      "action": "attest",
+      "when": {
+        "after_step": "opt_in"
+      },
+      "fields": {
+        "attestation": "no_conflict",
+        "problem_id": "{{seed.problem_id}}"
+      },
+      "expect": {
+        "outcome": "recorded",
+        "rule_ids": [
+          "REVIEW-1"
+        ]
+      }
+    },
+    {
+      "id": "read_masked",
+      "action": "read",
+      "when": {
+        "after_step": "declare_conflict"
+      },
+      "fields": {
+        "view": "masked_draft",
+        "problem_id": "{{seed.problem_id}}"
+      },
+      "expect": {
+        "outcome": "masked_view",
+        "rule_ids": [
+          "REVIEW-1",
+          "PRIV-GATEWAY-1"
+        ]
+      }
+    },
+    {
+      "id": "nit_1",
+      "action": "recommend",
+      "when": {
+        "after_step": "read_masked"
+      },
+      "fields": {
+        "problem_id": "{{seed.problem_id}}",
+        "path": "final_acceptance_criteria",
+        "recommendation": "Rewrite the final criterion in one short clause without the word counted.",
+        "reason": "Short clauses are easier to read than long ones."
+      },
+      "expect": {
+        "outcome": "open",
+        "rule_ids": [
+          "RECO-1"
+        ]
+      }
+    },
+    {
+      "id": "nit_2",
+      "action": "recommend",
+      "when": {
+        "after_step": "nit_1"
+      },
+      "fields": {
+        "problem_id": "{{seed.problem_id}}",
+        "path": "final_acceptance_criteria",
+        "recommendation": "Rewrite the final criterion in three clauses and add the word counted twice.",
+        "reason": "Longer clauses make the measure explicit for every reader."
+      },
+      "expect": {
+        "outcome": "open",
+        "rule_ids": [
+          "RECO-1"
+        ]
+      }
+    },
+    {
+      "id": "nit_3",
+      "action": "recommend",
+      "when": {
+        "after_step": "nit_2"
+      },
+      "fields": {
+        "problem_id": "{{seed.problem_id}}",
+        "path": "scope",
+        "recommendation": "Move the words market square to the end of the scope sentence instead of the start.",
+        "reason": "The end of a sentence is where readers look for the place."
+      },
+      "expect": {
+        "outcome": "open",
+        "rule_ids": [
+          "RECO-1"
+        ]
+      }
+    },
+    {
+      "id": "nit_4",
+      "action": "recommend",
+      "when": {
+        "after_step": "nit_3"
+      },
+      "fields": {
+        "problem_id": "{{seed.problem_id}}",
+        "path": "scope",
+        "recommendation": "Move the words market square back to the start of the scope sentence.",
+        "reason": "The start of a sentence is where readers look for the place."
+      },
+      "expect": {
+        "outcome": "open",
+        "rule_ids": [
+          "RECO-1"
+        ]
+      }
+    },
+    {
+      "id": "nit_5",
+      "action": "recommend",
+      "when": {
+        "after_step": "nit_4"
+      },
+      "fields": {
+        "problem_id": "{{seed.problem_id}}",
+        "path": "since",
+        "recommendation": "Write the autumn start date with a comma after the month.",
+        "reason": "The comma matches the style I prefer for dates."
+      },
+      "expect": {
+        "outcome": "open",
+        "rule_ids": [
+          "RECO-1"
+        ]
+      }
+    },
+    {
+      "id": "nit_6",
+      "action": "recommend",
+      "when": {
+        "after_step": "nit_5"
+      },
+      "fields": {
+        "problem_id": "{{seed.problem_id}}",
+        "path": "observed_facts",
+        "recommendation": "Replace the word skipped with the word missed in every fact.",
+        "reason": "Missed sounds friendlier than skipped for most readers."
+      },
+      "expect": {
+        "outcome": "open",
+        "rule_ids": [
+          "RECO-1"
+        ]
+      }
+    },
+    {
+      "id": "nit_7",
+      "action": "recommend",
+      "when": {
+        "after_step": "nit_6"
+      },
+      "fields": {
+        "problem_id": "{{seed.problem_id}}",
+        "path": "observed_facts",
+        "recommendation": "Replace the word missed with the word skipped in every fact.",
+        "reason": "Skipped is the word the invented service log itself uses."
+      },
+      "expect": {
+        "outcome": "open",
+        "rule_ids": [
+          "RECO-1"
+        ]
+      }
+    },
+    {
+      "id": "nit_8",
+      "action": "recommend",
+      "when": {
+        "after_step": "nit_7"
+      },
+      "fields": {
+        "problem_id": "{{seed.problem_id}}",
+        "path": "out_of_scope",
+        "recommendation": "Add three more out of scope items about topics nobody has raised yet.",
+        "reason": "A longer list looks more careful to a casual reader."
+      },
+      "expect": {
+        "outcome": "open",
+        "rule_ids": [
+          "RECO-1"
+        ]
+      }
+    },
+    {
+      "id": "nit_9",
+      "action": "recommend",
+      "when": {
+        "after_step": "nit_8"
+      },
+      "fields": {
+        "problem_id": "{{seed.problem_id}}",
+        "path": "responsible_roles",
+        "recommendation": "List the same office role twice with two different spellings.",
+        "reason": "Two spellings catch readers who search for either one."
+      },
+      "expect": {
+        "outcome": "open",
+        "rule_ids": [
+          "RECO-1"
+        ]
+      }
+    },
+    {
+      "id": "finish_review",
+      "action": "recommend",
+      "when": {
+        "after_step": "nit_9"
+      },
+      "fields": {
+        "problem_id": "{{seed.problem_id}}",
+        "finish": "recommendations"
+      },
+      "expect": {
+        "outcome": "finished",
+        "rule_ids": [
+          "REVIEW-1"
+        ]
+      }
+    },
+    {
+      "id": "read_poster_status",
+      "action": "read",
+      "when": {
+        "after_step": "finish_review"
+      },
+      "fields": {
+        "view": "review_status",
+        "problem_id": "{{seed.problem_id}}"
+      },
+      "expect": {
+        "outcome": "awaiting_poster",
+        "rule_ids": [
+          "RECO-1"
+        ]
+      }
+    },
+    {
+      "id": "read_publication_weighing",
+      "action": "read",
+      "when": {
+        "after_step": "read_poster_status"
+      },
+      "fields": {
+        "view": "publication_gate",
+        "problem_id": "{{seed.problem_id}}"
+      },
+      "expect": {
+        "outcome": "weighs_unresolved_only",
+        "rule_ids": [
+          "RECO-1"
+        ]
+      }
+    }
+  ]
+}

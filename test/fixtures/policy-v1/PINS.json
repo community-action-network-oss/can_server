@@ -1,5 +1,6 @@
 {
-  "base@1.0.0": "cca80d2c4c75576bd0f58e74119616ff57bd729b9d09645ebe0227ff347a4cdd",
-  "constitution@1.0.0": "bc5371db3af32e1705caa64c80cbe3cd5423ce8256ab838ab34532df0629f5c3",
-  "fiktiva-city@1.0.0": "c0e3d3cd2eabdf904f2daf3c080ee678d70b78eec7f4f53a6887c077f852c0da"
+  "base@1.0.0": "f2b0963dbfd3ea186ccfd25c00bd5c0fc08bd5ad1fc3a90144636ec9ebc65115",
+  "constitution@1.0.0": "f79b98771dbfa6484fb9c6dc812a14a0cc0da39fdf914631ff993e411695df65",
+  "fiktiva-city@1.0.0": "b98859e596fc7534cd975df71a2d025a29a550fa447d6a5f86295fb8caa0629c",
+  "fiktiva-north@1.0.0": "404730aaeff95b857227fa861227c69d0fd868b92c73909d3afd85e2f68fcf8d"
 }

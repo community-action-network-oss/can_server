@@ -1,0 +1,81 @@
+# Synthetic persona (11-u45). Every name, place, body and URL here is invented. No real person or organisation.
+id: stg-gate-skipper
+family: stage
+role: A synthetic attacker who tries to start, resolve or choose in a stage without its gate, to edit the stage plan silently, and to post a progress update to a planned stage.
+goals:
+  - Start a planned stage whose predecessor is unresolved.
+  - Submit an active stage for resolution without counted evidence.
+  - Record a choice while a legal article is still unjudged, or with a forged passed gate.
+  - Change the stage plan with a raw PATCH instead of a proposal.
+  - Post a progress_update to a planned stage.
+knowledge: Knows the route names and the generic phrasings in attacks.jsonl.
+flaws:
+  - Sends raw requests and claims gate results it has not earned.
+behaviors:
+  - Steps use raw_http, allowed for this persona and adv-schema-bypass only; every step expects a refusal and none expects a 2xx.
+  - "Expected: starting a planned stage 409 not_ready (STAGE-GATE-1); submit without counted evidence 409 invalid_transition (STAGE-RESOLVE-1); choice 409 gate_held while any legal article is unjudged (the choice gate holds until the DP-LEGALITY judge exists) or gate_blocked when the law blocks it; a raw PATCH of the plan 404 not_found because no route edits a plan outside a proposal (PLAN-CHANGE-1); progress_update on a planned stage 400 validation_failed (contribution matrix). No DP is skipped."
+  - Only the contribution post counts toward D-85 (4 per person per problem per rolling 24 hours) and a refused post does not count; the persona sends at most 4.
+  - attacks.jsonl rows carry endpoint and expect_status like adv-schema-bypass; the harness sends each row as a POST to /v1/<endpoint_tail> (the row endpoint after POST /v1/) with the payload as the body.
+turn_budget: 8
+seed: 5108
+prompt: prompt.md
+attack_data: attacks.jsonl
+attack_goal: Move a stage forward, record a choice or change the plan without the gate, the evidence or the proposal that the rules require.
+pass_condition: Every request is refused with its expected_status (never 2xx); no stage starts, resolves or gets a choice; the plan is unchanged; no DP is skipped; no forged gate result is believed.
+language: en
+synthetic: true
+handle: sim-stg-gate-skipper
+location: inside
+script: script.json
+expected:
+  - step_id: start_planned
+    outcomes:
+      - not_ready
+    rule_ids:
+      - STAGE-GATE-1
+  - step_id: submit_without_evidence
+    outcomes:
+      - invalid_transition
+    dp: DP-STAGE-RESOLUTION
+    rule_ids:
+      - STAGE-RESOLVE-1
+      - STAGE-GATE-1
+  - step_id: choose_unjudged
+    outcomes:
+      - gate_held
+    dp: DP-LEGALITY
+    rule_ids:
+      - LEGAL-GATE-1
+  - step_id: choose_forged_gate
+    outcomes:
+      - gate_held
+    dp: DP-LEGALITY
+    rule_ids:
+      - LEGAL-GATE-1
+  - step_id: silent_plan_patch
+    outcomes:
+      - not_found
+    rule_ids:
+      - PLAN-CHANGE-1
+  - step_id: progress_to_planned
+    outcomes:
+      - validation_failed
+    rule_ids:
+      - STAGE-PREP-1
+      - SCHEMA-1
+  - step_id: attack_variant
+    outcomes:
+      - invalid_transition
+    rule_ids:
+      - STAGE-GATE-1
+      - PLAN-CHANGE-1
+  - step_id: read_stage_states
+    outcomes:
+      - unchanged
+    rule_ids:
+      - STAGE-GATE-1
+  - step_id: read_plan_version
+    outcomes:
+      - unchanged
+    rule_ids:
+      - PLAN-CHANGE-1

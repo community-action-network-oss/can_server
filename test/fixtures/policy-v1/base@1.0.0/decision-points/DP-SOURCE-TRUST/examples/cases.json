@@ -1,0 +1,209 @@
+[
+  {
+    "id": "ex-ST-01",
+    "input": "jurisdiction: fiktiva-city\nsource_count: 1\nscope: problem\ndescription: \"The pump station on Reed Street has been out of service since March and the cellars on that street flood each time it rains.\"\nsource: src-1 | host: src-1.records.example.org | category: official_record | scheme: https | domain_check: pass | corroborated: no | scope: problem\nauthenticity_note src-1: \"Maintenance log entry from the Water Board for the Reed Street pump station, listing it out of service since March and three flood call-outs.\"",
+    "expected_outcome": "publish",
+    "rule_ids": [
+      "SOURCE-1"
+    ],
+    "note": "trusted record that names the condition",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "sources"
+    },
+    "expected": {
+      "per_source": [
+        {
+          "ref": "src-1",
+          "verdict": "establishes",
+          "reason": "Trusted, checked source that says specifically what it shows."
+        }
+      ]
+    },
+    "shot": true
+  },
+  {
+    "id": "ex-ST-02",
+    "input": "jurisdiction: fiktiva-city\nsource_count: 1\nscope: problem\ndescription: \"Only two of nine bus lines in Birch Quarter run after 21:00.\"\nsource: src-1 | host: src-1.records.example.org | category: statistics_body | scheme: https | domain_check: pass | corroborated: no | scope: problem\nauthenticity_note src-1: \"Annual transport survey table 4 gives night service by line and quarter; Birch Quarter shows two of nine lines.\"",
+    "expected_outcome": "publish",
+    "rule_ids": [
+      "SOURCE-1"
+    ],
+    "note": "statistics body, specific table",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "sources"
+    },
+    "expected": {
+      "per_source": [
+        {
+          "ref": "src-1",
+          "verdict": "establishes",
+          "reason": "Trusted, checked source that says specifically what it shows."
+        }
+      ]
+    }
+  },
+  {
+    "id": "ex-ST-03",
+    "input": "jurisdiction: fiktiva-city\nsource_count: 2\nscope: problem\ndescription: \"The footbridge over the Mill canal has had a closed railing section for a year.\"\nsource: src-1 | host: src-1.records.example.org | category: civil_society | scheme: https | domain_check: pass | corroborated: yes | scope: problem\nauthenticity_note src-1: \"Residents association inspection report with dated photos of the railing section.\"\nsource: src-2 | host: src-2.records.example.org | category: reputable_media | scheme: https | domain_check: pass | corroborated: no | scope: problem\nauthenticity_note src-2: \"Local news piece about the closure of the railing section.\"",
+    "expected_outcome": "publish",
+    "rule_ids": [
+      "SOURCE-1"
+    ],
+    "note": "boundary: civil society source that is corroborated",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "sources"
+    },
+    "expected": {
+      "per_source": [
+        {
+          "ref": "src-1",
+          "verdict": "establishes",
+          "reason": "Trusted, checked source that says specifically what it shows."
+        },
+        {
+          "ref": "src-2",
+          "verdict": "mentions_only",
+          "reason": "Trusted but it only repeats the claim."
+        }
+      ]
+    }
+  },
+  {
+    "id": "ex-ST-04",
+    "input": "jurisdiction: fiktiva-city\nsource_count: 0\nscope: problem\ndescription: \"Several streets in Harbour Row lose power for hours each week.\"",
+    "expected_outcome": "needs_revision",
+    "rule_ids": [
+      "SOURCE-1"
+    ],
+    "note": "no source yet",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "sources"
+    },
+    "revision_hint": "Add at least one source that shows the outages, or ask the reviewers to help you find one.",
+    "shot": true
+  },
+  {
+    "id": "ex-ST-05",
+    "input": "jurisdiction: fiktiva-city\nsource_count: 1\nscope: problem\ndescription: \"The recycling points in Oak Lane are always full.\"\nsource: src-1 | host: src-1.records.example.org | category: civil_society | scheme: https | domain_check: pass | corroborated: no | scope: problem\nauthenticity_note src-1: \"Our group photographed the recycling points on three weekends.\"",
+    "expected_outcome": "needs_revision",
+    "rule_ids": [
+      "SOURCE-1"
+    ],
+    "note": "boundary: civil society source, not corroborated",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "sources"
+    },
+    "revision_hint": "Source src-1 is not corroborated. Add a second independent source or a record from the city.",
+    "expected": {
+      "per_source": [
+        {
+          "ref": "src-1",
+          "verdict": "not_trusted",
+          "reason": "Not https, failed host check, or untrusted and uncorroborated."
+        }
+      ]
+    }
+  },
+  {
+    "id": "ex-ST-06",
+    "input": "jurisdiction: fiktiva-city\nsource_count: 1\nscope: problem\ndescription: \"Library opening hours were cut at all branches.\"\nsource: src-1 | host: src-1.records.example.org | category: reputable_media | scheme: https | domain_check: pass | corroborated: no | scope: problem\nauthenticity_note src-1: \"An article that says what I say, so it proves the problem.\"",
+    "expected_outcome": "needs_revision",
+    "rule_ids": [
+      "SOURCE-1"
+    ],
+    "note": "trusted category but the note is circular",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "sources"
+    },
+    "revision_hint": "Source src-1 only repeats the claim. In the note say what it shows, such as which branches and which hours.",
+    "expected": {
+      "per_source": [
+        {
+          "ref": "src-1",
+          "verdict": "mentions_only",
+          "reason": "Trusted but it only repeats the claim."
+        }
+      ]
+    },
+    "shot": true
+  },
+  {
+    "id": "ex-ST-07",
+    "input": "jurisdiction: fiktiva-city\nsource_count: 1\nscope: problem\ndescription: \"The school crossing on Elm Road has no signal.\"\nsource: src-1 | host: src-1.records.example.org | category: official_record | scheme: http | domain_check: pass | corroborated: no | scope: problem\nauthenticity_note src-1: \"Council road register entry for the Elm Road crossing.\"",
+    "expected_outcome": "needs_revision",
+    "rule_ids": [
+      "SOURCE-1",
+      "EVID-URL-1"
+    ],
+    "note": "http scheme",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "sources"
+    },
+    "revision_hint": "Source src-1 uses http. Cite the https address of the same record.",
+    "expected": {
+      "per_source": [
+        {
+          "ref": "src-1",
+          "verdict": "not_trusted",
+          "reason": "Not https, failed host check, or untrusted and uncorroborated."
+        }
+      ]
+    }
+  },
+  {
+    "id": "ex-ST-08",
+    "input": "jurisdiction: fiktiva-city\nsource_count: 1\nscope: problem\ndescription: \"Allotment waiting lists run to eleven years.\"\nsource: src-1 | host: allotments-fiktiva-city.example.org | category: official_record | scheme: https | domain_check: fail | corroborated: no | scope: problem\nauthenticity_note src-1: \"Official allotment list.\"",
+    "expected_outcome": "needs_revision",
+    "rule_ids": [
+      "SOURCE-1"
+    ],
+    "note": "look-alike host fails the check",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "sources"
+    },
+    "revision_hint": "Source src-1 failed the host check. Cite the record from the city's own site.",
+    "expected": {
+      "per_source": [
+        {
+          "ref": "src-1",
+          "verdict": "not_trusted",
+          "reason": "Not https, failed host check, or untrusted and uncorroborated."
+        }
+      ]
+    }
+  },
+  {
+    "id": "ex-ST-09",
+    "input": "jurisdiction: fiktiva-city\nscope: problem\ndescription: \"Street cleaning in Mill Quarter is skipped most Fridays.\"\nsource: src-1 | host: src-1.records.example.org | category: official_record | scheme: https | domain_check: pass | corroborated: no | scope: problem\nauthenticity_note src-1: \"Cleaning rota.\"",
+    "expected_outcome": "hold",
+    "rule_ids": [],
+    "note": "source_count line missing: fail closed",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "sources"
+    },
+    "expected": {
+      "hold_reason": "missing_input",
+      "missing_inputs": [
+        "source_count"
+      ]
+    }
+  }
+]

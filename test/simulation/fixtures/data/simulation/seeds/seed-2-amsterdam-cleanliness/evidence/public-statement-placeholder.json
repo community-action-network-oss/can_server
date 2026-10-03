@@ -1,0 +1,17 @@
+{
+  "id": "public-statement-placeholder",
+  "url": "https://evidence.sim.test/seed-2/public-statement-placeholder",
+  "description": "Retrieved-style public statement placeholder (synthetic). RETRIEVED, NOT VERIFIED: a stand-in for a statement a volunteer might paste; nobody has checked it and it is attributed to no one.",
+  "synthetic": true,
+  "tier_cap": 0,
+  "metadata": {
+    "publisher_role": "unattributed (placeholder)",
+    "date": "2026-06",
+    "kind": "retrieved_statement"
+  },
+  "synthetic_note": "Synthetic: invented for simulation, not real data.",
+  "data": {
+    "text": "Placeholder text: a statement that the city centre has never been cleaner. Retrieved, not verified, source unknown.",
+    "verified": false
+  }
+}

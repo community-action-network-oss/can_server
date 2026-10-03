@@ -1,0 +1,12 @@
+dp: DP-STAGE-RESOLUTION
+enforces: [STAGE-RESOLVE-1, STAGE-GATE-1]
+mode: blocking
+# Replaces the retired DP-STAGE (10-u64). Appealable (STAGE-RESOLVE-1): a resolution is a moderation decision. Blocking on stage evidence (stage resolving, ST04 to ST06); the same DP also runs async on a rule or policy change touching a resolved stage (trigger rule_change), where its result feeds DP-RERESOLUTION. No legal lines: legality of the choice is the server-side choice_gate line (DP-LEGALITY and DP-DECISION-RECORD).
+appealable: true
+inputs: [jurisdiction, trigger, stage_state, predecessors, choice_gate, choice, criteria_count, criteria, evidence_count, evidence_lines, evidence_tier, source_trust, poster_statement]
+outcomes: [publish, needs_revision, hold]
+thresholds:
+  confidence_floor:
+    publish: 0.90
+    needs_revision: 0.75
+  escalate_model_below: 0.90

@@ -1,0 +1,11 @@
+dp: DP-SOURCE-TRUST
+enforces: [SOURCE-1, EVID-URL-1]
+mode: blocking
+# Deterministic checks (scheme, category allowlist, domain) run before this prompt and arrive as the server source lines. Never fetches.
+inputs: [description, authenticity_note, sources, source_count, jurisdiction, scope]
+outcomes: [publish, needs_revision, hold]
+thresholds:
+  confidence_floor:
+    publish: 0.90
+    needs_revision: 0.75
+  escalate_model_below: 0.85

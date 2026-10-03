@@ -1,5 +1,5 @@
 dp: DP-LEGALITY
-enforces: [LEGAL-GATE-1, FIKT-COMPETENCE-1, FIKT-LAW-UPDATE-1]
+enforces: [LEGAL-GATE-1, FIKT-COMPETENCE-1, FIKT-LAW-UPDATE-1, LEGAL-STACK-1, LEGAL-CITE-1, TOPIC-FORBIDDEN-1]
 mode: blocking
 inputs: [stage_option, topic, stated_office, check_date, legal_note]
 outcomes: [publish, needs_revision, reject, hold]

@@ -1,0 +1,15 @@
+{
+  "type": "implementation_offer",
+  "basis": "inferred",
+  "target": "seed-2-problem",
+  "claim": "The waste services crew can run an extra mid-day round in the pilot area for the pilot period.",
+  "evidence_refs": [],
+  "uncertainty": "The crew time is an invented offer for the simulation.",
+  "assumptions": [
+    "I assume the extra round fits the shift plan."
+  ],
+  "offered_work": "Run one extra mid-day collection round and log bin fill levels in the pilot area for the planned period.",
+  "role_capacity": "Two crew members for one round a day (invented).",
+  "limits": "Only inside the pilot area and only for the planned period.",
+  "lawful_basis": "Within the municipality's own collection duties (stub, not judged)."
+}

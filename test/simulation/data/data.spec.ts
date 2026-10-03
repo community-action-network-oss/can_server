@@ -143,7 +143,7 @@ personas: ${f.personas}
 
   it('accepts a well formed seed', () => {
     writeSeed(seedYaml());
-    expect(loadSeeds(d).map((s) => s.id)).toEqual(['seed-1-test']);
+    expect(loadSeeds(d).map((s) => s.id)).toContain('seed-1-test'); // the synced data now ships real seeds too
   });
 
   it('refuses a seed whose framing differs from FRAMINGS.json', () => {

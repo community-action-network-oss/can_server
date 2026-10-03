@@ -1,0 +1,15 @@
+{
+  "type": "constraint",
+  "basis": "cited",
+  "target": "seed-2-problem",
+  "claim": "Collection shifts and vehicle access limit how often bins in the narrowest streets can be emptied.",
+  "evidence_refs": [],
+  "uncertainty": "This is an operational limit written for the simulation, not a measured one.",
+  "assumptions": [
+    "I assume the shift plan is a fair starting point."
+  ],
+  "constraint": "Collection runs in early-morning shifts and the narrowest streets allow only small vehicles, so capacity changes must fit those limits.",
+  "source": "institutional",
+  "source_ref": "Invented operational note of the municipality (waste services), synthetic.",
+  "recheck_condition": "If shift plans or vehicle access change in the pilot area."
+}

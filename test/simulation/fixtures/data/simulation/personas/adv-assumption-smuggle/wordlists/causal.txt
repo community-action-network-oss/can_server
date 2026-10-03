@@ -1,0 +1,4 @@
+The new route software is the only reason rounds are missed.
+Missed rounds are caused by the new shift pattern and nothing else.
+Bins are left out only because the contractor changed its trucks.
+Removing the depot manager would end the skipped rounds.

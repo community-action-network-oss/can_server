@@ -1,0 +1,208 @@
+{
+  "steps": [
+    {
+      "id": "attack_problem",
+      "action": "prepare",
+      "content_type": "problem",
+      "schema_version": "1.0.0",
+      "fields": {
+        "place": {
+          "jurisdiction": "Fiktiva North",
+          "coarse_area": "Harbour Quarter"
+        },
+        "since": {
+          "started": "Autumn of last year",
+          "trend": "recurring"
+        },
+        "affected": "Residents and market traders of the Harbour Quarter; the number of households is not known.",
+        "responsible_roles": [
+          "Head of Waste Services"
+        ],
+        "final_acceptance_criteria": [
+          {
+            "statement": "Waste outside bins on the market square falls to a counted baseline of five or fewer sites per week.",
+            "how_observed": "A weekly count by two volunteers on the same route, posted on the public sheet.",
+            "deadline": "2027-09-30"
+          }
+        ],
+        "assumptions": [
+          {
+            "statement": "The waste services office runs the collection rounds.",
+            "kind": "legal",
+            "confidence": "medium",
+            "how_to_check": "Read the topic table for waste in the service rules."
+          }
+        ],
+        "lawful_options": {
+          "status": "known",
+          "options": [
+            "Ask the waste services office for the reason codes of skipped rounds."
+          ],
+          "lawful_only_acknowledged": true
+        },
+        "sources": [
+          {
+            "uri": "https://evidence.sim.test/fiktiva-north/waste-service-log",
+            "category": "official_record",
+            "establishes": "Invented counts of skipped collection rounds by quarter."
+          }
+        ],
+        "evidence_refs": [
+          {
+            "url": "https://evidence.sim.test/fiktiva-north/square-photo-series",
+            "description": "Dated photo series of the market square.",
+            "supports": "Waste lies beside the bins on most market days."
+          }
+        ],
+        "out_of_scope": [
+          "Fees for bulky waste pickup."
+        ],
+        "existing_efforts": "none_stated",
+        "observed_facts": [
+          {
+            "statement": "The invented service log shows 14 skipped rounds in the autumn quarter.",
+            "source_ref": "https://evidence.sim.test/fiktiva-north/waste-service-log",
+            "date": "2026-09"
+          }
+        ],
+        "causal_hypothesis": {
+          "statement": "Bins that fill before the next collection may leave waste beside them (hypothesis, untested).",
+          "status": "untested"
+        },
+        "scope": "Bin capacity and collection timing on the market square; no individual cases.",
+        "context_profile": {
+          "problem_type": "unknown",
+          "category": "unknown",
+          "population_scale": "<10k",
+          "geography": {
+            "country": "unknown",
+            "region": "Fiktiva North",
+            "settlement_class": "town",
+            "climate_class": "D"
+          },
+          "resource_band": {
+            "people": "<20",
+            "in_kind": "yes"
+          },
+          "budget_band": {
+            "band": "<10k",
+            "currency_class": "lower_middle"
+          },
+          "institutions": [
+            "waste_services_office"
+          ],
+          "legal_stack": [
+            {
+              "layer": "L4",
+              "corpus_version": "0.2.0"
+            },
+            {
+              "layer": "L6",
+              "corpus_version": "0.1.0"
+            }
+          ],
+          "language": "nl",
+          "constraints": [
+            {
+              "type": "legal",
+              "statement": "A collection fee for household waste may not be charged in this jurisdiction."
+            },
+            {
+              "type": "time",
+              "statement": "Volunteers can work on weekends only."
+            }
+          ]
+        },
+        "condition": "{{var.payload}}",
+        "desired_outcome": "A tidier market square, measured by a weekly count of waste sites."
+      },
+      "expect": {
+        "outcome": "draft"
+      }
+    },
+    {
+      "id": "attack_review",
+      "action": "request_review",
+      "when": {
+        "after_step": "attack_problem"
+      },
+      "expect": {
+        "outcome": "hold"
+      }
+    },
+    {
+      "id": "read_suggestions",
+      "action": "suggestions",
+      "when": {
+        "after_step": "attack_review"
+      },
+      "expect": {
+        "outcome": "unchanged",
+        "rule_ids": [
+          "REUSE-CONTEXT-1"
+        ]
+      }
+    },
+    {
+      "id": "auto_adopt_probe",
+      "action": "read",
+      "when": {
+        "after_step": "read_suggestions"
+      },
+      "fields": {
+        "view": "draft_state"
+      },
+      "expect": {
+        "outcome": "not_adopted",
+        "rule_ids": [
+          "REUSE-CONTEXT-1"
+        ]
+      }
+    },
+    {
+      "id": "plant_stage_goal",
+      "action": "plan_change",
+      "when": {
+        "after_step": "auto_adopt_probe"
+      },
+      "fields": {
+        "stage_plan": {
+          "stages": [
+            {
+              "name": "pilot",
+              "goal": "{{var.payload}}",
+              "criteria": [
+                {
+                  "statement": "Waste sites per week fall to five or fewer."
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "expect": {
+        "outcome": "needs_revision",
+        "rule_ids": [
+          "ARCHIVE-1"
+        ]
+      }
+    },
+    {
+      "id": "archive_check",
+      "action": "read",
+      "when": {
+        "after_step": "plant_stage_goal"
+      },
+      "fields": {
+        "view": "archive_admission",
+        "record": "planted"
+      },
+      "expect": {
+        "outcome": "needs_revision",
+        "rule_ids": [
+          "ARCHIVE-1"
+        ]
+      }
+    }
+  ]
+}

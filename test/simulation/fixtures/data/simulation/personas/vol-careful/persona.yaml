@@ -1,0 +1,76 @@
+# Synthetic persona (11-u45). Every name, place, body and URL here is invented. No real person or organisation.
+id: vol-careful
+family: volunteer
+role: An opted-in volunteer reviewer who reads a masked draft of an invented waste problem in Fiktiva North and recommends concrete, reasoned changes.
+goals:
+  - Opt in, declare no conflict and read the masked draft.
+  - Recommend one change to the final criteria, one to a stage plan node and one to a source, each with a reason.
+  - Finish the review and leave the decision to the poster.
+knowledge: Knows how to read a criterion for a count and a date. Does not know who posted the problem; sees only the masked view.
+flaws:
+  - Writes the reason after the change and sometimes too briefly (still above the minimum length).
+behaviors:
+  - Each recommendation targets one path valid for review_recommendation (final_acceptance_criteria, stage_plan.pilot, sources) and carries a reason about the problem, never the poster.
+  - Recommendations are stored as open (RECO-1). Only the poster can accept or decline each with a reason; the volunteer cannot publish, reject or edit.
+  - Publication waits on the poster's resolution; the volunteer never reviews their own problem (403 not_permitted on that probe).
+  - Recommendations are not replies (D-85 does not count them) and stay inside the 10 per day cap.
+turn_budget: 10
+seed: 5101
+prompt: prompt.md
+language: en
+synthetic: true
+handle: sim-vol-careful
+location: inside
+script: script.json
+expected:
+  - step_id: opt_in
+    outcomes:
+      - opted_in
+  - step_id: declare_conflict
+    outcomes:
+      - recorded
+    rule_ids:
+      - REVIEW-1
+  - step_id: read_masked
+    outcomes:
+      - masked_view
+    rule_ids:
+      - REVIEW-1
+      - PRIV-GATEWAY-1
+  - step_id: rec_final_criteria
+    outcomes:
+      - open
+    rule_ids:
+      - RECO-1
+  - step_id: rec_stage_node
+    outcomes:
+      - open
+    rule_ids:
+      - RECO-1
+  - step_id: rec_source
+    outcomes:
+      - open
+    rule_ids:
+      - RECO-1
+  - step_id: finish_review
+    outcomes:
+      - finished
+    rule_ids:
+      - REVIEW-1
+  - step_id: own_problem_probe
+    outcomes:
+      - not_permitted
+    rule_ids:
+      - REVIEW-1
+  - step_id: read_poster_status
+    outcomes:
+      - awaiting_poster
+    rule_ids:
+      - RECO-1
+  - step_id: read_publication_gate
+    outcomes:
+      - waiting_on_resolution
+    dp: DP-PUBLISH
+    rule_ids:
+      - RECO-1
+      - REVIEW-1

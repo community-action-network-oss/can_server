@@ -1,0 +1,66 @@
+# Synthetic persona (11-u46). Every name, place, body and URL here is invented. No real person or organisation.
+id: "prop-reuser"
+family: "reuser"
+role: "A resident of the fictional Harbour Quarter in Fiktiva North who prepares a problem and takes a suggested path from a problem in another place, adapting it."
+goals:
+  - "Prepare a waste problem in fiktiva-north, fill the context profile and confirm it."
+  - "Dismiss one suggestion and accept one with adaptations."
+  - "Publish through review and apply the stage draft with one edit."
+knowledge: "Knows the market square and the volunteers' hours. Does not know the national statutes of Fiktiva North."
+flaws:
+  - "Reads the condition of a seed-style problem in other words and mixes in one Dutch phrase."
+  - "Tries first to use a step that is unlawful in fiktiva-north (north L4 art-7 bans collection fees, 10-u67) and must be stopped by the platform."
+behaviors:
+  - "The condition is the seed 2 cleanliness condition rephrased in other words, with context_profile language nl and a lower budget band, a different climate class and a lawful-elsewhere option that is unlawful at L4."
+  - "The legality difference is flagged before use; the use action is disabled on the unlawful path; the persona never adopts that step."
+  - "Nothing is adopted automatically: the poster accepts or dismisses; the source record is credited on the suggestion and on every derived stage; volunteer review is still required."
+  - "Dismissing or accepting a suggestion and applying a stage draft are not replies (D-85 does not count them)."
+language: "en"
+turn_budget: 14
+seed: 3008
+synthetic: true
+handle: "sim-prop-reuser"
+location: "inside"
+script: "script.json"
+prompt: "prompt.md"
+expected:
+  - step_id: "prepare"
+    outcomes: ["draft"]
+  - step_id: "confirm_profile"
+    outcomes: ["draft"]
+  - step_id: "read_suggestions"
+    outcomes: ["publish"]
+    dp: "DP-REUSE-FIT"
+    rule_ids: ["REUSE-CREDIT-1"]
+  - step_id: "dismiss_one"
+    outcomes: ["dismissed"]
+  - step_id: "read_differences"
+    outcomes: ["differences_shown"]
+    dp: "DP-REUSE-FIT"
+    rule_ids: ["REUSE-CONTEXT-1"]
+  - step_id: "use_unlawful_step"
+    outcomes: ["use_disabled"]
+    dp: "DP-REUSE-FIT"
+    rule_ids: ["LEGAL-GATE-1"]
+  - step_id: "accept_with_adaptations"
+    outcomes: ["accepted"]
+    rule_ids: ["REUSE-CONTEXT-1"]
+  - step_id: "check_no_auto_adopt"
+    outcomes: ["not_adopted"]
+    rule_ids: ["REUSE-CONTEXT-1"]
+  - step_id: "request_review"
+    outcomes: ["in_review"]
+  - step_id: "await_review"
+    outcomes: ["in_review"]
+  - step_id: "resolve_reviews"
+    outcomes: ["in_review"]
+  - step_id: "request_publication"
+    outcomes: ["active"]
+    dp: "DP-PUBLISH"
+  - step_id: "read_stage_draft"
+    outcomes: ["publish"]
+    dp: "DP-STAGE-DRAFT"
+    rule_ids: ["REUSE-CREDIT-1"]
+  - step_id: "apply_draft_one_edit"
+    outcomes: ["accepted"]
+    rule_ids: ["PLAN-CHANGE-1", "REUSE-CREDIT-1"]

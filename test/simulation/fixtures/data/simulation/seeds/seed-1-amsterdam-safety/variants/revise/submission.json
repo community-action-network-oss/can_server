@@ -1,0 +1,148 @@
+{
+  "condition": "Amsterdam residents face recurring explosions and violent incidents that may reduce actual and perceived public safety (simulation seed, synthetic evidence).",
+  "affected": "Residents, businesses and visitors in the area, and emergency responders who attend incidents, as groups; the size of each group is not known in this seed.",
+  "place": {
+    "jurisdiction": "Amsterdam",
+    "coarse_area": "Amsterdam, districts not named in this seed"
+  },
+  "since": {
+    "started": "Synthetic series starts in the first quarter of the invented data",
+    "trend": "recurring"
+  },
+  "observed_facts": [
+    {
+      "statement": "The invented incident-pattern table shows 39 explosive-device incidents over four quarters (synthetic).",
+      "source_ref": "https://evidence.sim.test/seed-1/incident-pattern-table",
+      "date": "2026-03"
+    },
+    {
+      "statement": "In the invented survey summary, 34 percent of 1200 respondents feel unsafe after dark (synthetic).",
+      "source_ref": "https://evidence.sim.test/seed-1/perceived-safety-survey",
+      "date": "2026-04"
+    },
+    {
+      "statement": "The invented response-time table shows the median arrival time for explosive-device incidents rising from 9 to 11 minutes (synthetic).",
+      "source_ref": "https://evidence.sim.test/seed-1/response-time-table",
+      "date": "2026-05"
+    }
+  ],
+  "uncertain_claims": [
+    {
+      "statement": "Incident numbers may be rising overall (synthetic items disagree).",
+      "why_uncertain": "The incident-pattern table and the contradicting item show different trends.",
+      "what_would_settle_it": "A third synthetic series using one counting method for both."
+    },
+    {
+      "statement": "Perceived safety may follow actual incident counts (hypothesis).",
+      "why_uncertain": "The survey and the counts cover different periods in this synthetic data.",
+      "what_would_settle_it": "Survey and counts for the same quarters."
+    }
+  ],
+  "sources": [
+    {
+      "uri": "https://evidence.sim.test/seed-1/incident-pattern-table",
+      "category": "statistics_body",
+      "establishes": "Invented quarterly incident counts by category.",
+      "authenticity_note": "Synthetic: invented for simulation, not real data."
+    },
+    {
+      "uri": "https://evidence.sim.test/seed-1/perceived-safety-survey",
+      "category": "research",
+      "establishes": "Invented share of respondents who feel unsafe after dark.",
+      "authenticity_note": "Synthetic: invented for simulation, not real data."
+    },
+    {
+      "uri": "https://evidence.sim.test/seed-1/response-time-table",
+      "category": "official_record",
+      "establishes": "Invented median response times by category.",
+      "authenticity_note": "Synthetic: invented for simulation, not real data."
+    },
+    {
+      "uri": "https://evidence.sim.test/seed-1/contradicting-incident-trend",
+      "category": "research",
+      "establishes": "An invented series that disagrees with the incident-pattern table.",
+      "authenticity_note": "Synthetic: invented for simulation, not real data."
+    }
+  ],
+  "evidence_refs": [
+    {
+      "url": "https://evidence.sim.test/seed-1/incident-pattern-table",
+      "description": "Invented quarterly counts of incidents by category (synthetic).",
+      "supports": "That incident categories and counts can be described."
+    },
+    {
+      "url": "https://evidence.sim.test/seed-1/perceived-safety-survey",
+      "description": "Invented survey summary on feeling unsafe after dark (synthetic).",
+      "supports": "That perceived safety can be measured as a share."
+    },
+    {
+      "url": "https://evidence.sim.test/seed-1/contradicting-incident-trend",
+      "description": "Invented series that disagrees with the table (synthetic).",
+      "supports": "That the trend is contested and needs one counting method."
+    }
+  ],
+  "causal_hypothesis": {
+    "statement": "The incidents are caused by weak lighting alone, and fixing the lights will end them.",
+    "status": "supported"
+  },
+  "scope": "Structural public safety measures such as lighting, crossings and response waiting times, in the synthetic Amsterdam setting; no individual cases.",
+  "responsible_roles": [
+    "The municipality (public safety department)",
+    "The prosecution service",
+    "Emergency services",
+    "Neighbourhood resident groups"
+  ],
+  "desired_outcome": "Fewer residents report feeling unsafe after dark, measured by the same survey before and after a pilot of a structural measure.",
+  "final_acceptance_criteria": [
+    {
+      "statement": "The share of respondents who feel unsafe after dark falls by at least five points in the pilot area.",
+      "how_observed": "The same survey, run before and after the pilot, compared by method and sample.",
+      "deadline": "2027-12"
+    },
+    {
+      "statement": "The report states what the survey does not show.",
+      "how_observed": "A second contributor checks the report for a limits section."
+    }
+  ],
+  "assumptions": [
+    {
+      "statement": "The invented tables use one counting method.",
+      "kind": "factual",
+      "confidence": "low",
+      "how_to_check": "Compare the notes of the incident-pattern table and the contradicting item."
+    },
+    {
+      "statement": "Perceived safety responds to lighting and crossings.",
+      "kind": "causal",
+      "confidence": "low",
+      "how_to_check": "Pilot a measure and run the survey before and after."
+    },
+    {
+      "statement": "No legal judgement is made here; the Amsterdam legal layers are unreviewed stubs and are not judged.",
+      "kind": "legal",
+      "confidence": "high"
+    },
+    {
+      "statement": "Policing and justice powers sit with other bodies than this problem can change.",
+      "kind": "scope",
+      "confidence": "medium",
+      "how_to_check": "Read the role map from the competence stage."
+    }
+  ],
+  "out_of_scope": [
+    "Naming or investigating any person or group.",
+    "Individual incidents, locations or cases.",
+    "Operational policing and prosecution decisions.",
+    "Any claim about a real incident or a real office's performance."
+  ],
+  "lawful_options": {
+    "status": "known",
+    "options": [
+      "Improve street lighting in a bounded pilot area.",
+      "Add or move safe crossings.",
+      "Publish response waiting times in a plain table."
+    ],
+    "lawful_only_acknowledged": true
+  },
+  "existing_efforts": "Unknown in this seed; the invented budget table lists lighting, mediation and outreach lines as examples only."
+}

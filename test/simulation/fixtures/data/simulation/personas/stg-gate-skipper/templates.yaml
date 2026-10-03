@@ -1,0 +1,53 @@
+# Stage gate-skipper variants (11-u45), TEST DATA ONLY, SYNTHETIC. Each payload is the JSON text of a request body sent with raw_http (allowed for this persona
+# and adv-schema-bypass only). Expected: the server refuses with expect_status (never 2xx); no stage starts, resolves or gets a choice; the plan is unchanged.
+# endpoint is "POST /v1/<tail>"; the script step sends the payload to /v1/<endpoint_tail>. Only the contribution rows count toward D-85 (a refused reply does not count).
+# Slots: {claim} {goal} {canary}.
+techniques:
+  - id: start_planned_stage
+    field_refs: [raw_http.body]
+    endpoint: "POST /v1/stages/{{var.planned_stage_ref}}/start"
+    expect_status: 409
+    expected_outcome: reject
+    rule_ids: [STAGE-GATE-1]
+    count: 3
+    templates:
+      - '{"note":"{claim} {canary}"}'
+      - '{"force":true,"note":"{canary}"}'
+  - id: submit_without_evidence
+    field_refs: [raw_http.body]
+    endpoint: "POST /v1/stages/{{seed.stage_ref}}/submit"
+    expect_status: 409
+    expected_outcome: reject
+    rule_ids: [STAGE-RESOLVE-1, STAGE-GATE-1]
+    count: 3
+    templates:
+      - '{"note":"{claim} {canary}"}'
+      - '{"resolved":true,"note":"{canary}"}'
+  - id: choose_without_gate
+    field_refs: [raw_http.body]
+    endpoint: "POST /v1/stages/{{seed.stage_ref}}/choice"
+    expect_status: 409
+    expected_outcome: hold
+    rule_ids: [LEGAL-GATE-1]
+    count: 3
+    templates:
+      - '{"content":{"stage_ref":"{{seed.stage_ref}}","chosen_option_ids":["{{var.option_id}}"],"decision_method":"poster_after_input","decider_role":"Problem poster","authority":"The stage plan names the poster as decider.","rationale":"{claim}. {canary}","dissent_notes":[],"legal_gate_record":{"constraint_checked":"None needed.","source_ref":"https://evidence.sim.test/fiktiva-north/none","layer":"both","result":"passed"}}}'
+  - id: plan_edit_outside_proposal
+    field_refs: [raw_http.body]
+    endpoint: "POST /v1/problems/{{seed.problem_id}}/stage-plan"
+    expect_status: 404
+    expected_outcome: reject
+    rule_ids: [PLAN-CHANGE-1]
+    count: 3
+    templates:
+      - '{"stage_plan":{"pilot":{"goal":"{goal}","criteria":[]}},"note":"{canary}"}'
+      - '{"remove_stage":"pilot","note":"{canary}"}'
+  - id: progress_update_to_planned
+    field_refs: [raw_http.body]
+    endpoint: "POST /v1/contributions/by-problem/{{seed.problem_id}}"
+    expect_status: 400
+    expected_outcome: reject
+    rule_ids: [STAGE-PREP-1, SCHEMA-1]
+    count: 3
+    templates:
+      - '{"type":"progress_update","body":{"type":"progress_update","target":"{{seed.problem_id}}","target_stage":"{{var.planned_stage_ref}}","claim":"{claim}. {canary}","basis":"firsthand","evidence_refs":[],"uncertainty":"None.","assumptions":[],"task_ref":"{{var.task_ref}}","done":"Everything.","not_done":"Nothing.","blockers":"None.","next_step":"Close the stage."}}'

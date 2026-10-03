@@ -1,0 +1,403 @@
+[
+  {
+    "id": "ex-RERES-01",
+    "input": "record_text: \"Replace the failed street lamps on Elm Row. Chosen by community vote after two options were compared.\"\ntrigger: legal_corpus_change\nold_policy_version: fiktiva-city@0.2.0\nnew_policy_version: fiktiva-city@0.3.0\narchive_state: solved\nproblem_exists: yes\njurisdiction_enabled: yes\ncontactable: yes\nimplementation: none\nlegal_gate: no articles cited\ndiff_article: L6/fiktiva/bylaws/art-9 | old=fiktiva-bylaws@0.0.9 | new=fiktiva-bylaws@0.1.0+6803ee8410e7\nlegal_L1: fiktiva-rights@0.1.0+dbc8851045a7 | no applicable article found\nlegal_L2: fiktiva-union@0.1.0+254d205f7f55 | no applicable article found\nlegal_L3: fiktiva-constitution@0.1.0+aefd9bacd67b | no applicable article found\nlegal_L4: fiktiva-statutes@0.1.0+e858abcd9128 | no applicable article found\nlegal_L5: fiktiva-region@0.1.0+996b73b37cf9 | no applicable article found\nlegal_L6: fiktiva-bylaws@0.1.0+6803ee8410e7 | L6/fiktiva/bylaws/art-9 | topic_ban: no | INVENTED TEXT. Council notices go on the municipal board.",
+    "expected_outcome": "publish",
+    "rule_ids": [
+      "RERESOLVE-1",
+      "LEGAL-STACK-1",
+      "LEGAL-CITE-1"
+    ],
+    "note": "unrelated article changed (notice boards): the conclusion stands, keep",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "record_text"
+    },
+    "shot": true,
+    "expected": {
+      "trigger": "legal_corpus_change",
+      "old_policy_version": "fiktiva-city@0.2.0",
+      "new_policy_version": "fiktiva-city@0.3.0",
+      "resolution": "keep",
+      "changed_findings": [
+        {
+          "layer": "L1",
+          "corpus_version": "fiktiva-rights@0.1.0+dbc8851045a7",
+          "effect": "none_found"
+        },
+        {
+          "layer": "L2",
+          "corpus_version": "fiktiva-union@0.1.0+254d205f7f55",
+          "effect": "none_found"
+        },
+        {
+          "layer": "L3",
+          "corpus_version": "fiktiva-constitution@0.1.0+aefd9bacd67b",
+          "effect": "none_found"
+        },
+        {
+          "layer": "L4",
+          "corpus_version": "fiktiva-statutes@0.1.0+e858abcd9128",
+          "effect": "none_found"
+        },
+        {
+          "layer": "L5",
+          "corpus_version": "fiktiva-region@0.1.0+996b73b37cf9",
+          "effect": "none_found"
+        },
+        {
+          "layer": "L6",
+          "article_id": "L6/fiktiva/bylaws/art-9",
+          "corpus_version": "fiktiva-bylaws@0.1.0+6803ee8410e7",
+          "old_corpus_version": "fiktiva-bylaws@0.0.9",
+          "effect": "no_effect"
+        }
+      ]
+    }
+  },
+  {
+    "id": "ex-RERES-02",
+    "input": "record_text: \"Fly a lantern drone show over the Canal Market on a festival day. The chosen option relied on the festival-day bylaw. The show took place and is finished.\"\ntrigger: legal_corpus_change\nold_policy_version: fiktiva-city@0.2.0\nnew_policy_version: fiktiva-city@0.3.0\narchive_state: solved\nproblem_exists: yes\njurisdiction_enabled: yes\ncontactable: yes\nimplementation: lawful_completed\nresolved_stages: stage-1 problem_framing; stage-2 solution_development; stage-3 solution_choice; stage-4 implementation; stage-5 final_verification\nlegal_gate: L6/fiktiva/bylaws/art-5 | fiktiva-bylaws@0.0.9\ndiff_article: L2/fiktiva/union/art-4 | old=fiktiva-union@0.0.9 | new=fiktiva-union@0.1.0+254d205f7f55\nlegal_L1: fiktiva-rights@0.1.0+dbc8851045a7 | no applicable article found\nlegal_L2: fiktiva-union@0.1.0+254d205f7f55 | L2/fiktiva/union/art-4 | topic_ban: no | INVENTED TEXT. No public body may fly lantern drones over an open market.\nlegal_L3: fiktiva-constitution@0.1.0+aefd9bacd67b | no applicable article found\nlegal_L4: fiktiva-statutes@0.1.0+e858abcd9128 | no applicable article found\nlegal_L5: fiktiva-region@0.1.0+996b73b37cf9 | no applicable article found\nlegal_L6: fiktiva-bylaws@0.1.0+6803ee8410e7 | L6/fiktiva/bylaws/art-5 | topic_ban: no | INVENTED TEXT. On festival days lantern drones are allowed over the Canal Market.",
+    "expected_outcome": "needs_revision",
+    "rule_ids": [
+      "RERESOLVE-1",
+      "LEGAL-STACK-1",
+      "LEGAL-CITE-1"
+    ],
+    "note": "conclusion changed at L2 but the implementation is lawfully completed: annotate, never reopen (T20 needs a new proposal)",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "record_text"
+    },
+    "shot": true,
+    "expected": {
+      "trigger": "legal_corpus_change",
+      "old_policy_version": "fiktiva-city@0.2.0",
+      "new_policy_version": "fiktiva-city@0.3.0",
+      "resolution": "annotate",
+      "changed_findings": [
+        {
+          "layer": "L1",
+          "corpus_version": "fiktiva-rights@0.1.0+dbc8851045a7",
+          "effect": "none_found"
+        },
+        {
+          "layer": "L2",
+          "article_id": "L2/fiktiva/union/art-4",
+          "corpus_version": "fiktiva-union@0.1.0+254d205f7f55",
+          "old_corpus_version": "fiktiva-union@0.0.9",
+          "effect": "changes_conclusion"
+        },
+        {
+          "layer": "L3",
+          "corpus_version": "fiktiva-constitution@0.1.0+aefd9bacd67b",
+          "effect": "none_found"
+        },
+        {
+          "layer": "L4",
+          "corpus_version": "fiktiva-statutes@0.1.0+e858abcd9128",
+          "effect": "none_found"
+        },
+        {
+          "layer": "L5",
+          "corpus_version": "fiktiva-region@0.1.0+996b73b37cf9",
+          "effect": "none_found"
+        },
+        {
+          "layer": "L6",
+          "article_id": "L6/fiktiva/bylaws/art-5",
+          "corpus_version": "fiktiva-bylaws@0.1.0+6803ee8410e7",
+          "effect": "no_effect"
+        }
+      ],
+      "annotate_reason": "not_feasible",
+      "infeasible_reason": "lawful_completed_implementation"
+    }
+  },
+  {
+    "id": "ex-RERES-03",
+    "input": "record_text: \"Plan a lantern drone show over the Canal Market. Option chosen at stage 3, not yet carried out.\"\ntrigger: legal_corpus_change\nold_policy_version: fiktiva-city@0.2.0\nnew_policy_version: fiktiva-city@0.3.0\narchive_state: stuck\nproblem_exists: yes\njurisdiction_enabled: yes\ncontactable: yes\nimplementation: none\nresolved_stages: stage-1 problem_framing; stage-2 solution_development; stage-3 solution_choice; stage-4 implementation; stage-5 final_verification\nlegal_gate: L6/fiktiva/bylaws/art-5 | fiktiva-bylaws@0.0.9\ndiff_article: L2/fiktiva/union/art-4 | old=fiktiva-union@0.0.9 | new=fiktiva-union@0.1.0+254d205f7f55\nlegal_L1: fiktiva-rights@0.1.0+dbc8851045a7 | no applicable article found\nlegal_L2: fiktiva-union@0.1.0+254d205f7f55 | L2/fiktiva/union/art-4 | topic_ban: no | INVENTED TEXT. No public body may fly lantern drones over an open market.\nlegal_L3: fiktiva-constitution@0.1.0+aefd9bacd67b | no applicable article found\nlegal_L4: fiktiva-statutes@0.1.0+e858abcd9128 | no applicable article found\nlegal_L5: fiktiva-region@0.1.0+996b73b37cf9 | no applicable article found\nlegal_L6: fiktiva-bylaws@0.1.0+6803ee8410e7 | L6/fiktiva/bylaws/art-5 | topic_ban: no | INVENTED TEXT. On festival days lantern drones are allowed over the Canal Market.",
+    "expected_outcome": "route_external",
+    "rule_ids": [
+      "RERESOLVE-1",
+      "LEGAL-STACK-1",
+      "LEGAL-CITE-1"
+    ],
+    "note": "changed legal conclusion on the chosen solution: reopen the choice stage only (T20)",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "record_text"
+    },
+    "shot": true,
+    "expected": {
+      "trigger": "legal_corpus_change",
+      "old_policy_version": "fiktiva-city@0.2.0",
+      "new_policy_version": "fiktiva-city@0.3.0",
+      "resolution": "reopen",
+      "changed_findings": [
+        {
+          "layer": "L1",
+          "corpus_version": "fiktiva-rights@0.1.0+dbc8851045a7",
+          "effect": "none_found"
+        },
+        {
+          "layer": "L2",
+          "article_id": "L2/fiktiva/union/art-4",
+          "corpus_version": "fiktiva-union@0.1.0+254d205f7f55",
+          "old_corpus_version": "fiktiva-union@0.0.9",
+          "effect": "changes_conclusion"
+        },
+        {
+          "layer": "L3",
+          "corpus_version": "fiktiva-constitution@0.1.0+aefd9bacd67b",
+          "effect": "none_found"
+        },
+        {
+          "layer": "L4",
+          "corpus_version": "fiktiva-statutes@0.1.0+e858abcd9128",
+          "effect": "none_found"
+        },
+        {
+          "layer": "L5",
+          "corpus_version": "fiktiva-region@0.1.0+996b73b37cf9",
+          "effect": "none_found"
+        },
+        {
+          "layer": "L6",
+          "article_id": "L6/fiktiva/bylaws/art-5",
+          "corpus_version": "fiktiva-bylaws@0.1.0+6803ee8410e7",
+          "effect": "no_effect"
+        }
+      ],
+      "reopen_target": "stages",
+      "affected_stage_ids": [
+        "stage-3"
+      ]
+    }
+  },
+  {
+    "id": "ex-RERES-04",
+    "input": "record_text: \"Publish the Mill Quarter moth census results as a public problem.\"\ntrigger: legal_corpus_change\nold_policy_version: fiktiva-city@0.2.0\nnew_policy_version: fiktiva-city@0.3.0\narchive_state: closed\nproblem_exists: yes\njurisdiction_enabled: yes\ncontactable: yes\nimplementation: none\nlegal_gate: no articles cited\ndiff_article: L6/fiktiva/bylaws/art-8 | old=fiktiva-bylaws@0.0.9 | new=fiktiva-bylaws@0.1.0+6803ee8410e7\nlegal_L1: fiktiva-rights@0.1.0+dbc8851045a7 | no applicable article found\nlegal_L2: fiktiva-union@0.1.0+254d205f7f55 | no applicable article found\nlegal_L3: fiktiva-constitution@0.1.0+aefd9bacd67b | no applicable article found\nlegal_L4: fiktiva-statutes@0.1.0+e858abcd9128 | no applicable article found\nlegal_L5: fiktiva-region@0.1.0+996b73b37cf9 | no applicable article found\nlegal_L6: fiktiva-bylaws@0.1.0+6803ee8410e7 | L6/fiktiva/bylaws/art-8 | topic_ban: no | INVENTED TEXT. No problem may be published about the moth census of the Mill Quarter.",
+    "expected_outcome": "route_external",
+    "rule_ids": [
+      "RERESOLVE-1",
+      "LEGAL-STACK-1",
+      "LEGAL-CITE-1"
+    ],
+    "note": "legality of the problem itself changed: reopen the problem (T20)",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "record_text"
+    },
+    "shot": true,
+    "expected": {
+      "trigger": "legal_corpus_change",
+      "old_policy_version": "fiktiva-city@0.2.0",
+      "new_policy_version": "fiktiva-city@0.3.0",
+      "resolution": "reopen",
+      "changed_findings": [
+        {
+          "layer": "L1",
+          "corpus_version": "fiktiva-rights@0.1.0+dbc8851045a7",
+          "effect": "none_found"
+        },
+        {
+          "layer": "L2",
+          "corpus_version": "fiktiva-union@0.1.0+254d205f7f55",
+          "effect": "none_found"
+        },
+        {
+          "layer": "L3",
+          "corpus_version": "fiktiva-constitution@0.1.0+aefd9bacd67b",
+          "effect": "none_found"
+        },
+        {
+          "layer": "L4",
+          "corpus_version": "fiktiva-statutes@0.1.0+e858abcd9128",
+          "effect": "none_found"
+        },
+        {
+          "layer": "L5",
+          "corpus_version": "fiktiva-region@0.1.0+996b73b37cf9",
+          "effect": "none_found"
+        },
+        {
+          "layer": "L6",
+          "article_id": "L6/fiktiva/bylaws/art-8",
+          "corpus_version": "fiktiva-bylaws@0.1.0+6803ee8410e7",
+          "old_corpus_version": "fiktiva-bylaws@0.0.9",
+          "effect": "changes_conclusion"
+        }
+      ],
+      "reopen_target": "problem"
+    }
+  },
+  {
+    "id": "ex-RERES-05",
+    "input": "record_text: \"Fix the broken swing in Quarry Park. Final verification used a single photo link as evidence.\"\ntrigger: policy_change\nold_policy_version: fiktiva-city@0.2.0\nnew_policy_version: fiktiva-city@0.3.0\narchive_state: stage_recheck\nproblem_exists: yes\njurisdiction_enabled: yes\ncontactable: yes\nimplementation: none\nresolved_stages: stage-1 problem_framing; stage-2 solution_development; stage-3 solution_choice; stage-4 implementation; stage-5 final_verification\nstage_choice: \"Accept the single photo link as final verification.\"\nstage_evidence: \"One photo link and a statement from the poster.\"\ndiff_rule: EVID-URL-1\nlegal_stack: not_applicable",
+    "expected_outcome": "route_external",
+    "rule_ids": [
+      "RERESOLVE-1"
+    ],
+    "note": "evidence rule changed on a solved problem: reopen the final verification stage (T21 REOPEN-EVIDENCE)",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "record_text"
+    },
+    "shot": true,
+    "expected": {
+      "trigger": "policy_change",
+      "old_policy_version": "fiktiva-city@0.2.0",
+      "new_policy_version": "fiktiva-city@0.3.0",
+      "resolution": "reopen",
+      "reopen_target": "stages",
+      "affected_stage_ids": [
+        "stage-5"
+      ],
+      "changed_rule_ids": [
+        "EVID-URL-1"
+      ]
+    }
+  },
+  {
+    "id": "ex-RERES-06",
+    "input": "record_text: \"Move the Line 12 stop to Mill Street. The record is short and does not say which office decided.\"\ntrigger: policy_change\nold_policy_version: fiktiva-city@0.2.0\nnew_policy_version: fiktiva-city@0.3.0\narchive_state: solved\nproblem_exists: yes\njurisdiction_enabled: yes\ncontactable: yes\nimplementation: none\ndiff_rule: FIKT-COMPETENCE-1\nlegal_stack: not_applicable",
+    "expected_outcome": "needs_revision",
+    "rule_ids": [
+      "RERESOLVE-1"
+    ],
+    "note": "unclear whether the changed rule touches the conclusion: annotate for audit, never reopen on low confidence (the model answers with confidence 0.55, below the 0.9 reopen floor)",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "record_text"
+    },
+    "shot": true,
+    "expected": {
+      "trigger": "policy_change",
+      "old_policy_version": "fiktiva-city@0.2.0",
+      "new_policy_version": "fiktiva-city@0.3.0",
+      "resolution": "annotate",
+      "annotate_reason": "low_confidence",
+      "changed_rule_ids": [
+        "FIKT-COMPETENCE-1"
+      ]
+    }
+  },
+  {
+    "id": "ex-RERES-07",
+    "input": "record_text: \"\"\ntrigger: policy_change\nold_policy_version: fiktiva-city@0.2.0\nnew_policy_version: fiktiva-city@0.3.0\narchive_state: solved\nproblem_exists: yes\njurisdiction_enabled: yes\ncontactable: yes\nimplementation: none\ndiff_rule: TONE-1\nlegal_stack: not_applicable",
+    "expected_outcome": "hold",
+    "rule_ids": [
+      "RERESOLVE-1"
+    ],
+    "note": "empty archive record: cannot decide, hold; the record is unchanged",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "record_text"
+    },
+    "shot": true,
+    "expected": {
+      "trigger": "policy_change",
+      "old_policy_version": "fiktiva-city@0.2.0",
+      "new_policy_version": "fiktiva-city@0.3.0",
+      "resolution": "hold",
+      "hold_reason": "missing_input",
+      "missing_inputs": [
+        "archive_record"
+      ]
+    }
+  },
+  {
+    "id": "ex-RERES-08",
+    "input": "record_text: \"Hold a rally in the Old Square. The permit rule was applied at the time.\"\ntrigger: legal_corpus_change\nold_policy_version: fiktiva-city@0.2.0\nnew_policy_version: fiktiva-city@0.3.0\narchive_state: closed\nproblem_exists: yes\njurisdiction_enabled: yes\ncontactable: yes\nimplementation: none\nlegal_gate: L3/fiktiva/constitution/art-7 | fiktiva-constitution@0.0.9\ndiff_article: L3/fiktiva/constitution/art-7 | old=fiktiva-constitution@0.0.9 | new=fiktiva-constitution@0.1.0+aefd9bacd67b\nlegal_L1: fiktiva-rights@0.1.0+dbc8851045a7 | L1/fiktiva/rights/art-3 | topic_ban: no | INVENTED TEXT. Peaceful assembly may be limited only as far as needed, and never by a general ban.\nlegal_L2: fiktiva-union@0.1.0+254d205f7f55 | no applicable article found\nlegal_L3: fiktiva-constitution@0.1.0+aefd9bacd67b | L3/fiktiva/constitution/art-7 | topic_ban: no | INVENTED TEXT. No assembly may take place in the Old Square without a permit. Permits are granted at the discretion of the Square Warden.\nlegal_L4: fiktiva-statutes@0.1.0+e858abcd9128 | no applicable article found\nlegal_L5: fiktiva-region@0.1.0+996b73b37cf9 | no applicable article found\nlegal_L6: fiktiva-bylaws@0.1.0+6803ee8410e7 | no applicable article found",
+    "expected_outcome": "hold",
+    "rule_ids": [
+      "RERESOLVE-1",
+      "LEGAL-STACK-1",
+      "LEGAL-CITE-1"
+    ],
+    "note": "L1 and L3 read differently: hold with a conflict note, never settled silently",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "record_text"
+    },
+    "shot": true,
+    "expected": {
+      "trigger": "legal_corpus_change",
+      "old_policy_version": "fiktiva-city@0.2.0",
+      "new_policy_version": "fiktiva-city@0.3.0",
+      "resolution": "hold",
+      "changed_findings": [
+        {
+          "layer": "L1",
+          "article_id": "L1/fiktiva/rights/art-3",
+          "corpus_version": "fiktiva-rights@0.1.0+dbc8851045a7",
+          "effect": "conflict"
+        },
+        {
+          "layer": "L2",
+          "corpus_version": "fiktiva-union@0.1.0+254d205f7f55",
+          "effect": "none_found"
+        },
+        {
+          "layer": "L3",
+          "article_id": "L3/fiktiva/constitution/art-7",
+          "corpus_version": "fiktiva-constitution@0.1.0+aefd9bacd67b",
+          "old_corpus_version": "fiktiva-constitution@0.0.9",
+          "effect": "conflict"
+        },
+        {
+          "layer": "L4",
+          "corpus_version": "fiktiva-statutes@0.1.0+e858abcd9128",
+          "effect": "none_found"
+        },
+        {
+          "layer": "L5",
+          "corpus_version": "fiktiva-region@0.1.0+996b73b37cf9",
+          "effect": "none_found"
+        },
+        {
+          "layer": "L6",
+          "corpus_version": "fiktiva-bylaws@0.1.0+6803ee8410e7",
+          "effect": "none_found"
+        }
+      ],
+      "hold_reason": "layer_conflict",
+      "conflict_note": "Layer L1 (L1/fiktiva/rights/art-3) and layer L3 (L3/fiktiva/constitution/art-7) read differently for this record; readings differ and the question is open."
+    }
+  },
+  {
+    "id": "ex-RERES-09",
+    "input": "record_text: \"Add two benches at the east gate of Quarry Park.\"\ntrigger: policy_change\nold_policy_version: fiktiva-city@0.2.0\nnew_policy_version: fiktiva-city@0.3.0\narchive_state: solved\nproblem_exists: yes\njurisdiction_enabled: no\ncontactable: yes\nimplementation: none\ndiff_rule: STAGE-RESOLVE-1\nlegal_stack: not_applicable",
+    "expected_outcome": "needs_revision",
+    "rule_ids": [
+      "RERESOLVE-1"
+    ],
+    "note": "conclusion would change but the jurisdiction is no longer enabled: annotate with the reason",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "record_text"
+    },
+    "shot": true,
+    "expected": {
+      "trigger": "policy_change",
+      "old_policy_version": "fiktiva-city@0.2.0",
+      "new_policy_version": "fiktiva-city@0.3.0",
+      "resolution": "annotate",
+      "annotate_reason": "not_feasible",
+      "infeasible_reason": "jurisdiction_disabled",
+      "changed_rule_ids": [
+        "STAGE-RESOLVE-1"
+      ]
+    }
+  }
+]

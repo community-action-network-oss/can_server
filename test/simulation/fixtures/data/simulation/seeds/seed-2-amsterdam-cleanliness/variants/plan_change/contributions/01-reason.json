@@ -1,0 +1,14 @@
+{
+  "type": "stakeholder_perspective",
+  "basis": "inferred",
+  "target": "seed-2-problem",
+  "claim": "Residents asked for a plain-language result after the pilot.",
+  "evidence_refs": [],
+  "uncertainty": "One perspective, written for the simulation, not a survey result.",
+  "assumptions": [
+    "I assume this concern is shared by others in the group."
+  ],
+  "group": "Residents",
+  "concern": "A technical report is not readable by most people.",
+  "what_would_help": "A short page that states the result and its limits."
+}

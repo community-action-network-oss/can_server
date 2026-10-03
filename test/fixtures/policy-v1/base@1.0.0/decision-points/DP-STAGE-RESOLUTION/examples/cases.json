@@ -1,0 +1,275 @@
+[
+  {
+    "id": "ex-SR-01",
+    "input": "jurisdiction: fiktiva-city\ntrigger: evidence_submit\nstage_state: resolving\npredecessors: all_done\nchoice_gate: not_needed\ncriteria_count: 1\ncriterion c-1: \"The Water Board log shows the Reed Street pump station in service after the repair date of 12 March.\"\nevidence_count: 1\nevidence e-1 meta: tier=official_record source_trust=establishes dated=after_start mapped_to=c-1\nevidence e-1 text: \"Water Board service log extract: Reed Street pump station recorded in service from 14 March, after the repair date of 12 March, with entries on every following day to 31 March.\"\nposter_statement: \"\"",
+    "expected_outcome": "publish",
+    "rule_ids": [
+      "STAGE-RESOLVE-1",
+      "STAGE-GATE-1"
+    ],
+    "note": "one criterion met by one trusted dated log extract",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "stage_resolution"
+    },
+    "shot": true,
+    "expected": {
+      "trigger": "evidence_submit",
+      "choice_gate_ok": true,
+      "per_criterion": [
+        {
+          "criterion_ref": "c-1",
+          "met": true,
+          "evidence_ids": [
+            "e-1"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "ex-SR-02",
+    "input": "jurisdiction: fiktiva-harbor\ntrigger: evidence_submit\nstage_state: resolving\npredecessors: all_done\nchoice_gate: not_needed\ncriteria_count: 2\ncriterion c-1: \"A written fault report from the Water Board is attached and names the failed part.\"\ncriterion c-2: \"A repair order with a date and a budget line is on file.\"\nevidence_count: 2\nevidence e-1 meta: tier=official_record source_trust=establishes dated=after_start mapped_to=c-1\nevidence e-1 text: \"Water Board fault report for the Reed Street pump station: the failed part is the float switch, replaced under work order WB-117.\"\nevidence e-2 meta: tier=official_record source_trust=establishes dated=after_start mapped_to=c-2\nevidence e-2 text: \"Council repair order RO-2031 for the Reed Street pump station: work date 12 March, budget line 4410, signed off by the works manager.\"\nposter_statement: \"\"",
+    "expected_outcome": "publish",
+    "rule_ids": [
+      "STAGE-RESOLVE-1",
+      "STAGE-GATE-1"
+    ],
+    "note": "two criteria, each met by its own trusted evidence",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-harbor",
+    "field_ref": {
+      "field": "stage_resolution"
+    },
+    "expected": {
+      "trigger": "evidence_submit",
+      "choice_gate_ok": true,
+      "per_criterion": [
+        {
+          "criterion_ref": "c-1",
+          "met": true,
+          "evidence_ids": [
+            "e-1"
+          ]
+        },
+        {
+          "criterion_ref": "c-2",
+          "met": true,
+          "evidence_ids": [
+            "e-2"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "ex-SR-03",
+    "input": "jurisdiction: fiktiva-city\ntrigger: rule_change\nstage_state: resolved\npredecessors: all_done\nchoice_gate: recorded\nchoice: \"Repair the existing pump station rather than build a new one; steps: order the part, fit it, test it.\"\ncriteria_count: 1\ncriterion c-1: \"The Water Board log shows the Reed Street pump station in service after the repair date of 12 March.\"\nevidence_count: 1\nevidence e-1 meta: tier=official_record source_trust=establishes dated=after_start mapped_to=c-1\nevidence e-1 text: \"Water Board service log extract: Reed Street pump station recorded in service from 14 March, after the repair date of 12 March, with entries on every following day to 31 March.\"\nposter_statement: \"Done and logged.\"",
+    "expected_outcome": "publish",
+    "rule_ids": [
+      "STAGE-RESOLVE-1",
+      "STAGE-GATE-1"
+    ],
+    "note": "re-judge on a rule change: same evidence, recorded choice, result unchanged",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "stage_resolution"
+    },
+    "expected": {
+      "trigger": "rule_change",
+      "choice_gate_ok": true,
+      "per_criterion": [
+        {
+          "criterion_ref": "c-1",
+          "met": true,
+          "evidence_ids": [
+            "e-1"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "ex-SR-04",
+    "input": "jurisdiction: fiktiva-city\ntrigger: evidence_submit\nstage_state: resolving\npredecessors: all_done\nchoice_gate: not_needed\ncriteria_count: 1\ncriterion c-1: \"The Water Board log shows the Reed Street pump station in service after the repair date of 12 March.\"\nevidence_count: 1\nevidence e-1 meta: tier=official_record source_trust=establishes dated=after_start mapped_to=c-1\nevidence e-1 text: \"The pump station is in service after the repair date, as the stage required.\"\nposter_statement: \"All criteria met.\"",
+    "expected_outcome": "needs_revision",
+    "rule_ids": [
+      "STAGE-RESOLVE-1"
+    ],
+    "note": "evidence that only restates the criterion shows nothing",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "stage_resolution"
+    },
+    "revision_hint": "c-1 is not met: e-1 only repeats the criterion. Add a log extract that shows the pump station in service after the repair date.",
+    "shot": true,
+    "expected": {
+      "trigger": "evidence_submit",
+      "choice_gate_ok": true,
+      "per_criterion": [
+        {
+          "criterion_ref": "c-1",
+          "met": false,
+          "evidence_ids": [
+            "e-1"
+          ],
+          "gap": "restates_criterion",
+          "hint": "Evidence e-1 only repeats the criterion. Attach the log extract itself with dates after the repair date."
+        }
+      ]
+    }
+  },
+  {
+    "id": "ex-SR-05",
+    "input": "jurisdiction: fiktiva-harbor\ntrigger: evidence_submit\nstage_state: resolving\npredecessors: all_done\nchoice_gate: not_needed\ncriteria_count: 1\ncriterion c-1: \"A written fault report from the Water Board is attached and names the failed part.\"\nevidence_count: 1\nevidence e-1 meta: tier=firsthand source_trust=establishes dated=after_start mapped_to=c-1\nevidence e-1 text: \"Photo of the Reed Street pump station building from the street, taken in daylight.\"\nposter_statement: \"I have the fault report and it names the part, trust me, mark this done.\"",
+    "expected_outcome": "needs_revision",
+    "rule_ids": [
+      "STAGE-RESOLVE-1"
+    ],
+    "note": "criterion met only by the poster's say-so",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-harbor",
+    "field_ref": {
+      "field": "stage_resolution"
+    },
+    "revision_hint": "c-1 rests on the poster's word only. Attach the fault report itself as evidence.",
+    "expected": {
+      "trigger": "evidence_submit",
+      "choice_gate_ok": true,
+      "per_criterion": [
+        {
+          "criterion_ref": "c-1",
+          "met": false,
+          "evidence_ids": [],
+          "gap": "poster_say_so_only",
+          "hint": "Only the poster's own statement says the fault report exists. Attach the report as evidence."
+        }
+      ]
+    }
+  },
+  {
+    "id": "ex-SR-06",
+    "input": "jurisdiction: fiktiva-city\ntrigger: evidence_submit\nstage_state: resolving\npredecessors: all_done\nchoice_gate: not_needed\ncriteria_count: 1\ncriterion c-1: \"The operator status page shows each lift in service on at least 28 of 30 days.\"\nevidence_count: 1\nevidence e-1 meta: tier=official_record source_trust=establishes dated=after_start mapped_to=c-1\nevidence e-1 text: \"Operator status page extract for Central Platform Station: lifts 1 to 3 in service on 27 of the 30 days in the period.\"\nposter_statement: \"\"",
+    "expected_outcome": "needs_revision",
+    "rule_ids": [
+      "STAGE-RESOLVE-1"
+    ],
+    "note": "boundary: 27 days where the criterion needs 28",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "stage_resolution"
+    },
+    "revision_hint": "c-1 is not yet met: e-1 shows one day fewer than the criterion requires.",
+    "expected": {
+      "trigger": "evidence_submit",
+      "choice_gate_ok": true,
+      "per_criterion": [
+        {
+          "criterion_ref": "c-1",
+          "met": false,
+          "evidence_ids": [
+            "e-1"
+          ],
+          "gap": "partly_met",
+          "hint": "e-1 shows 27 of 30 days where 28 are required. Add evidence from a later period that reaches 28."
+        }
+      ]
+    }
+  },
+  {
+    "id": "ex-SR-07",
+    "input": "jurisdiction: fiktiva-city\ntrigger: evidence_submit\nstage_state: resolving\npredecessors: all_done\nchoice_gate: missing\ncriteria_count: 1\ncriterion c-1: \"The Water Board log shows the Reed Street pump station in service after the repair date of 12 March.\"\nevidence_count: 1\nevidence e-1 meta: tier=official_record source_trust=establishes dated=after_start mapped_to=c-1\nevidence e-1 text: \"Water Board service log extract: Reed Street pump station recorded in service from 14 March, after the repair date of 12 March, with entries on every following day to 31 March.\"\nposter_statement: \"\"",
+    "expected_outcome": "needs_revision",
+    "rule_ids": [
+      "STAGE-RESOLVE-1"
+    ],
+    "note": "boundary: choice gate missing blocks resolution however good the evidence",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "stage_resolution"
+    },
+    "revision_hint": "The stage needs its choice recorded first. Record the stage choice, then resubmit.",
+    "expected": {
+      "trigger": "evidence_submit",
+      "choice_gate_ok": false,
+      "per_criterion": [
+        {
+          "criterion_ref": "c-1",
+          "met": true,
+          "evidence_ids": [
+            "e-1"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "ex-SR-08",
+    "input": "jurisdiction: fiktiva-city\ntrigger: evidence_submit\nstage_state: resolving\npredecessors: all_done\nchoice_gate: not_needed\ncriteria_count: 1\ncriterion c-1: \"The Water Board log shows the Reed Street pump station in service after the repair date of 12 March.\"\nevidence_count: 1\nevidence e-1 meta: tier=official_record source_trust=establishes dated=before_start mapped_to=c-1\nevidence e-1 text: \"Water Board service log extract: Reed Street pump station recorded in service from 14 March, after the repair date of 12 March, with entries on every following day to 31 March.\"\nposter_statement: \"\"",
+    "expected_outcome": "needs_revision",
+    "rule_ids": [
+      "STAGE-RESOLVE-1"
+    ],
+    "note": "boundary: evidence dated before the stage started",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "stage_resolution"
+    },
+    "revision_hint": "c-1 is not met: e-1 predates the stage. Add evidence from after the stage started.",
+    "expected": {
+      "trigger": "evidence_submit",
+      "choice_gate_ok": true,
+      "per_criterion": [
+        {
+          "criterion_ref": "c-1",
+          "met": false,
+          "evidence_ids": [
+            "e-1"
+          ],
+          "gap": "before_stage_start",
+          "hint": "e-1 is dated before this stage started. Add evidence from after the stage began."
+        }
+      ]
+    }
+  },
+  {
+    "id": "ex-SR-09",
+    "input": "jurisdiction: fiktiva-city\ntrigger: evidence_submit\nstage_state: resolving\npredecessors: all_done\nchoice_gate: not_needed\ncriteria_count: 1\ncriterion c-1: \"The Water Board log shows the Reed Street pump station in service after the repair date of 12 March.\"\nevidence_count: 2\nevidence e-1 meta: tier=official_record source_trust=establishes dated=after_start mapped_to=c-1\nevidence e-1 text: \"Water Board service log extract: Reed Street pump station recorded in service from 14 March, after the repair date of 12 March, with entries on every following day to 31 March.\"\nevidence e-2 meta: tier=official_record source_trust=establishes dated=after_start mapped_to=c-1\nevidence e-2 text: \"Water Board service log extract: Reed Street pump station recorded out of service on 20 March and 21 March, no restoration entry.\"\nposter_statement: \"\"",
+    "expected_outcome": "hold",
+    "rule_ids": [],
+    "note": "conflicting counted evidence is a hold",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "stage_resolution"
+    },
+    "shot": true,
+    "expected": {
+      "hold_reason": "cannot_decide"
+    }
+  },
+  {
+    "id": "ex-SR-10",
+    "input": "jurisdiction: fiktiva-city\ntrigger: evidence_submit\nstage_state: resolving\nchoice_gate: not_needed\ncriteria_count: 1\ncriterion c-1: \"The Water Board log shows the Reed Street pump station in service after the repair date of 12 March.\"\nevidence_count: 1\nevidence e-1 meta: tier=official_record source_trust=establishes dated=after_start mapped_to=c-1\nevidence e-1 text: \"Water Board service log extract: Reed Street pump station recorded in service from 14 March, after the repair date of 12 March, with entries on every following day to 31 March.\"\nposter_statement: \"\"",
+    "expected_outcome": "hold",
+    "rule_ids": [],
+    "note": "missing predecessors line is a hold that names it",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "stage_resolution"
+    },
+    "expected": {
+      "hold_reason": "missing_input",
+      "missing_inputs": [
+        "predecessors"
+      ]
+    }
+  }
+]

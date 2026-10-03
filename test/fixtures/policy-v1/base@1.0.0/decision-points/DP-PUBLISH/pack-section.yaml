@@ -1,0 +1,13 @@
+dp: DP-PUBLISH
+enforces: [REVIEW-1, RECO-1]
+mode: blocking
+# Aggregates the typed outcomes of the other blocking DPs (never raw text) plus the review summary. Deterministic aggregation and the server review gate run first; this DP refuses on its own too.
+inputs: [jurisdiction, poster_request, protected_core, guidelines, review_complete, reviews_completed, review_quorum_met, review_days_open, recommendations_open, recommendations_accepted, recommendations_declined, final_criteria_count, archive_suggestions, dp_outcomes, recommendation_items]
+outcomes: [publish, needs_revision, reject, route_external, hold]
+thresholds:
+  confidence_floor:
+    publish: 0.92
+    needs_revision: 0.75
+    reject: 0.92
+    route_external: 0.90
+  escalate_model_below: 0.85

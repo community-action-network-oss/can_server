@@ -1,0 +1,43 @@
+{
+  "id": "contradicting-cleanliness-audit",
+  "url": "https://evidence.sim.test/seed-2/contradicting-cleanliness-audit",
+  "description": "Contradicting item (synthetic): an invented audit in which the city centre index rises while complaints also rise, so it disagrees with the cleanliness-index table.",
+  "synthetic": true,
+  "tier_cap": 2,
+  "metadata": {
+    "publisher_role": "independent research role (invented)",
+    "date": "2026-07",
+    "kind": "table"
+  },
+  "synthetic_note": "Synthetic: invented for simulation, not real data.",
+  "data": {
+    "columns": [
+      "quarter",
+      "centre_overall",
+      "complaints"
+    ],
+    "rows": [
+      [
+        "Q1",
+        56,
+        290
+      ],
+      [
+        "Q2",
+        59,
+        300
+      ],
+      [
+        "Q3",
+        62,
+        310
+      ],
+      [
+        "Q4",
+        64,
+        330
+      ]
+    ],
+    "note": "Invented; deliberately disagrees with cleanliness-index-table and uses a different sampling method."
+  }
+}

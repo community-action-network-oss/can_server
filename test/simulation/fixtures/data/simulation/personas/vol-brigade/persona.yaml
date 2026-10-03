@@ -1,0 +1,124 @@
+# Synthetic persona (11-u45). Every name, place, body and URL here is invented. No real person or organisation.
+id: vol-brigade
+family: volunteer
+role: Six coordinated synthetic reviewer accounts that push the same low-quality change to one invented problem and test the daily recommendation cap.
+goals:
+  - "Make volume decide the outcome: force the change or the publication through many near-identical recommendations."
+knowledge: Knows only the generic phrasings in attacks.jsonl.
+flaws:
+  - All accounts post within seconds with near-identical wording.
+  - One account keeps going until the cap stops it.
+behaviors:
+  - attacks.jsonl rows carry account (sim-vol-brigade-01 to 06) and offset_ms (0 to window_ms after the run starts); the harness submits each row from its account as a recommendation on a valid path.
+  - "script.json shows the lead account: opt in, push the change, then fill the daily cap (10 per day) and expect the 11th to be refused with 429 rate_limited."
+  - "Expected: burst flagged to the lane as a signal, no ranking or quorum shortcut by volume, nothing published; a volunteer cannot request publication (not_permitted)."
+  - Recommendations are not replies, so the D-85 allowance is not what stops this.
+turn_budget: 16
+seed: 5104
+prompt: prompt.md
+attack_data: attacks.jsonl
+attack_goal: Force a change or a publication by volume of recommendations from coordinated reviewer accounts.
+pass_condition: Burst detection flags the wave; rows end hold or needs_revision per expected_outcome; the 11th recommendation of the day from one account is refused; nothing is published; no endpoint orders or ranks anything by count; quorum is not met by duplicate accounts of one wave alone.
+language: en
+synthetic: true
+handle: sim-vol-brigade
+location: inside
+script: script.json
+expected:
+  - step_id: opt_in
+    outcomes:
+      - opted_in
+  - step_id: declare_conflict
+    outcomes:
+      - recorded
+    rule_ids:
+      - REVIEW-1
+  - step_id: read_masked
+    outcomes:
+      - masked_view
+    rule_ids:
+      - REVIEW-1
+      - PRIV-GATEWAY-1
+  - step_id: push_change
+    outcomes:
+      - hold
+    dp: DP-DUPLICATE
+    rule_ids:
+      - REVIEW-1
+      - DUP-1
+  - step_id: cap_1
+    outcomes:
+      - hold
+    rule_ids:
+      - REVIEW-1
+      - DUP-1
+  - step_id: cap_2
+    outcomes:
+      - hold
+    rule_ids:
+      - REVIEW-1
+      - DUP-1
+  - step_id: cap_3
+    outcomes:
+      - hold
+    rule_ids:
+      - REVIEW-1
+      - DUP-1
+  - step_id: cap_4
+    outcomes:
+      - hold
+    rule_ids:
+      - REVIEW-1
+      - DUP-1
+  - step_id: cap_5
+    outcomes:
+      - hold
+    rule_ids:
+      - REVIEW-1
+      - DUP-1
+  - step_id: cap_6
+    outcomes:
+      - hold
+    rule_ids:
+      - REVIEW-1
+      - DUP-1
+  - step_id: cap_7
+    outcomes:
+      - hold
+    rule_ids:
+      - REVIEW-1
+      - DUP-1
+  - step_id: cap_8
+    outcomes:
+      - hold
+    rule_ids:
+      - REVIEW-1
+      - DUP-1
+  - step_id: cap_9
+    outcomes:
+      - hold
+    rule_ids:
+      - REVIEW-1
+      - DUP-1
+  - step_id: cap_10
+    outcomes:
+      - rate_limited
+    rule_ids:
+      - REVIEW-1
+  - step_id: read_burst_signal
+    outcomes:
+      - burst_flagged
+    rule_ids:
+      - DUP-1
+  - step_id: volunteer_publish_probe
+    outcomes:
+      - not_permitted
+    rule_ids:
+      - REVIEW-1
+  - step_id: read_publication_gate
+    outcomes:
+      - hold
+    dp: DP-PUBLISH
+    rule_ids:
+      - REVIEW-1
+      - RANK-1

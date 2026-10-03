@@ -1,5 +1,5 @@
 dp: DP-LEGAL
-enforces: [LEGAL-LANE-1]
+enforces: [LEGAL-LANE-1, LEGAL-STACK-1, LEGAL-CITE-1]
 mode: blocking
 inputs: [text]
 outcomes: [escalate_human, hold, publish]

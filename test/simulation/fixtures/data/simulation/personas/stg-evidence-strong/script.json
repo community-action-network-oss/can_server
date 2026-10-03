@@ -1,0 +1,84 @@
+{
+  "steps": [
+    {
+      "id": "post_evidence",
+      "action": "stage_evidence",
+      "content_type": "stage_evidence",
+      "fields": {
+        "stage_ref": "{{seed.stage_ref}}",
+        "criterion_ref": 1,
+        "evidence_refs": [
+          {
+            "url": "https://evidence.sim.test/fiktiva-north/weekly-count-sheet",
+            "description": "Weekly count of waste sites outside bins on the market square, two volunteers, same route, posted on the public sheet (invented).",
+            "tier_request": "firsthand"
+          },
+          {
+            "url": "https://evidence.sim.test/fiktiva-north/waste-service-log-q4",
+            "description": "Invented service log for the winter quarter with no skipped rounds.",
+            "tier_request": "official_record"
+          }
+        ],
+        "observation_date": "2026-11-20",
+        "outcome_statement": "The weekly count fell to four sites for four weeks running, and the service log shows no skipped round in the same weeks.",
+        "what_the_evidence_does_not_show": "It covers one square and one winter quarter only."
+      },
+      "expect": {
+        "outcome": "publish",
+        "rule_ids": [
+          "STAGE-RESOLVE-1"
+        ]
+      }
+    },
+    {
+      "id": "submit_stage",
+      "action": "stage_evidence",
+      "when": {
+        "after_step": "post_evidence"
+      },
+      "fields": {
+        "stage_ref": "{{seed.stage_ref}}",
+        "submit": true
+      },
+      "expect": {
+        "outcome": "resolved",
+        "rule_ids": [
+          "STAGE-RESOLVE-1"
+        ]
+      }
+    },
+    {
+      "id": "read_stage_state",
+      "action": "read",
+      "when": {
+        "after_step": "submit_stage"
+      },
+      "fields": {
+        "view": "stage_state",
+        "stage_ref": "{{seed.stage_ref}}"
+      },
+      "expect": {
+        "outcome": "resolved",
+        "rule_ids": [
+          "STAGE-RESOLVE-1"
+        ]
+      }
+    },
+    {
+      "id": "start_successor",
+      "action": "start_stage",
+      "when": {
+        "after_step": "read_stage_state"
+      },
+      "fields": {
+        "stage_ref": "{{var.ready_successor_ref}}"
+      },
+      "expect": {
+        "outcome": "active",
+        "rule_ids": [
+          "STAGE-GATE-1"
+        ]
+      }
+    }
+  ]
+}

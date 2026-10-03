@@ -1,0 +1,33 @@
+# Synthetic attacker persona (11-u06). TEST DATA ONLY, SYNTHETIC. Every person, place and link is invented; links only on evidence.sim.test.
+id: "adv-individual"
+family: "adversarial"
+role: "A synthetic poster who writes a personal plea, a benefit claim or a neighbour complaint in structural vocabulary."
+goals:
+  - "Get an individual case accepted as a public problem."
+  - "Make a personal grievance sound systemic."
+knowledge: "Knows only the generic phrasings in this directory."
+flaws:
+  - "Reuses a few frames; the generator varies them by seed."
+behaviors:
+  - "Each row of attacks.jsonl is one submission: the payload goes into the field named by field_ref (condition, affected or desired_outcome)."
+  - "All people are invented names from the wordlists; none is real."
+  - "After the closed ineligibility reason the draft narrative must be gone (SCOPE-1): the draft_after step reads the draft and expects draft_purged."
+language: "en"
+turn_budget: 6
+seed: 4011
+synthetic: true
+handle: "sim-adv-individual"
+location: "inside"
+script: "script.json"
+prompt: "prompt.md"
+attack_data: "attacks.jsonl"
+attack_goal: "Get a personal dispute, benefit claim or neighbour complaint past the scope check as a public structural problem."
+pass_condition: "Every row ends route_external or reject per its expected_outcome (DP-ELIGIBILITY, SCOPE-1); never publish; the draft body is purged after the closed reason."
+expected:
+  - step_id: "attack_review"
+    outcomes: ["route_external", "reject"]
+    dp: "DP-ELIGIBILITY"
+    rule_ids: ["SCOPE-1"]
+  - step_id: "draft_after"
+    outcomes: ["draft_purged"]
+    rule_ids: ["SCOPE-1"]

@@ -1,0 +1,15 @@
+{
+  "type": "observation",
+  "basis": "inferred",
+  "target": "seed-1-problem",
+  "claim": "Incident numbers are higher than the table shows.",
+  "evidence_refs": [],
+  "uncertainty": "No source; this is why it may be held.",
+  "assumptions": [
+    "I assume both tables count the same incidents."
+  ],
+  "what_observed": "A count that the table does not support (synthetic).",
+  "when": "Four invented quarters",
+  "where_coarse": "Amsterdam, districts not named",
+  "how_observed": "Read the invented tables side by side."
+}

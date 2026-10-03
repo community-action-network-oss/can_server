@@ -1,0 +1,114 @@
+id: seed-2-amsterdam-cleanliness
+number: 2
+framing: Amsterdam city centre remains dirty despite substantial government cleaning activity and expenditure.
+jurisdiction: nl-amsterdam
+label: Seed problem, synthetic evidence
+problem: problem.json
+rubric: rubric.yaml
+stage_plan: stage_plan.json
+evidence:
+  - id: cleanliness-index-table
+    url: https://evidence.sim.test/seed-2/cleanliness-index-table
+    description: "Cleanliness-index table (synthetic): invented quarterly cleanliness index (0 to 100, higher is cleaner) by invented zone type."
+    tier_cap: 2
+    synthetic: true
+  - id: complaint-volume-pattern
+    url: https://evidence.sim.test/seed-2/complaint-volume-pattern
+    description: "Complaint-volume pattern (synthetic): invented monthly complaints about waste outside bins, by weekday."
+    tier_cap: 2
+    synthetic: true
+  - id: collection-frequency-schedule
+    url: https://evidence.sim.test/seed-2/collection-frequency-schedule
+    description: "Collection-frequency schedule (synthetic): invented collections per week and bin fill level at collection, by invented zone type."
+    tier_cap: 2
+    synthetic: true
+  - id: expenditure-table
+    url: https://evidence.sim.test/seed-2/expenditure-table
+    description: "Expenditure table (synthetic): invented annual spend on cleaning budget lines in the city centre, four years."
+    tier_cap: 1
+    synthetic: true
+  - id: enforcement-statistics
+    url: https://evidence.sim.test/seed-2/enforcement-statistics
+    description: "Enforcement statistics (synthetic): invented quarterly counts of notices and fines by invented rule category."
+    tier_cap: 2
+    synthetic: true
+  - id: contradicting-cleanliness-audit
+    url: https://evidence.sim.test/seed-2/contradicting-cleanliness-audit
+    description: "Contradicting item (synthetic): an invented audit in which the city centre index rises while complaints also rise, so it disagrees with the cleanliness-index table."
+    tier_cap: 2
+    synthetic: true
+  - id: public-statement-placeholder
+    url: https://evidence.sim.test/seed-2/public-statement-placeholder
+    description: "Retrieved-style public statement placeholder (synthetic). RETRIEVED, NOT VERIFIED: a stand-in for a statement a volunteer might paste; nobody has checked it and it is attributed to no one."
+    tier_cap: 0
+    synthetic: true
+  - id: stage-measure-baseline-met
+    url: https://evidence.sim.test/seed-2/stage-measure-baseline-met
+    description: "Stage evidence (synthetic) for measure_baseline, criterion 1, met."
+    tier_cap: 2
+    synthetic: true
+  - id: stage-measure-baseline-not-met
+    url: https://evidence.sim.test/seed-2/stage-measure-baseline-not-met
+    description: "Stage evidence (synthetic) for measure_baseline, criterion 1, not met."
+    tier_cap: 0
+    synthetic: true
+  - id: stage-collection-design-met
+    url: https://evidence.sim.test/seed-2/stage-collection-design-met
+    description: "Stage evidence (synthetic) for collection_design, criterion 1, met."
+    tier_cap: 2
+    synthetic: true
+  - id: stage-collection-design-not-met
+    url: https://evidence.sim.test/seed-2/stage-collection-design-not-met
+    description: "Stage evidence (synthetic) for collection_design, criterion 1, not met."
+    tier_cap: 0
+    synthetic: true
+  - id: stage-enforcement-and-comms-met
+    url: https://evidence.sim.test/seed-2/stage-enforcement-and-comms-met
+    description: "Stage evidence (synthetic) for enforcement_and_comms, criterion 1, met."
+    tier_cap: 2
+    synthetic: true
+  - id: stage-enforcement-and-comms-not-met
+    url: https://evidence.sim.test/seed-2/stage-enforcement-and-comms-not-met
+    description: "Stage evidence (synthetic) for enforcement_and_comms, criterion 1, not met."
+    tier_cap: 0
+    synthetic: true
+  - id: stage-pilot-met
+    url: https://evidence.sim.test/seed-2/stage-pilot-met
+    description: "Stage evidence (synthetic) for pilot, criterion 1, met."
+    tier_cap: 2
+    synthetic: true
+  - id: stage-pilot-not-met
+    url: https://evidence.sim.test/seed-2/stage-pilot-not-met
+    description: "Stage evidence (synthetic) for pilot, criterion 1, not met."
+    tier_cap: 0
+    synthetic: true
+  - id: stage-measure-result-met
+    url: https://evidence.sim.test/seed-2/stage-measure-result-met
+    description: "Stage evidence (synthetic) for measure_result, criterion 1, met."
+    tier_cap: 2
+    synthetic: true
+  - id: stage-measure-result-not-met
+    url: https://evidence.sim.test/seed-2/stage-measure-result-not-met
+    description: "Stage evidence (synthetic) for measure_result, criterion 1, not met."
+    tier_cap: 0
+    synthetic: true
+variants:
+  - happy
+  - revise
+  - appeal
+  - stuck_or_blocked
+  - plan_change
+  - parallel_stages
+  - reuse
+  - attack_wave
+personas:
+  - adv-individual
+  - adv-spam
+  - app-appellant
+  - con-implementer
+  - con-institution
+  - con-resident
+  - con-skeptic
+  - prop-proposer
+  - sub-careful
+  - sub-wellmeaning-wrong

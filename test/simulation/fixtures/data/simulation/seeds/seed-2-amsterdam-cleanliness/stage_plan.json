@@ -1,0 +1,91 @@
+[
+  {
+    "name": "measure_baseline",
+    "label": "Measure the baseline",
+    "goal": "Record the cleanliness index in the city centre before any change, with the method written down, and say where the invented series disagree.",
+    "decision_method": "poster_after_input",
+    "depends_on": [],
+    "needs_choice": false,
+    "acceptance_criteria": [
+      {
+        "statement": "A baseline cleanliness index is recorded with its method and its limits.",
+        "measure": "Baseline checked against the cleanliness-index table and the contradicting audit.",
+        "target": "one baseline value"
+      }
+    ]
+  },
+  {
+    "name": "collection_design",
+    "label": "Design the collection change",
+    "goal": "Choose one structural change to bin capacity, collection timing or signage that fits the baseline and the operational limits.",
+    "decision_method": "poster_after_input",
+    "depends_on": [
+      "measure_baseline"
+    ],
+    "needs_choice": true,
+    "acceptance_criteria": [
+      {
+        "statement": "One collection option is chosen with its cost band, owner role and operational check.",
+        "measure": "Decision record lists the option and the checks.",
+        "target": "one option"
+      }
+    ]
+  },
+  {
+    "name": "enforcement_and_comms",
+    "label": "Plan enforcement and communication",
+    "goal": "Plan how existing rules are explained and applied to waste placement, through clear signage and plain notices, with no group singled out.",
+    "decision_method": "poster_after_input",
+    "depends_on": [
+      "measure_baseline"
+    ],
+    "needs_choice": false,
+    "acceptance_criteria": [
+      {
+        "statement": "A plain-language notice and a rule-application note are drafted and checked for fairness.",
+        "measure": "Second contributor reads both against the fairness check.",
+        "target": "two documents"
+      }
+    ]
+  },
+  {
+    "name": "pilot",
+    "label": "Run a small pilot",
+    "goal": "Run the chosen collection change with the notices in a bounded part of the city centre for a fixed period and record what was done.",
+    "decision_method": "poster_after_input",
+    "depends_on": [
+      "collection_design",
+      "enforcement_and_comms"
+    ],
+    "needs_choice": false,
+    "acceptance_criteria": [
+      {
+        "statement": "The pilot ran for the planned period in the planned area.",
+        "measure": "Implementer log and a verification note.",
+        "target": "one period"
+      }
+    ]
+  },
+  {
+    "name": "measure_result",
+    "label": "Measure the result",
+    "goal": "Measure the cleanliness index again with the baseline method and report the result with its limits.",
+    "decision_method": "poster_after_input",
+    "depends_on": [
+      "pilot"
+    ],
+    "needs_choice": false,
+    "acceptance_criteria": [
+      {
+        "statement": "The cleanliness index is measured before and after with the same method.",
+        "measure": "Index in the pilot area, compared before and after.",
+        "target": "ten points higher"
+      },
+      {
+        "statement": "The report states what the measurement does not show.",
+        "measure": "Report section reviewed by a second contributor.",
+        "target": "section present"
+      }
+    ]
+  }
+]

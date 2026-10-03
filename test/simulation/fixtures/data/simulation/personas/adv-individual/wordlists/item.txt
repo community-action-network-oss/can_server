@@ -1,0 +1,5 @@
+fridge
+sofa
+washing machine
+bicycle
+lawn mower

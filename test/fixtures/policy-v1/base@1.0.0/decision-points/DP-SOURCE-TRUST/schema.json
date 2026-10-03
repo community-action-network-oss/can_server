@@ -1,0 +1,347 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "can_policy/decision-points/DP-SOURCE-TRUST/schema.json",
+  "$comment": "Extends schemas/dp-output.schema.json: the shared keys are unchanged except outcome, which is narrowed. Unsafe outputs are unrepresentable: publish needs SOURCE-1, an establishing source and no untrusted or unchecked source, at confidence 0.90 or more; needs_revision needs a hint and 0.75 or more; hold needs a reason. There is no reject and no auto-pass. needs_revision forbids an unchecked verdict (hold instead). JSON Schema cannot count inputs or compare refs to the input: the handler checks that output refs equal input refs exactly (see eval/README.md).",
+  "title": "DP-SOURCE-TRUST output",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "outcome",
+    "rule_ids",
+    "confidence",
+    "reasons"
+  ],
+  "properties": {
+    "outcome": {
+      "enum": [
+        "publish",
+        "needs_revision",
+        "hold"
+      ]
+    },
+    "rule_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "field_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "field"
+      ],
+      "properties": {
+        "field": {
+          "type": "string"
+        },
+        "span": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "minItems": 2,
+          "maxItems": 2
+        }
+      }
+    },
+    "revision_hint": {
+      "type": "string"
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "reasons": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "per_source": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 20,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "ref",
+          "verdict",
+          "reason"
+        ],
+        "properties": {
+          "ref": {
+            "type": "string",
+            "pattern": "^[a-z0-9-]{1,32}$"
+          },
+          "verdict": {
+            "enum": [
+              "establishes",
+              "mentions_only",
+              "not_trusted",
+              "unchecked"
+            ]
+          },
+          "reason": {
+            "type": "string",
+            "maxLength": 300
+          }
+        }
+      },
+      "uniqueItems": true
+    },
+    "hold_reason": {
+      "enum": [
+        "missing_input",
+        "ambiguous_input",
+        "cannot_decide"
+      ]
+    },
+    "missing_inputs": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 6,
+      "items": {
+        "enum": [
+          "source_count",
+          "sources",
+          "description",
+          "domain_check",
+          "jurisdiction",
+          "scope"
+        ]
+      }
+    }
+  },
+  "allOf": [
+    {
+      "type": "object",
+      "properties": {
+        "reasons": {
+          "type": "array",
+          "maxItems": 6,
+          "items": {
+            "type": "string",
+            "maxLength": 600
+          }
+        },
+        "revision_hint": {
+          "type": "string",
+          "maxLength": 600
+        },
+        "rule_ids": {
+          "type": "array",
+          "maxItems": 3,
+          "items": {
+            "enum": [
+              "SOURCE-1",
+              "EVID-URL-1"
+            ]
+          }
+        }
+      },
+      "$comment": "Echo limits and the rules this DP may cite, set here because the shared property shapes must match schemas/dp-output.schema.json."
+    },
+    {
+      "if": {
+        "type": "object",
+        "required": [
+          "outcome"
+        ],
+        "properties": {
+          "outcome": {
+            "const": "publish"
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "required": [
+          "rule_ids",
+          "per_source",
+          "confidence"
+        ],
+        "properties": {
+          "rule_ids": {
+            "type": "array",
+            "minItems": 1,
+            "contains": {
+              "const": "SOURCE-1"
+            }
+          },
+          "confidence": {
+            "type": "number",
+            "minimum": 0.9
+          },
+          "per_source": {
+            "type": "array",
+            "contains": {
+              "type": "object",
+              "required": [
+                "verdict"
+              ],
+              "properties": {
+                "verdict": {
+                  "const": "establishes"
+                }
+              }
+            },
+            "not": {
+              "type": "array",
+              "contains": {
+                "type": "object",
+                "required": [
+                  "verdict"
+                ],
+                "properties": {
+                  "verdict": {
+                    "enum": [
+                      "not_trusted",
+                      "unchecked"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "revision_hint": false,
+          "hold_reason": false,
+          "missing_inputs": false
+        }
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "required": [
+          "outcome"
+        ],
+        "properties": {
+          "outcome": {
+            "const": "needs_revision"
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "required": [
+          "rule_ids",
+          "revision_hint",
+          "confidence"
+        ],
+        "properties": {
+          "rule_ids": {
+            "type": "array",
+            "minItems": 1,
+            "contains": {
+              "enum": [
+                "SOURCE-1",
+                "EVID-URL-1"
+              ]
+            }
+          },
+          "confidence": {
+            "type": "number",
+            "minimum": 0.75
+          },
+          "hold_reason": false,
+          "missing_inputs": false,
+          "revision_hint": true,
+          "per_source": {
+            "type": "array",
+            "not": {
+              "type": "array",
+              "contains": {
+                "type": "object",
+                "required": [
+                  "verdict"
+                ],
+                "properties": {
+                  "verdict": {
+                    "const": "unchecked"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "required": [
+          "outcome"
+        ],
+        "properties": {
+          "outcome": {
+            "const": "hold"
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "required": [
+          "hold_reason"
+        ],
+        "properties": {
+          "hold_reason": true
+        }
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "required": [
+          "hold_reason"
+        ],
+        "properties": {
+          "hold_reason": {
+            "const": "missing_input"
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "required": [
+          "missing_inputs",
+          "outcome"
+        ],
+        "properties": {
+          "outcome": {
+            "const": "hold"
+          },
+          "missing_inputs": true
+        }
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "required": [
+          "hold_reason"
+        ],
+        "properties": {
+          "hold_reason": {
+            "enum": [
+              "ambiguous_input",
+              "cannot_decide"
+            ]
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "properties": {
+          "missing_inputs": false,
+          "outcome": {
+            "const": "hold"
+          }
+        }
+      }
+    }
+  ]
+}

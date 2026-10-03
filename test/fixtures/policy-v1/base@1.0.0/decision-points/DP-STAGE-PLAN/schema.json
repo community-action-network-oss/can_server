@@ -1,0 +1,529 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "can_policy/decision-points/DP-STAGE-PLAN/schema.json",
+  "$comment": "Extends schemas/dp-output.schema.json: the shared keys are unchanged except outcome, which is narrowed. Unsafe outputs are unrepresentable: publish needs STAGE-GATE-1, confidence 0.90 or more, every judged stage ok, no uncovered final criterion, and on a plan change PLAN-CHANGE-1 with all three change checks true; a plan change is never published as absent. Missing, conflicting or unreadable input is a hold. There is no reject outcome and no auto-pass. JSON Schema cannot compare refs to the input: the handler checks that output refs equal input refs exactly (see eval/README.md).",
+  "title": "DP-STAGE-PLAN output",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "outcome",
+    "rule_ids",
+    "confidence",
+    "reasons"
+  ],
+  "properties": {
+    "outcome": {
+      "enum": [
+        "publish",
+        "needs_revision",
+        "hold"
+      ]
+    },
+    "rule_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "field_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "field"
+      ],
+      "properties": {
+        "field": {
+          "type": "string"
+        },
+        "span": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "minItems": 2,
+          "maxItems": 2
+        }
+      }
+    },
+    "revision_hint": {
+      "type": "string"
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "reasons": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "trigger": {
+      "enum": [
+        "submit",
+        "publish_run",
+        "plan_change"
+      ]
+    },
+    "plan_absent": {
+      "type": "boolean"
+    },
+    "per_stage": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 40,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "ref",
+          "verdict"
+        ],
+        "properties": {
+          "ref": {
+            "type": "string",
+            "pattern": "^[sr]-[0-9]{1,3}$"
+          },
+          "verdict": {
+            "enum": [
+              "ok",
+              "vague_catch_all",
+              "duplicate",
+              "misordered",
+              "not_independent",
+              "unjustified_removal",
+              "unjustified_skip"
+            ]
+          },
+          "hint": {
+            "type": "string",
+            "maxLength": 300
+          }
+        }
+      }
+    },
+    "uncovered_final_criteria": {
+      "type": "array",
+      "maxItems": 20,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^f-[0-9]{1,3}$"
+      }
+    },
+    "change_checks": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "reason_given",
+        "removals_justified",
+        "criteria_reachable"
+      ],
+      "properties": {
+        "reason_given": {
+          "type": "boolean"
+        },
+        "removals_justified": {
+          "type": "boolean"
+        },
+        "criteria_reachable": {
+          "type": "boolean"
+        }
+      }
+    },
+    "hold_reason": {
+      "enum": [
+        "missing_input",
+        "ambiguous_input",
+        "cannot_decide"
+      ]
+    },
+    "missing_inputs": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 10,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "jurisdiction",
+          "trigger",
+          "dag_check",
+          "stage_count",
+          "final_count",
+          "final_criteria",
+          "stage_lines",
+          "change_reason",
+          "removed_count",
+          "removed_lines"
+        ]
+      }
+    }
+  },
+  "allOf": [
+    {
+      "type": "object",
+      "properties": {
+        "reasons": {
+          "type": "array",
+          "maxItems": 6,
+          "items": {
+            "type": "string",
+            "maxLength": 600
+          }
+        },
+        "revision_hint": {
+          "type": "string",
+          "maxLength": 600
+        },
+        "rule_ids": {
+          "type": "array",
+          "maxItems": 2,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "STAGE-GATE-1",
+              "PLAN-CHANGE-1"
+            ]
+          }
+        }
+      },
+      "$comment": "Echo limits and the rules this DP may cite, set here because the shared property shapes must match schemas/dp-output.schema.json."
+    },
+    {
+      "if": {
+        "type": "object",
+        "required": [
+          "outcome"
+        ],
+        "properties": {
+          "outcome": {
+            "const": "publish"
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "required": [
+          "rule_ids",
+          "confidence",
+          "trigger",
+          "uncovered_final_criteria"
+        ],
+        "properties": {
+          "rule_ids": {
+            "type": "array",
+            "minItems": 1,
+            "contains": {
+              "const": "STAGE-GATE-1"
+            }
+          },
+          "confidence": {
+            "type": "number",
+            "minimum": 0.9
+          },
+          "trigger": true,
+          "uncovered_final_criteria": {
+            "type": "array",
+            "maxItems": 0
+          },
+          "per_stage": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "verdict"
+              ],
+              "properties": {
+                "verdict": {
+                  "const": "ok"
+                }
+              }
+            }
+          },
+          "plan_absent": true,
+          "revision_hint": false,
+          "hold_reason": false,
+          "missing_inputs": false,
+          "change_checks": true
+        },
+        "anyOf": [
+          {
+            "type": "object",
+            "required": [
+              "per_stage"
+            ],
+            "properties": {
+              "per_stage": {
+                "type": "array",
+                "minItems": 1
+              },
+              "plan_absent": {
+                "const": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "required": [
+              "plan_absent"
+            ],
+            "properties": {
+              "plan_absent": {
+                "const": true
+              },
+              "per_stage": false
+            }
+          }
+        ]
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "required": [
+          "outcome",
+          "trigger"
+        ],
+        "properties": {
+          "outcome": {
+            "const": "publish"
+          },
+          "trigger": {
+            "const": "plan_change"
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "required": [
+          "rule_ids",
+          "change_checks",
+          "per_stage"
+        ],
+        "properties": {
+          "rule_ids": {
+            "allOf": [
+              {
+                "type": "array",
+                "minItems": 1,
+                "contains": {
+                  "const": "STAGE-GATE-1"
+                }
+              },
+              {
+                "type": "array",
+                "minItems": 1,
+                "contains": {
+                  "const": "PLAN-CHANGE-1"
+                }
+              }
+            ],
+            "type": "array"
+          },
+          "change_checks": {
+            "type": "object",
+            "required": [
+              "reason_given",
+              "removals_justified",
+              "criteria_reachable"
+            ],
+            "properties": {
+              "reason_given": {
+                "const": true
+              },
+              "removals_justified": {
+                "const": true
+              },
+              "criteria_reachable": {
+                "const": true
+              }
+            }
+          },
+          "per_stage": {
+            "type": "array",
+            "minItems": 1
+          },
+          "plan_absent": {
+            "const": false
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "required": [
+          "outcome",
+          "trigger"
+        ],
+        "properties": {
+          "outcome": {
+            "enum": [
+              "publish",
+              "needs_revision"
+            ]
+          },
+          "trigger": {
+            "const": "plan_change"
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "required": [
+          "rule_ids"
+        ],
+        "properties": {
+          "rule_ids": {
+            "type": "array",
+            "minItems": 1,
+            "contains": {
+              "const": "PLAN-CHANGE-1"
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "required": [
+          "outcome"
+        ],
+        "properties": {
+          "outcome": {
+            "const": "needs_revision"
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "required": [
+          "rule_ids",
+          "revision_hint",
+          "confidence",
+          "trigger"
+        ],
+        "properties": {
+          "rule_ids": {
+            "type": "array",
+            "minItems": 1
+          },
+          "revision_hint": {
+            "type": "string",
+            "minLength": 1
+          },
+          "confidence": {
+            "type": "number",
+            "minimum": 0.75
+          },
+          "trigger": true,
+          "hold_reason": false,
+          "missing_inputs": false
+        }
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "required": [
+          "outcome"
+        ],
+        "properties": {
+          "outcome": {
+            "const": "hold"
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "required": [
+          "hold_reason"
+        ],
+        "properties": {
+          "hold_reason": true
+        }
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "required": [
+          "hold_reason"
+        ],
+        "properties": {
+          "hold_reason": {
+            "const": "missing_input"
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "required": [
+          "missing_inputs",
+          "outcome"
+        ],
+        "properties": {
+          "outcome": {
+            "const": "hold"
+          },
+          "missing_inputs": true
+        }
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "required": [
+          "hold_reason"
+        ],
+        "properties": {
+          "hold_reason": {
+            "enum": [
+              "ambiguous_input",
+              "cannot_decide"
+            ]
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "properties": {
+          "outcome": {
+            "const": "hold"
+          },
+          "missing_inputs": false
+        }
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "required": [
+          "plan_absent"
+        ],
+        "properties": {
+          "plan_absent": {
+            "const": true
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "properties": {
+          "per_stage": false,
+          "outcome": {
+            "enum": [
+              "publish",
+              "needs_revision",
+              "hold"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

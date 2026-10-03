@@ -1,0 +1,373 @@
+[
+  {
+    "id": "ex-CR-01",
+    "input": "jurisdiction: fiktiva-city\nscope: final\ndesired_outcome: \"Reed Street cellars stop flooding when it rains.\"\ncriterion_count: 1\ncriterion c-1: \"By 30 June, the Reed Street pump station is back in service and the Water Board log shows no cellar flood call-out on that street for the following 90 days.\"\nlegal_stack: not_applicable",
+    "expected_outcome": "publish",
+    "rule_ids": [
+      "CRITERIA-1"
+    ],
+    "note": "measurable with a dated observation",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "criteria"
+    },
+    "expected": {
+      "per_criterion": [
+        {
+          "ref": "c-1",
+          "measurable": true,
+          "lawful": "yes",
+          "fits": true
+        }
+      ]
+    },
+    "shot": true
+  },
+  {
+    "id": "ex-CR-02",
+    "input": "jurisdiction: fiktiva-city\nscope: final\ndesired_outcome: \"Birch Quarter has a useful evening bus service.\"\ncriterion_count: 2\ncriterion c-1: \"The published bus timetable lists a service after 21:00 on at least six of the nine Birch Quarter lines.\"\ncriterion c-2: \"The service runs on every day of the week for 3 months and the operator's monthly report shows the runs.\"\nlegal_stack: not_applicable",
+    "expected_outcome": "publish",
+    "rule_ids": [
+      "CRITERIA-1"
+    ],
+    "note": "two measurable criteria, no deadline needed",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "criteria"
+    },
+    "expected": {
+      "per_criterion": [
+        {
+          "ref": "c-1",
+          "measurable": true,
+          "lawful": "yes",
+          "fits": true
+        },
+        {
+          "ref": "c-2",
+          "measurable": true,
+          "lawful": "yes",
+          "fits": true
+        }
+      ]
+    }
+  },
+  {
+    "id": "ex-CR-03",
+    "input": "jurisdiction: fiktiva-city\nscope: stage\nstage_goal: \"Decide who repairs the Reed Street pump station and when.\"\ncriterion_count: 1\ncriterion c-1: \"The Water Board publishes a repair plan for the pump station with a dated start.\"\nlegal_stack: not_applicable",
+    "expected_outcome": "publish",
+    "rule_ids": [
+      "CRITERIA-1"
+    ],
+    "note": "stage criterion serves the stage goal",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "criteria"
+    },
+    "expected": {
+      "per_criterion": [
+        {
+          "ref": "c-1",
+          "measurable": true,
+          "lawful": "yes",
+          "fits": true
+        }
+      ]
+    }
+  },
+  {
+    "id": "ex-CR-04",
+    "input": "jurisdiction: fiktiva-city\nscope: final\ndesired_outcome: \"Harbour Row bins are emptied on time.\"\ncriterion_count: 1\ncriterion c-1: \"Things get better on Harbour Row.\"\nlegal_stack: not_applicable",
+    "expected_outcome": "needs_revision",
+    "rule_ids": [
+      "CRITERIA-1"
+    ],
+    "note": "vacuous criterion",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "criteria"
+    },
+    "revision_hint": "Rewrite c-1 as something an observer can check, such as: Harbour Row bins are emptied on the published day in at least 9 of 10 weeks, shown by the collection log.",
+    "expected": {
+      "per_criterion": [
+        {
+          "ref": "c-1",
+          "measurable": false,
+          "lawful": "yes",
+          "fits": false
+        }
+      ]
+    },
+    "shot": true
+  },
+  {
+    "id": "ex-CR-05",
+    "input": "jurisdiction: fiktiva-city\nscope: final\ndesired_outcome: \"Oak Lane has working street lights.\"\ncriterion_count: 1\ncriterion c-1: \"People in Oak Lane feel safer walking at night.\"\nlegal_stack: not_applicable",
+    "expected_outcome": "needs_revision",
+    "rule_ids": [
+      "CRITERIA-1"
+    ],
+    "note": "feeling is not measurable as written",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "criteria"
+    },
+    "revision_hint": "Rewrite c-1 so it can be checked, for example: every street light on Oak Lane works at the monthly inspection for 6 months.",
+    "expected": {
+      "per_criterion": [
+        {
+          "ref": "c-1",
+          "measurable": false,
+          "lawful": "yes",
+          "fits": false
+        }
+      ]
+    }
+  },
+  {
+    "id": "ex-CR-06",
+    "input": "jurisdiction: fiktiva-city\nscope: final\ndesired_outcome: \"Library branches are open on weekday evenings.\"\ncriterion_count: 1\ncriterion c-1: \"The council holds a public meeting about the library hours.\"\nlegal_stack: not_applicable",
+    "expected_outcome": "needs_revision",
+    "rule_ids": [
+      "CRITERIA-1"
+    ],
+    "note": "met by an unrelated event",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "criteria"
+    },
+    "revision_hint": "c-1 can be met without any change in opening hours. Rewrite it around the hours, for example: all branches open until 20:00 on weekdays for 3 months.",
+    "expected": {
+      "per_criterion": [
+        {
+          "ref": "c-1",
+          "measurable": true,
+          "lawful": "yes",
+          "fits": false
+        }
+      ]
+    },
+    "shot": true
+  },
+  {
+    "id": "ex-CR-07",
+    "input": "jurisdiction: fiktiva-city\nscope: final\ndesired_outcome: \"Elm Road is calmer for people who live there.\"\ncriterion_count: 1\ncriterion c-1: \"The Council closes Elm Road to through traffic for ninety days by a council vote.\"\nlegal_L1: fiktiva-rights@0.1.0+dbc8851045a7 | no applicable article found\nlegal_L2: fiktiva-union@0.1.0+254d205f7f55 | no applicable article found\nlegal_L3: fiktiva-constitution@0.1.0+aefd9bacd67b | no applicable article found\nlegal_L4: fiktiva-statutes@0.1.0+e858abcd9128 | L4/fiktiva/statutes/art-6 | topic_ban: no | INVENTED TEXT. A through road may be closed for more than thirty days only by a ministerial road order.\nlegal_L5: fiktiva-region@0.1.0+996b73b37cf9 | no applicable article found\nlegal_L6: fiktiva-bylaws@0.1.0+6803ee8410e7 | no applicable article found",
+    "expected_outcome": "reject",
+    "rule_ids": [
+      "CRITERIA-1",
+      "LEGAL-STACK-1",
+      "LEGAL-CITE-1"
+    ],
+    "note": "criterion requires an act the retrieved article restricts",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "criteria"
+    },
+    "expected": {
+      "per_criterion": [
+        {
+          "ref": "c-1",
+          "measurable": true,
+          "lawful": "no",
+          "fits": true
+        }
+      ],
+      "legal_findings": [
+        {
+          "layer": "L1",
+          "corpus_version": "fiktiva-rights@0.1.0+dbc8851045a7",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L2",
+          "corpus_version": "fiktiva-union@0.1.0+254d205f7f55",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L3",
+          "corpus_version": "fiktiva-constitution@0.1.0+aefd9bacd67b",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L4",
+          "article_id": "L4/fiktiva/statutes/art-6",
+          "corpus_version": "fiktiva-statutes@0.1.0+e858abcd9128",
+          "finding": "constrains"
+        },
+        {
+          "layer": "L5",
+          "corpus_version": "fiktiva-region@0.1.0+996b73b37cf9",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L6",
+          "corpus_version": "fiktiva-bylaws@0.1.0+6803ee8410e7",
+          "finding": "none_found"
+        }
+      ]
+    },
+    "shot": true
+  },
+  {
+    "id": "ex-CR-08",
+    "input": "jurisdiction: fiktiva-city\nscope: final\ndesired_outcome: \"The Mill canal is dredged.\"\ncriterion_count: 1\ncriterion c-1: \"The road fund pays for dredging the Mill canal this year.\"\nlegal_L1: fiktiva-rights@0.1.0+dbc8851045a7 | no applicable article found\nlegal_L2: fiktiva-union@0.1.0+254d205f7f55 | no applicable article found\nlegal_L3: fiktiva-constitution@0.1.0+aefd9bacd67b | L3/fiktiva/constitution/art-12 | topic_ban: no | INVENTED TEXT. Money set aside for roads may not be spent on waterways.\nlegal_L4: fiktiva-statutes@0.1.0+e858abcd9128 | no applicable article found\nlegal_L5: fiktiva-region@0.1.0+996b73b37cf9 | no applicable article found\nlegal_L6: fiktiva-bylaws@0.1.0+6803ee8410e7 | no applicable article found",
+    "expected_outcome": "reject",
+    "rule_ids": [
+      "CRITERIA-1",
+      "LEGAL-STACK-1",
+      "LEGAL-CITE-1"
+    ],
+    "note": "road money for waterways is restricted at L3",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "criteria"
+    },
+    "expected": {
+      "per_criterion": [
+        {
+          "ref": "c-1",
+          "measurable": true,
+          "lawful": "no",
+          "fits": true
+        }
+      ],
+      "legal_findings": [
+        {
+          "layer": "L1",
+          "corpus_version": "fiktiva-rights@0.1.0+dbc8851045a7",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L2",
+          "corpus_version": "fiktiva-union@0.1.0+254d205f7f55",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L3",
+          "article_id": "L3/fiktiva/constitution/art-12",
+          "corpus_version": "fiktiva-constitution@0.1.0+aefd9bacd67b",
+          "finding": "constrains"
+        },
+        {
+          "layer": "L4",
+          "corpus_version": "fiktiva-statutes@0.1.0+e858abcd9128",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L5",
+          "corpus_version": "fiktiva-region@0.1.0+996b73b37cf9",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L6",
+          "corpus_version": "fiktiva-bylaws@0.1.0+6803ee8410e7",
+          "finding": "none_found"
+        }
+      ]
+    }
+  },
+  {
+    "id": "ex-CR-09",
+    "input": "jurisdiction: fiktiva-city\nscope: final\ndesired_outcome: \"Reliable collection for Birch Quarter households.\"\ncriterion_count: 1\ncriterion c-1: \"Most households get a better collection service.\"\nlegal_stack: not_applicable",
+    "expected_outcome": "needs_revision",
+    "rule_ids": [
+      "CRITERIA-1"
+    ],
+    "note": "boundary: most and better are undefined",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "criteria"
+    },
+    "revision_hint": "Replace most and better with a number and a source, for example: at least 95 of 100 sampled Birch Quarter households report on-time collection in the quarterly survey.",
+    "expected": {
+      "per_criterion": [
+        {
+          "ref": "c-1",
+          "measurable": false,
+          "lawful": "yes",
+          "fits": true
+        }
+      ]
+    }
+  },
+  {
+    "id": "ex-CR-10",
+    "input": "jurisdiction: fiktiva-city\nscope: final\ndesired_outcome: \"Reed Street pump station is repaired.\"\ncriterion_count: 1\ncriterion c-1: \"The Water Board publishes the plan.\"\nlegal_L1: fiktiva-rights@0.1.0+dbc8851045a7 | no applicable article found\nlegal_L2: fiktiva-union@0.1.0+254d205f7f55 | no applicable article found\nlegal_L3: fiktiva-constitution@0.1.0+aefd9bacd67b | no applicable article found\nlegal_L4: fiktiva-statutes@0.1.0+e858abcd9128 | no applicable article found\nlegal_L6: fiktiva-bylaws@0.1.0+6803ee8410e7 | no applicable article found",
+    "expected_outcome": "hold",
+    "rule_ids": [],
+    "note": "legal layer L5 line missing: fail closed",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "criteria"
+    },
+    "expected": {
+      "hold_reason": "missing_input",
+      "missing_inputs": [
+        "legal_layer"
+      ]
+    }
+  },
+  {
+    "id": "ex-CR-11",
+    "input": "jurisdiction: fiktiva-city\nscope: final\ndesired_outcome: \"The Mill canal is clear.\"\ncriterion_count: 1\ncriterion c-1: \"By June the council reduces the Mill canal reed beds by half by paying from the road fund.\"\nlegal_L1: fiktiva-rights@0.1.0+dbc8851045a7 | no applicable article found\nlegal_L2: fiktiva-union@0.1.0+254d205f7f55 | no applicable article found\nlegal_L3: fiktiva-constitution@0.1.0+aefd9bacd67b | L3/fiktiva/constitution/art-12 | topic_ban: no | INVENTED TEXT. Money set aside for roads may not be spent on waterways.\nlegal_L4: fiktiva-statutes@0.1.0+e858abcd9128 | no applicable article found\nlegal_L5: fiktiva-region@0.1.0+996b73b37cf9 | L5/fiktiva/region/art-2 | topic_ban: no | INVENTED TEXT. The region sets ferry timetables. A city may ask the region in writing to change one.\nlegal_L6: fiktiva-bylaws@0.1.0+6803ee8410e7 | no applicable article found",
+    "expected_outcome": "hold",
+    "rule_ids": [
+      "LEGAL-STACK-1",
+      "LEGAL-CITE-1"
+    ],
+    "note": "L3 and L5 read differently: conflict is a hold",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "criteria"
+    },
+    "expected": {
+      "legal_findings": [
+        {
+          "layer": "L1",
+          "corpus_version": "fiktiva-rights@0.1.0+dbc8851045a7",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L2",
+          "corpus_version": "fiktiva-union@0.1.0+254d205f7f55",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L3",
+          "article_id": "L3/fiktiva/constitution/art-12",
+          "corpus_version": "fiktiva-constitution@0.1.0+aefd9bacd67b",
+          "finding": "conflict"
+        },
+        {
+          "layer": "L4",
+          "corpus_version": "fiktiva-statutes@0.1.0+e858abcd9128",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L5",
+          "article_id": "L5/fiktiva/region/art-2",
+          "corpus_version": "fiktiva-region@0.1.0+996b73b37cf9",
+          "finding": "conflict"
+        },
+        {
+          "layer": "L6",
+          "corpus_version": "fiktiva-bylaws@0.1.0+6803ee8410e7",
+          "finding": "none_found"
+        }
+      ],
+      "hold_reason": "layer_conflict",
+      "conflict_note": "L3 and L5 read differently for c-1; a person must decide."
+    }
+  }
+]

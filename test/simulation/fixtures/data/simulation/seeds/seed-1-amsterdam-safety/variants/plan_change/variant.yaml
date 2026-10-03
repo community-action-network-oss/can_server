@@ -1,0 +1,32 @@
+id: plan_change
+seed: seed-1-amsterdam-safety
+synthetic: true
+description: After publication a proposal adds a stage, communicate_findings, between measure_outcome and the end; moderation re-runs on the plan change.
+personas:
+  - persona: con-implementer
+    script: script.json
+    bindings:
+      problem_id: seed-1-problem
+  - persona: prop-proposer
+    script: script.json
+    bindings:
+      problem_id: seed-1-problem
+schedule:
+  - day: 3
+    persona: prop-proposer
+    steps:
+      - propose_policy
+plan_change:
+  add_stage:
+    name: communicate_findings
+    label: Communicate the findings
+    goal: Publish the pilot result in plain language so residents can read it.
+    depends_on:
+      - measure_outcome
+    acceptance_criteria:
+      - statement: A plain-language result is published.
+        measure: Page exists and a second contributor reads it.
+        target: one page
+contributions:
+  - contributions/01-reason.json
+bound_to_target: seed-1-problem

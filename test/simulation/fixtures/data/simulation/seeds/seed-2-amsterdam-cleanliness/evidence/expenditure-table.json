@@ -1,0 +1,55 @@
+{
+  "id": "expenditure-table",
+  "url": "https://evidence.sim.test/seed-2/expenditure-table",
+  "description": "Expenditure table (synthetic): invented annual spend on cleaning budget lines in the city centre, four years.",
+  "synthetic": true,
+  "tier_cap": 1,
+  "metadata": {
+    "publisher_role": "municipal budget role (invented)",
+    "date": "2026-02",
+    "kind": "budget_table"
+  },
+  "synthetic_note": "Synthetic: invented for simulation, not real data.",
+  "data": {
+    "currency_class": "high_income",
+    "unit": "invented millions per year",
+    "columns": [
+      "line",
+      "y1",
+      "y2",
+      "y3",
+      "y4"
+    ],
+    "rows": [
+      [
+        "collection",
+        19,
+        19,
+        20,
+        20
+      ],
+      [
+        "street_sweeping",
+        12,
+        12,
+        12,
+        12
+      ],
+      [
+        "enforcement",
+        5,
+        5,
+        5,
+        5
+      ],
+      [
+        "communication",
+        4,
+        4,
+        4,
+        4
+      ]
+    ],
+    "note": "All figures invented. The total is steady, not cut."
+  }
+}

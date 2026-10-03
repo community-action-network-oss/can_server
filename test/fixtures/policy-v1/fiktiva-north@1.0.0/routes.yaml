@@ -1,0 +1,7 @@
+# External routes named by NORTH-ROUTES-1. Invented, no real contact data.
+north-ombudsman:
+  label: Fiktiva North Ombudsman Desk
+  for: an individual complaint about how the region handled a case
+north-help-line:
+  label: Fiktiva North Civic Help Line
+  for: a personal matter that needs one to one help

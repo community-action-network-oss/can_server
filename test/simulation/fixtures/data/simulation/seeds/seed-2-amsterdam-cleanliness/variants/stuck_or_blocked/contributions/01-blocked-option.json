@@ -1,0 +1,27 @@
+{
+  "type": "proposed_solution",
+  "basis": "inferred",
+  "target": "seed-2-problem",
+  "claim": "Raise the fines for waste placed outside bins as the collection option.",
+  "evidence_refs": [
+    {
+      "url": "https://evidence.sim.test/seed-2/expenditure-table",
+      "supports": "Supports the claim above (synthetic evidence)."
+    }
+  ],
+  "uncertainty": "Cost and effect are invented placeholders until a pilot runs.",
+  "assumptions": [
+    "I assume the pilot area can be chosen without singling out any group."
+  ],
+  "mechanism": "Ask the body that sets fine levels to raise them.",
+  "responsible_role": "The body that sets fine levels",
+  "authority": "Outside the municipality's reach (stub, not judged).",
+  "cost": "Unknown, not estimated",
+  "success_metric": "Less waste outside bins",
+  "risks": [
+    "Outside the competences a community proposal can change."
+  ],
+  "lawful_alternatives": [
+    "Use bin capacity, timing and signage instead."
+  ]
+}

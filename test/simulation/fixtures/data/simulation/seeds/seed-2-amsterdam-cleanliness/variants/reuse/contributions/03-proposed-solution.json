@@ -1,0 +1,29 @@
+{
+  "type": "proposed_solution",
+  "basis": "inferred",
+  "target": "seed-2-problem",
+  "claim": "Pilot added bin capacity, matched collection times and clearer signage in a bounded area, and measure the same index before and after.",
+  "evidence_refs": [
+    {
+      "url": "https://evidence.sim.test/seed-2/expenditure-table",
+      "supports": "Supports the claim above (synthetic evidence)."
+    }
+  ],
+  "uncertainty": "Cost and effect are invented placeholders until a pilot runs.",
+  "assumptions": [
+    "I assume the pilot area can be chosen without singling out any group."
+  ],
+  "mechanism": "Add bins and a mid-day collection round in the pilot area, put plain signage on each bin, then repeat the cleanliness index with the same method.",
+  "responsible_role": "The municipality (waste services)",
+  "authority": "Within the municipality's own collection and bin duties (stub, not judged).",
+  "cost": "Band under 100k, invented",
+  "success_metric": "Cleanliness index in the pilot area rises by ten points from 58",
+  "risks": [
+    "The effect may be small or not last.",
+    "A pilot area may be chosen unfairly."
+  ],
+  "lawful_alternatives": [
+    "Publish fill levels in a plain table.",
+    "Change signage only."
+  ]
+}

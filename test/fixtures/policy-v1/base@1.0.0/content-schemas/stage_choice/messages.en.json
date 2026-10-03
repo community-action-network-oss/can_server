@@ -31,7 +31,7 @@
   "schema.stage_choice.legal_gate_record.result.label": "What was the result?",
   "schema.stage_choice.legal_gate_record.result.help": "Blocked choices cannot start tasks.",
   "schema.stage_choice.legal_gate_record.label": "Legal check record",
-  "schema.stage_choice.legal_gate_record.help": "Record the check that was made before choosing. This is not legal advice.",
+  "schema.stage_choice.legal_gate_record.help": "The legal check made for this choice. The platform fills it in; you do not. This is not legal advice.",
   "schema.stage_choice.steps.step.label": "What is the step?",
   "schema.stage_choice.steps.step.help": "One action.",
   "schema.stage_choice.steps.owner_role.label": "Which role owns it?",

@@ -1,146 +1,604 @@
 [
- {
-  "id": "ex-ELIG-01",
-  "input": "condition: Amsterdam explosions and violence\naffected: residents and visitors\ndesired_outcome: fewer incidents\nplace: Amsterdam\njurisdiction: amsterdam-nl",
-  "expected_outcome": "publish",
-  "rule_ids": [],
-  "note": "Seed 1 framing (D-56), public structural condition",
-  "provenance": "fixture",
-  "jurisdiction": "amsterdam-nl",
-  "field_ref": {
-   "field": "intake"
+  {
+    "id": "ex-ELIG-01",
+    "input": "condition: Amsterdam explosions and violence\naffected: residents and visitors\ndesired_outcome: fewer incidents\nplace: Amsterdam\njurisdiction: amsterdam-nl\nlegal_stack: not_applicable",
+    "expected_outcome": "publish",
+    "rule_ids": [],
+    "note": "Seed 1 framing (D-56), public structural condition",
+    "provenance": "fixture",
+    "jurisdiction": "amsterdam-nl",
+    "field_ref": {
+      "field": "intake"
+    },
+    "shot": true
   },
-  "shot": true
- },
- {
-  "id": "ex-ELIG-02",
-  "input": "condition: Amsterdam city-centre cleanliness\naffected: residents and visitors\ndesired_outcome: cleaner public space\nplace: Amsterdam city centre\njurisdiction: amsterdam-nl",
-  "expected_outcome": "publish",
-  "rule_ids": [],
-  "note": "Seed 2 framing (D-56), public structural condition",
-  "provenance": "fixture",
-  "jurisdiction": "amsterdam-nl",
-  "field_ref": {
-   "field": "intake"
+  {
+    "id": "ex-ELIG-02",
+    "input": "condition: Amsterdam city-centre cleanliness\naffected: residents and visitors\ndesired_outcome: cleaner public space\nplace: Amsterdam city centre\njurisdiction: amsterdam-nl\nlegal_stack: not_applicable",
+    "expected_outcome": "publish",
+    "rule_ids": [],
+    "note": "Seed 2 framing (D-56), public structural condition",
+    "provenance": "fixture",
+    "jurisdiction": "amsterdam-nl",
+    "field_ref": {
+      "field": "intake"
+    }
+  },
+  {
+    "id": "ex-ELIG-03",
+    "input": "condition: Street lights on the whole Birch Quarter ring road stay dark after 22:00 in winter\naffected: people walking and cycling in the quarter\ndesired_outcome: a repair and inspection schedule for lights\nplace: Birch Quarter\njurisdiction: fiktiva-city\nlegal_stack: not_applicable",
+    "expected_outcome": "publish",
+    "rule_ids": [],
+    "note": "public pattern, many people",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "intake"
+    },
+    "shot": true
+  },
+  {
+    "id": "ex-ELIG-04",
+    "input": "condition: The city fined me wrongly for a parking ticket and the Road Works Office will not answer me\naffected: me\ndesired_outcome: cancel my fine\nplace: Fiktiva City\njurisdiction: fiktiva-city\nlegal_stack: not_applicable",
+    "expected_outcome": "route_external",
+    "rule_ids": [
+      "SCOPE-1"
+    ],
+    "note": "individual complaint about handling of one case",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "intake"
+    },
+    "revision_hint": "Take the case to the Ombudsman Desk.",
+    "expected": {
+      "route_key": "fiktiva-ombudsman"
+    },
+    "shot": true
+  },
+  {
+    "id": "ex-ELIG-05",
+    "input": "condition: My neighbour [PERSON_1] plays loud music and I want it stopped\naffected: me and my family\ndesired_outcome: make [PERSON_1] stop\nplace: Oak Lane\njurisdiction: fiktiva-city\nlegal_stack: not_applicable",
+    "expected_outcome": "reject",
+    "rule_ids": [
+      "SCOPE-1"
+    ],
+    "note": "personal dispute with a neighbour, no public condition",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "intake"
+    }
+  },
+  {
+    "id": "ex-ELIG-06",
+    "input": "condition: I cannot cope with my housing benefit paperwork and need someone to sit with me\naffected: me\ndesired_outcome: personal help filling in forms\nplace: Fiktiva City\njurisdiction: fiktiva-city\nlegal_stack: not_applicable",
+    "expected_outcome": "route_external",
+    "rule_ids": [
+      "SCOPE-1"
+    ],
+    "note": "personal need for one to one help",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "intake"
+    },
+    "expected": {
+      "route_key": "fiktiva-help-line"
+    }
+  },
+  {
+    "id": "ex-ELIG-07",
+    "input": "condition: Bus stops are bad\naffected: people\ndesired_outcome: better\nplace: Fiktiva City\njurisdiction: fiktiva-city\nlegal_stack: not_applicable",
+    "expected_outcome": "needs_revision",
+    "rule_ids": [
+      "SCOPE-1"
+    ],
+    "note": "too vague to judge public versus personal",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "intake"
+    },
+    "revision_hint": "Say which stops or routes, what goes wrong and for whom."
+  },
+  {
+    "id": "ex-ELIG-08",
+    "input": "condition: xk qw zzv plorf\naffected: -\ndesired_outcome: -\nplace: -\njurisdiction: fiktiva-city\nlegal_stack: not_applicable",
+    "expected_outcome": "hold",
+    "rule_ids": [],
+    "note": "unreadable, cannot judge",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "intake"
+    }
+  },
+  {
+    "id": "ex-ELIG-09",
+    "input": "condition: Several parks have no working bins, and the same gap shows on the Parks Office service map; one resident [PERSON_2] also reports a missed pickup on their own street\naffected: park users across districts\ndesired_outcome: a bin audit and a fix plan\nplace: Fiktiva City\njurisdiction: fiktiva-city\nlegal_stack: not_applicable",
+    "expected_outcome": "publish",
+    "rule_ids": [],
+    "note": "boundary: public pattern with one personal anecdote inside",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "intake"
+    }
+  },
+  {
+    "id": "ex-ELIG-10",
+    "input": "condition: My own bus pass was refused at the desk last week\naffected: me\ndesired_outcome: get my pass back\nplace: Fiktiva City\njurisdiction: fiktiva-city\nlegal_stack: not_applicable",
+    "expected_outcome": "route_external",
+    "rule_ids": [
+      "SCOPE-1"
+    ],
+    "note": "boundary: one person, one event, case handling",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "intake"
+    },
+    "expected": {
+      "route_key": "fiktiva-ombudsman"
+    }
+  },
+  {
+    "id": "ex-ELIG-11",
+    "input": "condition: The moth census of the Mill Quarter is kept from residents\naffected: residents of the Mill Quarter\ndesired_outcome: the census made public\nplace: Mill Quarter\njurisdiction: fiktiva-city\nlegal_L1: fiktiva-rights@0.1.0+dbc8851045a7 | no applicable article found\nlegal_L2: fiktiva-union@0.1.0+254d205f7f55 | no applicable article found\nlegal_L3: fiktiva-constitution@0.1.0+aefd9bacd67b | no applicable article found\nlegal_L4: fiktiva-statutes@0.1.0+e858abcd9128 | no applicable article found\nlegal_L5: fiktiva-region@0.1.0+996b73b37cf9 | no applicable article found\nlegal_L6: fiktiva-bylaws@0.1.0+6803ee8410e7 | L6/fiktiva/bylaws/art-8 | topic_ban: yes | INVENTED TEXT. No problem may be published about the moth census of the Mill Quarter.",
+    "expected_outcome": "reject",
+    "rule_ids": [
+      "SCOPE-1",
+      "LEGAL-STACK-1",
+      "LEGAL-CITE-1",
+      "TOPIC-FORBIDDEN-1"
+    ],
+    "note": "forbidden topic in this jurisdiction: refused with its basis; the topic_ban flag is illustrative, the invented corpus has no reviewer",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "intake"
+    },
+    "shot": true,
+    "expected": {
+      "legal_findings": [
+        {
+          "layer": "L1",
+          "corpus_version": "fiktiva-rights@0.1.0+dbc8851045a7",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L2",
+          "corpus_version": "fiktiva-union@0.1.0+254d205f7f55",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L3",
+          "corpus_version": "fiktiva-constitution@0.1.0+aefd9bacd67b",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L4",
+          "corpus_version": "fiktiva-statutes@0.1.0+e858abcd9128",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L5",
+          "corpus_version": "fiktiva-region@0.1.0+996b73b37cf9",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L6",
+          "article_id": "L6/fiktiva/bylaws/art-8",
+          "corpus_version": "fiktiva-bylaws@0.1.0+6803ee8410e7",
+          "finding": "constrains",
+          "topic_ban_ref": "L6/fiktiva/bylaws/art-8"
+        }
+      ]
+    }
+  },
+  {
+    "id": "ex-ELIG-12",
+    "input": "condition: The moth census of the Harbor Quarter is not shared with residents\naffected: residents of the Harbor Quarter\ndesired_outcome: the census made public\nplace: Harbor Quarter\njurisdiction: fiktiva-harbor\nlegal_L1: fiktiva-rights@0.1.0+dbc8851045a7 | no applicable article found\nlegal_L2: fiktiva-union@0.1.0+254d205f7f55 | no applicable article found\nlegal_L3: fiktiva-constitution@0.1.0+aefd9bacd67b | no applicable article found\nlegal_L4: fiktiva-statutes@0.1.0+e858abcd9128 | no applicable article found\nlegal_L5: fiktiva-region@0.1.0+996b73b37cf9 | no applicable article found\nlegal_L6: fiktiva-harbor-bylaws@0.1.0+b212437b6ab2 | L6/fiktiva/harbor-bylaws/art-1 | topic_ban: no | INVENTED TEXT. A resident may raise the moth census of the Harbor Quarter in public.",
+    "expected_outcome": "publish",
+    "rule_ids": [
+      "SCOPE-1",
+      "LEGAL-STACK-1",
+      "LEGAL-CITE-1"
+    ],
+    "note": "the same kind of topic is lawful in another jurisdiction: per jurisdiction, never global",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-harbor",
+    "field_ref": {
+      "field": "intake"
+    },
+    "shot": true,
+    "expected": {
+      "legal_findings": [
+        {
+          "layer": "L1",
+          "corpus_version": "fiktiva-rights@0.1.0+dbc8851045a7",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L2",
+          "corpus_version": "fiktiva-union@0.1.0+254d205f7f55",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L3",
+          "corpus_version": "fiktiva-constitution@0.1.0+aefd9bacd67b",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L4",
+          "corpus_version": "fiktiva-statutes@0.1.0+e858abcd9128",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L5",
+          "corpus_version": "fiktiva-region@0.1.0+996b73b37cf9",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L6",
+          "article_id": "L6/fiktiva/harbor-bylaws/art-1",
+          "corpus_version": "fiktiva-harbor-bylaws@0.1.0+b212437b6ab2",
+          "finding": "permits"
+        }
+      ]
+    }
+  },
+  {
+    "id": "ex-ELIG-13",
+    "input": "condition: Gardeners in the Mill Quarter say wildlife counts are probably restricted but no rule is named\naffected: residents of the Mill Quarter\ndesired_outcome: a public bat count\nplace: Mill Quarter\njurisdiction: fiktiva-city\nlegal_L1: fiktiva-rights@0.1.0+dbc8851045a7 | no applicable article found\nlegal_L2: fiktiva-union@0.1.0+254d205f7f55 | no applicable article found\nlegal_L3: fiktiva-constitution@0.1.0+aefd9bacd67b | no applicable article found\nlegal_L4: fiktiva-statutes@0.1.0+e858abcd9128 | no applicable article found\nlegal_L5: fiktiva-region@0.1.0+996b73b37cf9 | no applicable article found\nlegal_L6: fiktiva-bylaws@0.1.0+6803ee8410e7 | no applicable article found",
+    "expected_outcome": "hold",
+    "rule_ids": [
+      "SCOPE-1",
+      "LEGAL-STACK-1",
+      "LEGAL-CITE-1"
+    ],
+    "note": "suspected ban but no indexed topic_ban article: hold, never reject on an inferred ban",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "intake"
+    },
+    "expected": {
+      "legal_findings": [
+        {
+          "layer": "L1",
+          "corpus_version": "fiktiva-rights@0.1.0+dbc8851045a7",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L2",
+          "corpus_version": "fiktiva-union@0.1.0+254d205f7f55",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L3",
+          "corpus_version": "fiktiva-constitution@0.1.0+aefd9bacd67b",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L4",
+          "corpus_version": "fiktiva-statutes@0.1.0+e858abcd9128",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L5",
+          "corpus_version": "fiktiva-region@0.1.0+996b73b37cf9",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L6",
+          "corpus_version": "fiktiva-bylaws@0.1.0+6803ee8410e7",
+          "finding": "none_found"
+        }
+      ]
+    }
+  },
+  {
+    "id": "ex-ELIG-14",
+    "input": "condition: Bus shelters on Canal Quay have no roofs and nobody maintains them\naffected: people waiting for buses on Canal Quay\ndesired_outcome: roofs fitted and a maintenance plan\nplace: Canal Quay\njurisdiction: fiktiva-city\nlegal_L1: fiktiva-rights@0.1.0+dbc8851045a7 | no applicable article found\nlegal_L2: fiktiva-union@0.1.0+254d205f7f55 | no applicable article found\nlegal_L3: fiktiva-constitution@0.1.0+aefd9bacd67b | no applicable article found\nlegal_L4: fiktiva-statutes@0.1.0+e858abcd9128 | no applicable article found\nlegal_L5: fiktiva-region@0.1.0+996b73b37cf9 | no applicable article found\nlegal_L6: fiktiva-bylaws@0.1.0+6803ee8410e7 | no applicable article found",
+    "expected_outcome": "publish",
+    "rule_ids": [
+      "SCOPE-1"
+    ],
+    "note": "public condition; no article found on any layer, recorded as none_found; the scope decision does not rest on law",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "intake"
+    },
+    "shot": true,
+    "expected": {
+      "legal_findings": [
+        {
+          "layer": "L1",
+          "corpus_version": "fiktiva-rights@0.1.0+dbc8851045a7",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L2",
+          "corpus_version": "fiktiva-union@0.1.0+254d205f7f55",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L3",
+          "corpus_version": "fiktiva-constitution@0.1.0+aefd9bacd67b",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L4",
+          "corpus_version": "fiktiva-statutes@0.1.0+e858abcd9128",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L5",
+          "corpus_version": "fiktiva-region@0.1.0+996b73b37cf9",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L6",
+          "corpus_version": "fiktiva-bylaws@0.1.0+6803ee8410e7",
+          "finding": "none_found"
+        }
+      ]
+    }
+  },
+  {
+    "id": "ex-ELIG-15",
+    "input": "condition: The city lost my permit application and nobody answers me\naffected: me\ndesired_outcome: my application decided\nplace: Fiktiva City\njurisdiction: fiktiva-city\nlegal_L1: fiktiva-rights@0.1.0+dbc8851045a7 | no applicable article found\nlegal_L2: fiktiva-union@0.1.0+254d205f7f55 | no applicable article found\nlegal_L3: fiktiva-constitution@0.1.0+aefd9bacd67b | no applicable article found\nlegal_L4: fiktiva-statutes@0.1.0+e858abcd9128 | L4/fiktiva/statutes/art-10 | topic_ban: no | INVENTED TEXT. A resident may bring a complaint about the handling of their own case to the Fiktiva City Ombudsman Desk.\nlegal_L5: fiktiva-region@0.1.0+996b73b37cf9 | no applicable article found\nlegal_L6: fiktiva-bylaws@0.1.0+6803ee8410e7 | no applicable article found",
+    "expected_outcome": "route_external",
+    "rule_ids": [
+      "SCOPE-1",
+      "LEGAL-STACK-1",
+      "LEGAL-CITE-1"
+    ],
+    "note": "individual matter with a legal route: L4 gives the ombudsman route; say nothing about merits",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "intake"
+    },
+    "expected": {
+      "legal_findings": [
+        {
+          "layer": "L1",
+          "corpus_version": "fiktiva-rights@0.1.0+dbc8851045a7",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L2",
+          "corpus_version": "fiktiva-union@0.1.0+254d205f7f55",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L3",
+          "corpus_version": "fiktiva-constitution@0.1.0+aefd9bacd67b",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L4",
+          "article_id": "L4/fiktiva/statutes/art-10",
+          "corpus_version": "fiktiva-statutes@0.1.0+e858abcd9128",
+          "finding": "permits"
+        },
+        {
+          "layer": "L5",
+          "corpus_version": "fiktiva-region@0.1.0+996b73b37cf9",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L6",
+          "corpus_version": "fiktiva-bylaws@0.1.0+6803ee8410e7",
+          "finding": "none_found"
+        }
+      ],
+      "route_key": "fiktiva-ombudsman"
+    }
+  },
+  {
+    "id": "ex-ELIG-16",
+    "input": "condition: Residents say the Old Square permit rule is applied by the warden at will\naffected: people who gather in the Old Square\ndesired_outcome: a clear and fair permit rule\nplace: Old Square\njurisdiction: fiktiva-city\nlegal_L1: fiktiva-rights@0.1.0+dbc8851045a7 | L1/fiktiva/rights/art-3 | topic_ban: no | INVENTED TEXT. Peaceful assembly may be limited only as far as needed, and never by a general ban.\nlegal_L2: fiktiva-union@0.1.0+254d205f7f55 | no applicable article found\nlegal_L3: fiktiva-constitution@0.1.0+aefd9bacd67b | L3/fiktiva/constitution/art-7 | topic_ban: no | INVENTED TEXT. No assembly may take place in the Old Square without a permit. Permits are granted at the discretion of the Square Warden.\nlegal_L4: fiktiva-statutes@0.1.0+e858abcd9128 | no applicable article found\nlegal_L5: fiktiva-region@0.1.0+996b73b37cf9 | no applicable article found\nlegal_L6: fiktiva-bylaws@0.1.0+6803ee8410e7 | no applicable article found",
+    "expected_outcome": "hold",
+    "rule_ids": [
+      "SCOPE-1",
+      "LEGAL-STACK-1",
+      "LEGAL-CITE-1"
+    ],
+    "note": "L1 versus L3 interpretation conflict: hold with a conflict note",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "intake"
+    },
+    "expected": {
+      "legal_findings": [
+        {
+          "layer": "L1",
+          "article_id": "L1/fiktiva/rights/art-3",
+          "corpus_version": "fiktiva-rights@0.1.0+dbc8851045a7",
+          "finding": "conflict"
+        },
+        {
+          "layer": "L2",
+          "corpus_version": "fiktiva-union@0.1.0+254d205f7f55",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L3",
+          "article_id": "L3/fiktiva/constitution/art-7",
+          "corpus_version": "fiktiva-constitution@0.1.0+aefd9bacd67b",
+          "finding": "conflict"
+        },
+        {
+          "layer": "L4",
+          "corpus_version": "fiktiva-statutes@0.1.0+e858abcd9128",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L5",
+          "corpus_version": "fiktiva-region@0.1.0+996b73b37cf9",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L6",
+          "corpus_version": "fiktiva-bylaws@0.1.0+6803ee8410e7",
+          "finding": "none_found"
+        }
+      ],
+      "conflict_note": "Layer L1 article L1/fiktiva/rights/art-3 and layer L3 article L3/fiktiva/constitution/art-7 read differently for this item. Held and queued as a policy question (OQ-legal-layer-conflicts)."
+    }
+  },
+  {
+    "id": "ex-ELIG-17",
+    "input": "condition: Council notices are hard to find because they are only on the municipal board\naffected: residents who do not pass the board\ndesired_outcome: notices also posted online\nplace: Fiktiva City\njurisdiction: fiktiva-city\nlegal_L1: fiktiva-rights@0.1.0+dbc8851045a7 | no applicable article found\nlegal_L2: fiktiva-union@0.1.0+254d205f7f55 | no applicable article found\nlegal_L3: fiktiva-constitution@0.1.0+aefd9bacd67b | no applicable article found\nlegal_L4: fiktiva-statutes@0.1.0+e858abcd9128 | no applicable article found\nlegal_L5: fiktiva-region@0.1.0+996b73b37cf9 | no applicable article found\nlegal_L6: fiktiva-bylaws@0.1.0+6803ee8410e7 | L6/fiktiva/bylaws/art-9 | topic_ban: no | INVENTED TEXT. Council notices go on the municipal board.",
+    "expected_outcome": "publish",
+    "rule_ids": [
+      "SCOPE-1",
+      "LEGAL-STACK-1",
+      "LEGAL-CITE-1"
+    ],
+    "note": "public condition with a permitting article cited",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "intake"
+    },
+    "expected": {
+      "legal_findings": [
+        {
+          "layer": "L1",
+          "corpus_version": "fiktiva-rights@0.1.0+dbc8851045a7",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L2",
+          "corpus_version": "fiktiva-union@0.1.0+254d205f7f55",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L3",
+          "corpus_version": "fiktiva-constitution@0.1.0+aefd9bacd67b",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L4",
+          "corpus_version": "fiktiva-statutes@0.1.0+e858abcd9128",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L5",
+          "corpus_version": "fiktiva-region@0.1.0+996b73b37cf9",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L6",
+          "article_id": "L6/fiktiva/bylaws/art-9",
+          "corpus_version": "fiktiva-bylaws@0.1.0+6803ee8410e7",
+          "finding": "permits"
+        }
+      ]
+    }
+  },
+  {
+    "id": "ex-ELIG-18",
+    "input": "condition: Something is wrong with the market\naffected: everyone\ndesired_outcome: fix it\nplace: Fiktiva City\njurisdiction: fiktiva-city\nlegal_L1: fiktiva-rights@0.1.0+dbc8851045a7 | no applicable article found\nlegal_L2: fiktiva-union@0.1.0+254d205f7f55 | no applicable article found\nlegal_L3: fiktiva-constitution@0.1.0+aefd9bacd67b | no applicable article found\nlegal_L4: fiktiva-statutes@0.1.0+e858abcd9128 | no applicable article found\nlegal_L5: fiktiva-region@0.1.0+996b73b37cf9 | no applicable article found\nlegal_L6: fiktiva-bylaws@0.1.0+6803ee8410e7 | no applicable article found",
+    "expected_outcome": "needs_revision",
+    "rule_ids": [
+      "SCOPE-1"
+    ],
+    "note": "too vague to tell; no article found, recorded",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "intake"
+    },
+    "revision_hint": "Say what is wrong at the market, where, and who is affected.",
+    "expected": {
+      "legal_findings": [
+        {
+          "layer": "L1",
+          "corpus_version": "fiktiva-rights@0.1.0+dbc8851045a7",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L2",
+          "corpus_version": "fiktiva-union@0.1.0+254d205f7f55",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L3",
+          "corpus_version": "fiktiva-constitution@0.1.0+aefd9bacd67b",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L4",
+          "corpus_version": "fiktiva-statutes@0.1.0+e858abcd9128",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L5",
+          "corpus_version": "fiktiva-region@0.1.0+996b73b37cf9",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L6",
+          "corpus_version": "fiktiva-bylaws@0.1.0+6803ee8410e7",
+          "finding": "none_found"
+        }
+      ]
+    }
+  },
+  {
+    "id": "ex-ELIG-19",
+    "input": "condition: My neighbour keeps his lantern drone over my garden\naffected: me\ndesired_outcome: make him stop\nplace: Oak Lane\njurisdiction: fiktiva-city\nlegal_L1: fiktiva-rights@0.1.0+dbc8851045a7 | no applicable article found\nlegal_L2: fiktiva-union@0.1.0+254d205f7f55 | no applicable article found\nlegal_L3: fiktiva-constitution@0.1.0+aefd9bacd67b | no applicable article found\nlegal_L4: fiktiva-statutes@0.1.0+e858abcd9128 | no applicable article found\nlegal_L5: fiktiva-region@0.1.0+996b73b37cf9 | no applicable article found\nlegal_L6: fiktiva-bylaws@0.1.0+6803ee8410e7 | no applicable article found",
+    "expected_outcome": "reject",
+    "rule_ids": [
+      "SCOPE-1"
+    ],
+    "note": "personal dispute with no public condition; no article found, recorded",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "intake"
+    },
+    "expected": {
+      "legal_findings": [
+        {
+          "layer": "L1",
+          "corpus_version": "fiktiva-rights@0.1.0+dbc8851045a7",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L2",
+          "corpus_version": "fiktiva-union@0.1.0+254d205f7f55",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L3",
+          "corpus_version": "fiktiva-constitution@0.1.0+aefd9bacd67b",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L4",
+          "corpus_version": "fiktiva-statutes@0.1.0+e858abcd9128",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L5",
+          "corpus_version": "fiktiva-region@0.1.0+996b73b37cf9",
+          "finding": "none_found"
+        },
+        {
+          "layer": "L6",
+          "corpus_version": "fiktiva-bylaws@0.1.0+6803ee8410e7",
+          "finding": "none_found"
+        }
+      ]
+    }
   }
- },
- {
-  "id": "ex-ELIG-03",
-  "input": "condition: Street lights on the whole Birch Quarter ring road stay dark after 22:00 in winter\naffected: people walking and cycling in the quarter\ndesired_outcome: a repair and inspection schedule for lights\nplace: Birch Quarter\njurisdiction: fiktiva-city",
-  "expected_outcome": "publish",
-  "rule_ids": [],
-  "note": "public pattern, many people",
-  "provenance": "fixture",
-  "jurisdiction": "fiktiva-city",
-  "field_ref": {
-   "field": "intake"
-  },
-  "shot": true
- },
- {
-  "id": "ex-ELIG-04",
-  "input": "condition: The city fined me wrongly for a parking ticket and the Road Works Office will not answer me\naffected: me\ndesired_outcome: cancel my fine\nplace: Fiktiva City\njurisdiction: fiktiva-city",
-  "expected_outcome": "route_external",
-  "rule_ids": [
-   "SCOPE-1"
-  ],
-  "note": "individual complaint about handling of one case",
-  "provenance": "fixture",
-  "jurisdiction": "fiktiva-city",
-  "field_ref": {
-   "field": "intake"
-  },
-  "revision_hint": "Take the case to the Ombudsman Desk.",
-  "expected": {
-   "route_key": "fiktiva-ombudsman"
-  },
-  "shot": true
- },
- {
-  "id": "ex-ELIG-05",
-  "input": "condition: My neighbour [PERSON_1] plays loud music and I want it stopped\naffected: me and my family\ndesired_outcome: make [PERSON_1] stop\nplace: Oak Lane\njurisdiction: fiktiva-city",
-  "expected_outcome": "reject",
-  "rule_ids": [
-   "SCOPE-1"
-  ],
-  "note": "personal dispute with a neighbour, no public condition",
-  "provenance": "fixture",
-  "jurisdiction": "fiktiva-city",
-  "field_ref": {
-   "field": "intake"
-  }
- },
- {
-  "id": "ex-ELIG-06",
-  "input": "condition: I cannot cope with my housing benefit paperwork and need someone to sit with me\naffected: me\ndesired_outcome: personal help filling in forms\nplace: Fiktiva City\njurisdiction: fiktiva-city",
-  "expected_outcome": "route_external",
-  "rule_ids": [
-   "SCOPE-1"
-  ],
-  "note": "personal need for one to one help",
-  "provenance": "fixture",
-  "jurisdiction": "fiktiva-city",
-  "field_ref": {
-   "field": "intake"
-  },
-  "expected": {
-   "route_key": "fiktiva-help-line"
-  }
- },
- {
-  "id": "ex-ELIG-07",
-  "input": "condition: Bus stops are bad\naffected: people\ndesired_outcome: better\nplace: Fiktiva City\njurisdiction: fiktiva-city",
-  "expected_outcome": "needs_revision",
-  "rule_ids": [
-   "SCOPE-1"
-  ],
-  "note": "too vague to judge public versus personal",
-  "provenance": "fixture",
-  "jurisdiction": "fiktiva-city",
-  "field_ref": {
-   "field": "intake"
-  },
-  "revision_hint": "Say which stops or routes, what goes wrong and for whom."
- },
- {
-  "id": "ex-ELIG-08",
-  "input": "condition: xk qw zzv plorf\naffected: -\ndesired_outcome: -\nplace: -\njurisdiction: fiktiva-city",
-  "expected_outcome": "hold",
-  "rule_ids": [],
-  "note": "unreadable, cannot judge",
-  "provenance": "fixture",
-  "jurisdiction": "fiktiva-city",
-  "field_ref": {
-   "field": "intake"
-  }
- },
- {
-  "id": "ex-ELIG-09",
-  "input": "condition: Several parks have no working bins, and the same gap shows on the Parks Office service map; one resident [PERSON_2] also reports a missed pickup on their own street\naffected: park users across districts\ndesired_outcome: a bin audit and a fix plan\nplace: Fiktiva City\njurisdiction: fiktiva-city",
-  "expected_outcome": "publish",
-  "rule_ids": [],
-  "note": "boundary: public pattern with one personal anecdote inside",
-  "provenance": "fixture",
-  "jurisdiction": "fiktiva-city",
-  "field_ref": {
-   "field": "intake"
-  }
- },
- {
-  "id": "ex-ELIG-10",
-  "input": "condition: My own bus pass was refused at the desk last week\naffected: me\ndesired_outcome: get my pass back\nplace: Fiktiva City\njurisdiction: fiktiva-city",
-  "expected_outcome": "route_external",
-  "rule_ids": [
-   "SCOPE-1"
-  ],
-  "note": "boundary: one person, one event, case handling",
-  "provenance": "fixture",
-  "jurisdiction": "fiktiva-city",
-  "field_ref": {
-   "field": "intake"
-  },
-  "expected": {
-   "route_key": "fiktiva-ombudsman"
-  }
- }
 ]

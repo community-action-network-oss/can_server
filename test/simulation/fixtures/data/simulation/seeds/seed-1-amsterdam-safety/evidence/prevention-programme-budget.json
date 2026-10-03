@@ -1,0 +1,31 @@
+{
+  "id": "prevention-programme-budget",
+  "url": "https://evidence.sim.test/seed-1/prevention-programme-budget",
+  "description": "Prevention programme budget (synthetic): invented annual budget lines for lighting, outreach and street-level mediation.",
+  "synthetic": true,
+  "tier_cap": 1,
+  "metadata": {
+    "publisher_role": "municipal budget role (invented)",
+    "date": "2026-02",
+    "kind": "budget_table"
+  },
+  "synthetic_note": "Synthetic: invented for simulation, not real data.",
+  "data": {
+    "currency_class": "high_income",
+    "lines": [
+      [
+        "lighting_and_crossings",
+        "band <100k"
+      ],
+      [
+        "street_mediation",
+        "band <100k"
+      ],
+      [
+        "youth_outreach",
+        "band <10k"
+      ]
+    ],
+    "note": "Bands invented."
+  }
+}

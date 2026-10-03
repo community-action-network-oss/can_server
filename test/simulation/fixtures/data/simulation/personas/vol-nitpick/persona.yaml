@@ -1,0 +1,98 @@
+# Synthetic persona (11-u45). Every name, place, body and URL here is invented. No real person or organisation.
+id: vol-nitpick
+family: volunteer
+role: An opted-in volunteer reviewer who files many low-value or contradictory recommendations on one invented waste problem.
+goals:
+  - File as many style recommendations as the daily cap allows (9 of 10).
+knowledge: Reads the masked draft closely but without checking what matters for the stage plan.
+flaws:
+  - Contradicts own earlier recommendations (pairs on the same path).
+  - Gives reasons about taste, not about the problem.
+behaviors:
+  - Nine recommendations in one day, in pairs that contradict each other, on valid paths.
+  - "Expected: volume blocks nothing. Every recommendation is stored open; the poster declines the weak ones with reasons; DP-PUBLISH weighs only the unresolved ones (metric in 11-u24)."
+  - Stays under the 10 per day cap, so no refusal is expected from this persona.
+turn_budget: 12
+seed: 5102
+prompt: prompt.md
+language: en
+synthetic: true
+handle: sim-vol-nitpick
+location: inside
+script: script.json
+expected:
+  - step_id: opt_in
+    outcomes:
+      - opted_in
+  - step_id: declare_conflict
+    outcomes:
+      - recorded
+    rule_ids:
+      - REVIEW-1
+  - step_id: read_masked
+    outcomes:
+      - masked_view
+    rule_ids:
+      - REVIEW-1
+      - PRIV-GATEWAY-1
+  - step_id: nit_1
+    outcomes:
+      - open
+    rule_ids:
+      - RECO-1
+  - step_id: nit_2
+    outcomes:
+      - open
+    rule_ids:
+      - RECO-1
+  - step_id: nit_3
+    outcomes:
+      - open
+    rule_ids:
+      - RECO-1
+  - step_id: nit_4
+    outcomes:
+      - open
+    rule_ids:
+      - RECO-1
+  - step_id: nit_5
+    outcomes:
+      - open
+    rule_ids:
+      - RECO-1
+  - step_id: nit_6
+    outcomes:
+      - open
+    rule_ids:
+      - RECO-1
+  - step_id: nit_7
+    outcomes:
+      - open
+    rule_ids:
+      - RECO-1
+  - step_id: nit_8
+    outcomes:
+      - open
+    rule_ids:
+      - RECO-1
+  - step_id: nit_9
+    outcomes:
+      - open
+    rule_ids:
+      - RECO-1
+  - step_id: finish_review
+    outcomes:
+      - finished
+    rule_ids:
+      - REVIEW-1
+  - step_id: read_poster_status
+    outcomes:
+      - awaiting_poster
+    rule_ids:
+      - RECO-1
+  - step_id: read_publication_weighing
+    outcomes:
+      - weighs_unresolved_only
+    dp: DP-PUBLISH
+    rule_ids:
+      - RECO-1

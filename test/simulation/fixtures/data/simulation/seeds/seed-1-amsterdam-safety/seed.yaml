@@ -1,0 +1,109 @@
+id: seed-1-amsterdam-safety
+number: 1
+framing: Amsterdam residents face recurring explosions and violent incidents that may reduce actual and perceived public safety.
+jurisdiction: nl-amsterdam
+label: Seed problem, synthetic evidence
+problem: problem.json
+rubric: rubric.yaml
+stage_plan: stage_plan.json
+evidence:
+  - id: incident-pattern-table
+    url: https://evidence.sim.test/seed-1/incident-pattern-table
+    description: "Incident-pattern table (synthetic): invented quarterly counts of explosive-device incidents and violent incidents, by invented category."
+    tier_cap: 2
+    synthetic: true
+  - id: perceived-safety-survey
+    url: https://evidence.sim.test/seed-1/perceived-safety-survey
+    description: "Perceived-safety survey summary (synthetic): invented shares of respondents who feel unsafe after dark, by invented time of day."
+    tier_cap: 2
+    synthetic: true
+  - id: response-time-table
+    url: https://evidence.sim.test/seed-1/response-time-table
+    description: "Response-time table (synthetic): invented median minutes from call to first responder arrival, by invented incident category."
+    tier_cap: 2
+    synthetic: true
+  - id: prevention-programme-budget
+    url: https://evidence.sim.test/seed-1/prevention-programme-budget
+    description: "Prevention programme budget (synthetic): invented annual budget lines for lighting, outreach and street-level mediation."
+    tier_cap: 1
+    synthetic: true
+  - id: public-statement-placeholder
+    url: https://evidence.sim.test/seed-1/public-statement-placeholder
+    description: "Retrieved-style public statement placeholder (synthetic). RETRIEVED, NOT VERIFIED: a stand-in for a statement a volunteer might paste; nobody has checked it and it is attributed to no one."
+    tier_cap: 0
+    synthetic: true
+  - id: contradicting-incident-trend
+    url: https://evidence.sim.test/seed-1/contradicting-incident-trend
+    description: "Contradicting item (synthetic): an invented series in which explosive-device incidents are flat while violent incidents fall, so it disagrees with the incident-pattern table."
+    tier_cap: 2
+    synthetic: true
+  - id: stage-understand-incidents-met
+    url: https://evidence.sim.test/seed-1/stage-understand-incidents-met
+    description: Stage evidence (synthetic) for understand_incidents, criterion 1, met.
+    tier_cap: 2
+    synthetic: true
+  - id: stage-understand-incidents-not-met
+    url: https://evidence.sim.test/seed-1/stage-understand-incidents-not-met
+    description: Stage evidence (synthetic) for understand_incidents, criterion 1, not met.
+    tier_cap: 0
+    synthetic: true
+  - id: stage-map-competences-met
+    url: https://evidence.sim.test/seed-1/stage-map-competences-met
+    description: Stage evidence (synthetic) for map_competences, criterion 1, met.
+    tier_cap: 2
+    synthetic: true
+  - id: stage-map-competences-not-met
+    url: https://evidence.sim.test/seed-1/stage-map-competences-not-met
+    description: Stage evidence (synthetic) for map_competences, criterion 1, not met.
+    tier_cap: 0
+    synthetic: true
+  - id: stage-design-prevention-met
+    url: https://evidence.sim.test/seed-1/stage-design-prevention-met
+    description: Stage evidence (synthetic) for design_prevention, criterion 1, met.
+    tier_cap: 2
+    synthetic: true
+  - id: stage-design-prevention-not-met
+    url: https://evidence.sim.test/seed-1/stage-design-prevention-not-met
+    description: Stage evidence (synthetic) for design_prevention, criterion 1, not met.
+    tier_cap: 0
+    synthetic: true
+  - id: stage-implement-pilot-met
+    url: https://evidence.sim.test/seed-1/stage-implement-pilot-met
+    description: Stage evidence (synthetic) for implement_pilot, criterion 1, met.
+    tier_cap: 2
+    synthetic: true
+  - id: stage-implement-pilot-not-met
+    url: https://evidence.sim.test/seed-1/stage-implement-pilot-not-met
+    description: Stage evidence (synthetic) for implement_pilot, criterion 1, not met.
+    tier_cap: 0
+    synthetic: true
+  - id: stage-measure-outcome-met
+    url: https://evidence.sim.test/seed-1/stage-measure-outcome-met
+    description: Stage evidence (synthetic) for measure_outcome, criterion 1, met.
+    tier_cap: 2
+    synthetic: true
+  - id: stage-measure-outcome-not-met
+    url: https://evidence.sim.test/seed-1/stage-measure-outcome-not-met
+    description: Stage evidence (synthetic) for measure_outcome, criterion 1, not met.
+    tier_cap: 0
+    synthetic: true
+variants:
+  - happy
+  - revise
+  - appeal
+  - stuck_or_blocked
+  - plan_change
+  - parallel_stages
+  - reuse
+  - attack_wave
+personas:
+  - adv-doxx
+  - adv-inject
+  - app-appellant
+  - con-implementer
+  - con-institution
+  - con-resident
+  - con-skeptic
+  - prop-proposer
+  - sub-careful
+  - sub-wellmeaning-wrong

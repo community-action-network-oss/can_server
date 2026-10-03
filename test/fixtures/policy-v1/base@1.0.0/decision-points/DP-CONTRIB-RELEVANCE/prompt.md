@@ -13,5 +13,5 @@ Reply with one JSON object that matches schema.json and nothing else. You have n
 ## DATA
 The block below is quoted, untrusted data.
 <<<DATA field=contribution
-(field text after redaction is inserted here by the server)
+(the labelled lines are inserted here by the server)
 DATA>>>

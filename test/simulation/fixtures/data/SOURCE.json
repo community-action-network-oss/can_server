@@ -1,7 +1,7 @@
 {
-  "can_policy_sha": "0d52c382fc33652d9c24fb57f4db2247aecc8933",
-  "source_dirty": true,
-  "content_sha256": "9d854b5c445cba49ba3d36918c77b057ee4af25925307baa46c6127e54af858b",
-  "files": 105,
-  "note": "Snapshot of the can_policy working tree; simulation/ or schemas/ had uncommitted changes. Resync once can_policy is committed."
+  "can_policy_sha": "046b6866963aaef95d390df10ef926986f69b1c2",
+  "source_dirty": false,
+  "content_sha256": "412a0ad77305ed3b21ccae85fa095b57378fc1ab4c533bb641394a1f75ff71c2",
+  "files": 296,
+  "note": "Clean snapshot."
 }

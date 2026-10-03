@@ -1,0 +1,50 @@
+{
+  "id": "complaint-volume-pattern",
+  "url": "https://evidence.sim.test/seed-2/complaint-volume-pattern",
+  "description": "Complaint-volume pattern (synthetic): invented monthly complaints about waste outside bins, by weekday.",
+  "synthetic": true,
+  "tier_cap": 2,
+  "metadata": {
+    "publisher_role": "service desk role (invented)",
+    "date": "2026-05",
+    "kind": "table"
+  },
+  "synthetic_note": "Synthetic: invented for simulation, not real data.",
+  "data": {
+    "columns": [
+      "weekday",
+      "complaints_per_month"
+    ],
+    "rows": [
+      [
+        "Mon",
+        74
+      ],
+      [
+        "Tue",
+        49
+      ],
+      [
+        "Wed",
+        38
+      ],
+      [
+        "Thu",
+        40
+      ],
+      [
+        "Fri",
+        52
+      ],
+      [
+        "Sat",
+        31
+      ],
+      [
+        "Sun",
+        26
+      ]
+    ],
+    "note": "All counts invented. The pattern describes when complaints arrive, not who causes them."
+  }
+}

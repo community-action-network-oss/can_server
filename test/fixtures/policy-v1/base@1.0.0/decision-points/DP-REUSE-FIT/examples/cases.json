@@ -1,0 +1,257 @@
+[
+  {
+    "id": "ex-RF-01",
+    "input": "jurisdiction: fiktiva-city\nlegal_stack: resolved\ncorpus_status: complete\nconfidence_ceiling: 0.95\nattribution: present\nstale_versions: no\nsource_count: 1\nsource r-1 meta: terminal_state=solved license=cc-by-4.0\nsource r-1 summary: \"A district asked the roads office for a lit crossing and got one in three months.\"\nstage_count: 2\nstage s-1 meta: source=r-1 legality=lawful resource_fit=fits\nstage s-1 goal: \"Ask the roads office to add a lit crossing near the school.\"\nstage s-2 meta: source=r-1 legality=lawful resource_fit=stretch\nstage s-2 goal: \"Run a one-week traffic count to support the request.\"\ndifference_count: 2\ndifference d-1 meta: dimension=geography relation=different\ndifference d-2 meta: dimension=language relation=same\ndraft: \"We want a lit crossing near our primary school, the road has no lights.\"",
+    "expected_outcome": "publish",
+    "rule_ids": [
+      "REUSE-CONTEXT-1",
+      "REUSE-CREDIT-1"
+    ],
+    "note": "lawful two-stage path with a geography difference and a scale-down",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "reuse_fit"
+    },
+    "expected": {
+      "adaptations": [
+        {
+          "stage_ref": "s-2",
+          "kind": "scale_down",
+          "reason": "s-2 stretches the declared resources, so a smaller version is proposed."
+        }
+      ],
+      "unusable_stages": [],
+      "differences_shown": [
+        "d-1"
+      ],
+      "credited_sources": [
+        "r-1"
+      ],
+      "auto_adopt": false,
+      "review_still_required": true,
+      "archive_used_as_review": false
+    },
+    "shot": true
+  },
+  {
+    "id": "ex-RF-02",
+    "input": "jurisdiction: fiktiva-harbor\nlegal_stack: resolved\ncorpus_status: complete\nconfidence_ceiling: 0.95\nattribution: present\nstale_versions: no\nsource_count: 1\nsource r-1 meta: terminal_state=solved license=cc-by-4.0\nsource r-1 summary: \"A district asked the roads office for a lit crossing and got one in three months.\"\nstage_count: 2\nstage s-1 meta: source=r-1 legality=lawful resource_fit=fits\nstage s-1 goal: \"Ask the ferry office for a new timetable board.\"\nstage s-2 meta: source=r-1 legality=unlawful_at_L4 resource_fit=fits\nstage s-2 goal: \"Close the quay road on market days with cones set by the volunteers.\"\ndifference_count: 1\ndifference d-1 meta: dimension=legal_stack relation=different\nanalogue a-1 meta: stage=s-2 from=archive\ndraft: \"We want a lit crossing near our primary school, the road has no lights.\"",
+    "expected_outcome": "publish",
+    "rule_ids": [
+      "REUSE-CONTEXT-1",
+      "REUSE-CREDIT-1"
+    ],
+    "note": "one unlawful stage shown as unusable with a supplied analogue",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-harbor",
+    "field_ref": {
+      "field": "reuse_fit"
+    },
+    "expected": {
+      "adaptations": [
+        {
+          "stage_ref": "s-2",
+          "kind": "substitute",
+          "reason": "s-2 is unusable here; analogue a-1 is the supplied analogue for s-2.",
+          "analogue_ref": "a-1"
+        }
+      ],
+      "unusable_stages": [
+        "s-2"
+      ],
+      "differences_shown": [
+        "d-1"
+      ],
+      "credited_sources": [
+        "r-1"
+      ],
+      "auto_adopt": false,
+      "review_still_required": true,
+      "archive_used_as_review": false
+    },
+    "shot": true
+  },
+  {
+    "id": "ex-RF-03",
+    "input": "jurisdiction: fiktiva-harbor\nlegal_stack: resolved\ncorpus_status: complete\nconfidence_ceiling: 0.95\nattribution: present\nstale_versions: yes\nsource_count: 1\nsource r-1 meta: terminal_state=solved license=cc-by-4.0\nsource r-1 summary: \"A district asked the roads office for a lit crossing and got one in three months.\"\nstage_count: 1\nstage s-1 meta: source=r-1 legality=lawful resource_fit=fits\nstage s-1 goal: \"Ask the library to extend its opening hours.\"\ndifference_count: 2\ndifference d-1 meta: dimension=language relation=same\ndifference d-2 meta: dimension=policy_version relation=different\ndraft: \"We want a lit crossing near our primary school, the road has no lights.\"",
+    "expected_outcome": "publish",
+    "rule_ids": [
+      "REUSE-CONTEXT-1",
+      "REUSE-CREDIT-1"
+    ],
+    "note": "stale versions: every difference is shown",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-harbor",
+    "field_ref": {
+      "field": "reuse_fit"
+    },
+    "expected": {
+      "adaptations": [],
+      "unusable_stages": [],
+      "differences_shown": [
+        "d-1",
+        "d-2"
+      ],
+      "credited_sources": [
+        "r-1"
+      ],
+      "auto_adopt": false,
+      "review_still_required": true,
+      "archive_used_as_review": false
+    },
+    "shot": false
+  },
+  {
+    "id": "ex-RF-04",
+    "input": "jurisdiction: fiktiva-city\nlegal_stack: resolved\ncorpus_status: complete\nconfidence_ceiling: 0.95\nattribution: present\nstale_versions: no\nsource_count: 1\nsource r-1 meta: terminal_state=solved license=cc-by-4.0\nsource r-1 summary: \"A district asked the roads office for a lit crossing and got one in three months.\"\nstage_count: 1\nstage s-1 meta: source=r-1 legality=lawful resource_fit=exceeds\nstage s-1 goal: \"Fund and install ten solar lamps along the path.\"\ndifference_count: 0\ndraft: \"We want lamps.\"",
+    "expected_outcome": "needs_revision",
+    "rule_ids": [
+      "REUSE-CONTEXT-1"
+    ],
+    "note": "a stage exceeds the resources and the draft is too thin to adapt it",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "reuse_fit"
+    },
+    "revision_hint": "s-1 exceeds the declared resources. Add your helpers and budget band to the draft so a smaller version of s-1 can be proposed.",
+    "expected": {
+      "auto_adopt": false,
+      "review_still_required": true,
+      "archive_used_as_review": false,
+      "unusable_stages": [],
+      "differences_shown": [],
+      "credited_sources": [
+        "r-1"
+      ]
+    },
+    "shot": false
+  },
+  {
+    "id": "ex-RF-05",
+    "input": "jurisdiction: fiktiva-city\nlegal_stack: unresolved\ncorpus_status: complete\nconfidence_ceiling: 0.95\nattribution: present\nstale_versions: no\nsource_count: 1\nsource r-1 meta: terminal_state=solved license=cc-by-4.0\nsource r-1 summary: \"A district asked the roads office for a lit crossing and got one in three months.\"\nstage_count: 1\nstage s-1 meta: source=r-1 legality=lawful resource_fit=fits\nstage s-1 goal: \"Ask the roads office to add a lit crossing near the school.\"\ndifference_count: 0\ndraft: \"We want a lit crossing near our primary school, the road has no lights.\"",
+    "expected_outcome": "hold",
+    "rule_ids": [],
+    "note": "legal stack unresolved",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "reuse_fit"
+    },
+    "expected": {
+      "hold_reason": "legality_unchecked",
+      "auto_adopt": false,
+      "archive_used_as_review": false
+    },
+    "shot": false
+  },
+  {
+    "id": "ex-RF-06",
+    "input": "jurisdiction: fiktiva-harbor\nlegal_stack: resolved\ncorpus_status: complete\nconfidence_ceiling: 0.95\nattribution: present\nstale_versions: no\nsource_count: 1\nsource r-1 meta: terminal_state=solved license=cc-by-4.0\nsource r-1 summary: \"A district asked the roads office for a lit crossing and got one in three months.\"\nstage_count: 2\nstage s-1 meta: source=r-1 legality=lawful resource_fit=fits\nstage s-1 goal: \"Ask the ferry office for a timetable board.\"\nstage s-2 meta: source=r-1 legality=unknown resource_fit=fits\nstage s-2 goal: \"Fence off the jetty edge.\"\ndifference_count: 0\ndraft: \"We want a lit crossing near our primary school, the road has no lights.\"",
+    "expected_outcome": "hold",
+    "rule_ids": [],
+    "note": "a stage has legality unknown",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-harbor",
+    "field_ref": {
+      "field": "reuse_fit"
+    },
+    "expected": {
+      "hold_reason": "legality_unchecked",
+      "auto_adopt": false,
+      "archive_used_as_review": false
+    },
+    "shot": true
+  },
+  {
+    "id": "ex-RF-07",
+    "input": "jurisdiction: fiktiva-harbor\nlegal_stack: resolved\ncorpus_status: incomplete\nconfidence_ceiling: 0.95\nattribution: present\nstale_versions: no\nsource_count: 1\nsource r-1 meta: terminal_state=solved license=cc-by-4.0\nsource r-1 summary: \"A district asked the roads office for a lit crossing and got one in three months.\"\nstage_count: 1\nstage s-1 meta: source=r-1 legality=lawful resource_fit=fits\nstage s-1 goal: \"Ask the roads office to add a lit crossing near the school.\"\ndifference_count: 0\ndraft: \"We want a lit crossing near our primary school, the road has no lights.\"",
+    "expected_outcome": "hold",
+    "rule_ids": [],
+    "note": "corpus incomplete for a layer",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-harbor",
+    "field_ref": {
+      "field": "reuse_fit"
+    },
+    "expected": {
+      "hold_reason": "legality_unchecked",
+      "auto_adopt": false,
+      "archive_used_as_review": false
+    },
+    "shot": false
+  },
+  {
+    "id": "ex-RF-08",
+    "input": "jurisdiction: fiktiva-city\nlegal_stack: resolved\ncorpus_status: complete\nconfidence_ceiling: 0.95\nattribution: absent\nstale_versions: no\nsource_count: 1\nsource r-1 meta: terminal_state=solved license=cc-by-4.0\nsource r-1 summary: \"A district asked the roads office for a lit crossing and got one in three months.\"\nstage_count: 1\nstage s-1 meta: source=r-1 legality=lawful resource_fit=fits\nstage s-1 goal: \"Ask the roads office to add a lit crossing near the school.\"\ndifference_count: 0\ndraft: \"We want a lit crossing near our primary school, the road has no lights.\"",
+    "expected_outcome": "hold",
+    "rule_ids": [],
+    "note": "attribution absent: credit missing is never shown",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "reuse_fit"
+    },
+    "expected": {
+      "hold_reason": "missing_input",
+      "auto_adopt": false,
+      "archive_used_as_review": false,
+      "missing_inputs": [
+        "attribution"
+      ]
+    },
+    "shot": false
+  },
+  {
+    "id": "ex-RF-09",
+    "input": "jurisdiction: fiktiva-city\nlegal_stack: resolved\ncorpus_status: complete\nconfidence_ceiling: 0.95\nattribution: present\nstale_versions: no\nsource_count: 1\nsource r-1 meta: terminal_state=solved license=cc-by-4.0\nsource r-1 summary: \"A district asked the roads office for a lit crossing and got one in three months.\"\nstage_count: 1\nstage s-1 meta: source=r-1 legality=lawful resource_fit=fits\nstage s-1 goal: \"Ask the roads office to add a lit crossing near the school.\"\ndifference_count: 0",
+    "expected_outcome": "hold",
+    "rule_ids": [],
+    "note": "no draft line",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-city",
+    "field_ref": {
+      "field": "reuse_fit"
+    },
+    "expected": {
+      "hold_reason": "missing_input",
+      "auto_adopt": false,
+      "archive_used_as_review": false,
+      "missing_inputs": [
+        "draft"
+      ]
+    },
+    "shot": false
+  },
+  {
+    "id": "ex-RF-10",
+    "input": "jurisdiction: fiktiva-harbor\nlegal_stack: resolved\ncorpus_status: complete\nconfidence_ceiling: 0.95\nattribution: present\nstale_versions: no\nsource_count: 2\nsource r-1 meta: terminal_state=solved license=cc-by-4.0\nsource r-1 summary: \"A harbour group got a drain cleared by writing to the harbour office.\"\nsource r-2 meta: terminal_state=redirected license=cc-by-4.0\nsource r-2 summary: \"A second group tried the same and the office pointed them to the regional body.\"\nstage_count: 2\nstage s-1 meta: source=r-1 legality=lawful resource_fit=fits\nstage s-1 goal: \"Write to the harbour office about the blocked drain.\"\nstage s-2 meta: source=r-2 legality=lawful resource_fit=fits\nstage s-2 goal: \"Ask the regional body to take the case if redirected.\"\ndifference_count: 1\ndifference d-1 meta: dimension=constraints relation=close\ndraft: \"We want a lit crossing near our primary school, the road has no lights.\"",
+    "expected_outcome": "publish",
+    "rule_ids": [
+      "REUSE-CONTEXT-1",
+      "REUSE-CREDIT-1"
+    ],
+    "note": "two sources, both credited",
+    "provenance": "fixture",
+    "jurisdiction": "fiktiva-harbor",
+    "field_ref": {
+      "field": "reuse_fit"
+    },
+    "expected": {
+      "adaptations": [],
+      "unusable_stages": [],
+      "differences_shown": [
+        "d-1"
+      ],
+      "credited_sources": [
+        "r-1",
+        "r-2"
+      ],
+      "auto_adopt": false,
+      "review_still_required": true,
+      "archive_used_as_review": false
+    },
+    "shot": false
+  }
+]

@@ -1,0 +1,11 @@
+dp: DP-STAGE-PLAN
+enforces: [STAGE-GATE-1, PLAN-CHANGE-1]
+mode: blocking
+# Runs on submit, on the publish run and on every plan-change proposal (T22). The deterministic DAG check (validatePlan) runs first and arrives as the server line dag_check.
+inputs: [trigger, jurisdiction, dag_check, stage_count, stage_lines, final_count, final_criteria, change_reason, removed_count, removed_lines]
+outcomes: [publish, needs_revision, hold]
+thresholds:
+  confidence_floor:
+    publish: 0.90
+    needs_revision: 0.75
+  escalate_model_below: 0.85

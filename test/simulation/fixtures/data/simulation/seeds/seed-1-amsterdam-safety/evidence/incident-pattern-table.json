@@ -1,0 +1,48 @@
+{
+  "id": "incident-pattern-table",
+  "url": "https://evidence.sim.test/seed-1/incident-pattern-table",
+  "description": "Incident-pattern table (synthetic): invented quarterly counts of explosive-device incidents and violent incidents, by invented category.",
+  "synthetic": true,
+  "tier_cap": 2,
+  "metadata": {
+    "publisher_role": "statistics body role (invented)",
+    "date": "2026-03",
+    "kind": "table"
+  },
+  "synthetic_note": "Synthetic: invented for simulation, not real data.",
+  "data": {
+    "columns": [
+      "quarter",
+      "explosive_device_incidents",
+      "violent_incidents",
+      "threat_reports"
+    ],
+    "rows": [
+      [
+        "Q1",
+        7,
+        31,
+        12
+      ],
+      [
+        "Q2",
+        9,
+        34,
+        15
+      ],
+      [
+        "Q3",
+        12,
+        33,
+        19
+      ],
+      [
+        "Q4",
+        11,
+        38,
+        21
+      ]
+    ],
+    "note": "All counts invented."
+  }
+}

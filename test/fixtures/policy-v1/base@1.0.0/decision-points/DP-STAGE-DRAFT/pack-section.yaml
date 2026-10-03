@@ -1,0 +1,11 @@
+dp: DP-STAGE-DRAFT
+enforces: [REUSE-CREDIT-1, REUSE-NOBLOCK-1]
+mode: blocking
+# Runs when a problem is active after publication and at least one suggestion was accepted, or when the poster asks for a draft (docs/design/ai/archive-reuse.md section 8). Drafts only: the result is private to the poster until accepted and is then submitted as a plan change through DP-STAGE-PLAN, DP-CRITERIA and DP-LEGALITY (PLAN-CHANGE-1). Never publishes or starts a plan. auto_start defaults to true (D-84).
+inputs: [jurisdiction, trigger, problem_state, legal_stack, suggestion_count, suggestion_lines, source_stage_count, source_stage_lines, adaptation_count, adaptation_lines, final_count, final_criteria, problem, attribution]
+outcomes: [publish, needs_revision, hold]
+thresholds:
+  confidence_floor:
+    publish: 0.85
+    needs_revision: 0.75
+  escalate_model_below: 0.85

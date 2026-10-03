@@ -1,0 +1,20 @@
+{
+  "type": "observation",
+  "basis": "cited",
+  "target": "seed-2-problem",
+  "claim": "The contradicting audit gives a measurement method that explains the gap.",
+  "evidence_refs": [
+    {
+      "url": "https://evidence.sim.test/seed-2/contradicting-cleanliness-audit",
+      "supports": "Supports the claim above (synthetic evidence)."
+    }
+  ],
+  "uncertainty": "The figures are invented and the measurement method is unknown.",
+  "assumptions": [
+    "I assume both tables measure the same streets."
+  ],
+  "what_observed": "The audit states a different sampling method (synthetic).",
+  "when": "Four invented quarters",
+  "where_coarse": "Amsterdam city centre, areas not named",
+  "how_observed": "Read the invented tables side by side."
+}

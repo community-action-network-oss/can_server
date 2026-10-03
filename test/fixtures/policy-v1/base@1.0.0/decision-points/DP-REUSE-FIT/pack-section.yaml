@@ -1,0 +1,11 @@
+dp: DP-REUSE-FIT
+enforces: [REUSE-CONTEXT-1, REUSE-CREDIT-1]
+mode: blocking
+# Blocking for display only: runs on each candidate before the panel shows it (docs/design/ai/archive-reuse.md section 6). Legality, resource fit, differences and stale versions are computed by the server first and arrive as server lines; the model proposes adaptations only and cannot raise a confidence above the server ceiling. A suggestion is never adopted by this DP: the poster decides and volunteer review is still required.
+inputs: [jurisdiction, legal_stack, corpus_status, confidence_ceiling, attribution, stale_versions, source_count, source_lines, stage_count, stage_lines, difference_count, difference_lines, draft]
+outcomes: [publish, needs_revision, hold]
+thresholds:
+  confidence_floor:
+    publish: 0.85
+    needs_revision: 0.75
+  escalate_model_below: 0.85

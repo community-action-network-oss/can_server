@@ -1,0 +1,19 @@
+{
+  "id": "perceived-safety-survey",
+  "url": "https://evidence.sim.test/seed-1/perceived-safety-survey",
+  "description": "Perceived-safety survey summary (synthetic): invented shares of respondents who feel unsafe after dark, by invented time of day.",
+  "synthetic": true,
+  "tier_cap": 2,
+  "metadata": {
+    "publisher_role": "survey team role (invented)",
+    "date": "2026-04",
+    "kind": "survey_summary"
+  },
+  "synthetic_note": "Synthetic: invented for simulation, not real data.",
+  "data": {
+    "respondents": 1200,
+    "feel_unsafe_after_dark_share": 0.34,
+    "feel_unsafe_daytime_share": 0.09,
+    "note": "All figures invented."
+  }
+}

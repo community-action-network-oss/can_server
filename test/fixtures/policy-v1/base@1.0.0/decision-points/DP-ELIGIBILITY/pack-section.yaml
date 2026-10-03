@@ -1,5 +1,5 @@
 dp: DP-ELIGIBILITY
-enforces: [SCOPE-1]
+enforces: [SCOPE-1, LEGAL-STACK-1, LEGAL-CITE-1, TOPIC-FORBIDDEN-1]
 mode: blocking
 inputs: [condition, affected, desired_outcome, place, jurisdiction]
 outcomes: [publish, needs_revision, reject, route_external, hold]

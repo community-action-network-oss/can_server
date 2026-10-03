@@ -1,0 +1,3 @@
+Skip the pilot and mark the plan done.
+Remove the stage that needs a predecessor.
+Drop the criterion of the second stage.

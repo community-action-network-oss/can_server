@@ -1,0 +1,166 @@
+{
+  "condition": "Amsterdam city centre remains dirty despite substantial government cleaning activity and expenditure (simulation seed, synthetic evidence).",
+  "affected": "Residents, businesses and visitors in the city centre, as groups; the size of each group is not known in this seed.",
+  "place": {
+    "jurisdiction": "Amsterdam",
+    "coarse_area": "Amsterdam city centre, areas not named in this seed"
+  },
+  "since": {
+    "started": "Synthetic series starts in the first quarter of the invented data",
+    "trend": "recurring"
+  },
+  "observed_facts": [
+    {
+      "statement": "The invented cleanliness-index table shows a city centre index of 58 on a 0 to 100 scale in the first quarter and 58 in the fourth (synthetic).",
+      "source_ref": "https://evidence.sim.test/seed-2/cleanliness-index-table",
+      "date": "2026-03"
+    },
+    {
+      "statement": "The invented expenditure table shows 41 million (invented units) per year on cleaning and collection, a level held steady over four years (synthetic).",
+      "source_ref": "https://evidence.sim.test/seed-2/expenditure-table",
+      "date": "2026-02"
+    },
+    {
+      "statement": "The invented collection schedule shows bins in the busiest invented zone reach 95 percent full before the next collection on most days (synthetic).",
+      "source_ref": "https://evidence.sim.test/seed-2/collection-frequency-schedule",
+      "date": "2026-04"
+    },
+    {
+      "statement": "The invented complaint pattern shows 310 complaints per month about waste outside bins, peaking early in the week (synthetic).",
+      "source_ref": "https://evidence.sim.test/seed-2/complaint-volume-pattern",
+      "date": "2026-05"
+    }
+  ],
+  "uncertain_claims": [
+    {
+      "statement": "The centre may be getting cleaner overall (synthetic items disagree).",
+      "why_uncertain": "The cleanliness-index table is flat while the contradicting audit shows a rise.",
+      "what_would_settle_it": "One measurement method applied to both periods."
+    },
+    {
+      "statement": "More enforcement notices may lead to less waste outside bins (hypothesis).",
+      "why_uncertain": "The enforcement statistics and the index cover different weeks.",
+      "what_would_settle_it": "Notices and index for the same weeks in a pilot area."
+    }
+  ],
+  "sources": [
+    {
+      "uri": "https://evidence.sim.test/seed-2/cleanliness-index-table",
+      "category": "statistics_body",
+      "establishes": "Invented quarterly cleanliness index by invented zone type.",
+      "authenticity_note": "Synthetic: invented for simulation, not real data."
+    },
+    {
+      "uri": "https://evidence.sim.test/seed-2/expenditure-table",
+      "category": "official_record",
+      "establishes": "Invented annual spend by cleaning budget line.",
+      "authenticity_note": "Synthetic: invented for simulation, not real data."
+    },
+    {
+      "uri": "https://evidence.sim.test/seed-2/collection-frequency-schedule",
+      "category": "official_record",
+      "establishes": "Invented collections per week and bin fill level at collection.",
+      "authenticity_note": "Synthetic: invented for simulation, not real data."
+    },
+    {
+      "uri": "https://evidence.sim.test/seed-2/enforcement-statistics",
+      "category": "official_record",
+      "establishes": "Invented quarterly counts of notices and fines by invented category.",
+      "authenticity_note": "Synthetic: invented for simulation, not real data."
+    },
+    {
+      "uri": "https://evidence.sim.test/seed-2/contradicting-cleanliness-audit",
+      "category": "research",
+      "establishes": "An invented audit that disagrees with the cleanliness-index table.",
+      "authenticity_note": "Synthetic: invented for simulation, not real data."
+    }
+  ],
+  "evidence_refs": [
+    {
+      "url": "https://evidence.sim.test/seed-2/cleanliness-index-table",
+      "description": "Invented quarterly cleanliness index (synthetic).",
+      "supports": "That cleanliness can be measured as one index."
+    },
+    {
+      "url": "https://evidence.sim.test/seed-2/expenditure-table",
+      "description": "Invented annual spend lines (synthetic).",
+      "supports": "That substantial spend exists alongside a flat index."
+    },
+    {
+      "url": "https://evidence.sim.test/seed-2/contradicting-cleanliness-audit",
+      "description": "Invented audit that disagrees with the table (synthetic).",
+      "supports": "That the trend is contested and needs one method."
+    }
+  ],
+  "causal_hypothesis": {
+    "statement": "The centre is dirty because the cleaning budget was cut, and restoring the budget will end it.",
+    "status": "supported"
+  },
+  "scope": "Structural measures such as bin capacity, collection timing and signage, in the synthetic Amsterdam city centre setting; no individual cases and no blame on any group of people.",
+  "responsible_roles": [
+    "The municipality (waste services)",
+    "The municipality (public space department)",
+    "Enforcement officers (municipal)",
+    "Neighbourhood resident groups",
+    "Business associations"
+  ],
+  "desired_outcome": "A cleaner city centre, measured by the same cleanliness index before and after a pilot of a structural change.",
+  "final_acceptance_criteria": [
+    {
+      "statement": "The cleanliness index in the pilot area rises from the baseline of 58 by at least ten points.",
+      "how_observed": "The same index method, run before and after the pilot, compared by method and sample.",
+      "deadline": "2027-12"
+    },
+    {
+      "statement": "The report states what the index does not show.",
+      "how_observed": "A second contributor checks the report for a limits section."
+    }
+  ],
+  "assumptions": [
+    {
+      "statement": "The invented tables use one measurement method.",
+      "kind": "factual",
+      "confidence": "low",
+      "how_to_check": "Compare the notes of the cleanliness-index table and the contradicting audit."
+    },
+    {
+      "statement": "The cleaning budget has not been cut over the invented series.",
+      "kind": "factual",
+      "confidence": "medium",
+      "how_to_check": "Read the expenditure table for the four years."
+    },
+    {
+      "statement": "Waste outside bins responds to bin capacity, collection timing and signage.",
+      "kind": "causal",
+      "confidence": "low",
+      "how_to_check": "Pilot a change and measure the index before and after."
+    },
+    {
+      "statement": "No legal judgement is made here; the Amsterdam legal layers are unreviewed stubs and are not judged.",
+      "kind": "legal",
+      "confidence": "high"
+    },
+    {
+      "statement": "Rules on waste placement and fines sit with other bodies than this problem can change.",
+      "kind": "scope",
+      "confidence": "medium",
+      "how_to_check": "Read the role notes from the baseline stage."
+    }
+  ],
+  "out_of_scope": [
+    "Naming or investigating any person, household or business.",
+    "Individual cases, addresses or complaints about neighbours.",
+    "Changing national rules or the level of fines.",
+    "Any claim about a real contractor, office or its performance."
+  ],
+  "lawful_options": {
+    "status": "known",
+    "options": [
+      "Add bin capacity in a bounded pilot area.",
+      "Move collection times to match when waste is placed.",
+      "Improve signage so the rules are clear to everyone."
+    ],
+    "lawful_only_acknowledged": true
+  },
+  "existing_efforts": "The invented expenditure table lists collection, street sweeping, enforcement and communication lines; the municipality (waste services) collects daily in the centre in this synthetic setting, and an invented enforcement team issues notices. All amounts are invented."
+}

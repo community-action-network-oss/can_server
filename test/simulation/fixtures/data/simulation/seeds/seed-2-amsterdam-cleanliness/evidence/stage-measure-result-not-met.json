@@ -1,0 +1,31 @@
+{
+  "id": "stage-measure-result-not-met",
+  "url": "https://evidence.sim.test/seed-2/stage-measure-result-not-met",
+  "description": "Stage evidence (synthetic) for measure_result, criterion 1, not met.",
+  "synthetic": true,
+  "tier_cap": 0,
+  "metadata": {
+    "publisher_role": "contributor role (invented)",
+    "date": "2027-01",
+    "kind": "stage_evidence"
+  },
+  "synthetic_note": "Synthetic: invented for simulation, not real data.",
+  "stage": "measure_result",
+  "criterion": 1,
+  "result": "not_met",
+  "for_persona": "stg-evidence-weak",
+  "body": {
+    "stage_ref": "measure_result",
+    "criterion_ref": 1,
+    "evidence_refs": [
+      {
+        "url": "https://evidence.sim.test/seed-2/stage-measure-result-not-met",
+        "description": "Invented single note about measure_result, no method given (synthetic).",
+        "tier_request": "other"
+      }
+    ],
+    "observation_date": "2027-01-15",
+    "outcome_statement": "The criterion of measure_result looks partly met, from one invented note (synthetic).",
+    "what_the_evidence_does_not_show": "How the note was made, whether it covers the full scope, or whether anyone else agrees."
+  }
+}

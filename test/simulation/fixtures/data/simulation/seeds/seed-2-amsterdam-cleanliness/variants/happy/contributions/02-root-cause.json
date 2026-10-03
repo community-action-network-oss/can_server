@@ -1,0 +1,20 @@
+{
+  "type": "root_cause",
+  "basis": "cited",
+  "target": "seed-2-problem",
+  "claim": "Bins that fill before the next collection and collection times that miss when waste is placed may leave waste outside bins, whatever the spend.",
+  "evidence_refs": [
+    {
+      "url": "https://evidence.sim.test/seed-2/collection-frequency-schedule",
+      "supports": "Supports the claim above (synthetic evidence)."
+    }
+  ],
+  "uncertainty": "This is a hypothesis; no test has been run in the synthetic data.",
+  "assumptions": [
+    "I assume the fill levels are measured the same way in every zone."
+  ],
+  "hypothesis": "Waste outside bins depends partly on bin capacity and on collection timing (hypothesis).",
+  "mechanism": "When a bin is 95 percent full before the next collection, further waste is placed beside it, which the index would show as a lower score.",
+  "supporting_evidence_refs": [],
+  "test_that_would_disprove_it": "If zones with spare bin capacity and matched collection times show the same index, the hypothesis fails."
+}

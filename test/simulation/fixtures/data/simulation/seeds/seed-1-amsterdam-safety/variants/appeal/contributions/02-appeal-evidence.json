@@ -1,0 +1,20 @@
+{
+  "type": "observation",
+  "basis": "cited",
+  "target": "seed-1-problem",
+  "claim": "The contradicting item gives a counting method that explains the gap.",
+  "evidence_refs": [
+    {
+      "url": "https://evidence.sim.test/seed-1/contradicting-incident-trend",
+      "supports": "Supports the claim above (synthetic evidence)."
+    }
+  ],
+  "uncertainty": "The figures are invented and the counting method is unknown.",
+  "assumptions": [
+    "I assume both tables count the same incidents."
+  ],
+  "what_observed": "The contradicting series states its method (synthetic).",
+  "when": "Four invented quarters",
+  "where_coarse": "Amsterdam, districts not named",
+  "how_observed": "Read the invented tables side by side."
+}

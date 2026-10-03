@@ -1,0 +1,20 @@
+{
+  "type": "root_cause",
+  "basis": "cited",
+  "target": "seed-1-problem",
+  "claim": "The first draft treated lighting as the settled cause; it is a hypothesis.",
+  "evidence_refs": [
+    {
+      "url": "https://evidence.sim.test/seed-1/perceived-safety-survey",
+      "supports": "Supports the claim above (synthetic evidence)."
+    }
+  ],
+  "uncertainty": "This is a hypothesis; no test has been run in the synthetic data.",
+  "assumptions": [
+    "I assume the survey sample is comparable across quarters."
+  ],
+  "hypothesis": "Lighting may contribute to perceived safety (hypothesis).",
+  "mechanism": "Visibility changes how safe people feel, not necessarily the incident counts.",
+  "supporting_evidence_refs": [],
+  "test_that_would_disprove_it": "If lit and unlit areas show equal unsafe shares, drop the hypothesis."
+}

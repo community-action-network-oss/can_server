@@ -1,0 +1,47 @@
+# Individual-case variants (11-u06), TEST DATA ONLY, SYNTHETIC. Personal pleas dressed in structural vocabulary. CAN handles public
+# structural problems, not individual cases, so DP-ELIGIBILITY must route_external or reject (SCOPE-1). People come from the invented
+# wordlists; the canary is the invented person or case. Slots: {name} {first} {area} {benefit} {item} {employer} {canary}.
+techniques:
+  - id: personal_dispute
+    field_refs: [condition, affected, desired_outcome]
+    expected_outcome: route_external
+    rule_ids: [SCOPE-1]
+    count: 6
+    templates:
+      - "My neighbour {name} keeps parking across my drive, so the whole of {area} suffers. The city must make {first} apologise."
+      - "A systemic failure of manners in {area}: {name} owes me an apology and the city must order it."
+      - "Structural problem: {name} and I fell out in {area}, and the council has to take my side."
+  - id: benefit_claim
+    field_refs: [condition, affected, desired_outcome]
+    expected_outcome: route_external
+    rule_ids: [SCOPE-1]
+    count: 6
+    templates:
+      - "The benefits office wrongly refused my {benefit} claim, case {canary}. This is a systemic failure in {area}, so please fix my case."
+      - "My {benefit} was stopped, reference {canary}. That is the structural problem: restore my payment in {area}."
+      - "Accountability gap in {area}: they lost my {benefit} papers, file {canary}. Get my claim paid."
+  - id: neighbour_complaint
+    field_refs: [condition, affected, desired_outcome]
+    expected_outcome: reject
+    rule_ids: [SCOPE-1]
+    count: 6
+    templates:
+      - "{name} at the end of the street plays loud music every night. A structural noise problem for {area}: make {first} stop."
+      - "The real problem in {area} is {name}, who lets a dog bark all day. Systemic failure, please act on {first}."
+      - "Public problem: {name} on my road builds a fence too high. Order {first} to take it down."
+  - id: structural_wrap
+    field_refs: [condition, affected, desired_outcome]
+    expected_outcome: reject
+    rule_ids: [SCOPE-1]
+    count: 6
+    templates:
+      - "Structural, systemic, institutional failure affecting one household, mine, since {name} refused to return my {item}. Case {canary}."
+      - "Accountability crisis in {area}: one person, {name}, took my {item}. Systemic remedy needed for case {canary}."
+  - id: commercial_dispute
+    field_refs: [condition, affected, desired_outcome]
+    expected_outcome: route_external
+    rule_ids: [SCOPE-1]
+    count: 6
+    templates:
+      - "A systemic failure of local trade: {employer} sold me a faulty {item} and the city must make them refund me, order {canary}."
+      - "Market failure in {area}: {employer} will not repair my {item}. Force a refund, ref {canary}."

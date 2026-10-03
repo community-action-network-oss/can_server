@@ -1,0 +1,146 @@
+{
+  "steps": [
+    {
+      "id": "option_active",
+      "action": "stage_option",
+      "content_type": "stage_option",
+      "fields": {
+        "stage_ref": "{{seed.stage_ref}}",
+        "option_statement": "Close the inner lane of Dock Road for 25 days to build a bike lane.",
+        "mechanism": "The road works office closes one lane in phases and keeps a lane open for traffic.",
+        "responsible_role": "Head of Road Works",
+        "authority_and_legal_basis": "A closure under thirty days needs no ministerial order under the invented statutes of Fiktiva.",
+        "cost_estimate": {
+          "band": "<10k",
+          "amount": 6000
+        },
+        "how_it_meets_stage_criteria": [
+          {
+            "criterion_ref": 1,
+            "how": "The bike lane is open and counted on the public sheet after 25 days."
+          }
+        ],
+        "risks_and_rights_impact": "Traffic slows on two days. A lane stays open for emergency vehicles.",
+        "lawful_alternatives": [
+          "Paint a shared lane without a closure."
+        ],
+        "assumptions": [
+          "I assume the closure can be phased."
+        ]
+      },
+      "expect": {
+        "outcome": "publish"
+      }
+    },
+    {
+      "id": "option_ahead_1",
+      "action": "stage_option",
+      "when": {
+        "after_step": "option_active"
+      },
+      "content_type": "stage_option",
+      "fields": {
+        "stage_ref": "{{var.planned_stage_ref}}",
+        "option_statement": "Pilot a second weekly pickup on Dock Road for six weeks.",
+        "mechanism": "The waste services office adds one extra round on market days and logs each round.",
+        "responsible_role": "Head of Waste Services",
+        "authority_and_legal_basis": "The invented rules of Fiktiva North let the waste services office add rounds within its yearly budget.",
+        "cost_estimate": {
+          "band": "<10k",
+          "amount": 6000
+        },
+        "how_it_meets_stage_criteria": [
+          {
+            "criterion_ref": 1,
+            "how": "The extra round is logged and the weekly count is posted on the public sheet."
+          }
+        ],
+        "risks_and_rights_impact": "Noise on market mornings rises slightly. No personal data is collected.",
+        "lawful_alternatives": [
+          "Move the existing round to the early morning."
+        ],
+        "assumptions": [
+          "I assume the closure can be phased."
+        ]
+      },
+      "expect": {
+        "outcome": "publish",
+        "rule_ids": [
+          "STAGE-PREP-1"
+        ]
+      }
+    },
+    {
+      "id": "option_ahead_2",
+      "action": "stage_option",
+      "when": {
+        "after_step": "option_ahead_1"
+      },
+      "content_type": "stage_option",
+      "fields": {
+        "stage_ref": "{{var.planned_stage_ref}}",
+        "option_statement": "Review the pilot with residents at the market hall.",
+        "mechanism": "The poster hosts one open session and posts the notes to the stage.",
+        "responsible_role": "Problem poster",
+        "authority_and_legal_basis": "Hosting an open session in a public hall needs no permit under the invented statutes of Fiktiva.",
+        "cost_estimate": {
+          "band": "<10k",
+          "amount": 6000
+        },
+        "how_it_meets_stage_criteria": [
+          {
+            "criterion_ref": 1,
+            "how": "The notes and the attendance count are posted to the stage."
+          }
+        ],
+        "risks_and_rights_impact": "Attendance may be low. Notes name no individual.",
+        "lawful_alternatives": [
+          "Collect written comments for two weeks."
+        ],
+        "assumptions": [
+          "I assume the closure can be phased."
+        ]
+      },
+      "expect": {
+        "outcome": "publish",
+        "rule_ids": [
+          "STAGE-PREP-1"
+        ]
+      }
+    },
+    {
+      "id": "read_planned_options",
+      "action": "read",
+      "when": {
+        "after_step": "option_ahead_2"
+      },
+      "fields": {
+        "view": "stage_options",
+        "stage_ref": "{{var.planned_stage_ref}}"
+      },
+      "expect": {
+        "outcome": "kept_ready",
+        "rule_ids": [
+          "STAGE-PREP-1"
+        ]
+      }
+    },
+    {
+      "id": "read_planned_evidence",
+      "action": "read",
+      "when": {
+        "after_step": "read_planned_options"
+      },
+      "fields": {
+        "view": "counted_evidence",
+        "stage_ref": "{{var.planned_stage_ref}}"
+      },
+      "expect": {
+        "outcome": "none_counted",
+        "rule_ids": [
+          "STAGE-PREP-1"
+        ]
+      }
+    }
+  ]
+}

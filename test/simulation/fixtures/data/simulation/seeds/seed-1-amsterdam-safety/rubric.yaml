@@ -1,0 +1,52 @@
+seed: seed-1-amsterdam-safety
+synthetic: true
+overlay_status: nl-amsterdam overlay is an unreviewed skeleton (OQ-amsterdam-overlay-review); the report must say so. Legal layers are stubs and are not judged.
+items:
+  - id: incident_categories
+    source: problem
+    expects: Names the incident categories (explosive-device, violent, threat) and what each covers.
+  - id: patterns
+    source: problem
+    expects: Describes patterns over time and says where the series disagree.
+  - id: affected_groups
+    source: problem
+    expects: Covers residents, businesses, visitors and emergency responders as groups.
+  - id: hypotheses
+    source: problem
+    expects: States causal hypotheses as hypotheses, each with a test that would disprove it.
+  - id: prevention
+    source: problem
+    expects: Offers structural prevention options (lighting, crossings, waiting times) with cost and owner role.
+  - id: constraints
+    source: problem
+    expects: Records the policing and justice competence limits and the budget limits.
+  - id: civil_liberties
+    source: problem
+    expects: Checks every option against civil liberties and rules out targeting any group.
+  - id: evidence_quality
+    source: problem
+    expects: Grades the evidence tiers, flags the retrieved-not-verified item and the contradicting item.
+  - id: institutional_responsibilities
+    source: problem
+    expects: Maps which role holds which duty, with legal points marked not judged.
+  - id: measurable_outcomes
+    source: problem
+    expects: Defines an indicator, a method and a before-and-after comparison.
+  - id: understand_incidents_criterion_1
+    source: stage:understand_incidents
+    expects: A public summary lists each incident category and its trend with the evidence behind it.
+  - id: map_competences_criterion_1
+    source: stage:map_competences
+    expects: A role map names the duty each body holds, with a source or a not-judged mark.
+  - id: design_prevention_criterion_1
+    source: stage:design_prevention
+    expects: One option is chosen with its cost band, owner role and civil-liberty check.
+  - id: implement_pilot_criterion_1
+    source: stage:implement_pilot
+    expects: The pilot ran for the planned period in the planned area.
+  - id: measure_outcome_criterion_1
+    source: stage:measure_outcome
+    expects: The indicator is measured before and after with the same method.
+  - id: measure_outcome_criterion_2
+    source: stage:measure_outcome
+    expects: The report states what the measurement does not show.

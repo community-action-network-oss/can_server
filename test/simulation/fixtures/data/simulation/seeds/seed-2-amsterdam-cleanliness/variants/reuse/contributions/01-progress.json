@@ -1,0 +1,16 @@
+{
+  "type": "progress_update",
+  "basis": "cited",
+  "target": "seed-2-problem",
+  "claim": "The extra mid-day round ran in the pilot area for the planned period (synthetic).",
+  "evidence_refs": [],
+  "uncertainty": "The log is invented for the simulation.",
+  "assumptions": [
+    "I assume the log was kept every day."
+  ],
+  "task_ref": "task-extra-round",
+  "done": "The extra round ran every day of the planned period and fill levels were logged.",
+  "not_done": "No signage change yet.",
+  "blockers": "None.",
+  "next_step": "Measure the index with the baseline method."
+}

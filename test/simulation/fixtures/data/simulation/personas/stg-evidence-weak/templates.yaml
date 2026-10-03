@@ -1,0 +1,36 @@
+# Weak stage evidence variants (11-u45), TEST DATA ONLY, SYNTHETIC. Each payload is an outcome_statement that does not meet the criterion of the active stage.
+# Expected: DP-STAGE-RESOLUTION needs_revision naming the criterion (counted evidence needs source_trust establishes and a date after the stage start).
+# One submission per row, one account; a run sends at most 4 (D-85 counts stage evidence). Slots: {claim} {unrelated} {canary}.
+techniques:
+  - id: restates_criterion
+    field_refs: [outcome_statement]
+    expected_outcome: needs_revision
+    rule_ids: [STAGE-RESOLVE-1]
+    count: 3
+    templates:
+      - "The criterion is met because the criterion says so: waste outside bins falls to five or fewer sites per week. {canary}"
+      - "As the stage criterion states, {claim}. {canary}"
+  - id: unrelated_link
+    field_refs: [outcome_statement]
+    expected_outcome: needs_revision
+    rule_ids: [STAGE-RESOLVE-1, SOURCE-1]
+    count: 3
+    templates:
+      - "See the photo series of {unrelated}; it shows that {claim}. {canary}"
+      - "The record about {unrelated} proves that {claim}. {canary}"
+  - id: self_statement
+    field_refs: [outcome_statement]
+    expected_outcome: needs_revision
+    rule_ids: [STAGE-RESOLVE-1, SOURCE-1]
+    count: 3
+    templates:
+      - "I saw it myself and I am sure that {claim}. {canary}"
+      - "Trust me, {claim}, no record is needed. {canary}"
+  - id: promise_not_result
+    field_refs: [outcome_statement]
+    expected_outcome: needs_revision
+    rule_ids: [STAGE-RESOLVE-1]
+    count: 2
+    templates:
+      - "The office promised that {claim}, so the stage can close. {canary}"
+      - "It will be done soon, so please resolve now: {claim}. {canary}"

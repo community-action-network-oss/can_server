@@ -1,0 +1,178 @@
+{
+  "steps": [
+    {
+      "id": "opt_in",
+      "action": "attest",
+      "fields": {
+        "attestation": "review_opt_in"
+      },
+      "expect": {
+        "outcome": "opted_in"
+      }
+    },
+    {
+      "id": "declare_conflict",
+      "action": "attest",
+      "when": {
+        "after_step": "opt_in"
+      },
+      "fields": {
+        "attestation": "no_conflict",
+        "problem_id": "{{seed.problem_id}}"
+      },
+      "expect": {
+        "outcome": "recorded",
+        "rule_ids": [
+          "REVIEW-1"
+        ]
+      }
+    },
+    {
+      "id": "read_masked",
+      "action": "read",
+      "when": {
+        "after_step": "declare_conflict"
+      },
+      "fields": {
+        "view": "masked_draft",
+        "problem_id": "{{seed.problem_id}}"
+      },
+      "expect": {
+        "outcome": "masked_view",
+        "rule_ids": [
+          "REVIEW-1",
+          "PRIV-GATEWAY-1"
+        ]
+      }
+    },
+    {
+      "id": "rec_final_criteria",
+      "action": "recommend",
+      "when": {
+        "after_step": "read_masked"
+      },
+      "fields": {
+        "problem_id": "{{seed.problem_id}}",
+        "path": "final_acceptance_criteria",
+        "recommendation": "Add a second criterion that says how many market days the weekly count covers before the stage is judged.",
+        "reason": "Without a count window, nobody can tell when the survey is finished."
+      },
+      "expect": {
+        "outcome": "open",
+        "rule_ids": [
+          "RECO-1"
+        ]
+      }
+    },
+    {
+      "id": "rec_stage_node",
+      "action": "recommend",
+      "when": {
+        "after_step": "rec_final_criteria"
+      },
+      "fields": {
+        "problem_id": "{{seed.problem_id}}",
+        "path": "stage_plan.pilot",
+        "recommendation": "Name the waste services office role that agrees the pilot, so the stage has an owner from the start.",
+        "reason": "A stage without an owner role tends to stall at its first decision."
+      },
+      "expect": {
+        "outcome": "open",
+        "rule_ids": [
+          "RECO-1"
+        ]
+      }
+    },
+    {
+      "id": "rec_source",
+      "action": "recommend",
+      "when": {
+        "after_step": "rec_stage_node"
+      },
+      "fields": {
+        "problem_id": "{{seed.problem_id}}",
+        "path": "sources",
+        "recommendation": "Add a second independent source for the skipped rounds, for example the quarterly route report, next to the service log.",
+        "reason": "One log can be wrong, and a second record lets readers check the count."
+      },
+      "expect": {
+        "outcome": "open",
+        "rule_ids": [
+          "RECO-1"
+        ]
+      }
+    },
+    {
+      "id": "finish_review",
+      "action": "recommend",
+      "when": {
+        "after_step": "rec_source"
+      },
+      "fields": {
+        "problem_id": "{{seed.problem_id}}",
+        "finish": "recommendations"
+      },
+      "expect": {
+        "outcome": "finished",
+        "rule_ids": [
+          "REVIEW-1"
+        ]
+      }
+    },
+    {
+      "id": "own_problem_probe",
+      "action": "recommend",
+      "when": {
+        "after_step": "finish_review"
+      },
+      "fields": {
+        "problem_id": "{{var.own_problem_id}}",
+        "path": "scope",
+        "recommendation": "Narrow the scope to the market square only, so the count is easier to check.",
+        "reason": "A smaller scope makes the weekly count easier to repeat."
+      },
+      "expect": {
+        "outcome": "not_permitted",
+        "status": 403,
+        "rule_ids": [
+          "REVIEW-1"
+        ]
+      }
+    },
+    {
+      "id": "read_poster_status",
+      "action": "read",
+      "when": {
+        "after_step": "own_problem_probe"
+      },
+      "fields": {
+        "view": "review_status",
+        "problem_id": "{{seed.problem_id}}"
+      },
+      "expect": {
+        "outcome": "awaiting_poster",
+        "rule_ids": [
+          "RECO-1"
+        ]
+      }
+    },
+    {
+      "id": "read_publication_gate",
+      "action": "read",
+      "when": {
+        "after_step": "read_poster_status"
+      },
+      "fields": {
+        "view": "publication_gate",
+        "problem_id": "{{seed.problem_id}}"
+      },
+      "expect": {
+        "outcome": "waiting_on_resolution",
+        "rule_ids": [
+          "RECO-1",
+          "REVIEW-1"
+        ]
+      }
+    }
+  ]
+}

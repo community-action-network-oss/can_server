@@ -1,0 +1,89 @@
+[
+  {
+    "name": "understand_incidents",
+    "label": "Understand the incidents",
+    "goal": "Describe the incident categories and how they changed over the invented series, with the uncertainty stated.",
+    "decision_method": "poster_after_input",
+    "depends_on": [],
+    "needs_choice": false,
+    "acceptance_criteria": [
+      {
+        "statement": "A public summary lists each incident category and its trend with the evidence behind it.",
+        "measure": "Summary checked against the incident-pattern table and the contradicting item.",
+        "target": "all categories"
+      }
+    ]
+  },
+  {
+    "name": "map_competences",
+    "label": "Map who is responsible for what",
+    "goal": "List which public bodies hold which duties for prevention, response and justice, as roles, with every legal point marked not judged.",
+    "decision_method": "poster_after_input",
+    "depends_on": [],
+    "needs_choice": false,
+    "acceptance_criteria": [
+      {
+        "statement": "A role map names the duty each body holds, with a source or a not-judged mark.",
+        "measure": "Map reviewed against the unreviewed competence skeleton.",
+        "target": "all prevention and response duties"
+      }
+    ]
+  },
+  {
+    "name": "design_prevention",
+    "label": "Design a prevention option",
+    "goal": "Choose one structural prevention option (lighting, crossings, waiting times) that fits the findings and the competences.",
+    "decision_method": "poster_after_input",
+    "depends_on": [
+      "understand_incidents",
+      "map_competences"
+    ],
+    "needs_choice": true,
+    "acceptance_criteria": [
+      {
+        "statement": "One option is chosen with its cost band, owner role and civil-liberty check.",
+        "measure": "Decision record lists the option and the checks.",
+        "target": "one option"
+      }
+    ]
+  },
+  {
+    "name": "implement_pilot",
+    "label": "Run a small pilot",
+    "goal": "Run the chosen option in a bounded area for a fixed period and record what was done.",
+    "decision_method": "poster_after_input",
+    "depends_on": [
+      "design_prevention"
+    ],
+    "needs_choice": false,
+    "acceptance_criteria": [
+      {
+        "statement": "The pilot ran for the planned period in the planned area.",
+        "measure": "Implementer log and a verification note.",
+        "target": "one period"
+      }
+    ]
+  },
+  {
+    "name": "measure_outcome",
+    "label": "Measure the outcome",
+    "goal": "Measure the agreed indicator before and after the pilot and report the result with its limits.",
+    "decision_method": "poster_after_input",
+    "depends_on": [
+      "implement_pilot"
+    ],
+    "needs_choice": false,
+    "acceptance_criteria": [
+      {
+        "statement": "The indicator is measured before and after with the same method.",
+        "measure": "Survey share who feel unsafe after dark, compared before and after.",
+        "target": "five points lower"
+      },
+      {
+        "statement": "The report states what the measurement does not show.",
+        "measure": "Report section reviewed by a second contributor.",
+        "target": "section present"
+      }
+    ]
+  }
+]

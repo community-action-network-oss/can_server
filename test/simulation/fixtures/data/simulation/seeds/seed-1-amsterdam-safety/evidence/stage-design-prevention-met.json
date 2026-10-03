@@ -1,0 +1,36 @@
+{
+  "id": "stage-design-prevention-met",
+  "url": "https://evidence.sim.test/seed-1/stage-design-prevention-met",
+  "description": "Stage evidence (synthetic) for design_prevention, criterion 1, met.",
+  "synthetic": true,
+  "tier_cap": 2,
+  "metadata": {
+    "publisher_role": "contributor role (invented)",
+    "date": "2027-01",
+    "kind": "stage_evidence"
+  },
+  "synthetic_note": "Synthetic: invented for simulation, not real data.",
+  "stage": "design_prevention",
+  "criterion": 1,
+  "result": "met",
+  "for_persona": "stg-evidence-strong",
+  "body": {
+    "stage_ref": "design_prevention",
+    "criterion_ref": 1,
+    "evidence_refs": [
+      {
+        "url": "https://evidence.sim.test/seed-1/stage-design-prevention-met",
+        "description": "Invented record that shows the criterion of design_prevention (synthetic).",
+        "tier_request": "research"
+      },
+      {
+        "url": "https://evidence.sim.test/seed-1/stage-design-prevention-met-2",
+        "description": "Invented second record that agrees (synthetic).",
+        "tier_request": "official_record"
+      }
+    ],
+    "observation_date": "2027-01-15",
+    "outcome_statement": "The criterion of design_prevention is met: the invented records cover the whole scope and agree (synthetic).",
+    "what_the_evidence_does_not_show": "Anything outside the invented series; whether the result lasts."
+  }
+}

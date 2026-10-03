@@ -1,0 +1,35 @@
+# fiktiva-north overlay rules. Everything here is invented: Fiktiva North is a fictional test jurisdiction.
+# An overlay may add rules or narrow a higher rule (same id, same tier, same or stricter enforcement, `narrows: <id>`).
+# It may not lower enforcement, change a tier or touch a protected_core rule. Only base lists protected_core.
+rules:
+- id: NORTH-MEETING-NOTICE-1
+  text: "A problem that asks the Fiktiva North council to act must state the council meeting it targets and be posted at least 14 days before that meeting."
+  tier: procedure
+  enforcement: needs_revision
+  applies_to: [DP-COMPLETENESS]
+  notice_days: 14
+- id: NAME-1
+  narrows: NAME-1
+  text: "Must suggest `{office} of Fiktiva North, officeholder as of {YYYY-MM}` and must reject a named person, with no exception."
+  tier: privacy
+  enforcement: reject
+  applies_to: [DP-NAMING]
+  alias_pattern: "{office} of Fiktiva North, officeholder as of {YYYY-MM}"
+- id: NORTH-COMPETENCE-1
+  text: "Must check the stated body or office against the topic table in competence.yaml. A topic outside that office is held as an assumption to confirm, not rejected."
+  tier: legal_gate
+  enforcement: needs_revision
+  applies_to: [DP-ASSUMPTIONS, DP-LEGALITY]
+  table: competence.yaml
+- id: NORTH-ROUTES-1
+  text: "Must offer one of the two external routes below when a problem is an individual matter or out of scope."
+  tier: procedure
+  enforcement: needs_revision
+  applies_to: [DP-ELIGIBILITY]
+  route_external: [north-ombudsman, north-help-line]
+- id: NORTH-LAW-UPDATE-1
+  text: "Fiktiva North law corpus is current as of the date below. A legality check on a later date must say the law may have changed."
+  tier: legal_gate
+  enforcement: needs_revision
+  applies_to: [DP-LEGALITY]
+  law_updated: 2026-10-01

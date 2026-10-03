@@ -1,0 +1,13 @@
+dp: DP-RERESOLUTION
+enforces: [RERESOLVE-1, LEGAL-STACK-1, LEGAL-CITE-1]
+mode: async
+inputs: [record_text, trigger, old_policy_version, new_policy_version, archive_state, problem_exists, jurisdiction_enabled, contactable, implementation, resolved_stages, stage_choice, stage_evidence, legal_gate, diff_rule, diff_article, legal_L1, legal_L2, legal_L3, legal_L4, legal_L5, legal_L6]
+# Spec outcome names map onto the shared contract: keep=publish, annotate=needs_revision, reopen=route_external, hold=hold. The output carries the spec name in `resolution`. Never reject, never delete.
+outcomes: [publish, needs_revision, route_external, hold]
+thresholds:
+  confidence_floor:
+    publish: 0.80
+    needs_revision: 0.50
+    route_external: 0.90
+    hold: 0.50
+  escalate_model_below: 0.90

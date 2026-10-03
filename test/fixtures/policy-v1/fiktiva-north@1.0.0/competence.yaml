@@ -1,0 +1,8 @@
+# Invented topic to office table for fiktiva-north. Differs from fiktiva-city on purpose: waste-collection and school-meals sit with other offices.
+topics:
+  road-repair: Head of Road Works
+  street-lighting: Head of Road Works
+  waste-collection: Head of Public Works
+  public-parks: Head of Parks
+  bus-timetables: Head of Transit
+  school-meals: Head of Community Services

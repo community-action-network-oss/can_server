@@ -1,0 +1,15 @@
+{
+  "type": "constraint",
+  "basis": "cited",
+  "target": "seed-1-problem",
+  "claim": "Policing and prosecution decisions are not something a resident proposal can change; lighting and crossings are in reach.",
+  "evidence_refs": [],
+  "uncertainty": "The Amsterdam legal layers are unreviewed stubs, so this is not a legal judgement.",
+  "assumptions": [
+    "I assume the competence skeleton is a fair starting point."
+  ],
+  "constraint": "Structural measures only; justice and policing powers sit elsewhere.",
+  "source": "institutional",
+  "source_ref": "Unreviewed competence skeleton of the Amsterdam overlay (stub, not judged).",
+  "recheck_condition": "If the competence skeleton is reviewed and changed."
+}

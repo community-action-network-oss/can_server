@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "id": "stage_choice",
-  "version": "1.0.0",
-  "x-version": "1.0.0",
+  "version": "2.0.0",
+  "x-version": "2.0.0",
   "pack": "base@1.0.0",
   "type": "object",
   "additionalProperties": false,
@@ -11,8 +11,7 @@
     "decision_method",
     "decider_role",
     "authority",
-    "rationale",
-    "legal_gate_record"
+    "rationale"
   ],
   "properties": {
     "stage_ref": {
@@ -224,6 +223,7 @@
     },
     "legal_gate_record": {
       "type": "object",
+      "readOnly": true,
       "additionalProperties": false,
       "required": [
         "constraint_checked",
@@ -285,7 +285,7 @@
         "group": "legal"
       },
       "x-guidance": {
-        "why": "The choice cannot hold without a recorded check against the constitution and the local pack.",
+        "why": "Set by the server from the constitution and the local pack when the choice is saved. Shown for reading, never filled in by the person.",
         "good": "Checked the repair against the municipal roads act, passed.",
         "bad": "Legal."
       },
@@ -293,7 +293,8 @@
         "dps": [
           "DP-LEGALITY",
           "DP-DECISION-RECORD"
-        ]
+        ],
+        "server_set": true
       }
     },
     "steps": {

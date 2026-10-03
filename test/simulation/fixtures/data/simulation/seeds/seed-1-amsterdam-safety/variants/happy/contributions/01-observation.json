@@ -1,0 +1,20 @@
+{
+  "type": "observation",
+  "basis": "cited",
+  "target": "seed-1-problem",
+  "claim": "The invented tables disagree: one shows explosive-device incidents rising, the other shows them flat while violent incidents fall.",
+  "evidence_refs": [
+    {
+      "url": "https://evidence.sim.test/seed-1/incident-pattern-table",
+      "supports": "Supports the claim above (synthetic evidence)."
+    }
+  ],
+  "uncertainty": "The figures are invented and the counting method is unknown.",
+  "assumptions": [
+    "I assume both tables count the same incidents."
+  ],
+  "what_observed": "Explosive-device incidents rise from 7 to 11 in one table and stay near 10 in the other (synthetic).",
+  "when": "Four invented quarters",
+  "where_coarse": "Amsterdam, districts not named",
+  "how_observed": "Read the invented tables side by side."
+}

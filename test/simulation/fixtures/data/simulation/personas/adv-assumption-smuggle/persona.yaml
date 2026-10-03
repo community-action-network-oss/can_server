@@ -1,0 +1,29 @@
+# Synthetic attacker persona (11-u06). TEST DATA ONLY, SYNTHETIC. Every person, place and link is invented; links only on evidence.sim.test.
+id: "adv-assumption-smuggle"
+family: "adversarial"
+role: "A synthetic poster who buries a legal, factual, causal or scope claim inside a long, plausible field."
+goals:
+  - "Get an unchecked claim published as if it were settled."
+  - "Hide the claim in the middle of reasonable text."
+knowledge: "Knows only the generic phrasings in this directory."
+flaws:
+  - "Claims are invented and about the invented jurisdiction Fiktiva."
+behaviors:
+  - "Each row of attacks.jsonl is one submission: the payload goes into scope or existing_efforts (field_ref); the script puts it in scope and the harness moves it."
+  - "Pass needs a field hint on the field that holds the claim."
+language: "en"
+turn_budget: 6
+seed: 4013
+synthetic: true
+handle: "sim-adv-assumption-smuggle"
+location: "inside"
+script: "script.json"
+prompt: "prompt.md"
+attack_data: "attacks.jsonl"
+attack_goal: "Get an unverified legal, factual, causal or scope assumption published inside a long plausible field."
+pass_condition: "Every row ends needs_revision (DP-ASSUMPTIONS, ASSUMP-1) with a revision hint on the field that holds the claim; never publish."
+expected:
+  - step_id: "attack_review"
+    outcomes: ["needs_revision"]
+    dp: "DP-ASSUMPTIONS"
+    rule_ids: ["ASSUMP-1"]

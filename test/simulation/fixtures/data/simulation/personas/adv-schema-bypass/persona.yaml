@@ -1,0 +1,47 @@
+# Synthetic attacker persona (11-u06). TEST DATA ONLY, SYNTHETIC. Every person, place and link is invented; links only on evidence.sim.test.
+id: "adv-schema-bypass"
+family: "adversarial"
+role: "A synthetic client that sends crafted requests straight to the server to skip validation."
+goals:
+  - "Get unknown fields, wrong casing, oversize fields or wrong types accepted."
+  - "Forge server-only fields (for_later_stage, protected_core_check)."
+  - "Send a 5th reply through another route (stage options or stage evidence) after the daily cap of 4 (D-85)."
+knowledge: "Knows only the generic phrasings in this directory."
+flaws:
+  - "Cannot set headers: a wrong content type is out of reach of a raw_http step and is covered by a server unit test."
+behaviors:
+  - "Only this persona may use raw_http steps (lint enforces it)."
+  - "Each row of attacks.jsonl is one request body as JSON text; the row's endpoint and expect_status replace the path and status of step attack_raw."
+  - "Content fields stay snake_case, envelope fields camelCase (D-82); a row breaks one of them on purpose."
+  - "After the attack rows it sends 4 valid replies and a 5th by the contribution route, the stage options route and the stage evidence route; all three must give 429 reply_limit_reached."
+  - "No request may end in 2xx acceptance of a forged field; the run record shows no publish."
+language: "en"
+turn_budget: 14
+seed: 4014
+synthetic: true
+handle: "sim-adv-schema-bypass"
+location: "inside"
+script: "script.json"
+prompt: "prompt.md"
+attack_data: "attacks.jsonl"
+attack_goal: "Get a crafted request accepted, a forged server field kept, or a 5th reply through an alternate route."
+pass_condition: "Every attack row gets its expect_status (400, 409, 422 or 429) with a closed error code and never a 2xx; the 5th reply through contribution, stage options and stage evidence gets 429 reply_limit_reached; no DP is skipped and nothing publishes."
+expected:
+  - step_id: "attack_raw"
+    outcomes: ["validation_failed"]
+    rule_ids: ["SCHEMA-1"]
+  - step_id: "reply_5"
+    outcomes: ["reply_limit_reached"]
+    rule_ids: ["SCHEMA-1"]
+  - step_id: "option_5"
+    outcomes: ["reply_limit_reached"]
+    rule_ids: ["SCHEMA-1"]
+  - step_id: "evidence_5"
+    outcomes: ["reply_limit_reached"]
+    rule_ids: ["SCHEMA-1"]
+  - step_id: "forged_later_stage"
+    outcomes: ["validation_failed"]
+    rule_ids: ["SCHEMA-1"]
+  - step_id: "forged_protected_core"
+    outcomes: ["validation_failed"]
+    rule_ids: ["SCHEMA-1"]

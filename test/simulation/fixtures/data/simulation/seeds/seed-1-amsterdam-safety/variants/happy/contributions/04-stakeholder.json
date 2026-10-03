@@ -1,0 +1,14 @@
+{
+  "type": "stakeholder_perspective",
+  "basis": "inferred",
+  "target": "seed-1-problem",
+  "claim": "Emergency responders need clear access and lighting at crossings; business owners worry about evening trade.",
+  "evidence_refs": [],
+  "uncertainty": "One perspective, written for the simulation, not a survey result.",
+  "assumptions": [
+    "I assume this concern is shared by others in the group."
+  ],
+  "group": "Emergency responders and business owners",
+  "concern": "Changes to crossings may slow access, and unlit streets hurt evening trade.",
+  "what_would_help": "A pilot that keeps access routes clear and reports evening footfall."
+}

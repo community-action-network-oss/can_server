@@ -1,0 +1,27 @@
+{
+  "type": "proposed_solution",
+  "basis": "inferred",
+  "target": "seed-1-problem",
+  "claim": "Direct a prosecution priority change as the prevention option.",
+  "evidence_refs": [
+    {
+      "url": "https://evidence.sim.test/seed-1/prevention-programme-budget",
+      "supports": "Supports the claim above (synthetic evidence)."
+    }
+  ],
+  "uncertainty": "Cost and effect are invented placeholders until a pilot runs.",
+  "assumptions": [
+    "I assume the pilot area can be chosen without targeting any group."
+  ],
+  "mechanism": "Ask the prosecution service to change its priorities.",
+  "responsible_role": "The prosecution service",
+  "authority": "Outside the problem's reach (stub, not judged).",
+  "cost": "Unknown, not estimated",
+  "success_metric": "Fewer incidents",
+  "risks": [
+    "Outside the competences a community proposal can change."
+  ],
+  "lawful_alternatives": [
+    "Use lighting and crossings instead."
+  ]
+}

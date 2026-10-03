@@ -1,0 +1,38 @@
+{
+  "id": "response-time-table",
+  "url": "https://evidence.sim.test/seed-1/response-time-table",
+  "description": "Response-time table (synthetic): invented median minutes from call to first responder arrival, by invented incident category.",
+  "synthetic": true,
+  "tier_cap": 2,
+  "metadata": {
+    "publisher_role": "emergency services data role (invented)",
+    "date": "2026-05",
+    "kind": "table"
+  },
+  "synthetic_note": "Synthetic: invented for simulation, not real data.",
+  "data": {
+    "columns": [
+      "category",
+      "median_minutes_year_1",
+      "median_minutes_year_2"
+    ],
+    "rows": [
+      [
+        "explosive_device",
+        9,
+        11
+      ],
+      [
+        "violent_incident",
+        7,
+        8
+      ],
+      [
+        "threat_report",
+        14,
+        14
+      ]
+    ],
+    "note": "All values invented."
+  }
+}

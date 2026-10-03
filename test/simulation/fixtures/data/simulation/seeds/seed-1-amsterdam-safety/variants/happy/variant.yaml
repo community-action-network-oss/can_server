@@ -1,0 +1,53 @@
+id: happy
+seed: seed-1-amsterdam-safety
+synthetic: true
+description: Careful submitter publishes; five contributors cover the rubric; a stage resolves.
+personas:
+  - persona: sub-careful
+    script: script.json
+    bindings:
+      problem_id: seed-1-problem
+  - persona: con-resident
+    script: script.json
+    bindings:
+      problem_id: seed-1-problem
+  - persona: con-skeptic
+    script: script.json
+    bindings:
+      problem_id: seed-1-problem
+  - persona: con-institution
+    script: script.json
+    bindings:
+      problem_id: seed-1-problem
+  - persona: con-implementer
+    script: script.json
+    bindings:
+      problem_id: seed-1-problem
+schedule:
+  - day: 1
+    persona: con-resident
+    steps:
+      - post_observation
+      - post_perspective
+      - post_pattern_experience
+      - post_case_experience
+  - day: 1
+    persona: con-skeptic
+    steps:
+      - post_risk
+      - post_question
+  - day: 2
+    persona: con-institution
+    steps:
+      - post_constraint
+  - day: 2
+    persona: con-implementer
+    steps:
+      - post_offer
+contributions:
+  - contributions/01-observation.json
+  - contributions/02-root-cause.json
+  - contributions/03-constraint.json
+  - contributions/04-stakeholder.json
+  - contributions/05-proposed-solution.json
+bound_to_target: seed-1-problem

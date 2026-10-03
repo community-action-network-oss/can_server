@@ -1,0 +1,11 @@
+dp: DP-ARCHIVE
+enforces: [ARCHIVE-1]
+mode: blocking
+# Blocking for the record's publication only, never for the terminal transition of the problem (docs/design/ai/archive-reuse.md section 2). A hold keeps the problem's state unchanged and the server retries (ARCHIVE-1). The deterministic completeness check and the privacy re-strip run first and arrive as server lines. No record is public unless this DP says publish.
+inputs: [jurisdiction, trigger, terminal_state, privacy_restrip, completeness_check, finding_lines, stage_count, stage_lines, challenge_count, challenge_lines, evidence_count, evidence_lines, evidence_tier, outcome_claim]
+outcomes: [publish, needs_revision, hold]
+thresholds:
+  confidence_floor:
+    publish: 0.90
+    needs_revision: 0.75
+  escalate_model_below: 0.90

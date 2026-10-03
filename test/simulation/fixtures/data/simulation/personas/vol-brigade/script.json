@@ -1,0 +1,321 @@
+{
+  "steps": [
+    {
+      "id": "opt_in",
+      "action": "attest",
+      "fields": {
+        "attestation": "review_opt_in"
+      },
+      "expect": {
+        "outcome": "opted_in"
+      }
+    },
+    {
+      "id": "declare_conflict",
+      "action": "attest",
+      "when": {
+        "after_step": "opt_in"
+      },
+      "fields": {
+        "attestation": "no_conflict",
+        "problem_id": "{{seed.problem_id}}"
+      },
+      "expect": {
+        "outcome": "recorded",
+        "rule_ids": [
+          "REVIEW-1"
+        ]
+      }
+    },
+    {
+      "id": "read_masked",
+      "action": "read",
+      "when": {
+        "after_step": "declare_conflict"
+      },
+      "fields": {
+        "view": "masked_draft",
+        "problem_id": "{{seed.problem_id}}"
+      },
+      "expect": {
+        "outcome": "masked_view",
+        "rule_ids": [
+          "REVIEW-1",
+          "PRIV-GATEWAY-1"
+        ]
+      }
+    },
+    {
+      "id": "push_change",
+      "action": "recommend",
+      "when": {
+        "after_step": "read_masked"
+      },
+      "fields": {
+        "problem_id": "{{seed.problem_id}}",
+        "path": "final_acceptance_criteria",
+        "recommendation": "{{var.payload}}",
+        "reason": "Many reviewers agree, so the change should simply be made."
+      },
+      "expect": {
+        "outcome": "hold",
+        "rule_ids": [
+          "REVIEW-1",
+          "DUP-1"
+        ]
+      }
+    },
+    {
+      "id": "cap_1",
+      "action": "recommend",
+      "when": {
+        "after_step": "push_change"
+      },
+      "fields": {
+        "problem_id": "{{seed.problem_id}}",
+        "path": "final_acceptance_criteria",
+        "recommendation": "Same change again, number 2 of the day: use the wording I suggested above.",
+        "reason": "Many reviewers agree, so the change should simply be made."
+      },
+      "expect": {
+        "outcome": "hold",
+        "rule_ids": [
+          "REVIEW-1",
+          "DUP-1"
+        ]
+      }
+    },
+    {
+      "id": "cap_2",
+      "action": "recommend",
+      "when": {
+        "after_step": "cap_1"
+      },
+      "fields": {
+        "problem_id": "{{seed.problem_id}}",
+        "path": "final_acceptance_criteria",
+        "recommendation": "Same change again, number 3 of the day: use the wording I suggested above.",
+        "reason": "Many reviewers agree, so the change should simply be made."
+      },
+      "expect": {
+        "outcome": "hold",
+        "rule_ids": [
+          "REVIEW-1",
+          "DUP-1"
+        ]
+      }
+    },
+    {
+      "id": "cap_3",
+      "action": "recommend",
+      "when": {
+        "after_step": "cap_2"
+      },
+      "fields": {
+        "problem_id": "{{seed.problem_id}}",
+        "path": "final_acceptance_criteria",
+        "recommendation": "Same change again, number 4 of the day: use the wording I suggested above.",
+        "reason": "Many reviewers agree, so the change should simply be made."
+      },
+      "expect": {
+        "outcome": "hold",
+        "rule_ids": [
+          "REVIEW-1",
+          "DUP-1"
+        ]
+      }
+    },
+    {
+      "id": "cap_4",
+      "action": "recommend",
+      "when": {
+        "after_step": "cap_3"
+      },
+      "fields": {
+        "problem_id": "{{seed.problem_id}}",
+        "path": "final_acceptance_criteria",
+        "recommendation": "Same change again, number 5 of the day: use the wording I suggested above.",
+        "reason": "Many reviewers agree, so the change should simply be made."
+      },
+      "expect": {
+        "outcome": "hold",
+        "rule_ids": [
+          "REVIEW-1",
+          "DUP-1"
+        ]
+      }
+    },
+    {
+      "id": "cap_5",
+      "action": "recommend",
+      "when": {
+        "after_step": "cap_4"
+      },
+      "fields": {
+        "problem_id": "{{seed.problem_id}}",
+        "path": "final_acceptance_criteria",
+        "recommendation": "Same change again, number 6 of the day: use the wording I suggested above.",
+        "reason": "Many reviewers agree, so the change should simply be made."
+      },
+      "expect": {
+        "outcome": "hold",
+        "rule_ids": [
+          "REVIEW-1",
+          "DUP-1"
+        ]
+      }
+    },
+    {
+      "id": "cap_6",
+      "action": "recommend",
+      "when": {
+        "after_step": "cap_5"
+      },
+      "fields": {
+        "problem_id": "{{seed.problem_id}}",
+        "path": "final_acceptance_criteria",
+        "recommendation": "Same change again, number 7 of the day: use the wording I suggested above.",
+        "reason": "Many reviewers agree, so the change should simply be made."
+      },
+      "expect": {
+        "outcome": "hold",
+        "rule_ids": [
+          "REVIEW-1",
+          "DUP-1"
+        ]
+      }
+    },
+    {
+      "id": "cap_7",
+      "action": "recommend",
+      "when": {
+        "after_step": "cap_6"
+      },
+      "fields": {
+        "problem_id": "{{seed.problem_id}}",
+        "path": "final_acceptance_criteria",
+        "recommendation": "Same change again, number 8 of the day: use the wording I suggested above.",
+        "reason": "Many reviewers agree, so the change should simply be made."
+      },
+      "expect": {
+        "outcome": "hold",
+        "rule_ids": [
+          "REVIEW-1",
+          "DUP-1"
+        ]
+      }
+    },
+    {
+      "id": "cap_8",
+      "action": "recommend",
+      "when": {
+        "after_step": "cap_7"
+      },
+      "fields": {
+        "problem_id": "{{seed.problem_id}}",
+        "path": "final_acceptance_criteria",
+        "recommendation": "Same change again, number 9 of the day: use the wording I suggested above.",
+        "reason": "Many reviewers agree, so the change should simply be made."
+      },
+      "expect": {
+        "outcome": "hold",
+        "rule_ids": [
+          "REVIEW-1",
+          "DUP-1"
+        ]
+      }
+    },
+    {
+      "id": "cap_9",
+      "action": "recommend",
+      "when": {
+        "after_step": "cap_8"
+      },
+      "fields": {
+        "problem_id": "{{seed.problem_id}}",
+        "path": "final_acceptance_criteria",
+        "recommendation": "Same change again, number 10 of the day: use the wording I suggested above.",
+        "reason": "Many reviewers agree, so the change should simply be made."
+      },
+      "expect": {
+        "outcome": "hold",
+        "rule_ids": [
+          "REVIEW-1",
+          "DUP-1"
+        ]
+      }
+    },
+    {
+      "id": "cap_10",
+      "action": "recommend",
+      "when": {
+        "after_step": "cap_9"
+      },
+      "fields": {
+        "problem_id": "{{seed.problem_id}}",
+        "path": "final_acceptance_criteria",
+        "recommendation": "Same change again, number 11 of the day: use the wording I suggested above.",
+        "reason": "Many reviewers agree, so the change should simply be made."
+      },
+      "expect": {
+        "outcome": "rate_limited",
+        "status": 429,
+        "rule_ids": [
+          "REVIEW-1"
+        ]
+      }
+    },
+    {
+      "id": "read_burst_signal",
+      "action": "read",
+      "when": {
+        "after_step": "cap_10"
+      },
+      "fields": {
+        "view": "burst_signal",
+        "problem_id": "{{seed.problem_id}}"
+      },
+      "expect": {
+        "outcome": "burst_flagged",
+        "rule_ids": [
+          "DUP-1"
+        ]
+      }
+    },
+    {
+      "id": "volunteer_publish_probe",
+      "action": "request_publication",
+      "when": {
+        "after_step": "read_burst_signal"
+      },
+      "fields": {
+        "problem_id": "{{seed.problem_id}}"
+      },
+      "expect": {
+        "outcome": "not_permitted",
+        "status": 403,
+        "rule_ids": [
+          "REVIEW-1"
+        ]
+      }
+    },
+    {
+      "id": "read_publication_gate",
+      "action": "read",
+      "when": {
+        "after_step": "volunteer_publish_probe"
+      },
+      "fields": {
+        "view": "publication_gate",
+        "problem_id": "{{seed.problem_id}}"
+      },
+      "expect": {
+        "outcome": "hold",
+        "rule_ids": [
+          "REVIEW-1",
+          "RANK-1"
+        ]
+      }
+    }
+  ]
+}

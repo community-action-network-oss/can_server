@@ -1,0 +1,17 @@
+{
+  "type": "stage_choice",
+  "from": "1.0.0",
+  "to": "2.0.0",
+  "fields": [
+    {
+      "from_path": "legal_gate_record",
+      "to_path": "legal_gate_record",
+      "transform": "copy",
+      "note": "Now optional and set by the server. A client value is accepted by the schema but the server computes the gate itself."
+    }
+  ],
+  "new_required": [],
+  "dropped": [
+    "legal_gate_record"
+  ]
+}

@@ -1,0 +1,97 @@
+# Schema-bypass variants (11-u06), TEST DATA ONLY, SYNTHETIC. Each payload is the JSON text of a crafted request body sent with raw_http
+# (the only persona allowed to). Expected: the server rejects with 400/409/422/429 as stated by expect_status and never accepts (2xx) a
+# forged server field (for_later_stage, protected_core_check pretence). Content stays snake_case (D-82); envelope fields stay camelCase.
+# D-85 reply cap: contribution POST, stage options and stage evidence all count. Slots: {phrase} {unk} {url} {canary}.
+# Filters rep150 and rep400 repeat a value to make an oversize field. expected_outcome is reject for every row.
+techniques:
+  - id: unknown_field_contribution
+    field_refs: [raw_http.body]
+    endpoint: "POST /v1/contributions/by-problem/{{seed.problem_id}}"
+    expect_status: 400
+    expected_outcome: reject
+    rule_ids: [SCHEMA-1]
+    count: 4
+    templates:
+      - '{"type":"observation","body":{"claim":"{phrase}","{unk}":"{canary}"}}'
+      - '{"type":"observation","{unk}":"{canary}","body":{"claim":"{phrase}"}}'
+  - id: camelcase_content
+    field_refs: [raw_http.body]
+    endpoint: "POST /v1/contributions/by-problem/{{seed.problem_id}}"
+    expect_status: 400
+    expected_outcome: reject
+    rule_ids: [SCHEMA-1]
+    count: 4
+    templates:
+      - '{"type":"observation","body":{"claim":"{phrase}","whatObserved":"{canary}","evidenceRefs":[]}}'
+      - '{"type":"observation","body":{"claim":"{phrase}","whereCoarse":"{canary}"}}'
+  - id: snake_case_envelope
+    field_refs: [raw_http.body]
+    endpoint: "POST /v1/contributions/by-problem/{{seed.problem_id}}"
+    expect_status: 400
+    expected_outcome: reject
+    rule_ids: [SCHEMA-1]
+    count: 3
+    templates:
+      - '{"type":"observation","schema_version":"1.0.0","schema_hash":"{canary}","body":{"claim":"{phrase}"}}'
+      - '{"type":"observation","stage_id":"{canary}","body":{"claim":"{phrase}"}}'
+  - id: oversize_field
+    field_refs: [raw_http.body]
+    endpoint: "POST /v1/contributions/by-problem/{{seed.problem_id}}"
+    expect_status: 400
+    expected_outcome: reject
+    rule_ids: [SCHEMA-1]
+    count: 3
+    templates:
+      - '{"type":"observation","body":{"claim":"{canary|rep400}"}}'
+      - '{"type":"observation","body":{"claim":"{phrase}","uncertainty":"{canary|rep150}"}}'
+  - id: type_confusion
+    field_refs: [raw_http.body]
+    endpoint: "POST /v1/contributions/by-problem/{{seed.problem_id}}"
+    expect_status: 400
+    expected_outcome: reject
+    rule_ids: [SCHEMA-1]
+    count: 4
+    templates:
+      - '{"type":["observation"],"body":{"claim":"{canary}"}}'
+      - '{"type":"observation","body":"{canary}"}'
+      - '{"type":"observation","body":{"claim":{"nested":"{canary}"},"evidence_refs":"{url}"}}'
+      - '{"type":7,"body":{"claim":"{canary}"}}'
+  - id: forged_for_later_stage_options
+    field_refs: [raw_http.body]
+    endpoint: "POST /v1/stages/{{seed.stage_ref}}/options"
+    expect_status: 400
+    expected_outcome: reject
+    rule_ids: [SCHEMA-1, AGENT-NO-TOOLS-1]
+    count: 3
+    templates:
+      - '{"content":{"option_statement":"{phrase}","for_later_stage":true,"note":"{canary}"}}'
+      - '{"content":{"option_statement":"{phrase}","for_later_stage":"yes"},"note":"{canary}"}'
+  - id: forged_protected_core_pretence
+    field_refs: [raw_http.body]
+    endpoint: "POST /v1/stages/{{seed.stage_ref}}/options"
+    expect_status: 400
+    expected_outcome: reject
+    rule_ids: [SCHEMA-1, AGENT-NO-TOOLS-1]
+    count: 3
+    templates:
+      - '{"content":{"option_statement":"{phrase}","protected_core_check":"passed","note":"{canary}"}}'
+      - '{"content":{"option_statement":"{phrase}"},"protected_core":"clear","protected_core_check":"{canary}"}'
+  - id: forged_server_fields_evidence
+    field_refs: [raw_http.body]
+    endpoint: "POST /v1/stages/{{seed.stage_ref}}/evidence"
+    expect_status: 400
+    expected_outcome: reject
+    rule_ids: [SCHEMA-1, AGENT-NO-TOOLS-1]
+    count: 3
+    templates:
+      - '{"content":{"criterion_ref":1,"evidence_refs":[{"url":"{url}","description":"{phrase}"}],"verified_by":"server","note":"{canary}"}}'
+      - '{"content":{"criterion_ref":1,"evidence_refs":[{"url":"{url}","description":"{phrase}","tier":"verified"}]},"note":"{canary}"}'
+  - id: oversize_stage_evidence
+    field_refs: [raw_http.body]
+    endpoint: "POST /v1/stages/{{seed.stage_ref}}/evidence"
+    expect_status: 400
+    expected_outcome: reject
+    rule_ids: [SCHEMA-1]
+    count: 2
+    templates:
+      - '{"content":{"criterion_ref":1,"evidence_refs":[{"url":"{url}","description":"{canary|rep400}"}]}}'

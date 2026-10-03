@@ -1,0 +1,46 @@
+# Synthetic persona (11-u45). Every name, place, body and URL here is invented. No real person or organisation.
+id: stg-contributor
+family: stage
+role: A resident contributor who posts stage options to an active stage and ahead of time to planned stages of an invented problem in Fiktiva North.
+goals:
+  - Post one lawful option to the active stage.
+  - Prepare two options for a later (planned) stage so they are ready when it starts.
+knowledge: Knows the road works office and its closure rules in the invented statutes of Fiktiva. Does not know when the later stage will start.
+flaws:
+  - Writes options for later stages before the earlier stage is resolved.
+behaviors:
+  - "Three stage options in all (D-85 counts options and evidence together: 4 per problem per rolling 24 hours), each with the nine stage_option fields the schema asks for."
+  - Options to a planned stage are accepted and kept ready, shown as for a later stage (STAGE-PREP-1); the server sets the label, the persona never sends a for_later_stage flag.
+  - "Expected: accepted into the planned stage; none counts as stage evidence and none resolves or starts anything."
+turn_budget: 8
+seed: 5105
+prompt: prompt.md
+language: en
+synthetic: true
+handle: sim-stg-contributor
+location: inside
+script: script.json
+expected:
+  - step_id: option_active
+    outcomes:
+      - publish
+  - step_id: option_ahead_1
+    outcomes:
+      - publish
+    rule_ids:
+      - STAGE-PREP-1
+  - step_id: option_ahead_2
+    outcomes:
+      - publish
+    rule_ids:
+      - STAGE-PREP-1
+  - step_id: read_planned_options
+    outcomes:
+      - kept_ready
+    rule_ids:
+      - STAGE-PREP-1
+  - step_id: read_planned_evidence
+    outcomes:
+      - none_counted
+    rule_ids:
+      - STAGE-PREP-1

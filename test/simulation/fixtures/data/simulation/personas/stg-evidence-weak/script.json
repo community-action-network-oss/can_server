@@ -1,0 +1,136 @@
+{
+  "steps": [
+    {
+      "id": "weak_restate",
+      "action": "stage_evidence",
+      "content_type": "stage_evidence",
+      "fields": {
+        "stage_ref": "{{seed.stage_ref}}",
+        "criterion_ref": 1,
+        "evidence_refs": [
+          {
+            "url": "https://evidence.sim.test/fiktiva-north/waste-service-log",
+            "description": "The criterion text, copied.",
+            "tier_request": "other"
+          }
+        ],
+        "observation_date": "2026-11-02",
+        "outcome_statement": "The criterion is met: Waste outside bins on the market square falls to a counted baseline of five or fewer sites per week.",
+        "what_the_evidence_does_not_show": "Not stated by the contributor."
+      },
+      "expect": {
+        "outcome": "needs_revision",
+        "field_ref": "criterion_ref",
+        "rule_ids": [
+          "STAGE-RESOLVE-1"
+        ]
+      }
+    },
+    {
+      "id": "weak_unrelated",
+      "action": "stage_evidence",
+      "when": {
+        "after_step": "weak_restate"
+      },
+      "content_type": "stage_evidence",
+      "fields": {
+        "stage_ref": "{{seed.stage_ref}}",
+        "criterion_ref": 1,
+        "evidence_refs": [
+          {
+            "url": "https://evidence.sim.test/fiktiva-north/harbour-wall-photos",
+            "description": "Photo series of an unrelated harbour wall repair.",
+            "tier_request": "other"
+          }
+        ],
+        "observation_date": "2026-11-02",
+        "outcome_statement": "Here is a photo series that shows the work on the harbour wall is finished.",
+        "what_the_evidence_does_not_show": "Not stated by the contributor."
+      },
+      "expect": {
+        "outcome": "needs_revision",
+        "field_ref": "criterion_ref",
+        "rule_ids": [
+          "STAGE-RESOLVE-1",
+          "SOURCE-1"
+        ]
+      }
+    },
+    {
+      "id": "weak_self_statement",
+      "action": "stage_evidence",
+      "when": {
+        "after_step": "weak_unrelated"
+      },
+      "content_type": "stage_evidence",
+      "fields": {
+        "stage_ref": "{{seed.stage_ref}}",
+        "criterion_ref": 1,
+        "evidence_refs": [
+          {
+            "url": "https://evidence.sim.test/fiktiva-north/my-statement",
+            "description": "My own statement, no record attached.",
+            "tier_request": "other"
+          }
+        ],
+        "observation_date": "2026-11-02",
+        "outcome_statement": "I saw it myself and I am sure the waste outside the bins is gone.",
+        "what_the_evidence_does_not_show": "Not stated by the contributor."
+      },
+      "expect": {
+        "outcome": "needs_revision",
+        "field_ref": "criterion_ref",
+        "rule_ids": [
+          "STAGE-RESOLVE-1",
+          "SOURCE-1"
+        ]
+      }
+    },
+    {
+      "id": "weak_variant",
+      "action": "stage_evidence",
+      "when": {
+        "after_step": "weak_self_statement"
+      },
+      "content_type": "stage_evidence",
+      "fields": {
+        "stage_ref": "{{seed.stage_ref}}",
+        "criterion_ref": 1,
+        "evidence_refs": [
+          {
+            "url": "https://evidence.sim.test/fiktiva-north/note-without-method",
+            "description": "A note without a method or a date.",
+            "tier_request": "other"
+          }
+        ],
+        "observation_date": "2026-11-02",
+        "outcome_statement": "{{var.payload}}",
+        "what_the_evidence_does_not_show": "Not stated by the contributor."
+      },
+      "expect": {
+        "outcome": "needs_revision",
+        "field_ref": "criterion_ref",
+        "rule_ids": [
+          "STAGE-RESOLVE-1"
+        ]
+      }
+    },
+    {
+      "id": "read_stage_state",
+      "action": "read",
+      "when": {
+        "after_step": "weak_variant"
+      },
+      "fields": {
+        "view": "stage_state",
+        "stage_ref": "{{seed.stage_ref}}"
+      },
+      "expect": {
+        "outcome": "active",
+        "rule_ids": [
+          "STAGE-RESOLVE-1"
+        ]
+      }
+    }
+  ]
+}

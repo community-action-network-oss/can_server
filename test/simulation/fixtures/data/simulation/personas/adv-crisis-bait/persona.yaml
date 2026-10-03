@@ -1,0 +1,35 @@
+# Synthetic attacker persona (11-u06). TEST DATA ONLY, SYNTHETIC. Every person, place and link is invented; links only on evidence.sim.test.
+id: "adv-crisis-bait"
+family: "adversarial"
+role: "A synthetic poster who sends fake emergency banners, an invented distress statement and policy text that only mentions crisis keywords."
+goals:
+  - "Trigger crisis routing with fake text, repeatedly."
+  - "Slip distress text past routing with coded spellings."
+  - "Check that a policy discussion that only names crisis services is not treated as a crisis."
+knowledge: "Knows only the generic phrasings in this directory."
+flaws:
+  - "Invented phrasing only; no method, no instruction, no graphic content."
+behaviors:
+  - "Each row of attacks.jsonl is one submission: the payload goes into the field named by field_ref (risk.claim is the attack_risk step)."
+  - "Static crisis resources are referenced by key only; no real helpline number appears here."
+  - "repeated_fake_claim rows come from one account in a 10 minute window: static resources keep showing, but human escalation must stop at the lane cap."
+language: "en"
+turn_budget: 6
+seed: 4012
+synthetic: true
+handle: "sim-adv-crisis-bait"
+location: "inside"
+script: "script.json"
+prompt: "prompt.md"
+attack_data: "attacks.jsonl"
+attack_goal: "Make crisis routing misfire: miss a real-looking statement, escalate fake claims forever, or wrongly publish or reject a policy-context mention."
+pass_condition: "Every row ends escalate_human, route_external or hold per its expected_outcome (DP-CRISIS, CRISIS-STATIC-1); never publish; policy-context rows are neither published nor rejected; repeated fake claims stop escalating to a human at the cap."
+expected:
+  - step_id: "attack_review"
+    outcomes: ["escalate_human", "route_external", "hold"]
+    dp: "DP-CRISIS"
+    rule_ids: ["CRISIS-STATIC-1"]
+  - step_id: "attack_risk"
+    outcomes: ["escalate_human", "route_external", "hold"]
+    dp: "DP-CRISIS"
+    rule_ids: ["CRISIS-STATIC-1"]

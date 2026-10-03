@@ -1,0 +1,11 @@
+dp: DP-CRITERIA
+enforces: [CRITERIA-1, LEGAL-STACK-1, LEGAL-CITE-1]
+mode: blocking
+inputs: [criteria, desired_outcome, stage_goal, scope, criterion_count, jurisdiction, legal_L1, legal_L2, legal_L3, legal_L4, legal_L5, legal_L6]
+outcomes: [publish, needs_revision, reject, hold]
+thresholds:
+  confidence_floor:
+    publish: 0.90
+    needs_revision: 0.75
+    reject: 0.92
+  escalate_model_below: 0.85

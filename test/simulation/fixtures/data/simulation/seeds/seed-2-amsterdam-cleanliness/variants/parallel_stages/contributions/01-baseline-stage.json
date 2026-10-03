@@ -1,0 +1,20 @@
+{
+  "type": "observation",
+  "basis": "cited",
+  "target": "seed-2-problem",
+  "claim": "The invented baseline reading is a centre index of 58 with the method written down.",
+  "evidence_refs": [
+    {
+      "url": "https://evidence.sim.test/seed-2/cleanliness-index-table",
+      "supports": "Supports the claim above (synthetic evidence)."
+    }
+  ],
+  "uncertainty": "The figures are invented and the measurement method is unknown.",
+  "assumptions": [
+    "I assume both tables measure the same streets."
+  ],
+  "what_observed": "Centre index 58 in the first quarter of the invented data (synthetic).",
+  "when": "Four invented quarters",
+  "where_coarse": "Amsterdam city centre, areas not named",
+  "how_observed": "Read the invented tables side by side."
+}

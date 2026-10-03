@@ -1,0 +1,20 @@
+{
+  "type": "observation",
+  "basis": "cited",
+  "target": "seed-1-problem",
+  "claim": "The same survey after the pilot shows a lower unsafe share (synthetic).",
+  "evidence_refs": [
+    {
+      "url": "https://evidence.sim.test/seed-1/perceived-safety-survey",
+      "supports": "Supports the claim above (synthetic evidence)."
+    }
+  ],
+  "uncertainty": "The figures are invented and the counting method is unknown.",
+  "assumptions": [
+    "I assume both tables count the same incidents."
+  ],
+  "what_observed": "Unsafe share falls from 34 to 27 percent in invented data.",
+  "when": "Four invented quarters",
+  "where_coarse": "Amsterdam, districts not named",
+  "how_observed": "Read the invented tables side by side."
+}

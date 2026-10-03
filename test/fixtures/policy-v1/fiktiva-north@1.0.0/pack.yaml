@@ -1,0 +1,40 @@
+name: fiktiva-north
+version: 1.0.0
+layer: jurisdiction
+parent: constitution@1.0.0
+effective_from: 2026-10-01
+jurisdiction: fiktiva-north
+status: draft
+legal_stack:
+  - layer: L1
+    corpus: fiktiva-rights
+    version: 0.1.0
+    pack_hash: dbc8851045a75427240169bfa60e9021ae870df2809d05e96e208346295d1b63
+    mode: reference
+  - layer: L2
+    corpus: fiktiva-north-union
+    version: 0.1.0
+    pack_hash: 702b57d169235b35fa883631c9b1bc77b12e00e269a8887395be7530e96c9938
+    mode: reference
+  - layer: L3
+    corpus: fiktiva-constitution
+    version: 0.1.0
+    pack_hash: aefd9bacd67bdaf7597a89738a6a4a7dd31b8786735e51d8f9dd8e570d0fdc7b
+    mode: binding
+    acknowledged_index_only: true
+  - layer: L4
+    corpus: fiktiva-north-statutes
+    version: 0.2.0
+    pack_hash: 335df1e6e07c1dd357570c8977af46daacbc49715aabbade9fe514f24bc98fa0
+    mode: binding
+    acknowledged_index_only: true
+  - layer: L5
+    corpus: null
+    mode: not_applicable
+    reason: "Invented: Fiktiva North has no regional layer, a deliberate difference from fiktiva-city."
+  - layer: L6
+    corpus: fiktiva-north-bylaws
+    version: 0.1.0
+    pack_hash: f4efc4e65a37f588db71088c0b4fd061c424f075c82aa36cfcf1ac782daf4c35
+    mode: binding
+    acknowledged_index_only: true

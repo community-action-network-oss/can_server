@@ -1,0 +1,1076 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "can_policy/decision-points/DP-RERESOLUTION/schema.json",
+  "title": "DP-RERESOLUTION output",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "outcome",
+    "rule_ids",
+    "confidence",
+    "reasons",
+    "resolution",
+    "trigger"
+  ],
+  "properties": {
+    "outcome": {
+      "enum": [
+        "publish",
+        "needs_revision",
+        "route_external",
+        "hold"
+      ],
+      "$comment": "Shared contract outcomes narrowed to the four DP-RERESOLUTION results. keep=publish, annotate=needs_revision, reopen=route_external, hold=hold; the spec names live in `resolution`, which must agree. There is no reject and no deletion."
+    },
+    "rule_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "field_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "field"
+      ],
+      "properties": {
+        "field": {
+          "type": "string"
+        },
+        "span": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "minItems": 2,
+          "maxItems": 2
+        }
+      }
+    },
+    "revision_hint": {
+      "type": "string"
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "reasons": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "resolution": {
+      "enum": [
+        "keep",
+        "annotate",
+        "reopen",
+        "hold"
+      ],
+      "$comment": "The spec outcome name. keep conclusion stands; annotate visible note, no state change; reopen return the affected stages or the problem to active (T20, T21); hold cannot decide, record unchanged."
+    },
+    "trigger": {
+      "enum": [
+        "policy_change",
+        "legal_corpus_change"
+      ],
+      "$comment": "Copied from the server's trigger line."
+    },
+    "old_policy_version": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64
+    },
+    "new_policy_version": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64
+    },
+    "reopen_target": {
+      "enum": [
+        "stages",
+        "problem"
+      ]
+    },
+    "affected_stage_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1,
+      "$comment": "Only ids from the server's resolved_stages line. The stages to return from resolved to active; unstarted successors return to planned."
+    },
+    "changed_rule_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1
+    },
+    "changed_findings": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "layer",
+          "effect"
+        ],
+        "properties": {
+          "layer": {
+            "enum": [
+              "L0",
+              "L1",
+              "L2",
+              "L3",
+              "L4",
+              "L5",
+              "L6"
+            ]
+          },
+          "article_id": {
+            "type": "string"
+          },
+          "corpus_version": {
+            "type": "string",
+            "maxLength": 64,
+            "$comment": "The new corpus version, exactly as on the legal_L line."
+          },
+          "old_corpus_version": {
+            "type": "string",
+            "maxLength": 64,
+            "$comment": "The version the past decision was made under, exactly as on the diff_article line."
+          },
+          "effect": {
+            "enum": [
+              "changes_conclusion",
+              "no_effect",
+              "none_found",
+              "conflict"
+            ]
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "type": "object",
+              "required": [
+                "layer"
+              ],
+              "properties": {
+                "layer": {
+                  "enum": [
+                    "L1",
+                    "L2",
+                    "L3",
+                    "L4",
+                    "L5",
+                    "L6"
+                  ]
+                }
+              }
+            },
+            "then": {
+              "type": "object",
+              "required": [
+                "corpus_version"
+              ],
+              "properties": {
+                "corpus_version": true
+              }
+            }
+          },
+          {
+            "if": {
+              "type": "object",
+              "required": [
+                "effect"
+              ],
+              "properties": {
+                "effect": {
+                  "enum": [
+                    "changes_conclusion",
+                    "no_effect",
+                    "conflict"
+                  ]
+                }
+              }
+            },
+            "then": {
+              "type": "object",
+              "required": [
+                "article_id"
+              ],
+              "properties": {
+                "article_id": true
+              }
+            }
+          },
+          {
+            "if": {
+              "type": "object",
+              "required": [
+                "layer"
+              ],
+              "properties": {
+                "layer": {
+                  "const": "L0"
+                }
+              }
+            },
+            "then": {
+              "type": "object",
+              "required": [
+                "effect"
+              ],
+              "properties": {
+                "effect": {
+                  "const": "none_found"
+                },
+                "article_id": false
+              }
+            }
+          }
+        ],
+        "$comment": "One item per legal_L line (L1 to L6) plus, when there is no legal line at all, one L0 none_found item. An L0 item is never evidence of anything."
+      }
+    },
+    "annotate_reason": {
+      "enum": [
+        "not_feasible",
+        "low_confidence",
+        "informational"
+      ]
+    },
+    "infeasible_reason": {
+      "enum": [
+        "problem_gone",
+        "jurisdiction_disabled",
+        "nobody_to_notify",
+        "lawful_completed_implementation"
+      ]
+    },
+    "hold_reason": {
+      "enum": [
+        "missing_input",
+        "layer_conflict",
+        "cannot_decide"
+      ]
+    },
+    "missing_inputs": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "enum": [
+          "archive_record",
+          "rule_diff",
+          "legal_layer",
+          "stage_evidence",
+          "stage_choice",
+          "legal_gate_record",
+          "feasibility",
+          "policy_versions"
+        ]
+      }
+    },
+    "conflict_note": {
+      "type": "string",
+      "$comment": "Required on a hold caused by two layers reading differently. Names layers and article ids only.",
+      "maxLength": 600
+    }
+  },
+  "allOf": [
+    {
+      "type": "object",
+      "properties": {
+        "reasons": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 600
+          }
+        },
+        "revision_hint": {
+          "type": "string",
+          "maxLength": 600
+        }
+      },
+      "$comment": "Echo limit, set here because the shared property shapes must match schemas/dp-output.schema.json. Confidence floors: keep >= 0.80, annotate >= 0.50, reopen >= 0.90 (from pack-section.yaml), annotate low_confidence < 0.90; hold has no floor."
+    },
+    {
+      "if": {
+        "type": "object",
+        "required": [
+          "resolution"
+        ],
+        "properties": {
+          "resolution": {
+            "const": "keep"
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "required": [
+          "outcome"
+        ],
+        "properties": {
+          "outcome": {
+            "const": "publish"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "required": [
+          "resolution"
+        ],
+        "properties": {
+          "resolution": {
+            "const": "annotate"
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "required": [
+          "outcome"
+        ],
+        "properties": {
+          "outcome": {
+            "const": "needs_revision"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "required": [
+          "resolution"
+        ],
+        "properties": {
+          "resolution": {
+            "const": "reopen"
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "required": [
+          "outcome"
+        ],
+        "properties": {
+          "outcome": {
+            "const": "route_external"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "required": [
+          "resolution"
+        ],
+        "properties": {
+          "resolution": {
+            "const": "hold"
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "required": [
+          "outcome"
+        ],
+        "properties": {
+          "outcome": {
+            "const": "hold"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "required": [
+          "resolution"
+        ],
+        "properties": {
+          "resolution": {
+            "enum": [
+              "keep",
+              "annotate",
+              "reopen"
+            ]
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "required": [
+          "old_policy_version",
+          "new_policy_version",
+          "rule_ids"
+        ],
+        "properties": {
+          "old_policy_version": true,
+          "new_policy_version": true,
+          "rule_ids": {
+            "type": "array",
+            "contains": {
+              "const": "RERESOLVE-1"
+            }
+          },
+          "changed_findings": {
+            "not": {
+              "type": "array",
+              "contains": {
+                "type": "object",
+                "required": [
+                  "effect"
+                ],
+                "properties": {
+                  "effect": {
+                    "const": "conflict"
+                  }
+                }
+              }
+            }
+          },
+          "hold_reason": false,
+          "missing_inputs": false,
+          "conflict_note": false
+        }
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "required": [
+          "changed_findings"
+        ],
+        "properties": {
+          "changed_findings": {
+            "type": "array",
+            "contains": {
+              "type": "object",
+              "required": [
+                "effect"
+              ],
+              "properties": {
+                "effect": {
+                  "const": "conflict"
+                }
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "required": [
+          "resolution",
+          "hold_reason"
+        ],
+        "properties": {
+          "resolution": {
+            "const": "hold"
+          },
+          "hold_reason": {
+            "const": "layer_conflict"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "required": [
+          "resolution"
+        ],
+        "properties": {
+          "resolution": {
+            "const": "hold"
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "required": [
+          "hold_reason"
+        ],
+        "properties": {
+          "hold_reason": true,
+          "reopen_target": false,
+          "affected_stage_ids": false,
+          "annotate_reason": false,
+          "infeasible_reason": false
+        }
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "required": [
+          "hold_reason"
+        ],
+        "properties": {
+          "hold_reason": {
+            "const": "layer_conflict"
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "required": [
+          "conflict_note"
+        ],
+        "properties": {
+          "conflict_note": true
+        }
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "required": [
+          "hold_reason"
+        ],
+        "properties": {
+          "hold_reason": {
+            "const": "missing_input"
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "required": [
+          "missing_inputs"
+        ],
+        "properties": {
+          "missing_inputs": true
+        }
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "required": [
+          "resolution"
+        ],
+        "properties": {
+          "resolution": {
+            "const": "keep"
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "properties": {
+          "reopen_target": false,
+          "affected_stage_ids": false,
+          "annotate_reason": false,
+          "infeasible_reason": false,
+          "changed_findings": {
+            "not": {
+              "type": "array",
+              "contains": {
+                "type": "object",
+                "required": [
+                  "effect"
+                ],
+                "properties": {
+                  "effect": {
+                    "const": "changes_conclusion"
+                  }
+                }
+              }
+            }
+          },
+          "confidence": {
+            "type": "number",
+            "minimum": 0.8
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "required": [
+          "resolution"
+        ],
+        "properties": {
+          "resolution": {
+            "const": "annotate"
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "required": [
+          "annotate_reason"
+        ],
+        "properties": {
+          "annotate_reason": true,
+          "reopen_target": false,
+          "affected_stage_ids": false,
+          "confidence": {
+            "type": "number",
+            "minimum": 0.5
+          }
+        },
+        "anyOf": [
+          {
+            "type": "object",
+            "required": [
+              "changed_rule_ids"
+            ],
+            "properties": {
+              "changed_rule_ids": true
+            }
+          },
+          {
+            "type": "object",
+            "required": [
+              "changed_findings"
+            ],
+            "properties": {
+              "changed_findings": true
+            }
+          }
+        ]
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "required": [
+          "annotate_reason"
+        ],
+        "properties": {
+          "annotate_reason": {
+            "const": "not_feasible"
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "required": [
+          "infeasible_reason"
+        ],
+        "properties": {
+          "infeasible_reason": true
+        }
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "required": [
+          "annotate_reason"
+        ],
+        "properties": {
+          "annotate_reason": {
+            "enum": [
+              "low_confidence",
+              "informational"
+            ]
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "properties": {
+          "infeasible_reason": false
+        }
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "required": [
+          "annotate_reason"
+        ],
+        "properties": {
+          "annotate_reason": {
+            "const": "informational"
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "properties": {
+          "changed_findings": {
+            "not": {
+              "type": "array",
+              "contains": {
+                "type": "object",
+                "required": [
+                  "effect"
+                ],
+                "properties": {
+                  "effect": {
+                    "const": "changes_conclusion"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "required": [
+          "resolution"
+        ],
+        "properties": {
+          "resolution": {
+            "const": "reopen"
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "required": [
+          "reopen_target"
+        ],
+        "properties": {
+          "reopen_target": true,
+          "confidence": {
+            "type": "number",
+            "minimum": 0.9
+          },
+          "annotate_reason": false,
+          "infeasible_reason": false
+        },
+        "anyOf": [
+          {
+            "type": "object",
+            "required": [
+              "changed_rule_ids"
+            ],
+            "properties": {
+              "changed_rule_ids": true
+            }
+          },
+          {
+            "type": "object",
+            "required": [
+              "changed_findings"
+            ],
+            "properties": {
+              "changed_findings": {
+                "type": "array",
+                "contains": {
+                  "type": "object",
+                  "required": [
+                    "effect",
+                    "layer"
+                  ],
+                  "properties": {
+                    "effect": {
+                      "const": "changes_conclusion"
+                    },
+                    "layer": {
+                      "enum": [
+                        "L1",
+                        "L2",
+                        "L3",
+                        "L4",
+                        "L5",
+                        "L6"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "required": [
+          "reopen_target"
+        ],
+        "properties": {
+          "reopen_target": {
+            "const": "stages"
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "required": [
+          "affected_stage_ids"
+        ],
+        "properties": {
+          "affected_stage_ids": true
+        }
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "required": [
+          "reopen_target"
+        ],
+        "properties": {
+          "reopen_target": {
+            "const": "problem"
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "properties": {
+          "affected_stage_ids": false
+        }
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "required": [
+          "trigger",
+          "resolution"
+        ],
+        "properties": {
+          "trigger": {
+            "const": "legal_corpus_change"
+          },
+          "resolution": {
+            "enum": [
+              "keep",
+              "annotate",
+              "reopen"
+            ]
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "required": [
+          "rule_ids",
+          "changed_findings"
+        ],
+        "properties": {
+          "rule_ids": {
+            "type": "array",
+            "allOf": [
+              {
+                "contains": {
+                  "const": "LEGAL-STACK-1"
+                }
+              },
+              {
+                "contains": {
+                  "const": "LEGAL-CITE-1"
+                }
+              }
+            ]
+          },
+          "changed_findings": {
+            "type": "array",
+            "contains": {
+              "type": "object",
+              "required": [
+                "effect",
+                "layer"
+              ],
+              "properties": {
+                "effect": {
+                  "enum": [
+                    "changes_conclusion",
+                    "no_effect"
+                  ]
+                },
+                "layer": {
+                  "enum": [
+                    "L1",
+                    "L2",
+                    "L3",
+                    "L4",
+                    "L5",
+                    "L6"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "required": [
+          "trigger",
+          "resolution"
+        ],
+        "properties": {
+          "trigger": {
+            "const": "legal_corpus_change"
+          },
+          "resolution": {
+            "const": "reopen"
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "required": [
+          "changed_findings"
+        ],
+        "properties": {
+          "changed_findings": {
+            "type": "array",
+            "contains": {
+              "type": "object",
+              "required": [
+                "effect",
+                "layer"
+              ],
+              "properties": {
+                "effect": {
+                  "const": "changes_conclusion"
+                },
+                "layer": {
+                  "enum": [
+                    "L1",
+                    "L2",
+                    "L3",
+                    "L4",
+                    "L5",
+                    "L6"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "required": [
+          "resolution",
+          "changed_findings"
+        ],
+        "properties": {
+          "resolution": {
+            "enum": [
+              "keep",
+              "annotate",
+              "reopen"
+            ]
+          },
+          "changed_findings": true
+        }
+      },
+      "then": {
+        "type": "object",
+        "required": [
+          "changed_findings"
+        ],
+        "properties": {
+          "changed_findings": {
+            "type": "array",
+            "contains": {
+              "type": "object",
+              "required": [
+                "effect",
+                "layer"
+              ],
+              "properties": {
+                "effect": {
+                  "enum": [
+                    "changes_conclusion",
+                    "no_effect"
+                  ]
+                },
+                "layer": {
+                  "enum": [
+                    "L1",
+                    "L2",
+                    "L3",
+                    "L4",
+                    "L5",
+                    "L6"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "required": [
+          "rule_ids"
+        ],
+        "properties": {
+          "rule_ids": {
+            "type": "array",
+            "contains": {
+              "enum": [
+                "LEGAL-STACK-1",
+                "LEGAL-CITE-1"
+              ]
+            }
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "required": [
+          "changed_findings"
+        ],
+        "properties": {
+          "changed_findings": true
+        }
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "required": [
+          "annotate_reason"
+        ],
+        "properties": {
+          "annotate_reason": {
+            "const": "low_confidence"
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "properties": {
+          "confidence": {
+            "type": "number",
+            "exclusiveMaximum": 0.9
+          }
+        },
+        "$comment": "A low_confidence annotate means the model is not sure; at 0.9 or higher it should have reopened or annotated for another reason."
+      }
+    }
+  ]
+}

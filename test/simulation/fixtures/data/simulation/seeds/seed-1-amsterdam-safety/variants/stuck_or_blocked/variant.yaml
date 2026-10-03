@@ -1,0 +1,29 @@
+id: stuck_or_blocked
+seed: seed-1-amsterdam-safety
+synthetic: true
+description: An option the overlay blocks (a measure outside municipal competence) leaves design_prevention blocked; the unreviewed overlay is reported.
+personas:
+  - persona: prop-proposer
+    script: script.json
+    bindings:
+      problem_id: seed-1-problem
+      stage_ref: design_prevention
+  - persona: con-institution
+    script: script.json
+    bindings:
+      problem_id: seed-1-problem
+schedule:
+  - day: 1
+    persona: prop-proposer
+    steps:
+      - option_lawful
+      - option_blocked
+      - read_stage_blocked
+expect:
+  stage: design_prevention
+  status: blocked
+  note: Overlay skeleton is unreviewed; legal layers are stubs, not judged.
+contributions:
+  - contributions/01-blocked-option.json
+  - contributions/02-constraint.json
+bound_to_target: seed-1-problem

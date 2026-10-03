@@ -1,0 +1,48 @@
+{
+  "id": "enforcement-statistics",
+  "url": "https://evidence.sim.test/seed-2/enforcement-statistics",
+  "description": "Enforcement statistics (synthetic): invented quarterly counts of notices and fines by invented rule category.",
+  "synthetic": true,
+  "tier_cap": 2,
+  "metadata": {
+    "publisher_role": "enforcement team role (invented)",
+    "date": "2026-06",
+    "kind": "table"
+  },
+  "synthetic_note": "Synthetic: invented for simulation, not real data.",
+  "data": {
+    "columns": [
+      "quarter",
+      "notices_waste_placement",
+      "fines_waste_placement",
+      "notices_dumping"
+    ],
+    "rows": [
+      [
+        "Q1",
+        410,
+        38,
+        52
+      ],
+      [
+        "Q2",
+        395,
+        41,
+        49
+      ],
+      [
+        "Q3",
+        430,
+        36,
+        55
+      ],
+      [
+        "Q4",
+        402,
+        40,
+        50
+      ]
+    ],
+    "note": "All counts invented. Counts say nothing about who was noticed and no group is implied."
+  }
+}

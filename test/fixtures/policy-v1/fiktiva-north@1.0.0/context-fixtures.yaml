@@ -1,0 +1,13 @@
+# declared_context of a typical fiktiva-north problem, for eval data. Invented. Values use content-schemas/_shared/bands.json.
+# Lower budget band and a different climate class than a typical fiktiva-city problem on purpose.
+fictional: true
+typical_problem:
+  budget_band: "<1k"
+  resource_people: "<5"
+  resource_in_kind: "yes"
+  climate_class: D
+typical_fiktiva_city_problem_for_comparison:
+  budget_band: "<10k"
+  resource_people: "<20"
+  resource_in_kind: "yes"
+  climate_class: B

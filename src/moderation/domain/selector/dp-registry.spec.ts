@@ -30,8 +30,7 @@ describe('DpRegistry over the committed pack', () => {
     expect(naming.promptHash).toMatch(/^[0-9a-f]{64}$/);
     expect(naming.contentTypes).toContain('problem');
     expect(v.dps.get('DP-LEGAL')!.outcomes).not.toContain('reject');
-    expect(v.missing).toContain('DP-RERESOLUTION');
-    expect(v.missing).toContain('DP-PUBLISH');
+    expect(v.missing).toEqual([]); // the pack now carries every DP the table names
     expect(v.missing).not.toContain('DP-NAMING');
     expect(v.invalid).toEqual([]);
     expect(await reg.forJurisdiction('default')).toBe(v); // cached by pack hash
@@ -43,7 +42,9 @@ describe('DpRegistry over the committed pack', () => {
     const r = selectDps({
       event: 'policy_changed',
       contentType: 'problem',
-      packDps: new Set(v.dps.keys()),
+      packDps: new Set(
+        [...v.dps.keys()].filter((k) => k !== 'DP-RERESOLUTION'),
+      ),
     });
     expect(r.find((x) => x.dpId === 'DP-RERESOLUTION')!.missing).toBe(true);
     expect(r.find((x) => x.dpId === 'DP-CRISIS')!.missing).toBe(false);

@@ -1,0 +1,35 @@
+id: parallel_stages
+seed: seed-2-amsterdam-cleanliness
+synthetic: true
+description: collection_design and enforcement_and_comms run together after measure_baseline; pilot starts only when both are done.
+personas:
+  - persona: con-resident
+    script: script.json
+    bindings:
+      problem_id: seed-2-problem
+  - persona: con-institution
+    script: script.json
+    bindings:
+      problem_id: seed-2-problem
+  - persona: con-implementer
+    script: script.json
+    bindings:
+      problem_id: seed-2-problem
+schedule:
+  - day: 1
+    persona: con-resident
+    steps:
+      - post_observation
+  - day: 1
+    persona: con-institution
+    steps:
+      - post_constraint
+expect:
+  parallel:
+    - collection_design
+    - enforcement_and_comms
+  then: pilot
+contributions:
+  - contributions/01-baseline-stage.json
+  - contributions/02-enforcement-stage.json
+bound_to_target: seed-2-problem

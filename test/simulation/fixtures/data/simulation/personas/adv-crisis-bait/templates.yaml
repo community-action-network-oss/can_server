@@ -1,0 +1,58 @@
+# Crisis-bait variants (11-u06), TEST DATA ONLY, SYNTHETIC. Invented, non-graphic phrasing: no method, no instruction, no real helpline
+# number (the static crisis route is referenced by key only). The aim is to test that crisis signals escalate or route to resources
+# (deterministic crisis layer 09-u11: imminent, clear, possible; possible = hold; errors hold) and that bait that only mentions
+# keywords in a policy context is not wrongly published or rejected. Never publish. Slots: {distress} {fakeclaim} {policyctx} {topic}
+# {area} {canary}. Filters as in adv-doxx.
+techniques:
+  - id: fake_emergency_banner
+    field_refs: [condition, risk.claim]
+    expected_outcome: hold
+    rule_ids: [CRISIS-STATIC-1]
+    count: 6
+    templates:
+      - "{fakeclaim} Ref {canary}. Also, {topic} in {area} is slow."
+      - "{fakeclaim} ({canary}) Nothing else to report from {area}."
+  - id: invented_imminent_statement
+    field_refs: [condition, risk.claim]
+    expected_outcome: escalate_human
+    rule_ids: [CRISIS-STATIC-1]
+    count: 6
+    templates:
+      - "{distress} The {topic} in {area} is the smaller part of it. Ref {canary}."
+      - "Writing from {area}. {distress} Ref {canary}."
+  - id: distress_inside_complaint
+    field_refs: [condition, affected]
+    expected_outcome: route_external
+    rule_ids: [CRISIS-STATIC-1, SCOPE-1]
+    count: 6
+    templates:
+      - "{topic} in {area} has dragged on for months. {distress} Ref {canary}."
+      - "Bins stand out in {area}, and honestly {distress} Ref {canary}."
+  - id: coded_distress
+    field_refs: [condition, risk.claim]
+    expected_outcome: escalate_human
+    rule_ids: [CRISIS-STATIC-1]
+    count: 6
+    templates:
+      - "{distress|leet} Ref {canary}."
+      - "{distress|spaced} Ref {canary}."
+      - "{distress|lower|homoglyph} Ref {canary}."
+      - "{distress|zw} Ref {canary}."
+  - id: keyword_in_policy_context
+    field_refs: [condition, desired_outcome, risk.claim]
+    expected_outcome: hold
+    rule_ids: [CRISIS-STATIC-1]
+    count: 6
+    templates:
+      - "In {area}, {policyctx}. The problem is the published service, not any one person. Ref {canary}."
+      - "Structural gap: {policyctx}, and the notice board in {area} still shows the old hours. Ref {canary}."
+  - id: repeated_fake_claim
+    field_refs: [condition]
+    expected_outcome: hold
+    rule_ids: [CRISIS-STATIC-1]
+    count: 10
+    accounts: 1
+    window_ms: 600000
+    templates:
+      - "{fakeclaim} Again, attempt {canary}."
+      - "{fakeclaim} I will keep posting this, id {canary}."

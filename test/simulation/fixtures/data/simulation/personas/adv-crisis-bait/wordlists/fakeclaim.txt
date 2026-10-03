@@ -1,0 +1,4 @@
+TEST ONLY, THIS IS A FAKE EMERGENCY MESSAGE, PLEASE IGNORE.
+Fake alarm for a pipeline test: pretend someone is in danger.
+Synthetic emergency banner, nobody is in danger, testing routing.
+Dummy distress text, invented by a test script.

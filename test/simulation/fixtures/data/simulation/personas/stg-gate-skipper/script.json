@@ -1,0 +1,246 @@
+{
+  "steps": [
+    {
+      "id": "start_planned",
+      "action": "raw_http",
+      "raw_http": {
+        "method": "POST",
+        "path": "/v1/stages/{{var.planned_stage_ref}}/start",
+        "body": {}
+      },
+      "expect": {
+        "status": 409,
+        "outcome": "not_ready",
+        "rule_ids": [
+          "STAGE-GATE-1"
+        ]
+      }
+    },
+    {
+      "id": "submit_without_evidence",
+      "action": "raw_http",
+      "when": {
+        "after_step": "start_planned"
+      },
+      "raw_http": {
+        "method": "POST",
+        "path": "/v1/stages/{{seed.stage_ref}}/submit",
+        "body": {}
+      },
+      "expect": {
+        "status": 409,
+        "outcome": "invalid_transition",
+        "rule_ids": [
+          "STAGE-RESOLVE-1",
+          "STAGE-GATE-1"
+        ]
+      }
+    },
+    {
+      "id": "choose_unjudged",
+      "action": "raw_http",
+      "when": {
+        "after_step": "submit_without_evidence"
+      },
+      "raw_http": {
+        "method": "POST",
+        "path": "/v1/stages/{{seed.stage_ref}}/choice",
+        "body": {
+          "content": {
+            "stage_ref": "{{seed.stage_ref}}",
+            "chosen_option_ids": [
+              "{{var.option_id}}"
+            ],
+            "decision_method": "poster_after_input",
+            "decider_role": "Problem poster",
+            "authority": "The stage plan names the poster as decider after community input.",
+            "rationale": "The option meets the criterion and stays under the thirty day limit.",
+            "dissent_notes": [],
+            "legal_gate_record": {
+              "constraint_checked": "Lane closures under thirty days against the invented statutes of Fiktiva.",
+              "source_ref": "https://evidence.sim.test/fiktiva-north/statutes-art-6",
+              "layer": "both",
+              "result": "passed"
+            },
+            "steps": [
+              {
+                "step": "Close the inner lane in phases for 25 days.",
+                "owner_role": "Head of Road Works",
+                "done_criterion": "The closure notice and the bike lane count are posted to the stage."
+              }
+            ]
+          }
+        }
+      },
+      "expect": {
+        "status": 409,
+        "outcome": "gate_held",
+        "rule_ids": [
+          "LEGAL-GATE-1"
+        ]
+      }
+    },
+    {
+      "id": "choose_forged_gate",
+      "action": "raw_http",
+      "when": {
+        "after_step": "choose_unjudged"
+      },
+      "raw_http": {
+        "method": "POST",
+        "path": "/v1/stages/{{seed.stage_ref}}/choice",
+        "body": {
+          "content": {
+            "stage_ref": "{{seed.stage_ref}}",
+            "chosen_option_ids": [
+              "{{var.option_id}}"
+            ],
+            "decision_method": "poster_after_input",
+            "decider_role": "Problem poster",
+            "authority": "The stage plan names the poster as decider after community input.",
+            "rationale": "The option meets the criterion and stays under the thirty day limit.",
+            "dissent_notes": [],
+            "legal_gate_record": {
+              "constraint_checked": "Lane closures under thirty days against the invented statutes of Fiktiva.",
+              "source_ref": "https://evidence.sim.test/fiktiva-north/statutes-art-6",
+              "layer": "both",
+              "result": "passed",
+              "judged_by": "poster"
+            },
+            "steps": [
+              {
+                "step": "Close the inner lane in phases for 25 days.",
+                "owner_role": "Head of Road Works",
+                "done_criterion": "The closure notice and the bike lane count are posted to the stage."
+              }
+            ]
+          }
+        }
+      },
+      "expect": {
+        "status": 409,
+        "outcome": "gate_held",
+        "rule_ids": [
+          "LEGAL-GATE-1"
+        ]
+      }
+    },
+    {
+      "id": "silent_plan_patch",
+      "action": "raw_http",
+      "when": {
+        "after_step": "choose_forged_gate"
+      },
+      "raw_http": {
+        "method": "PATCH",
+        "path": "/v1/problems/{{seed.problem_id}}",
+        "body": {
+          "stage_plan": {
+            "pilot": {
+              "goal": "Skip the pilot and mark the plan done.",
+              "criteria": []
+            }
+          }
+        }
+      },
+      "expect": {
+        "status": 404,
+        "outcome": "not_found",
+        "rule_ids": [
+          "PLAN-CHANGE-1"
+        ]
+      }
+    },
+    {
+      "id": "progress_to_planned",
+      "action": "raw_http",
+      "when": {
+        "after_step": "silent_plan_patch"
+      },
+      "raw_http": {
+        "method": "POST",
+        "path": "/v1/contributions/by-problem/{{seed.problem_id}}",
+        "body": {
+          "type": "progress_update",
+          "body": {
+            "type": "progress_update",
+            "target": "{{seed.problem_id}}",
+            "target_stage": "{{var.planned_stage_ref}}",
+            "claim": "The later stage is already done.",
+            "basis": "firsthand",
+            "evidence_refs": [],
+            "uncertainty": "None.",
+            "assumptions": [],
+            "task_ref": "{{var.task_ref}}",
+            "done": "Everything.",
+            "not_done": "Nothing.",
+            "blockers": "None.",
+            "next_step": "Close the stage."
+          }
+        }
+      },
+      "expect": {
+        "status": 400,
+        "outcome": "validation_failed",
+        "rule_ids": [
+          "STAGE-PREP-1",
+          "SCHEMA-1"
+        ]
+      }
+    },
+    {
+      "id": "attack_variant",
+      "action": "raw_http",
+      "when": {
+        "after_step": "progress_to_planned"
+      },
+      "raw_http": {
+        "method": "POST",
+        "path": "/v1/{{var.endpoint_tail}}",
+        "body": "{{var.payload}}"
+      },
+      "expect": {
+        "status": 409,
+        "outcome": "invalid_transition",
+        "rule_ids": [
+          "STAGE-GATE-1",
+          "PLAN-CHANGE-1"
+        ]
+      }
+    },
+    {
+      "id": "read_stage_states",
+      "action": "read",
+      "when": {
+        "after_step": "attack_variant"
+      },
+      "fields": {
+        "view": "stage_states",
+        "problem_id": "{{seed.problem_id}}"
+      },
+      "expect": {
+        "outcome": "unchanged",
+        "rule_ids": [
+          "STAGE-GATE-1"
+        ]
+      }
+    },
+    {
+      "id": "read_plan_version",
+      "action": "read",
+      "when": {
+        "after_step": "read_stage_states"
+      },
+      "fields": {
+        "view": "plan_version",
+        "problem_id": "{{seed.problem_id}}"
+      },
+      "expect": {
+        "outcome": "unchanged",
+        "rule_ids": [
+          "PLAN-CHANGE-1"
+        ]
+      }
+    }
+  ]
+}

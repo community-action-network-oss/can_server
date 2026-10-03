@@ -9,8 +9,7 @@ caps:
     note: Problems one account may submit per period.
   contributions_per_account_per_day:
     total: 20
-    per_problem: 8
-    note: All contribution types except the exempt ones under cooldowns.
+    note: All contribution types except the exempt ones under cooldowns. Per-problem volume is governed by replies_per_account_per_problem_per_day (D-85).
   proposals_per_account_per_problem:
     value: 2
     note: Proposals one account may make on one problem.
@@ -21,6 +20,17 @@ caps:
     count: 3
     days: 7
     note: Appeals per period.
+  policy_proposals_per_account_per_period:
+    count: 2
+    days: 7
+    provisional: true
+    note: Policy proposals one account may send per period. Read by can_server policy-proposals.
+  replies_per_account_per_problem_per_day:
+    count: 4
+    days: 1
+    provisional: true
+    public: true
+    note: D-85. Replies one account may make on one problem in a rolling 24 hours, so every reply counts. Read by can_server contributions.
 # Entries are added by the content schema units. Char bounds equal the schema x-guidance.
 # List sizes (sources 1 to 10, facts 1 to 10, criteria 1 to 6, assumptions 1 to 8) live in
 # content-schemas/problem/schema.json as minItems and maxItems: this file allows one list key per type.
@@ -331,3 +341,173 @@ risk_period:
       events: 37
       window_seconds: 90
     note: Burst that tightens caps. Never shown in any explanation.
+# Legal retrieval budgets (docs/design/ai/legal-stack.md section 3). Code holds no number.
+legal:
+  retrieval:
+    max_articles_per_layer:
+      value: 3
+      provisional: true
+      note: Top articles taken from one layer's topic index per run.
+    token_budget_per_run:
+      value: 2500
+      unit: tokens
+      provisional: true
+      note: Total tokens of legal articles in one run's rules slice.
+    low_confidence_floor:
+      value: 0.6
+      provisional: true
+      note: Retrieval confidence below this on a risky topic escalates to a stronger model, then hold.
+    risky_topics:
+      value: [public-order, criminal-procedure, explosives-and-weapons, data-protection-implementation]
+      provisional: true
+      note: Topic slugs that escalate on low retrieval confidence. Slugs match the topic areas in the legal index stubs.
+# Archive reuse ranking (docs/design/ai/archive-reuse.md section 5). Reuse keeps personal-data stripping:
+# these values tune ranking only and never widen what an archive record may hold.
+archive:
+  rank_weights:
+    problem_type: 0.25
+    constraints: 0.15
+    resources_budget: 0.15
+    scale: 0.10
+    geography_climate: 0.10
+    institutions: 0.10
+    legal_stack: 0.10
+    language: 0.05
+    provisional: true
+    note: Per-dimension weights of the reuse score. They must sum to 1.0 (tested).
+  completeness_bonus:
+    value: 0.05
+    provisional: true
+    note: Score bonus for a complete archive record.
+  solved_bonus:
+    value: 0.05
+    provisional: true
+    note: Score bonus for a solved outcome. Failed paths still rank and show as warnings.
+  derank_factor:
+    value: 0.5
+    provisional: true
+    note: Multiplier applied to a candidate that is demoted.
+  min_candidate_score:
+    value: 0.35
+    provisional: true
+    note: Candidates below this score are never shown.
+  rrf_k:
+    value: 60
+    provisional: true
+    note: Reciprocal rank fusion constant.
+  top_k_fusion:
+    value: 30
+    provisional: true
+    note: Candidates kept from each retriever before fusion.
+  top_n_shown:
+    value: 5
+    provisional: true
+    note: Suggestions shown to the poster.
+  max_per_source_problem:
+    value: 2
+    provisional: true
+    note: Diversity rule, suggestions from one source problem.
+  taxonomy:
+    value: content-schemas/problem/taxonomy.yaml
+    provisional: true
+    note: One file reference holding the problem type and category ids (x-checks taxonomy in the problem schema). The file itself is added by a later unit.
+  cross_language_recall_floor:
+    value: 0.7
+    provisional: true
+    note: Minimum recall of cross-language retrieval in eval before a language is served.
+metrics:
+  min_n:
+    value: 20
+    provisional: true
+    note: Smallest sample before a rate or share is shown. OQ-limits.
+# Live path suggestions while a draft is prepared (archive-reuse.md section 7).
+suggestions:
+  debounce_trailing_seconds:
+    seconds: 5
+    provisional: true
+    note: Trailing run after this quiet time per draft.
+  idle_typing_seconds:
+    seconds: 1.5
+    provisional: true
+    note: A change event fires after this idle typing time.
+  max_runs_per_hour_per_draft:
+    value: 6
+    provisional: true
+    note: Suggestion runs one draft may start per hour.
+  stage_draft_expiry_days:
+    value: 30
+    unit: days
+    provisional: true
+    note: A stage draft not touched for this long expires.
+  run_budget_micro_usd:
+    value: 20000
+    unit: micro_usd
+    provisional: true
+    note: Cost ceiling of one suggestion run, counted against the D-65 caps.
+# Volunteer review (D-74 defaults). At least one completed review is a constant in code, not a limit.
+review:
+  quorum_completed_reviews:
+    value: 3
+    provisional: true
+    note: Completed reviews that make a quorum.
+  recommendation_open_max_days:
+    value: 7
+    unit: days
+    provisional: true
+    note: How long a review recommendation stays open.
+  publish_anyway_after_days:
+    value: 14
+    unit: days
+    provisional: true
+    note: Days after which the poster may publish without a quorum.
+stage:
+  auto_start_default:
+    value: true
+    provisional: true
+    note: Whether a stage starts by itself when the previous one ends.
+# Location check (docs/design/location/attestation.md). Only the label and three coarse fields are stored,
+# never a location. Counters are keyed on account id and area, not on position. Open: OQ-limits, OQ-h3-resolution.
+location:
+  k_min_cells:
+    value: 25
+    provisional: true
+    note: Fewest cells in an affected area, about 18 km2 at resolution 8. OQ-h3-resolution.
+  h3_resolution:
+    value: 8
+    provisional: true
+    note: H3 resolution of area cells. OQ-h3-resolution.
+  challenge_ttl_seconds:
+    seconds: 120
+    provisional: true
+    note: Life of a location challenge, deleted on use or expiry.
+  rate_per_account_per_area_per_hour:
+    value: 10
+    public: false
+    provisional: true
+    note: Location checks one account may send per area per hour before it is labelled guest. OQ-limits.
+  rate_per_account_per_day:
+    value: 40
+    public: false
+    provisional: true
+    note: Location checks one account may send per day. OQ-limits.
+  impacted_cap_per_area_per_day:
+    value: 200
+    public: false
+    provisional: true
+    note: Impacted labels per area per day, later ones are guest pending review of the surge. OQ-limits.
+  surge_new_account_days:
+    value: 7
+    unit: days
+    public: false
+    provisional: true
+    note: An account younger than this counts as new for the surge downgrade. OQ-limits.
+  plausibility_max_speed_kmh:
+    value: 900
+    public: false
+    provisional: true
+    note: Fastest plausible movement between two checks. OQ-limits.
+  history_ttl_hours:
+    value: 24
+    unit: hours
+    provisional: true
+    note: Rate counters live for the window length only, never a location trail.
