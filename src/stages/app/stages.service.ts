@@ -261,13 +261,16 @@ export class StagesService {
       const stamp = await this.validate(tx, 'stage_option', b);
       const c = b.content as unknown as WireOption;
       await this.checkOption(tx, s, c);
-      const made = await this.contributions.create({
-        problemId: p.id,
-        stageId: s.id,
-        authorId: a.accountId,
-        type: 'proposed_solution',
-        content: b.content,
-      });
+      const made = await this.contributions.create(
+        {
+          problemId: p.id,
+          stageId: s.id,
+          authorId: a.accountId,
+          type: 'proposed_solution',
+          content: b.content,
+        },
+        tx,
+      );
       const now = this.clock.now();
       const [row] = await tx
         .insert(stageOption)

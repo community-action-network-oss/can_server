@@ -2,6 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { config } from '../../config.js';
 import { DB, type Db } from '../../db/db.module.js';
 import { contribution } from '../../db/schema.js';
+import { withTransaction, type Tx } from '../../db/tx.js';
 import { PROTOCOL_VERSION } from '../../domain/protocol.js';
 import {
   CLOCK,
@@ -15,7 +16,7 @@ import { activeReplyCap, enforceReplyCap } from './reply-cap.js';
 
 /**
  * Adapter for the stages ContributionPort: a stage option is also a reply, so it counts against the D-85 cap.
- * Stays pending_review until the moderation run accepts it. To switch on, bind CONTRIBUTION_PORT to this in StagesModule.
+ * Stays pending_review until the moderation run accepts it. Bound to CONTRIBUTION_PORT in StagesModule; runs in the stage's own tx when given one.
  */
 @Injectable()
 export class DbContributionPort implements ContributionPort {
@@ -26,10 +27,12 @@ export class DbContributionPort implements ContributionPort {
     @Inject(PolicyStore) private readonly store: PolicyStore,
   ) {}
 
-  async create(i: Parameters<ContributionPort['create']>[0]) {
+  async create(i: Parameters<ContributionPort['create']>[0], outer?: Tx) {
     const now = this.clock.now();
     const id = this.ids.next();
-    await this.db.transaction(async (tx) => {
+    const run = <T>(fn: (tx: Tx) => Promise<T>) =>
+      outer ? fn(outer) : withTransaction(this.db, fn);
+    await run(async (tx) => {
       await enforceReplyCap(
         tx,
         { accountId: i.authorId, problemId: i.problemId },

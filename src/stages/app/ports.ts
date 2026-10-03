@@ -4,13 +4,17 @@ import { newId } from '../../domain/ids.js';
 
 /** Creates the contribution behind a stage option. 04-u02 implements it; the fake keeps options pending. */
 export interface ContributionPort {
-  create(i: {
-    problemId: string;
-    stageId: string;
-    authorId: string;
-    type: 'proposed_solution';
-    content: Record<string, unknown>;
-  }): Promise<{ contributionId: string; status: 'pending' | 'public' }>;
+  /** Pass the caller's `tx`: the stage row is locked there, so a second connection would wait on it forever. */
+  create(
+    i: {
+      problemId: string;
+      stageId: string;
+      authorId: string;
+      type: 'proposed_solution';
+      content: Record<string, unknown>;
+    },
+    tx?: Tx,
+  ): Promise<{ contributionId: string; status: 'pending' | 'public' }>;
 }
 export const CONTRIBUTION_PORT = Symbol('ContributionPort');
 

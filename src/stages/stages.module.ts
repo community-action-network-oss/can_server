@@ -1,5 +1,7 @@
 import { Module } from '@nestjs/common';
 import { AccountsModule } from '../accounts/accounts.module.js';
+import { DbContributionPort } from '../contributions/app/contribution-port.js';
+import { ContributionsModule } from '../contributions/contributions.module.js';
 import { PolicyModule } from '../policy/policy.module.js';
 import { ProblemsModule } from '../problems/problems.module.js';
 import {
@@ -7,7 +9,6 @@ import {
   CHOICE_GATE,
   CONTRIBUTION_PORT,
   EventBlockerRecords,
-  FakeContributions,
   FakeTasks,
   PassingChoiceGate,
   TASK_PORT,
@@ -20,11 +21,11 @@ import { DbStageChips } from './infra/stage-chips.js';
 import { DrizzleStagePlanRepo } from './infra/stage-plan.repo.js';
 
 @Module({
-  imports: [AccountsModule, PolicyModule, ProblemsModule],
+  imports: [AccountsModule, ContributionsModule, PolicyModule, ProblemsModule],
   controllers: [StagesController],
   providers: [
     { provide: STAGE_PLAN_REPO, useClass: DrizzleStagePlanRepo },
-    { provide: CONTRIBUTION_PORT, useClass: FakeContributions },
+    { provide: CONTRIBUTION_PORT, useExisting: DbContributionPort },
     { provide: CHOICE_GATE, useClass: PassingChoiceGate },
     { provide: TASK_PORT, useClass: FakeTasks },
     { provide: BLOCKER_RECORD_PORT, useClass: EventBlockerRecords },
