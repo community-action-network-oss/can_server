@@ -46,6 +46,7 @@ import {
   type ChoiceGatePort,
   type ContributionPort,
 } from './ports.js';
+import { hasLiveChoice } from './options/option-rules.js';
 import { allowedStageTransitions } from './stage-engine.js';
 import {
   STAGE_PLAN_REPO,
@@ -316,7 +317,8 @@ export class StagesService {
       if (o.authorId !== a.accountId) throw nf(); // not yours: same answer as unknown
       if (
         !['pending', 'public'].includes(o.status) ||
-        (o.status !== 'pending' && s.state !== 'active')
+        (o.status !== 'pending' &&
+          (s.state !== 'active' || (await hasLiveChoice(tx, s.id))))
       )
         throw new ApiException(
           409,

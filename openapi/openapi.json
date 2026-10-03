@@ -284,6 +284,46 @@
         ],
         "type": "object"
       },
+      "ComparisonCellDto": {
+        "properties": {
+          "optionId": {
+            "type": "string"
+          },
+          "value": {
+            "nullable": true,
+            "type": "string"
+          }
+        },
+        "required": [
+          "optionId",
+          "value"
+        ],
+        "type": "object"
+      },
+      "ComparisonRowDto": {
+        "properties": {
+          "cells": {
+            "items": {
+              "$ref": "#/components/schemas/ComparisonCellDto"
+            },
+            "type": "array"
+          },
+          "field": {
+            "enum": [
+              "mechanism",
+              "authority",
+              "cost",
+              "risks"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "field",
+          "cells"
+        ],
+        "type": "object"
+      },
       "ConfirmMappingDto": {
         "properties": {
           "from_path": {
@@ -1455,6 +1495,125 @@
         "required": [
           "optedIn",
           "since"
+        ],
+        "type": "object"
+      },
+      "OptionComparisonDto": {
+        "properties": {
+          "rows": {
+            "items": {
+              "$ref": "#/components/schemas/ComparisonRowDto"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "rows"
+        ],
+        "type": "object"
+      },
+      "OptionImprovementDto": {
+        "properties": {
+          "authorHandle": {
+            "description": "Public handle only.",
+            "type": "string"
+          },
+          "content": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "pendingReview": {
+            "description": "True for the viewer's own item awaiting review.",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "authorHandle",
+          "pendingReview",
+          "content",
+          "createdAt"
+        ],
+        "type": "object"
+      },
+      "OptionItemDto": {
+        "properties": {
+          "authorHandle": {
+            "description": "Public handle only.",
+            "type": "string"
+          },
+          "content": {
+            "additionalProperties": true,
+            "description": "Null once withdrawn.",
+            "nullable": true,
+            "type": "object"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "forLaterStage": {
+            "type": "boolean"
+          },
+          "id": {
+            "type": "string"
+          },
+          "improvements": {
+            "items": {
+              "$ref": "#/components/schemas/OptionImprovementDto"
+            },
+            "type": "array"
+          },
+          "pendingReview": {
+            "description": "True for the viewer's own option awaiting review.",
+            "type": "boolean"
+          },
+          "stageId": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "pending",
+              "public",
+              "withdrawn"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "stageId",
+          "authorHandle",
+          "status",
+          "pendingReview",
+          "forLaterStage",
+          "content",
+          "improvements",
+          "createdAt"
+        ],
+        "type": "object"
+      },
+      "OptionsOrderDto": {
+        "properties": {
+          "order": {
+            "enum": [
+              "created_at_asc"
+            ],
+            "type": "string"
+          },
+          "usesEngagementSignals": {
+            "description": "Always false (RANK-1).",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "order",
+          "usesEngagementSignals"
         ],
         "type": "object"
       },
@@ -3113,6 +3272,35 @@
           "forLaterStage",
           "content",
           "createdAt"
+        ],
+        "type": "object"
+      },
+      "StageOptionsDto": {
+        "properties": {
+          "comparison": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/OptionComparisonDto"
+              }
+            ],
+            "description": "Server facts from the public options; null under 2 options.",
+            "nullable": true,
+            "type": "object"
+          },
+          "criteria": {
+            "$ref": "#/components/schemas/OptionsOrderDto"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/OptionItemDto"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "items",
+          "criteria",
+          "comparison"
         ],
         "type": "object"
       },
@@ -8666,6 +8854,55 @@
       }
     },
     "/v1/stages/{id}/options": {
+      "get": {
+        "operationId": "listStageOptions",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StageOptionsDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "summary": "Public options of a stage in creation order, with improvements and a comparison",
+        "tags": [
+          "stages"
+        ]
+      },
       "post": {
         "operationId": "addStageOption",
         "parameters": [

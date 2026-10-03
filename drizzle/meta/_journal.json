@@ -162,6 +162,13 @@
       "when": 1790988179004,
       "tag": "0022_chubby_red_hulk",
       "breakpoints": true
+    },
+    {
+      "idx": 23,
+      "version": "7",
+      "when": 1790988473370,
+      "tag": "0023_gifted_impossible_man",
+      "breakpoints": true
     }
   ]
 }

@@ -16,6 +16,7 @@ import {
   type Clock,
   type IdGenerator,
 } from '../../platform/ports.js';
+import { markOptionPublic } from '../../stages/app/options/option-rules.js';
 import {
   investigationNeeded,
   recomputeEvidenceTier,
@@ -51,8 +52,9 @@ export class EvidenceTierService implements ContributionPublishedHook {
       .select()
       .from(contribution)
       .where(eq(contribution.id, i.contributionId));
-    if (!c || c.status !== 'accepted' || c.type === 'verification_evidence')
-      return null;
+    if (!c || c.status !== 'accepted') return null;
+    await markOptionPublic(tx, c.id);
+    if (c.type === 'verification_evidence') return null;
     const own = await tx
       .select()
       .from(evidenceRef)

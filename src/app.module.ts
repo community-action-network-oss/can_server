@@ -8,6 +8,7 @@ import { QueueModule } from './platform/queue/queue.module.js';
 import { ProblemsModule } from './problems/problems.module.js';
 import { PolicyModule } from './policy/policy.module.js';
 import { PolicyProposalsModule } from './policy-proposals/policy-proposals.module.js';
+import { StageOptionsModule } from './stages/app/options/stage-options.module.js';
 import { StagesModule } from './stages/stages.module.js';
 import { ContributionsModule } from './contributions/contributions.module.js';
 import { EventRelay } from './moderation/app/event-relay.js';
@@ -28,6 +29,7 @@ import { ReviewCoreModule, ReviewModule } from './review/review.module.js';
     AccountsModule,
     ProblemsModule,
     StagesModule,
+    StageOptionsModule,
     ContributionsModule,
     ModerationModule,
     PrivacyGatewayModule,

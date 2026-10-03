@@ -184,6 +184,10 @@ export class ContributionsService {
       if (type === 'evidence' && !refs.length)
         throw bad('/body/evidence_refs', 'Add at least one link.');
       await this.checkAnswers(tx, p.id, type, i.answersContributionId);
+      const improves =
+        type === 'proposal_improvement'
+          ? await this.checkImproves(tx, st?.id, i.body.improves)
+          : null;
       if (i.attestation) await this.attest.attest(accountId, i.attestation); // ponytail: result has no column until 14-u02
 
       // The advisory lock inside enforceReplyCap serialises this account's submits on this problem; read the cooldown after it.
@@ -230,6 +234,7 @@ export class ContributionsService {
         ...pin(stamp),
         status: 'pending_review',
         answersContributionId: i.answersContributionId ?? null,
+        improvesOptionId: improves,
         createdAt: now,
         originNodeId: config.nodeId,
         protocolVersion: PROTOCOL_VERSION,
@@ -421,6 +426,26 @@ export class ContributionsService {
   }
 
   /** factual_claim may answer a published clarifying_question of the same problem. */
+  /** An improvement names a public option of the stage it is sent to. */
+  private async checkImproves(tx: Tx, stageId?: string, ref?: unknown) {
+    const err = () =>
+      bad('/body/improves', 'Choose a published option of this stage.');
+    if (!stageId || typeof ref !== 'string' || !/^[0-9a-f-]{36}$/i.test(ref))
+      throw err();
+    const [o] = await tx
+      .select({ id: stageOption.id })
+      .from(stageOption)
+      .where(
+        and(
+          eq(stageOption.id, ref),
+          eq(stageOption.stageId, stageId),
+          eq(stageOption.status, 'public'),
+        ),
+      );
+    if (!o) throw err();
+    return o.id;
+  }
+
   private async checkAnswers(
     tx: Tx,
     problemId: string,

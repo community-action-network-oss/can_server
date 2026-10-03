@@ -36,7 +36,9 @@ export function checkBody(
         category: u.category,
       });
   });
-  const res = runChecks({ fields: {}, content: body });
+  // Id refs (schema-patterned) are not prose: a uuid's digit runs would trip the phone check at random.
+  const { improves: _i, target: _t, target_stage: _s, ...prose } = body;
+  const res = runChecks({ fields: {}, content: prose });
   const shown = [];
   for (const f of res.flags) {
     if (f.severity === 'review' && keptFlagIds.includes(f.id)) continue;

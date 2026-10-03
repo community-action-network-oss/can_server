@@ -1,0 +1,2 @@
+ALTER TABLE "contribution" ADD COLUMN "improves_option_id" uuid;--> statement-breakpoint
+ALTER TABLE "contribution" ADD CONSTRAINT "contribution_improves_option_id_stage_option_id_fk" FOREIGN KEY ("improves_option_id") REFERENCES "public"."stage_option"("id") ON DELETE no action ON UPDATE no action;

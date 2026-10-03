@@ -1035,6 +1035,10 @@ export const contribution = pgTable(
     answersContributionId: uuid('answers_contribution_id').references(
       (): AnyPgColumn => contribution.id,
     ),
+    /** A proposal_improvement points at the stage option it improves (D-74). */
+    improvesOptionId: uuid('improves_option_id').references(
+      () => stageOption.id,
+    ),
     createdAt: tz('created_at').notNull(),
     reviewedAt: tz('reviewed_at'),
     tombstonedAt: tz('tombstoned_at'),
