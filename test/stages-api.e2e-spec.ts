@@ -15,7 +15,7 @@ import { config } from '../src/config.js';
 import * as s from '../src/db/schema.js';
 import { newId } from '../src/domain/ids.js';
 import { planFromWire } from '../src/stages/app/plan-wire.js';
-import { CHOICE_GATE } from '../src/stages/app/ports.js';
+import { CHOICE_GATE, PassingChoiceGate } from '../src/stages/app/ports.js';
 import { STAGE_PLAN_REPO } from '../src/stages/app/stage-plan.repository.js';
 import { DbStageChips } from '../src/stages/infra/stage-chips.js';
 import { writeFixture } from './policy/build-fixture.ts';
@@ -178,9 +178,13 @@ beforeAll(async () => {
   pool = new pg.Pool({ connectionString: config.databaseUrl });
   db = drizzle(pool, { schema: s });
   fx = new ProblemFixtures(db);
+  // This spec fixture pack pins no legal stack; the real CHOICE-GATE is covered by decision-record.e2e-spec.ts.
   const mod = await Test.createTestingModule({
     imports: [AppModule],
-  }).compile();
+  })
+    .overrideProvider(CHOICE_GATE)
+    .useClass(PassingChoiceGate)
+    .compile();
   app = mod.createNestApplication();
   configureApp(app);
   await app.init();

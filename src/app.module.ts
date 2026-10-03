@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { AccountsModule } from './accounts/accounts.module.js';
+import { DecisionsModule } from './decisions/decisions.module.js';
 import { DbModule } from './db/db.module.js';
 import { HealthModule } from './health/health.module.js';
 import { JurisdictionsModule } from './jurisdictions/jurisdictions.module.js';
@@ -30,6 +31,7 @@ import { ReviewCoreModule, ReviewModule } from './review/review.module.js';
     ProblemsModule,
     StagesModule,
     StageOptionsModule,
+    DecisionsModule,
     ContributionsModule,
     ModerationModule,
     PrivacyGatewayModule,

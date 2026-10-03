@@ -682,6 +682,84 @@ export const stageChoice = pgTable(
   ],
 );
 
+/** Insert-only (REVOKE plus trigger, see the decision record migration). Withdrawal is read from `stage_choice.withdrawn_at`. */
+export const decisionRecord = pgTable(
+  'decision_record',
+  {
+    id: uuid('id').primaryKey(),
+    problemId: uuid('problem_id')
+      .notNull()
+      .references(() => problem.id),
+    stageId: uuid('stage_id')
+      .notNull()
+      .references(() => stage.id),
+    stageChoiceId: uuid('stage_choice_id')
+      .notNull()
+      .unique()
+      .references(() => stageChoice.id),
+    method: text('method').notNull(),
+    rationale: text('rationale').notNull(),
+    decidedBy: uuid('decided_by')
+      .notNull()
+      .references(() => account.id),
+    authority: text('authority').notNull(),
+    dissentNotes: jsonb('dissent_notes').$type<string[]>(),
+    transitional: boolean('transitional').notNull().default(false),
+    policyVersion: text('policy_version'),
+    decidedAt: tz('decided_at').notNull(),
+  },
+  (t) => [
+    check(
+      'decision_record_text_chk',
+      sql`length(btrim(${t.rationale})) > 0 and length(btrim(${t.authority})) > 0 and length(btrim(${t.method})) > 0`,
+    ),
+    index('decision_record_stage_idx').on(t.stageId),
+  ],
+);
+
+/**
+ * Insert-only. `findings` holds one entry per layer L1..L6: {layer, finding, corpus_version, article_ids, blocks}.
+ * Article ids only, never article text. A blocked attempt has no decision record (the choice is not kept).
+ */
+export const legalGateRecord = pgTable(
+  'legal_gate_record',
+  {
+    id: uuid('id').primaryKey(),
+    decisionRecordId: uuid('decision_record_id').references(
+      () => decisionRecord.id,
+    ),
+    problemId: uuid('problem_id')
+      .notNull()
+      .references(() => problem.id),
+    stageId: uuid('stage_id')
+      .notNull()
+      .references(() => stage.id),
+    findings: jsonb('findings').$type<Record<string, unknown>[]>().notNull(),
+    packVersion: text('pack_version').notNull(),
+    outcome: text('outcome').notNull(),
+    constraintText: text('constraint_text'),
+    sourceRef: text('source_ref'),
+    checkedBy: text('checked_by').notNull(),
+    checkedAt: tz('checked_at').notNull(),
+  },
+  (t) => [
+    check(
+      'legal_gate_record_outcome_chk',
+      sql`${t.outcome} in ('clear','blocked')`,
+    ),
+    check(
+      'legal_gate_record_findings_chk',
+      sql`jsonb_typeof(${t.findings}) = 'array' and jsonb_array_length(${t.findings}) = 6`,
+    ),
+    // LEGAL-GATE-1 and LEGAL-CITE-1: a block names its constraint, its source and a layer with article ids.
+    check(
+      'legal_gate_record_blocked_chk',
+      sql`${t.outcome} <> 'blocked' or (${t.constraintText} is not null and ${t.sourceRef} is not null and jsonb_path_exists(${t.findings}, '$[*] ? (@.blocks == true && exists(@.layer) && @.article_ids.size() > 0)'))`,
+    ),
+    index('legal_gate_record_stage_idx').on(t.stageId),
+  ],
+);
+
 /** One row per cited URL. STAGE-PREP-1: evidence is never accepted for a stage that is not active or blocked. */
 export const stageEvidence = pgTable(
   'stage_evidence',

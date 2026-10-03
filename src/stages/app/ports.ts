@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import type { Tx } from '../../db/tx.js';
+import type { GateRecordInput } from '../../decisions/app/decision-records.service.js';
 import { newId } from '../../domain/ids.js';
 
 /** Creates the contribution behind a stage option or evidence submission (both are D-85 replies). 04-u02 implements it; the fake keeps options pending. */
@@ -27,6 +28,10 @@ export interface ChoiceGatePort {
   }): Promise<{
     result: 'passed' | 'blocked' | 'needs_review' | 'held';
     layer: 'constitution' | 'jurisdiction' | 'both';
+    /** The layered legal check to store as the decision record (absent for a gate that records nothing). */
+    gate?: GateRecordInput;
+    /** Field hints for `needs_review`. */
+    hint?: Record<string, string>;
   }>;
 }
 export const CHOICE_GATE = Symbol('ChoiceGatePort');

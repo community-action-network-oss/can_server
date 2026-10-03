@@ -46,6 +46,8 @@ import {
   type ChoiceGatePort,
   type ContributionPort,
 } from './ports.js';
+import { DecisionRecordService } from '../../decisions/app/decision-records.service.js';
+import { StageEngine } from './stage-engine.js';
 import { hasLiveChoice } from './options/option-rules.js';
 import { allowedStageTransitions } from './stage-engine.js';
 import {
@@ -90,6 +92,9 @@ export class StagesService {
     private readonly structured: StructuredContentService,
     @Inject(CONTRIBUTION_PORT) private readonly contributions: ContributionPort,
     @Inject(CHOICE_GATE) private readonly gate: ChoiceGatePort,
+    @Inject(DecisionRecordService)
+    private readonly records: DecisionRecordService,
+    @Inject(StageEngine) private readonly engine: StageEngine,
   ) {}
 
   // ---- reads ----
@@ -344,7 +349,18 @@ export class StagesService {
   }
 
   async choose(stageId: string, a: Viewer, b: Body) {
-    return withTransaction(this.db, async (tx) => {
+    const done = await withTransaction(this.db, async (tx) => {
+      // Lock order (StageEngine): the problem row, then the stage, so a blocked gate can apply ST07 in this transaction.
+      const [pre] = await tx
+        .select({ pid: stage.problemId })
+        .from(stage)
+        .where(eq(stage.id, uid(stageId)));
+      if (!pre) throw nf();
+      await tx
+        .select({ id: problem.id })
+        .from(problem)
+        .where(eq(problem.id, pre.pid))
+        .for('update');
       const { s, p } = await this.lock(tx, stageId, a.accountId);
       if (!this.mayDecide(s, p, a))
         throw new ApiException(
@@ -400,6 +416,40 @@ export class StagesService {
         stageId: s.id,
         content: b.content,
       });
+      if (g.result === 'needs_review')
+        throw new ApiException(
+          400,
+          'needs_revision',
+          'Some answers need attention.',
+          g.hint,
+        );
+      if (g.result === 'blocked' && g.gate) {
+        // The gate record stands and the choice is not kept; the stage blocks (ST07), the problem sticks only if nothing can proceed.
+        await this.records.recordBlocked(tx, {
+          problemId: p.id,
+          stageId: s.id,
+          gate: g.gate,
+        });
+        const b0 = g.gate.findings.find((f) => f.blocks)!;
+        await this.engine.applyIn(tx, {
+          stageId: s.id,
+          to: 'blocked',
+          actor: { kind: 'run', id: null },
+          runId: g.gate.checkedBy,
+          fields: {
+            blocker: g.gate.constraintText,
+            source: g.gate.sourceRef,
+            sourceVersion: b0.corpus_version,
+            blockedActions: ['record_choice'],
+            recheckCondition:
+              'The cited law changes, or a different option is proposed.',
+            nextRoute:
+              'Propose an option that the cited law allows, or ask the responsible authority.',
+            attempts: ['Legal check when the choice was recorded.'],
+          },
+        });
+        return null;
+      }
       if (g.result !== 'passed')
         throw new ApiException(
           409,
@@ -422,15 +472,28 @@ export class StagesService {
           dissentNotes: c.dissent_notes ?? null,
           content: b.content,
           ...pin(stamp),
-          gateResult: g,
+          gateResult: { result: g.result, layer: g.layer },
           createdAt: this.clock.now(),
         })
         .returning();
+      if (g.gate)
+        await this.records.recordClear(tx, {
+          problemId: p.id,
+          choice: row,
+          gate: g.gate,
+        });
       await this.event(tx, s, 'choice_recorded', a.accountId, {
         choiceId: row.id,
       });
       return choiceDto(row);
     });
+    if (!done)
+      throw new ApiException(
+        409,
+        'gate_blocked',
+        'The law you are under blocks this choice. Nothing was recorded and the stage is blocked.',
+      );
+    return done;
   }
 
   async withdrawChoice(stageId: string, a: Viewer) {

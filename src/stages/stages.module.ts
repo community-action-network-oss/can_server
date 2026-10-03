@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { DecisionsModule } from '../decisions/decisions.module.js';
 import { AccountsModule } from '../accounts/accounts.module.js';
 import { DbContributionPort } from '../contributions/app/contribution-port.js';
 import { ContributionsModule } from '../contributions/contributions.module.js';
@@ -10,9 +11,9 @@ import {
   CONTRIBUTION_PORT,
   EventBlockerRecords,
   FakeTasks,
-  PassingChoiceGate,
   TASK_PORT,
 } from './app/ports.js';
+import { LegalChoiceGate } from './app/choice/choice-gate.js';
 import { StageEngine } from './app/stage-engine.js';
 import { STAGE_PLAN_REPO } from './app/stage-plan.repository.js';
 import { StageTemplatesService } from './app/stage-templates.service.js';
@@ -22,12 +23,18 @@ import { DbStageChips } from './infra/stage-chips.js';
 import { DrizzleStagePlanRepo } from './infra/stage-plan.repo.js';
 
 @Module({
-  imports: [AccountsModule, ContributionsModule, PolicyModule, ProblemsModule],
+  imports: [
+    AccountsModule,
+    ContributionsModule,
+    DecisionsModule,
+    PolicyModule,
+    ProblemsModule,
+  ],
   controllers: [StagesController],
   providers: [
     { provide: STAGE_PLAN_REPO, useClass: DrizzleStagePlanRepo },
     { provide: CONTRIBUTION_PORT, useExisting: DbContributionPort },
-    { provide: CHOICE_GATE, useClass: PassingChoiceGate },
+    { provide: CHOICE_GATE, useClass: LegalChoiceGate },
     { provide: TASK_PORT, useClass: FakeTasks },
     { provide: BLOCKER_RECORD_PORT, useClass: EventBlockerRecords },
     StageEngine,

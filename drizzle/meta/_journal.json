@@ -169,6 +169,13 @@
       "when": 1790988473370,
       "tag": "0023_gifted_impossible_man",
       "breakpoints": true
+    },
+    {
+      "idx": 24,
+      "version": "7",
+      "when": 1790988873663,
+      "tag": "0024_nosy_sauron",
+      "breakpoints": true
     }
   ]
 }

@@ -640,6 +640,78 @@
         ],
         "type": "object"
       },
+      "DecisionRecordDto": {
+        "properties": {
+          "authority": {
+            "type": "string"
+          },
+          "decidedAt": {
+            "type": "string"
+          },
+          "decidedUnder": {
+            "nullable": true,
+            "type": "string"
+          },
+          "deciderHandle": {
+            "description": "Public handle of the decider.",
+            "type": "string"
+          },
+          "dissentNotes": {
+            "items": {
+              "type": "string"
+            },
+            "nullable": true,
+            "type": "array"
+          },
+          "id": {
+            "type": "string"
+          },
+          "legalGate": {
+            "$ref": "#/components/schemas/LegalGateDto"
+          },
+          "method": {
+            "type": "string"
+          },
+          "policyVersion": {
+            "nullable": true,
+            "type": "string"
+          },
+          "rationale": {
+            "type": "string"
+          },
+          "stageChoiceId": {
+            "type": "string"
+          },
+          "transitional": {
+            "type": "boolean"
+          },
+          "transitionalNote": {
+            "nullable": true,
+            "type": "string"
+          },
+          "withdrawn": {
+            "description": "True once the choice was withdrawn.",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "stageChoiceId",
+          "method",
+          "rationale",
+          "deciderHandle",
+          "authority",
+          "dissentNotes",
+          "transitional",
+          "policyVersion",
+          "decidedUnder",
+          "transitionalNote",
+          "withdrawn",
+          "decidedAt",
+          "legalGate"
+        ],
+        "type": "object"
+      },
       "DeclareDto": {
         "properties": {
           "noConflict": {
@@ -1082,6 +1154,84 @@
           "hash",
           "state",
           "activated_at"
+        ],
+        "type": "object"
+      },
+      "LegalFindingDto": {
+        "properties": {
+          "article_ids": {
+            "description": "Article ids only, never text.",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "blocks": {
+            "type": "boolean"
+          },
+          "corpus_version": {
+            "description": "`<id>@<semver>[+hash12]`; null only for not_applicable.",
+            "nullable": true,
+            "type": "string"
+          },
+          "finding": {
+            "enum": [
+              "constrains",
+              "permits",
+              "none_found",
+              "conflict",
+              "not_applicable"
+            ],
+            "type": "string"
+          },
+          "layer": {
+            "enum": [
+              "L1",
+              "L2",
+              "L3",
+              "L4",
+              "L5",
+              "L6"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "layer",
+          "finding",
+          "corpus_version",
+          "article_ids",
+          "blocks"
+        ],
+        "type": "object"
+      },
+      "LegalGateDto": {
+        "properties": {
+          "checkedAt": {
+            "type": "string"
+          },
+          "findings": {
+            "items": {
+              "$ref": "#/components/schemas/LegalFindingDto"
+            },
+            "type": "array"
+          },
+          "outcome": {
+            "enum": [
+              "clear",
+              "blocked"
+            ],
+            "type": "string"
+          },
+          "packVersion": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "outcome",
+          "packVersion",
+          "checkedAt",
+          "findings"
         ],
         "type": "object"
       },
@@ -2926,6 +3076,34 @@
           "evidenceHint",
           "deadline",
           "hasEvidence"
+        ],
+        "type": "object"
+      },
+      "StageDecisionDto": {
+        "properties": {
+          "choiceGate": {
+            "description": "Derived from the live decision record only.",
+            "enum": [
+              "not_needed",
+              "recorded",
+              "missing"
+            ],
+            "type": "string"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/DecisionRecordDto"
+            },
+            "type": "array"
+          },
+          "stageId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "stageId",
+          "choiceGate",
+          "items"
         ],
         "type": "object"
       },
@@ -8757,6 +8935,57 @@
           }
         },
         "summary": "Record the choice of an active stage, by the decider its decision method names",
+        "tags": [
+          "stages"
+        ]
+      }
+    },
+    "/v1/stages/{id}/decision": {
+      "get": {
+        "operationId": "getStageDecision",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StageDecisionDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "summary": "The decision records of a stage with the layered legal check, public after publish",
         "tags": [
           "stages"
         ]
