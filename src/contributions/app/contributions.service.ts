@@ -16,6 +16,7 @@ import {
   account,
   contribution,
   evidenceRef,
+  moderationDecision,
   problem,
   problemEvent,
   stage,
@@ -465,15 +466,35 @@ export class ContributionsService {
       .where(
         and(mine, notInArray(contribution.type, [...COOLDOWN.exemptTypes])),
       );
+    // Latest non-publish verdict on this author's work on the problem. Hold and route_external are not rejections.
     const [h] = await tx
+      .select({ at: max(moderationDecision.createdAt) })
+      .from(moderationDecision)
+      .innerJoin(contribution, eq(contribution.id, moderationDecision.targetId))
+      .where(
+        and(
+          mine,
+          eq(moderationDecision.targetType, 'contribution'),
+          inArray(moderationDecision.outcome, [
+            'rejected',
+            'needs_revision',
+            'reject',
+          ]),
+        ),
+      );
+    // Rows hidden before a decision row existed still count (stricter wins).
+    const [hid] = await tx
       .select({ at: max(contribution.reviewedAt) })
       .from(contribution)
       .where(and(mine, eq(contribution.status, 'hidden')));
+    const rej = [h?.at, hid?.at].filter((x): x is Date => !!x);
     return nextAllowedAt({
       now,
       type,
       lastContributionAt: r?.last ?? null,
-      lastRejectedAt: h?.at ?? null,
+      lastRejectedAt: rej.length
+        ? new Date(Math.max(...rej.map((d) => d.getTime())))
+        : null,
     });
   }
 

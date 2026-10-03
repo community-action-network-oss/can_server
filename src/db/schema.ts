@@ -191,6 +191,8 @@ export const problem = pgTable(
     observed: text('observed'),
     uncertain: text('uncertain'),
     evidenceTier: text('evidence_tier'),
+    // Which writer set the tier: 'deterministic' (URL categories) or 'dp_evidence_tier' (a run's override; deterministic recompute leaves it alone).
+    evidenceTierSource: text('evidence_tier_source'),
     investigationNeeded: boolean('investigation_needed')
       .notNull()
       .default(false),

@@ -5,6 +5,10 @@ import { STATES } from '../../domain/lifecycle/vocabulary.js';
 import { STAGE_STATES } from '../../stages/domain/types.js';
 import { allowedTypes, isAllowed, isForLaterStage } from './allowed.js';
 import { COOLDOWN, nextAllowedAt } from './cooldown.js';
+import {
+  investigationNeeded,
+  recomputeEvidenceTier,
+} from './evidence-tier.js';
 import { replyAllowance, replyCapFrom } from './reply-cap.js';
 import { CONTRIBUTION_TYPES, USER_TYPES } from './types.js';
 
@@ -197,5 +201,16 @@ describe('reply cap (D-85)', () => {
     expect(
       replyAllowance({ count: 2, days: 1 }, [at(1), at(2), at(3)]),
     ).toMatchObject({ remaining: 0, resetsAt: at(26).toISOString() });
+  });
+});
+
+describe('evidence tier', () => {
+  it('floors at 1, takes the best category, derives the flag', () => {
+    expect(recomputeEvidenceTier([])).toBe(1);
+    expect(recomputeEvidenceTier(['other'])).toBe(2);
+    expect(recomputeEvidenceTier(['other', 'news'])).toBe(3);
+    expect(recomputeEvidenceTier(['news', 'official_page'])).toBe(4);
+    expect(investigationNeeded(2)).toBe(true);
+    expect(investigationNeeded(3)).toBe(false);
   });
 });

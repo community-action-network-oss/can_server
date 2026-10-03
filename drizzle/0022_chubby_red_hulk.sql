@@ -1,0 +1,1 @@
+ALTER TABLE "problem" ADD COLUMN "evidence_tier_source" text;
