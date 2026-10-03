@@ -1,0 +1,25 @@
+{
+  "crisis": [
+    { "id": "en-imminent", "text": "I am going to kill myself tonight", "level": "imminent" },
+    { "id": "nl-imminent", "text": "Ik ga mezelf doden", "level": "imminent" },
+    { "id": "en-clear", "text": "I want to die", "level": "clear" },
+    { "id": "en-clear-suicide", "text": "The suicidal thoughts here are common", "level": "clear" },
+    { "id": "nl-clear", "text": "Er is zelfmoord in de buurt", "level": "clear" },
+    { "id": "spacing", "text": "k i l l   m y s e l f", "level": "clear" },
+    { "id": "dots", "text": "k.i.l.l m.y.s.e.l.f", "level": "clear" },
+    { "id": "zero-width", "text": "kill​ myself", "level": "clear" },
+    { "id": "homoglyph-cyrillic", "text": "I want to dіe", "level": "clear" },
+    { "id": "leet", "text": "su1c1de", "level": "clear" },
+    { "id": "possible", "text": "I feel hopeless about the housing queue", "level": "possible" },
+    { "id": "none", "text": "The bus stop on Main Street has no shelter", "level": "none" },
+    { "id": "none-nl", "text": "De bushalte heeft geen dak", "level": "none" }
+  ],
+  "legal": [
+    { "id": "subpoena", "text": "We received a subpoena for the author", "hit": true },
+    { "id": "court-nl", "text": "Er ligt een rechterlijk bevel", "hit": true },
+    { "id": "police", "text": "Police request: disclose the identity of the poster", "hit": true },
+    { "id": "spaced", "text": "s u b p o e n a", "hit": true },
+    { "id": "none", "text": "The council should publish its bus timetable", "hit": false },
+    { "id": "none-info", "text": "More information about the bus timetable is needed", "hit": false }
+  ]
+}
