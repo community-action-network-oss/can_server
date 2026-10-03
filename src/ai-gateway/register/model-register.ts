@@ -17,6 +17,19 @@ export interface ModelEntry {
   evalExpiry: string | null;
   /** DP ids the model is eligible for; passing one DP never makes it eligible for another. */
   dpEligibility: readonly string[];
+  /** Recorded eval results per DP; absent means no evidence. */
+  perDp?: readonly DpEval[];
+}
+
+/** One recorded eval result for a DP (09-u68). */
+export interface DpEval {
+  dpId: string;
+  /** The model that produced the scores; `fake-derived-*` recordings never count as evidence. */
+  modelId?: string;
+  evalScore: number;
+  evalSetVersion: string;
+  evalDate: string;
+  passed: boolean;
 }
 
 export const DEFAULT_REGISTER_PATH = 'config/model-register.json';
@@ -83,6 +96,22 @@ export function parseRegister(raw: unknown): ModelEntry[] {
     if (e.provider !== 'fake' && e.evalExpiry === null)
       bad(i, 'live model needs evalExpiry');
     if (!strs(e.dpEligibility)) bad(i, 'dpEligibility');
+    if (e.perDp !== undefined) {
+      const ok =
+        Array.isArray(e.perDp) &&
+        e.perDp.every(
+          (d: Record<string, unknown>) =>
+            d &&
+            typeof d.dpId === 'string' &&
+            typeof d.evalScore === 'number' &&
+            typeof d.evalSetVersion === 'string' &&
+            typeof d.evalDate === 'string' &&
+            !Number.isNaN(Date.parse(d.evalDate)) &&
+            typeof d.passed === 'boolean' &&
+            (d.modelId === undefined || typeof d.modelId === 'string'),
+        );
+      if (!ok) bad(i, 'perDp');
+    }
     return e as unknown as ModelEntry;
   });
 }
