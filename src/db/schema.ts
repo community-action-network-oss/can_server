@@ -1168,3 +1168,63 @@ export const evidenceRef = pgTable(
   },
   (t) => [index('evidence_ref_contribution_idx').on(t.contributionId)],
 );
+
+/**
+ * Explicit, per-problem follow (04-u07). Never inferred from behaviour or the capability profile (D-80).
+ * No counters anywhere. Cascades with the account or problem row.
+ */
+export const follow = pgTable(
+  'follow',
+  {
+    accountId: uuid('account_id')
+      .notNull()
+      .references(() => account.id, { onDelete: 'cascade' }),
+    problemId: uuid('problem_id')
+      .notNull()
+      .references(() => problem.id, { onDelete: 'cascade' }),
+    createdAt: tz('created_at').notNull(),
+    mutedAt: tz('muted_at'),
+    /** Set only while the account holds an active `problem_updates_email` consent. */
+    mailConsentAt: tz('mail_consent_at'),
+  },
+  (t) => [primaryKey({ columns: [t.accountId, t.problemId] })],
+);
+
+/** In-app notification. `label` is fixed public wording (a state or stage label), never user text. */
+export const notification = pgTable(
+  'notification',
+  {
+    id: uuid('id').primaryKey(),
+    accountId: uuid('account_id')
+      .notNull()
+      .references(() => account.id, { onDelete: 'cascade' }),
+    problemId: uuid('problem_id')
+      .notNull()
+      .references(() => problem.id, { onDelete: 'cascade' }),
+    kind: text('kind').notNull(),
+    /** The problem_event or stage_event id; the pair with account_id dedupes a re-run. */
+    eventId: uuid('event_id').notNull(),
+    label: text('label').notNull(),
+    createdAt: tz('created_at').notNull(),
+    readAt: tz('read_at'),
+  },
+  (t) => [
+    unique('notification_account_event_uq').on(t.accountId, t.eventId),
+    index('notification_account_idx').on(t.accountId, t.createdAt, t.id),
+  ],
+);
+
+/** NOTIFY-CONSENT-1 evidence: purpose and timestamps. Revoking sets revoked_at; a new grant is a new row. */
+export const consentRecord = pgTable(
+  'consent_record',
+  {
+    id: uuid('id').primaryKey(),
+    accountId: uuid('account_id')
+      .notNull()
+      .references(() => account.id, { onDelete: 'cascade' }),
+    purpose: text('purpose').notNull(),
+    grantedAt: tz('granted_at').notNull(),
+    revokedAt: tz('revoked_at'),
+  },
+  (t) => [index('consent_record_account_idx').on(t.accountId, t.purpose)],
+);

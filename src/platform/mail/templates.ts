@@ -129,3 +129,24 @@ export function reopened(
     ),
   };
 }
+
+/**
+ * 04-u07 follower email: fixed label, one plain sentence and links. No title, no problem text, no
+ * names (REVIEW-1). Every mail says how to mute or unfollow (NOTIFY-CONSENT-1).
+ */
+export function followUpdate(m: {
+  label: string;
+  explanation: string;
+  link: string;
+  manageLink: string;
+}): Rendered {
+  return {
+    subject: `A problem you follow: ${m.label}`,
+    text: [
+      `${m.label}. ${m.explanation}`,
+      `Open it here: ${m.link}`,
+      `You get this because you chose email updates when you followed it. To mute it, unfollow it or stop all update emails, open: ${m.manageLink}`,
+      'Nothing from the problem is copied into this email.',
+    ].join('\n\n'),
+  };
+}

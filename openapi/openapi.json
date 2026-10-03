@@ -954,6 +954,66 @@
         ],
         "type": "object"
       },
+      "FollowDto": {
+        "properties": {
+          "emailUpdates": {
+            "type": "boolean"
+          },
+          "followedAt": {
+            "type": "string"
+          },
+          "muted": {
+            "type": "boolean"
+          },
+          "problemId": {
+            "type": "string"
+          },
+          "title": {
+            "description": "The public title.",
+            "nullable": true,
+            "type": "string"
+          }
+        },
+        "required": [
+          "problemId",
+          "title",
+          "followedAt",
+          "muted",
+          "emailUpdates"
+        ],
+        "type": "object"
+      },
+      "FollowListDto": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/FollowDto"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "type": "object"
+      },
+      "FollowRequestDto": {
+        "properties": {
+          "emailUpdates": {
+            "description": "True records consent (purpose problem_updates_email) and sends update emails for this follow. False follows in the app only.",
+            "type": "boolean"
+          },
+          "problemId": {
+            "description": "A public problem. Following is always your own explicit choice.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "problemId",
+          "emailUpdates"
+        ],
+        "type": "object"
+      },
       "HandleDto": {
         "properties": {
           "handle": {
@@ -1668,6 +1728,70 @@
         },
         "required": [
           "roles"
+        ],
+        "type": "object"
+      },
+      "NotificationDto": {
+        "properties": {
+          "createdAt": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "state_changed",
+              "stage_changed",
+              "plan_changed",
+              "decision_recorded",
+              "reopened"
+            ],
+            "type": "string"
+          },
+          "label": {
+            "description": "Fixed public wording, never user text.",
+            "type": "string"
+          },
+          "problemId": {
+            "type": "string"
+          },
+          "problemTitle": {
+            "description": "The public title.",
+            "nullable": true,
+            "type": "string"
+          },
+          "read": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "problemId",
+          "problemTitle",
+          "kind",
+          "label",
+          "createdAt",
+          "read"
+        ],
+        "type": "object"
+      },
+      "NotificationPageDto": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/NotificationDto"
+            },
+            "type": "array"
+          },
+          "nextCursor": {
+            "nullable": true,
+            "type": "string"
+          }
+        },
+        "required": [
+          "items",
+          "nextCursor"
         ],
         "type": "object"
       },
@@ -6025,6 +6149,274 @@
         ]
       }
     },
+    "/v1/follows": {
+      "post": {
+        "operationId": "followProblem",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FollowRequestDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FollowDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "summary": "Follow a public problem on purpose; optionally opt in to update emails",
+        "tags": [
+          "follows"
+        ]
+      }
+    },
+    "/v1/follows/{problemId}": {
+      "delete": {
+        "operationId": "unfollowProblem",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "problemId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "summary": "Unfollow a problem",
+        "tags": [
+          "follows"
+        ]
+      }
+    },
+    "/v1/follows/{problemId}/mute": {
+      "post": {
+        "operationId": "muteFollow",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "problemId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FollowDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "summary": "Mute a follow: it stays, nothing is sent",
+        "tags": [
+          "follows"
+        ]
+      }
+    },
+    "/v1/follows/{problemId}/unmute": {
+      "post": {
+        "operationId": "unmuteFollow",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "problemId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FollowDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "summary": "Unmute a follow",
+        "tags": [
+          "follows"
+        ]
+      }
+    },
     "/v1/invites": {
       "get": {
         "operationId": "listInvites",
@@ -6346,6 +6738,83 @@
         ]
       }
     },
+    "/v1/me/follows": {
+      "get": {
+        "operationId": "listMyFollows",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FollowListDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "summary": "Problems you follow",
+        "tags": [
+          "follows"
+        ]
+      }
+    },
+    "/v1/me/follows/email-consent": {
+      "delete": {
+        "operationId": "revokeFollowEmailConsent",
+        "parameters": [],
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "summary": "Withdraw consent for update emails; follows and in-app items stay",
+        "tags": [
+          "follows"
+        ]
+      }
+    },
     "/v1/me/handle/regenerate": {
       "post": {
         "operationId": "regenerateHandle",
@@ -6425,6 +6894,174 @@
         "summary": "Get a new generated handle (once)",
         "tags": [
           "auth"
+        ]
+      }
+    },
+    "/v1/me/notifications": {
+      "get": {
+        "operationId": "listMyNotifications",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "cursor",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotificationPageDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "summary": "Your notifications, newest first. No counts, no badge data",
+        "tags": [
+          "follows"
+        ]
+      }
+    },
+    "/v1/me/notifications/read-all": {
+      "post": {
+        "operationId": "readAllMyNotifications",
+        "parameters": [],
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "summary": "Mark all notifications read",
+        "tags": [
+          "follows"
+        ]
+      }
+    },
+    "/v1/me/notifications/{id}/read": {
+      "post": {
+        "operationId": "readMyNotification",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "summary": "Mark one notification read",
+        "tags": [
+          "follows"
         ]
       }
     },
